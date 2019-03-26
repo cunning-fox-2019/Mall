@@ -1,0 +1,63 @@
+<resources>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="gButtonStyle">@style/Genius.Widget.Button</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Genius.Widget.Button.Base" parent="android:Widget.Button">
+        <item name="gFont">@null</item>
+        <item name="gTouchColor">#30000000</item>
+        <item name="gTouchEffect">auto</item>
+        <item name="gTouchCornerRadius">@dimen/g_button_touch_corners_radius</item>
+        <item name="android:background">@drawable/g_button_background</item>
+        <item name="android:paddingBottom">12dp</item>
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
+    </style>
+
+    <style name="Genius.Widget.Button" parent="Genius.Widget.Button.Base" />
+
+    <declare-styleable name="BlurView">
+        <attr name="blurOverlayColor" format="color" />
+    </declare-styleable>
+
+
+    <!-- dialog 动画-->
+    <style name="dialogWindowAnim" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/dialog_top_in</item>
+        <item name="android:windowExitAnimation">@anim/dialog_top_out</item>
+    </style>
+
+    <style name="dialogWindowAnimTop" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/dialog_bottom_in</item>
+        <item name="android:windowExitAnimation">@anim/dialog_bottom_out</item>
+    </style>
+
+
+
+    <style name="Dialog" parent="android:Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowBackground">@color/transparent</item>
+    </style>
+
+    <style name="LoadinggStyle" parent="android:Widget.Material.Light.ProgressBar.Small">
+        <item name="android:minWidth">24dp</item>
+        <item name="android:maxWidth">24dp</item>
+        <item name="android:minHeight">24dp</item>
+        <item name="android:maxHeight">24dp</item>
+    </style>
+
+    <style name="LoadinggMinStyle" parent="android:Widget.Material.Light.ProgressBar.Small">
+        <item name="android:maxWidth">12dp</item>
+        <item name="android:maxHeight">12dp</item>
+    </style>
+
+</resources>

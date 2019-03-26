@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="transparent">#00000000</color>
+    <color name="barColor">#181818</color>
+    <color name="black">#000000</color>
+    <color name="black_40">#60000000</color>
+    <color name="line">#e7e7e7</color>
+    <color name="white">#ffffff</color>
+    <color name="primary">#198CED</color>
+    <color name="press">#33000000</color>
+    <color name="grey_dark">#333333</color>
+    <color name="grey_dark_50">#80333333</color>
+    <color name="grey_medium">#666666</color>
+    <color name="grey_light">#AAAAAA</color>
+
+    <color name="text_focus">#66FFFFFF</color>
+    <color name="text_hint">#80FFFFFF</color>
+
+    <color name="white_80">#CCFFFFFF</color>
+    <color name="white_90">#E6FFFFFF</color>
+    <color name="white_60">#99FFFFFF</color>
+    <color name="white_50">#80FFFFFF</color>
+    <color name="white_40">#66FFFFFF</color>
+    <color name="white_30">#4dFFFFFF</color>
+
+    <color name="album_duration">#FCFCFC</color>
+    <color name="camera_bg">#F8F8F8</color>
+    <color name="album_bg">#1E1D22</color>
+
+    <color name="line_between">#E2E2E2</color>
+    <color name="free_ing_enough">#F2F2F2</color>
+
+</resources>

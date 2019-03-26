@@ -1,0 +1,61 @@
+<resources>
+    <string name="app_name">SevenLibrary</string>
+
+    <!--permission-->
+    <string name="permission">应用需要本地存储权限</string>
+
+    <!-- network -->
+    <string name="hint_network_title">网络状态</string>
+    <string name="hint_network_content">请检查你的网络</string>
+
+    <!--dialog-->
+    <string name="dialog_sure">确定</string>
+    <string name="dialog_cancel">取消</string>
+    <string name="dialog_hint">提示</string>
+
+    <!--日期 -->
+    <string name="week_sunday">星期日</string>
+    <string name="week_monday">星期一</string>
+    <string name="week_tuesday">星期二</string>
+    <string name="week_wednesday">星期三</string>
+    <string name="week_thursday">星期四</string>
+    <string name="week_friday">星期五</string>
+    <string name="week_saturday">星期六</string>
+
+
+    <!--sheet-->
+    <string name="sheet_cancel">取消</string>
+    <string name="sheet_delete">删除</string>
+    <string name="sheet_reply">回复</string>
+    <string name="sheet_report">举报</string>
+    <string name="sheet_video_source">查看作品</string>
+    <string name="sheet_language_china">中文</string>
+    <string name="sheet_language_english">English</string>
+    <string name="sheet_photo">相册</string>
+    <string name="sheet_camera">拍照</string>
+    <string name="sheet_feed_source">查看动态</string>
+    <string name="save_gallery">保存至手机相册</string>
+
+    <string name="hint_sheet">请选择</string>
+
+    <string name="hint_pay_success">支付成功</string>
+    <string name="hint_pay_failure">支付失败</string>
+    <string name="hint_pay_cancel">支付已取消</string>
+
+    <!-- common -->
+    <string name="common_album">相册</string>
+
+    <string name="common_next">下一步</string>
+
+    <string name="hint_more_not">没有更多数据</string>
+    <string name="hint_topic_participate" formatted="false">%s人参与</string>
+
+    <string name="mt_filter">筛选</string>
+    <string name="mt_maaclass">预约课程</string>
+    <string name="mt_mylesson">我的课程</string>
+    <string name="mt_teacher">老师</string>
+    <string name="mt_more">更多</string>
+    <string name="mt_class_type">课程类型</string>
+    <string name="mt_back">返回</string>
+
+</resources>
