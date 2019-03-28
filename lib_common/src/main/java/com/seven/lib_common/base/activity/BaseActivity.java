@@ -102,10 +102,12 @@ public abstract class BaseActivity extends RxActivity implements IBaseView, Easy
                 StatusBarUtil.setDarkMode(this);
             else if (statusBar == StatusBar.HIDE)
                 new UltimateBar(this).setHideBar(true);
-            else
+            else if (statusBar == StatusBar.PRIMARY)
                 new UltimateBar(this).setColorBar(
                         ContextCompat.getColor(this, R.color.primary),
                         ContextCompat.getColor(this, R.color.primary));
+            else
+                new UltimateBar(this).setImmersionBar(true);
         } else
             new UltimateBar(this).setColorBar(
                     getResources().getColor(R.color.primary),

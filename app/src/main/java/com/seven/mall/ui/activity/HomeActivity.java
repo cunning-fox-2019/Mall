@@ -47,7 +47,6 @@ public class HomeActivity extends BaseAppCompatActivity {
 
     @Override
     protected int getContentViewId() {
-        statusBar = StatusBar.PRIMARY;
         return R.layout.activity_home;
     }
 

@@ -36,8 +36,8 @@ public class SplashActivity extends BaseAppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                RouterUtils.getInstance().routerWithFade(
-                        RouterPath.ACTIVITY_HOME, SplashActivity.this, true);
+                RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_HOME);
+                SplashActivity.this.onBackPressed();
             }
         }, Constants.TimeConfig.SPLASH_TIME);
     }

@@ -1,2 +1,27 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.seven.module_user" />
+    package="com.seven.module_user">
+
+    <application
+        android:allowBackup="true"
+        android:label="@string/app_name"
+        android:supportsRtl="true">
+        <activity
+            android:name=".ui.activity.login.LoginActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.activity.login.RegisterActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.activity.login.PasswordActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.activity.login.MobileActivity"
+            android:screenOrientation="portrait" />
+
+
+    </application>
+
+</manifest>

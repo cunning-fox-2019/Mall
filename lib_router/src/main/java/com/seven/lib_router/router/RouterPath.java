@@ -30,4 +30,8 @@ public class RouterPath {
     /* module user */
     public static final String FRAGMENT_USER = "/user/UserFragment";
 
+    public static final String ACTIVITY_LOGIN="/user/LoginActivity";
+    public static final String ACTIVITY_REGISTER="/user/RegisterActivity";
+    public static final String ACTIVITY_PASSWORD="/user/PasswordActivity";
+    public static final String ACTIVITY_MOBILE="/user/MobileActivity";
 }
