@@ -1,16 +1,318 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:background="@color/grey_f4">
 
-    <com.seven.lib_common.stextview.TypeFaceView
-        android:layout_width="wrap_content"
+
+    //推广中心00title
+
+    <LinearLayout
+        android:id="@+id/me_title"
+        android:layout_width="match_parent"
+        android:layout_height="280dp"
+        android:background="@drawable/bg"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="23dp"
+            android:layout_marginTop="46dp">
+
+            <ImageView
+                android:id="@+id/me_userlevel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/ctylord" />
+
+            <com.seven.lib_common.stextview.TypeFaceView
+                android:id="@+id/me_profit_details"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/me_profit_bg"
+                android:paddingLeft="24dp"
+                android:paddingTop="10dp"
+                android:paddingRight="24dp"
+                android:paddingBottom="10dp"
+                android:text="收益明细"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_10"
+                app:SFontStyle="regular_s" />
+        </RelativeLayout>
+
+        <com.seven.lib_common.stextview.TypeFaceView
+            android:id="@+id/me_profit_num"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="7dp"
+            android:gravity="center"
+            android:text="25,090.00"
+            android:textColor="@color/white"
+            android:textSize="45sp"
+            app:SFontStyle="medium_s" />
+
+        <com.seven.lib_common.stextview.TypeFaceView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:text="推广获得收益"
+            android:textColor="#99ffffff"
+            android:textSize="@dimen/sp_18" />
+    </LinearLayout>
+
+    //tab
+
+    <LinearLayout
+        android:id="@+id/me_tab"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="extension"
-        android:textColor="@color/primary"
-        android:textSize="@dimen/sp_12"
-        app:SFontStyle="medium_s"
-        android:layout_centerInParent="true"/>
+        android:layout_below="@+id/me_title"
+        android:layout_marginLeft="23dp"
+        android:layout_marginTop="-20dp"
+        android:layout_marginRight="23dp"
+        android:background="@drawable/me_titlt_tab"
+        android:orientation="horizontal">
+
+        //购买升级
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="14dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="15dp"
+                android:orientation="vertical">
+
+                <com.seven.lib_common.stextview.TypeFaceView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="购买升级"
+                    android:textColor="#434343"
+                    android:textSize="18sp" />
+
+                <com.seven.lib_common.stextview.TypeFaceView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="一键购买轻松升级"
+                    android:textColor="#e1b779"
+                    android:textSize="10sp" />
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="14dp"
+                android:src="@drawable/me_buy" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="26dp"
+            android:layout_marginBottom="26dp"
+            android:background="#e6e6e6" />
+        //推广升级
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="14dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="15dp"
+                android:orientation="vertical">
+
+                <com.seven.lib_common.stextview.TypeFaceView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="推广升级"
+                    android:textColor="#434343"
+                    android:textSize="18sp" />
+
+                <com.seven.lib_common.stextview.TypeFaceView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="各项推广享受升级"
+                    android:textColor="#e1b779"
+                    android:textSize="10sp" />
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="14dp"
+                android:src="@drawable/me_extension" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    //推广中心content
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/me_tab"
+        android:layout_marginLeft="23dp"
+        android:layout_marginTop="26dp"
+        android:layout_marginRight="23dp">
+
+        <LinearLayout
+            android:id="@+id/me_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            //购买报单
+
+            <RelativeLayout
+                android:id="@+id/me_buy_bd"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white">
+
+                <com.seven.lib_common.stextview.TypeFaceView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:text="购买报单"
+                    android:textColor="#1e1d1d"
+                    android:textSize="@dimen/sp_12" />
+
+                <com.seven.lib_common.stextview.TypeFaceView
+                    android:id="@+id/me_buy_receive"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@+id/me_buy_arrow"
+                    android:text="能领取3次令牌奖励"
+                    android:textColor="#a4a4a4"
+                    android:textSize="9sp" />
+
+                <ImageView
+                    android:id="@+id/me_buy_arrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/me_arrow_right" />
+            </RelativeLayout>
+
+            //我的邀请
+
+            <RelativeLayout
+                android:id="@+id/me_buy_interview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:background="@color/white">
+
+                <com.seven.lib_common.stextview.TypeFaceView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:text="我的邀请"
+                    android:textColor="#1e1d1d"
+                    android:textSize="@dimen/sp_12" />
+
+                <com.seven.lib_common.stextview.TypeFaceView
+                    android:id="@+id/me_interviewpeo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@+id/me_inyerview_arrow"
+                    android:text="已成功邀请28人"
+                    android:textColor="#a4a4a4"
+                    android:textSize="9sp" />
+
+                <ImageView
+                    android:id="@+id/me_inyerview_arrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/me_arrow_right" />
+            </RelativeLayout>
+
+            //各项奖励
+
+            <com.seven.lib_common.stextview.TypeFaceView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:text="各项奖励"
+                android:textColor="#333333"
+                android:textSize="@dimen/sp_14"
+                app:SFontStyle="bold_s" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/me_rv_everyreward"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp" />
+
+            //奖励规则
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp">
+
+                <com.seven.lib_common.stextview.TypeFaceView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:text="奖励规则"
+                    android:textColor="#333333"
+                    android:textSize="@dimen/sp_14"
+                    app:SFontStyle="bold_s" />
+
+                <Spinner
+                    android:id="@+id/me_rv_everyreward_sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true" />
+            </RelativeLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/me_rv_rewardrules"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp" />
+        </LinearLayout>
+    </ScrollView>
 
 </RelativeLayout>

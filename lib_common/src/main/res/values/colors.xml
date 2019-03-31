@@ -13,6 +13,7 @@
     <color name="grey_dark_50">#80333333</color>
     <color name="grey_medium">#666666</color>
     <color name="grey_light">#AAAAAA</color>
+    <color name="grey_f4">#F4F4F4</color>
 
     <color name="text_focus">#66FFFFFF</color>
     <color name="text_hint">#80FFFFFF</color>
