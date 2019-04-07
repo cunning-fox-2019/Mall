@@ -1,2 +1,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.seven.module_user" />
+    package="com.seven.module_user" >
+
+    <application>
+        <activity android:name=".ui.fragment.EditUserInfoActivity" />
+        <activity android:name=".ui.fragment.UserSettingActivity" />
+        <activity android:name=".ui.fragment.CollectionActivity" />
+        <activity android:name=".ui.fragment.UserAddressActivity" />
+        <activity android:name=".ui.fragment.UserCreateAddressActivity" />
+    </application>
+</manifest>

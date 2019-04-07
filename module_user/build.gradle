@@ -51,4 +51,6 @@ dependencies {
     annotationProcessor "com.alibaba:arouter-compiler:${rootProject.ext.arouter.compiler}"
     implementation "com.jakewharton:butterknife:${rootProject.ext.butterknife.version}"
     implementation "com.jakewharton:butterknife-compiler:${rootProject.ext.butterknife.compiler}"
+    implementation 'com.gyf.barlibrary:barlibrary:2.3.0'
+    implementation 'com.flyco.tablayout:FlycoTabLayout_Lib:2.1.2@aar'
 }

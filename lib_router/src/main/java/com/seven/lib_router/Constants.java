@@ -40,7 +40,7 @@ public class Constants {
     }
 
     public static class RequestConfig {
-
+ public static  final int USER_INFO =300;
     }
 
     public static class EventConfig {
