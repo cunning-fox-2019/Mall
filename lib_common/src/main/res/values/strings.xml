@@ -48,14 +48,26 @@
     <string name="common_next">下一步</string>
 
     <string name="hint_more_not">没有更多数据</string>
-    <string name="hint_topic_participate" formatted="false">%s人参与</string>
 
-    <string name="mt_filter">筛选</string>
-    <string name="mt_maaclass">预约课程</string>
-    <string name="mt_mylesson">我的课程</string>
-    <string name="mt_teacher">老师</string>
-    <string name="mt_more">更多</string>
-    <string name="mt_class_type">课程类型</string>
-    <string name="mt_back">返回</string>
+    <!-- user login -->
+    <string name="login">登录</string>
+    <string name="register">注册</string>
+    <string name="password_forget">忘记密码</string>
+    <string name="mobile_bind">绑定手机</string>
+
+    <string name="hint_mobile">请输入11位手机号</string>
+    <string name="hint_password">请输入6-12位密码</string>
+    <string name="hint_sms_code">请输入获取的验证码</string>
+    <string name="hint_invite_code">请输入邀请码</string>
+    <string name="hint_agreement_all">注册/登录代表您已阅读并同意《购物商城服务条款》</string>
+    <string name="hint_agreement">《购物商城服务条款》</string>
+
+    <string name="forget_password">忘记密码？</string>
+    <string name="register_now">立即注册</string>
+    <string name="sms_code">获取验证码</string>
+
+
+
+    <string name="surplus_time" formatted="false">剩余 %s s </string>
 
 </resources>

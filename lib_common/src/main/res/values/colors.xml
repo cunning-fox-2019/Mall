@@ -7,7 +7,7 @@
     <color name="black_40">#60000000</color>
     <color name="line">#e7e7e7</color>
     <color name="white">#ffffff</color>
-    <color name="primary">#198CED</color>
+    <color name="primary">#198aed</color>
     <color name="press">#33000000</color>
     <color name="grey_dark">#333333</color>
     <color name="grey_dark_50">#80333333</color>
@@ -31,5 +31,10 @@
 
     <color name="line_between">#E2E2E2</color>
     <color name="free_ing_enough">#F2F2F2</color>
+
+    <color name="edit_hint">#a7a7a7</color>
+    <color name="edit_border">#eeeeee</color>
+
+    <color name="grey_80">#c4c4c4</color>
 
 </resources>

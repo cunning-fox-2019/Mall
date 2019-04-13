@@ -55,6 +55,7 @@ public class CollectionActivity extends BaseActivity {
         return R.layout.mu_activity_collect;
     }
 
+
     @Override
     protected void init(Bundle savedInstanceState) {
 

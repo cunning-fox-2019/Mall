@@ -11,7 +11,7 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:windowTranslucentStatus">true</item>
-        <item name="android:windowBackground">@color/white</item>
+        <item name="android:windowBackground">@drawable/splash</item>
         <item name="android:windowTranslucentNavigation">false</item>
     </style>
 
