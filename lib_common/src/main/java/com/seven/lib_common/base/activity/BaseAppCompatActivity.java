@@ -2,6 +2,8 @@ package com.seven.lib_common.base.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,6 +15,7 @@ import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.github.zackratos.ultimatebar.UltimateBar;
 import com.orhanobut.logger.Logger;
 import com.seven.lib_common.R;
 import com.seven.lib_common.listener.LifeCycleListener;
@@ -21,7 +24,6 @@ import com.seven.lib_common.task.ActivityStack;
 import com.seven.lib_common.base.dialog.LoadingDialog;
 import com.seven.lib_common.utils.NetWorkUtils;
 import com.seven.lib_common.utils.ScreenUtils;
-import com.seven.lib_common.widget.UltimateBar;
 import com.seven.lib_common.widget.statubar.StatusBarUtil;
 import com.seven.lib_opensource.application.SSDK;
 import com.seven.lib_opensource.event.MessageEvent;
@@ -93,17 +95,30 @@ public abstract class BaseAppCompatActivity extends RxAppCompatActivity implemen
             else if (statusBar == StatusBar.DARK)
                 StatusBarUtil.setDarkMode(this);
             else if (statusBar == StatusBar.HIDE)
-                new UltimateBar(this).setHideBar(true);
+                UltimateBar.Companion.with(this)
+                        .applyNavigation(true)
+                        .create()
+                        .hideBar();
             else if (statusBar == StatusBar.PRIMARY)
-                new UltimateBar(this).setColorBar(
-                        ContextCompat.getColor(this, R.color.primary),
-                        ContextCompat.getColor(this, R.color.primary));
+                UltimateBar.Companion.with(this)
+                        .statusDrawable(new ColorDrawable(ContextCompat.getColor(mContext, R.color.primary)))
+                        .applyNavigation(true)
+                        .navigationDrawable(new ColorDrawable(ContextCompat.getColor(mContext, R.color.primary)))
+                        .create()
+                        .drawableBar();
             else
-                new UltimateBar(this).setImmersionBar(true);
+                UltimateBar.Companion.with(this).applyNavigation(false)
+                        .statusDark(true)
+                        .statusDrawable2(new ColorDrawable(Color.parseColor("#33000000")))
+                        .create()
+                        .immersionBar();
         } else
-            new UltimateBar(this).setColorBar(
-                    getResources().getColor(R.color.primary),
-                    getResources().getColor(R.color.primary));
+            UltimateBar.Companion.with(this)
+                    .statusDrawable(new ColorDrawable(ContextCompat.getColor(mContext, R.color.primary)))
+                    .applyNavigation(true)
+                    .navigationDrawable(new ColorDrawable(ContextCompat.getColor(mContext, R.color.primary)))
+                    .create()
+                    .drawableBar();
     }
 
 

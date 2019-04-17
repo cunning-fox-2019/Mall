@@ -20,6 +20,7 @@ public class RouterPath {
 
     /* module home */
     public static final String FRAGMENT_HOME = "/home/HomeFragment";
+    public static final String ACTIVITY_COMMODITY="/home/CommodityListActivity";
 
     /* module extension */
     public static final String FRAGMENT_EXTENSION = "/extension/ExtensionFragment";

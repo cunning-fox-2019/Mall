@@ -95,4 +95,10 @@ public class Constants {
         public static final String TYPE_IMAGE_JPG = "image/jpeg";
 
     }
+
+    public static class PermissionConfig {
+
+        public static final int SPLASH = 1;
+
+    }
 }

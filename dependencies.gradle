@@ -33,11 +33,13 @@ ext {
     ]
 
     glide = [
-            version:"4.9.0"
+            version:"4.9.0",
+            compiler:"4.9.0"
     ]
 
     butterknife = [
             version:"8.4.0",
             compiler:"8.4.0"
     ]
+
 }

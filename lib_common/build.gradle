@@ -40,7 +40,9 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     annotationProcessor "com.alibaba:arouter-compiler:${rootProject.ext.arouter.compiler}"
     implementation "com.github.bumptech.glide:glide:${rootProject.ext.glide.version}"
+    annotationProcessor "com.github.bumptech.glide:compiler:${rootProject.ext.glide.compiler}"
     implementation "com.android.support:appcompat-v7:${rootProject.ext.dependencies.googleSupportVersion}"
+    implementation 'com.github.zackratos.ultimatebar:ultimatebar3:3.1.1'
     implementation project(':lib_opensource')
     implementation project(':lib_router')
     implementation project(':lib_http')

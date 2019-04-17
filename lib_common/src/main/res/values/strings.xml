@@ -49,6 +49,29 @@
 
     <string name="hint_more_not">没有更多数据</string>
 
+    <!-- app -->
+    <string name="hint_auto_jump_error">设置失败,请手动开启权限</string>
+
+    <!-- home -->
+    <string name="hint_search">搜索你想要的商品吧~</string>
+
+    <string name="label_entrance_1">配套产品</string>
+    <string name="label_entrance_2">时尚女装</string>
+    <string name="label_entrance_3">手机数码</string>
+    <string name="label_entrance_4">运动户外</string>
+    <string name="label_entrance_5">鞋包配饰</string>
+    <string name="label_entrance_6">潮流男装</string>
+    <string name="label_entrance_7">居家百货</string>
+    <string name="label_entrance_8">口碑美食</string>
+    <string name="label_entrance_9">母婴用品</string>
+    <string name="label_entrance_10">美妆洗护</string>
+
+    <string name="label_recommend">推荐商品</string>
+    <string name="buy_count" formatted="false">%s人购买</string>
+    <string name="label_global">综合</string>
+    <string name="label_sales_volume">销量</string>
+    <string name="label_price">价格</string>
+
     <!-- user login -->
     <string name="login">登录</string>
     <string name="register">注册</string>
@@ -66,8 +89,8 @@
     <string name="register_now">立即注册</string>
     <string name="sms_code">获取验证码</string>
 
-
-
     <string name="surplus_time" formatted="false">剩余 %s s </string>
+
+
 
 </resources>
