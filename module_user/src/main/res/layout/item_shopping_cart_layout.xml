@@ -7,6 +7,7 @@
     android:padding="@dimen/padding_10">
 
     <ImageView
+        android:id="@+id/is_select_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -15,6 +16,7 @@
         android:src="@drawable/item_shopping_cart_default" />
 
     <ImageView
+        android:id="@+id/goods_img"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:src="@drawable/image_default_black" />
@@ -62,15 +64,35 @@
                 android:layout_weight="1"
                 android:textSize="18sp"
                 tools:text="10000.00" />
-
             <TextView
+                android:id="@+id/add"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingBottom="@dimen/dp_4"
                 android:paddingLeft="@dimen/padding_10"
                 android:paddingRight="@dimen/padding_10"
                 android:paddingTop="@dimen/dp_4"
-                android:text="x1"
+                android:text="-"
+                android:textSize="14sp" />
+            <TextView
+                android:id="@+id/number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/dp_4"
+                android:paddingLeft="@dimen/padding_10"
+                android:paddingRight="@dimen/padding_10"
+                android:paddingTop="@dimen/dp_4"
+                android:text="1"
+                android:textSize="14sp" />
+            <TextView
+                android:id="@+id/delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/dp_4"
+                android:paddingLeft="@dimen/padding_10"
+                android:paddingRight="@dimen/padding_10"
+                android:paddingTop="@dimen/dp_4"
+                android:text="+"
                 android:textSize="14sp" />
         </LinearLayout>
     </LinearLayout>

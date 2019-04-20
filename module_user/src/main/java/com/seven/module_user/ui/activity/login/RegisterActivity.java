@@ -27,6 +27,7 @@ import com.seven.module_user.R2;
 
 import butterknife.BindView;
 
+
 /**
  * @auhtor seven
  * email:frankchenlei@163.com
