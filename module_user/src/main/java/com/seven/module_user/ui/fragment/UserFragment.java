@@ -45,7 +45,9 @@ public class UserFragment extends BaseFragment {
 
     @Override
     public void onClick(View v) {
-
+getActivity().finish();
+getActivity().finish();
+getActivity().finish();
     }
 
     @Override
