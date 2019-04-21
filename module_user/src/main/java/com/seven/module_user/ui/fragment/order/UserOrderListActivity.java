@@ -79,8 +79,8 @@ public class UserOrderListActivity extends BaseAppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle("我的订单");
-        ImmersionBar.with(this).init();
-        ImmersionBar.setTitleBar(this, mToolBar);
+//        ImmersionBar.with(this).init();
+//        ImmersionBar.setTitleBar(this, mToolBar);
         for (String type : mType) {
             mFragments.add(OrderListFragment.getInstance(type));
         }

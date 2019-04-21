@@ -23,6 +23,8 @@ public class RouterPath {
 
     /* module extension */
     public static final String FRAGMENT_EXTENSION = "/extension/ExtensionFragment";
+    public static final String ACTIVITY_IN_COME = "/extension/IncomeActivity";
+    public static final String ACTIVITY_BUY_ROLE = "/extension/BuyRoleActivity";
 
     /* module model */
     public static final String FRAGMENT_MODEL = "/model/ModelFragment";
