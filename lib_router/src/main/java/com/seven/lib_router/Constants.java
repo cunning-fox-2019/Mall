@@ -41,6 +41,7 @@ public class Constants {
 
     public static class RequestConfig {
  public static  final int USER_INFO =300;
+ public static  final int LONGIN =301;
     }
 
     public static class EventConfig {

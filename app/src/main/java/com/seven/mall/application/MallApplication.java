@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.multidex.MultiDex;
 
 import com.seven.lib_common.stextview.STextViewSDK;
+import com.seven.lib_model.ApiManager;
 import com.seven.lib_model.HttpConfig;
 import com.seven.lib_model.HttpSDK;
 import com.seven.lib_opensource.application.SConfig;
@@ -24,7 +25,7 @@ public class MallApplication extends SevenApplication {
     public static final int MAX_CODE = 500;
     public static final int EVENT_CODE = 9000;
 
-    public static final String BASE_URL="";
+    public static final String BASE_URL="http://zhongfu.lerqin.com/";
     public static final String STORE_URL="";
     public static final String APP_KEY="";
     public static final String STORE_KEY="";
@@ -42,7 +43,7 @@ public class MallApplication extends SevenApplication {
         SSDK.getInstance().initSDK(getInstance(), config);
         SSDK.getInstance().setLoggerDebug(!release);
         STextViewSDK.getInstance().initSDK(getInstance());
-
+        ApiManager.init(this);
         RouterSDK.getInstance().initSDK(getInstance());
 
         isLoggerDebug = !release;
