@@ -13,6 +13,8 @@ import com.seven.lib_router.router.RouterPath;
 import com.seven.lib_router.router.RouterUtils;
 import com.seven.module_user.R;
 import com.seven.module_user.R2;
+import com.seven.module_user.ui.activity.login.LoginActivity;
+import com.seven.module_user.ui.activity.login.RegisterActivity;
 import com.seven.module_user.ui.fragment.order.UserOrderListActivity;
 import com.seven.module_user.ui.fragment.token.UserTokenActivity;
 
@@ -45,9 +47,6 @@ public class UserFragment extends BaseFragment {
 
     @Override
     public void onClick(View v) {
-getActivity().finish();
-getActivity().finish();
-getActivity().finish();
     }
 
     @Override
@@ -89,7 +88,8 @@ getActivity().finish();
 
     @OnClick(R2.id.logout)
     void logout() {
-        ToastUtils.showToast(getActivity(), "退出");
+        startActivity(new Intent(getActivity(), LoginActivity.class));
+        //ToastUtils.showToast(getActivity(), "退出");
     }
 
     @OnClick(R2.id.my_clear_cache)

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.multidex.MultiDex;
 
 import com.seven.lib_common.stextview.STextViewSDK;
+import com.seven.lib_model.ApiManager;
 import com.seven.lib_model.HttpConfig;
 import com.seven.lib_model.HttpSDK;
 import com.seven.lib_opensource.application.SConfig;
@@ -42,7 +43,7 @@ public class MallApplication extends SevenApplication {
         SSDK.getInstance().initSDK(getInstance(), config);
         SSDK.getInstance().setLoggerDebug(!release);
         STextViewSDK.getInstance().initSDK(getInstance());
-
+        ApiManager.init(this);
         RouterSDK.getInstance().initSDK(getInstance());
 
         isLoggerDebug = !release;
