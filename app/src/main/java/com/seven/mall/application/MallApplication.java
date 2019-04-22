@@ -24,7 +24,7 @@ public class MallApplication extends SevenApplication {
     public static final int MAX_CODE = 500;
     public static final int EVENT_CODE = 9000;
 
-    public static final String BASE_URL="";
+    public static final String BASE_URL="http://zhongfu.lerqin.com/";
     public static final String STORE_URL="";
     public static final String APP_KEY="";
     public static final String STORE_KEY="";
