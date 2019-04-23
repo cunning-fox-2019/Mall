@@ -1,74 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    android:orientation="vertical"
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-<include layout="@layout/view_toolbar"/>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
     <com.seven.module_user.ui.fragment.view.BaseRecyclerView
+        android:id="@+id/list_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:id="@+id/list_view"/>
+        android:background="#fff"
+        android:layout_weight="1" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
+
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:src="@drawable/item_shopping_cart_default"/>
+            android:src="@drawable/item_shopping_cart_default" />
+
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="全选"
-            android:layout_weight="1"
             android:layout_gravity="center_vertical"
-            android:paddingLeft="@dimen/margin_6"/>
+            android:layout_weight="1"
+            android:paddingLeft="@dimen/margin_6"
+            android:text="全选" />
+
         <TextView
             android:id="@+id/delete_select"
-            android:visibility="visible"
-            android:layout_margin="@dimen/margin_16"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="删除"
             android:layout_gravity="center_vertical"
-            android:gravity="center"
+            android:layout_margin="@dimen/margin_16"
             android:background="@drawable/round_box_blue_bg"
+            android:gravity="center"
+            android:paddingBottom="@dimen/dp_4"
             android:paddingLeft="@dimen/margin_16"
             android:paddingRight="@dimen/margin_16"
-            android:paddingBottom="@dimen/dp_4"
-            android:paddingTop="@dimen/dp_4"/>
-<LinearLayout
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:visibility="gone"
-    android:id="@+id/pay_layout">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="总价：￥720.00"
-        android:layout_gravity="center_vertical"/>
+            android:paddingTop="@dimen/dp_4"
+            android:text="删除"
+            android:visibility="gone" />
 
-    <LinearLayout
-        android:layout_gravity="center_vertical"
-        android:gravity="center_vertical"
-        android:padding="@dimen/margin_16"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <TextView
+        <LinearLayout
+            android:id="@+id/pay_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="去结算"
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="(2)"/>
-    </LinearLayout>
-</LinearLayout>
+            android:orientation="horizontal"
+            android:visibility="visible">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="总价：￥720.00" />
+
+            <LinearLayout
+                android:id="@+id/pay_btn_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"
+                android:background="@drawable/button_rect"
+                android:orientation="horizontal"
+                android:padding="@dimen/margin_16">
+
+                <TextView
+                    android:textColor="#fff"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="去结算" />
+
+                <TextView
+                    android:id="@+id/select_num"
+                    android:textColor="#fff"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="(2)" />
+            </LinearLayout>
+        </LinearLayout>
 
     </LinearLayout>
 </LinearLayout>

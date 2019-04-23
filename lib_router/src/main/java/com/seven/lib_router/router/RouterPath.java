@@ -49,4 +49,6 @@ public class RouterPath {
     public static final String ACTIVITY_SHOPPING_CART="/user/";
     public static final String ACTIVITY_ADDRESS="/user/";
     public static final String ACTIVITY_MINE_ORDER="/user/";
+    public static final String ACTIVITY_MINE_SHOP_CAR="/user/ShopCartActivity";
+    public static final String ACTIVITY_MINE_SHOP_PAY="/user/PayActivity";
 }

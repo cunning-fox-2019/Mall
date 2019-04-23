@@ -30,6 +30,7 @@ public class Constants {
 
         public static final String ID = "id";
         public static final String EVENT_CODE="eventCode";
+        public static final int EVENT_CODE_INT= 10000;
     }
 
     public static class TimeConfig {

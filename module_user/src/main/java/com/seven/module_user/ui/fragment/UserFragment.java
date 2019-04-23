@@ -64,6 +64,11 @@ public class UserFragment extends BaseFragment {
 
     }
 
+    @OnClick(R2.id.shop_cart)
+    void goShopCar(){
+        RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_SHOPPING_CART);
+    }
+
     @OnClick(R2.id.user_info_layout)
     void setUserInfo() {
         startActivity(new Intent(getActivity(), EditUserInfoActivity.class));
