@@ -1,2 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.seven.module_extension" />
+    package="com.seven.module_extension" >
+    <application>
+        <activity android:name=".ui.activity.IncomeActivity"/>
+        <activity android:name=".ui.activity.BuyRoleActivity"/>
+    </application>
+</manifest>

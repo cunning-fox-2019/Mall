@@ -35,6 +35,7 @@ import org.greenrobot.eventbus.EventBus;
 
 import butterknife.BindView;
 
+
 /**
  * @auhtor seven
  * email:frankchenlei@163.com

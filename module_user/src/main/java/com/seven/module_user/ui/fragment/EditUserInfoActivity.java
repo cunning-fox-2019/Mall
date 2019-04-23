@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.ColorUtils;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -21,7 +22,7 @@ import com.seven.module_user.ui.fragment.view.CustomToolbar;
 import butterknife.BindView;
 
 /**
- * Created by xh on 2019/3/27.
+ * Created by ouyang on 2019/3/27.
  */
 
 public class EditUserInfoActivity extends BaseAppCompatActivity {
@@ -30,6 +31,17 @@ public class EditUserInfoActivity extends BaseAppCompatActivity {
 
 
     private UserActivityPresenter presenter;
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
     public void showLoading() {

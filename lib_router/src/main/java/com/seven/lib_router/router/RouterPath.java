@@ -27,6 +27,8 @@ public class RouterPath {
 
     /* module extension */
     public static final String FRAGMENT_EXTENSION = "/extension/ExtensionFragment";
+    public static final String ACTIVITY_IN_COME = "/extension/IncomeActivity";
+    public static final String ACTIVITY_BUY_ROLE = "/extension/BuyRoleActivity";
 
     /* module model */
     public static final String FRAGMENT_MODEL = "/model/ModelFragment";
@@ -43,4 +45,8 @@ public class RouterPath {
     public static final String ACTIVITY_REGISTER="/user/RegisterActivity";
     public static final String ACTIVITY_PASSWORD="/user/PasswordActivity";
     public static final String ACTIVITY_MOBILE="/user/MobileActivity";
+
+    public static final String ACTIVITY_SHOPPING_CART="/user/";
+    public static final String ACTIVITY_ADDRESS="/user/";
+    public static final String ACTIVITY_MINE_ORDER="/user/";
 }

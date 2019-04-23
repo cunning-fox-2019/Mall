@@ -29,6 +29,7 @@ public class Constants {
         public static final int TYPE_BUY = 2;
 
         public static final String ID = "id";
+        public static final String EVENT_CODE="eventCode";
     }
 
     public static class TimeConfig {

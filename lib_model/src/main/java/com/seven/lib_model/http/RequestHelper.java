@@ -2,6 +2,7 @@ package com.seven.lib_model.http;
 
 import com.seven.lib_http.retrofit.HttpResponse;
 import com.seven.lib_model.HttpSDK;
+import com.seven.lib_model.model.user.LoginEntity;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -55,7 +56,6 @@ public class RequestHelper {
 //        return getApi().upload(file);
 //    }
 //
-
     public Observable<HttpResponse> sms(String json) {
         return appService.sms(requestBody(json));
     }

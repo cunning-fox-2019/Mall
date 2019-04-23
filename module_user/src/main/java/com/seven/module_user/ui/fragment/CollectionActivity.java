@@ -3,20 +3,23 @@ package com.seven.module_user.ui.fragment;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.ColorUtils;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toolbar;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.gyf.barlibrary.ImmersionBar;
 import com.seven.lib_common.base.activity.BaseActivity;
+import com.seven.lib_common.base.activity.BaseAppCompatActivity;
 import com.seven.lib_model.model.user.UserEntity;
 import com.seven.module_user.R;
 import com.seven.module_user.R2;
 import com.seven.module_user.ui.fragment.view.BaseRecyclerView;
-import com.seven.module_user.ui.fragment.view.CustomToolbar;
 import com.seven.module_user.ui.fragment.view.DividerSpaceItemDecoration;
 
 import java.util.ArrayList;
@@ -25,14 +28,24 @@ import java.util.List;
 import butterknife.BindView;
 
 /**
- * Created by xxxxxxH on 2019/3/31.
+ * Created by ouyang on 2019/3/31.
  */
 
-public class CollectionActivity extends BaseActivity {
+public class CollectionActivity extends BaseAppCompatActivity {
     @BindView(R2.id.toolbar)
-    public CustomToolbar mToolBar;
+    Toolbar mToolBar;
     @BindView(R2.id.list_view)
     BaseRecyclerView recyclerView;
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
     public void showLoading() {
@@ -51,10 +64,9 @@ public class CollectionActivity extends BaseActivity {
 
     @Override
     protected int getContentViewId() {
-        statusBar = StatusBar.HIDE;
+        statusBar = StatusBar.LIGHT;
         return R.layout.mu_activity_collect;
     }
-
 
     @Override
     protected void init(Bundle savedInstanceState) {
@@ -63,6 +75,10 @@ public class CollectionActivity extends BaseActivity {
 
     @Override
     protected void initBundleData(Intent intent) {
+        setSupportActionBar(mToolBar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setTitle("我的收藏");
         ImmersionBar.with(this).init();
         ImmersionBar.setTitleBar(this, mToolBar);
         List<UserEntity> list = new ArrayList<>();

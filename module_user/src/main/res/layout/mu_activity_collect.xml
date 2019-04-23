@@ -3,25 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-
-
-
-
-
-
-
-
     <include layout="@layout/view_toolbar" />
-
-
-
-
-
-
-
-
-
-
 
     <com.seven.module_user.ui.fragment.view.BaseRecyclerView
         android:id="@+id/list_view"

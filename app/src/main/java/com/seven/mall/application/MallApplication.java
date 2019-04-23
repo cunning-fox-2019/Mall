@@ -29,7 +29,7 @@ public class MallApplication extends SevenApplication {
     public static final String APP_KEY = "";
     public static final String STORE_KEY = "";
 
-    private boolean release = true;
+    private boolean release = false;
 
     @Override
     public void initApp() {

@@ -8,7 +8,6 @@ public final class ThreadUtil {
     public static final String TAG = "ThreadUtil";
 
     private ThreadUtil() {
-        //ok
     }
 
     public static long getThreadId() {

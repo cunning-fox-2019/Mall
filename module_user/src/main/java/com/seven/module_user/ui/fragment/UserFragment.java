@@ -3,6 +3,7 @@ package com.seven.module_user.ui.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.seven.lib_common.base.fragment.BaseFragment;
@@ -12,6 +13,10 @@ import com.seven.lib_router.router.RouterPath;
 import com.seven.lib_router.router.RouterUtils;
 import com.seven.module_user.R;
 import com.seven.module_user.R2;
+import com.seven.module_user.ui.activity.login.LoginActivity;
+import com.seven.module_user.ui.activity.login.RegisterActivity;
+import com.seven.module_user.ui.fragment.order.UserOrderListActivity;
+import com.seven.module_user.ui.fragment.token.UserTokenActivity;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -23,6 +28,12 @@ import butterknife.OnClick;
  */
 @Route(path = RouterPath.FRAGMENT_USER)
 public class UserFragment extends BaseFragment {
+    @BindView(R2.id.wait_pay)
+    TextView waitPay;
+    @BindView(R2.id.wait_send)
+    TextView waitSend;
+    @BindView(R2.id.shop_received)
+    TextView shopReceived;
 
     @Override
     public int getContentViewId() {
@@ -36,7 +47,6 @@ public class UserFragment extends BaseFragment {
 
     @Override
     public void onClick(View v) {
-
     }
 
     @Override
@@ -72,17 +82,41 @@ public class UserFragment extends BaseFragment {
     }
 
     @OnClick(R2.id.my_address)
-    void address(){
+    void address() {
         startActivity(new Intent(getActivity(), UserAddressActivity.class));
     }
 
     @OnClick(R2.id.logout)
-    void logout(){
-        ToastUtils.showToast(getActivity(),"退出");
+    void logout() {
+        startActivity(new Intent(getActivity(), LoginActivity.class));
+        //ToastUtils.showToast(getActivity(), "退出");
     }
 
     @OnClick(R2.id.my_clear_cache)
-    void clearCache(){
-        ToastUtils.showToast(getActivity(),"清除成功");
+    void clearCache() {
+        ToastUtils.showToast(getActivity(), "清除成功");
+    }
+
+    @OnClick(R2.id.all_order)
+    void allOrder() {
+        startActivity(new Intent(getActivity(), UserOrderListActivity.class));
+    }
+
+    @OnClick(R2.id.my_token)
+    void token() {
+        startActivity(new Intent(getActivity(), UserTokenActivity.class));
+    }
+
+    @OnClick({R2.id.wait_pay, R2.id.wait_send, R2.id.shop_received})
+    void shop(View view) {
+        Intent intent = new Intent(getActivity(), UserOrderListActivity.class);
+        if (view == waitPay) {
+            intent.putExtra("type", 1);
+        } else if (view == waitSend) {
+            intent.putExtra("type", 2);
+        } else if (view == shopReceived) {
+            intent.putExtra("type", 3);
+        }
+        startActivity(intent);
     }
 }
