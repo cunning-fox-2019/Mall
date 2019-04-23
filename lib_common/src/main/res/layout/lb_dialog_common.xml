@@ -18,7 +18,7 @@
             android:layout_marginLeft="@dimen/margin_16"
             android:layout_marginTop="@dimen/margin_16"
             android:text="@string/dialog_hint"
-            android:textColor="@color/barColor"
+            android:textColor="@color/cube"
             android:textSize="@dimen/sp_18"
             app:SFontStyle="medium_s" />
 

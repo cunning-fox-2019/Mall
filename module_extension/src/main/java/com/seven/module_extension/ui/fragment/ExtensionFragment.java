@@ -19,6 +19,7 @@ public class ExtensionFragment extends BaseFragment {
 
     @Override
     public int getContentViewId() {
+
         return R.layout.me_fragment_extension;
     }
 

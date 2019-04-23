@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f2f2f2"
+    android:orientation="vertical">
+
+    <include layout="@layout/view_toolbar" />
+
+    <TextView
+        android:id="@+id/update_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/selector_white_btn"
+        android:drawableRight="@drawable/more"
+        android:gravity="center_vertical"
+        android:padding="@dimen/padding_16"
+        android:text="更改登陆密码"
+        android:textColor="#000" />
+
+    <TextView
+        android:id="@+id/lp_payment_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_4"
+        android:background="@drawable/selector_white_btn"
+        android:drawableRight="@drawable/more"
+        android:gravity="center_vertical"
+        android:padding="@dimen/padding_16"
+        android:text="设置令牌支付密码"
+        android:textColor="#000" />
+
+    <TextView
+        android:id="@+id/payment_account"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_4"
+        android:drawableRight="@drawable/more"
+        android:gravity="center_vertical"
+        android:padding="@dimen/padding_16"
+        android:text="设置收款账号"
+        android:background="@drawable/selector_white_btn"
+        android:textColor="#000" />
+
+    <TextView
+        android:id="@+id/cancel_account"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_4"
+        android:background="@drawable/selector_white_btn"
+        android:drawableRight="@drawable/more"
+        android:gravity="center_vertical"
+        android:padding="@dimen/padding_16"
+        android:text="注销用户"
+        android:textColor="#000" />
+</LinearLayout>

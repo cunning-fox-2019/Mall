@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/pre_v_left"
             android:layout_centerVertical="true"
-            android:textColor="@color/barColor"
+            android:textColor="@color/cube"
             android:textSize="@dimen/sp_18"
             app:SFontStyle="bold_s"
             android:layout_marginLeft="@dimen/margin_12"/>

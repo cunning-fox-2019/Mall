@@ -14,7 +14,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/margin_20"
+        android:layout_marginTop="30dp"
         android:orientation="vertical">
 
         <LinearLayout
@@ -25,13 +25,14 @@
             android:background="@drawable/background_search"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:paddingRight="@dimen/padding_12">
+            android:paddingRight="@dimen/padding_12"
+            android:visibility="invisible">
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/search_grey"
-                android:layout_marginLeft="@dimen/margin_12"/>
+                android:layout_marginLeft="@dimen/margin_12"
+                android:src="@drawable/search_grey" />
 
             <com.seven.lib_common.stextview.TypeFaceView
                 android:layout_width="0dp"
@@ -59,48 +60,56 @@
                 android:id="@+id/banner_view"
                 android:layout_width="match_parent"
                 android:layout_height="160dp"
-                app:indicator_drawable_selected="@drawable/selected_radius"
-                app:indicator_drawable_unselected="@drawable/unselected_radius"
+                app:indicator_drawable_selected="@drawable/radius_grey"
+                app:indicator_drawable_unselected="@drawable/radius_white"
                 app:indicator_height="4dp"
                 app:indicator_margin="4dp"
                 app:indicator_width="4dp" />
 
         </RelativeLayout>
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_view"
+
+        <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/margin_4"
-            android:layout_marginRight="@dimen/margin_4"/>
+            android:layout_height="wrap_content">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_4"
+                android:layout_marginRight="@dimen/margin_4" />
+
+        </android.support.v4.widget.NestedScrollView>
+
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="0.7dp"
-            android:background="@color/line_between"
-            android:layout_marginTop="@dimen/margin_12"
             android:layout_marginLeft="@dimen/margin_16"
-            android:layout_marginRight="@dimen/margin_16"/>
+            android:layout_marginRight="@dimen/margin_16"
+            android:layout_marginTop="@dimen/margin_12"
+            android:background="@color/line_between" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
+            android:layout_marginLeft="@dimen/margin_12"
             android:layout_marginTop="@dimen/margin_12"
-            android:layout_marginLeft="@dimen/margin_12">
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/label_recommend"/>
+                android:src="@drawable/label_recommend" />
 
             <com.seven.lib_common.stextview.TypeFaceView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="@string/label_recommend"
                 android:textColor="@color/label"
-                android:textSize="@dimen/sp_16"
-                android:text="@string/label_recommend"/>
+                android:textSize="@dimen/sp_16" />
 
         </LinearLayout>
 

@@ -192,6 +192,7 @@ public abstract class BaseActivity extends RxActivity implements IBaseView, Easy
         if (mListener != null) {
             mListener.onStop();
         }
+        dismissLoadingDialog();
     }
 
     @Override

@@ -44,11 +44,11 @@ public class HomeAdapter extends BaseQuickAdapter<CommodityEntity, BaseViewHolde
         params.height = diameter;
         imageView.setLayoutParams(params);
 
-        GlideUtils.loadImage(mContext, item.getImagePath(), imageView);
+        GlideUtils.loadImage(mContext, item.getThumb(), imageView);
 
-        helper.setText(R.id.title_tv, item.getTitle())
+        helper.setText(R.id.title_tv, item.getGoods_name())
                 .setText(R.id.price_tv, FormatUtils.formatCurrency(item.getPrice()))
-                .setText(R.id.buy_count_tv, ResourceUtils.getFormatText(R.string.buy_count, item.getCount()));
+                .setText(R.id.buy_count_tv, ResourceUtils.getFormatText(R.string.buy_count, item.getSales()));
 
     }
 }

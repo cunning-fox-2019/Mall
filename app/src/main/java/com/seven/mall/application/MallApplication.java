@@ -20,16 +20,16 @@ import com.seven.lib_router.Variable;
 
 public class MallApplication extends SevenApplication {
 
-    public static final int MIN_CODE = 400;
-    public static final int MAX_CODE = 500;
-    public static final int EVENT_CODE = 9000;
+    public static final int MIN_CODE = 0;
+    public static final int MAX_CODE = 0;
+    public static final int EVENT_CODE = 10001;
 
-    public static final String BASE_URL="";
-    public static final String STORE_URL="";
-    public static final String APP_KEY="";
-    public static final String STORE_KEY="";
+    public static final String BASE_URL = "http://zhongfu.lerqin.com/";
+    public static final String STORE_URL = "http://zhongfu.lerqin.com/";
+    public static final String APP_KEY = "";
+    public static final String STORE_KEY = "";
 
-    private boolean release = false;
+    private boolean release = true;
 
     @Override
     public void initApp() {
@@ -45,11 +45,13 @@ public class MallApplication extends SevenApplication {
 
         RouterSDK.getInstance().initSDK(getInstance());
 
+        changeHttpConfig();
+
         isLoggerDebug = !release;
 
         if (release) {
 
-        }else {
+        } else {
 
         }
 
@@ -59,9 +61,6 @@ public class MallApplication extends SevenApplication {
 
         HttpConfig.Builder builder = new HttpConfig.Builder();
         HttpConfig config = builder
-                .uuid(Variable.getInstance().getUuid())
-                .token(Variable.getInstance().getToken())
-                .language(Variable.getInstance().getLanguage())
                 .appUrl(BASE_URL)
                 .storeUrl(STORE_URL)
                 .appKey(APP_KEY)

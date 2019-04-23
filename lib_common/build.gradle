@@ -43,6 +43,7 @@ dependencies {
     annotationProcessor "com.github.bumptech.glide:compiler:${rootProject.ext.glide.compiler}"
     implementation "com.android.support:appcompat-v7:${rootProject.ext.dependencies.googleSupportVersion}"
     implementation 'com.github.zackratos.ultimatebar:ultimatebar3:3.1.1'
+    implementation 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
     implementation project(':lib_opensource')
     implementation project(':lib_router')
     implementation project(':lib_http')

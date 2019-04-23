@@ -11,7 +11,8 @@ import java.io.Serializable;
 public class BannerEntranceEntity implements Serializable {
 
     private int id;
-    private String title;
+    private String cat_name;
+    private String icon;
 
     public int getId() {
         return id;
@@ -21,11 +22,19 @@ public class BannerEntranceEntity implements Serializable {
         this.id = id;
     }
 
-    public String getTitle() {
-        return title;
+    public String getCat_name() {
+        return cat_name;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setCat_name(String cat_name) {
+        this.cat_name = cat_name;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
     }
 }

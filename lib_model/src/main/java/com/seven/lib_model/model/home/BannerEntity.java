@@ -10,13 +10,31 @@ import java.io.Serializable;
 
 public class BannerEntity implements Serializable {
 
-    private String imagePath;
+    private String title;
+    private String link;
+    private String show_picture;
 
-    public String getImagePath() {
-        return imagePath;
+    public String getTitle() {
+        return title;
     }
 
-    public void setImagePath(String imagePath) {
-        this.imagePath = imagePath;
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getLink() {
+        return link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
+    }
+
+    public String getShow_picture() {
+        return show_picture;
+    }
+
+    public void setShow_picture(String show_picture) {
+        this.show_picture = show_picture;
     }
 }

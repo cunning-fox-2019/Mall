@@ -1,9 +1,13 @@
 package com.seven.lib_common.stextview;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
+import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.support.v7.widget.AppCompatEditText;
 import android.text.InputFilter;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 
 import com.seven.lib_common.R;
@@ -18,6 +22,12 @@ import static com.seven.lib_common.stextview.TypefaceHelper.typeface;
  */
 
 public class TypeFaceEdit extends AppCompatEditText {
+
+    private CharSequence mHint;
+    private Paint mPaint;
+    private int mHintTextColor;
+    boolean gravityRight;
+
 
     public TypeFaceEdit(Context context) {
         super(context);
@@ -40,6 +50,7 @@ public class TypeFaceEdit extends AppCompatEditText {
         int style = attributes.getInteger(R.styleable.typeText_SFontStyle, 0);
         boolean firstCap = attributes.getBoolean(R.styleable.typeText_SFirstCap, false);
         int maxLength = attributes.getInteger(R.styleable.typeText_SMaxLength, 0);
+        gravityRight = attributes.getBoolean(R.styleable.typeText_SGravityRight, false);
 
         attributes.recycle();
         typeface(this, FontStyle.getInstance().getTypeFace(style));
@@ -49,6 +60,14 @@ public class TypeFaceEdit extends AppCompatEditText {
 
         if (maxLength > 0)
             setFilter(maxLength);
+
+        if (gravityRight) {
+            mHint = getHint();
+            setHint("");
+            mPaint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.DITHER_FLAG);
+            mPaint.setTextSize(getTextSize());
+            mPaint.setTextAlign(Paint.Align.RIGHT);
+        }
     }
 
     public void setStyle(String fontStyle) {
@@ -80,4 +99,25 @@ public class TypeFaceEdit extends AppCompatEditText {
         this.setFilters(filters);
     }
 
+    @Override
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+        if (!gravityRight || TextUtils.isEmpty(mHint) || !TextUtils.isEmpty(getText())) {
+            return;
+        }
+        canvas.save();
+        ColorStateList hintTextColors = getHintTextColors();
+        if (hintTextColors != null) {
+            int color = hintTextColors.getColorForState(getDrawableState(), 0);
+            if (color != mHintTextColor) {
+                mHintTextColor = color;
+                mPaint.setColor(color);
+            }
+        }
+
+        Paint.FontMetricsInt fontMetrics = mPaint.getFontMetricsInt();
+        int baseline = (getHeight() - fontMetrics.bottom + fontMetrics.top) / 2 - fontMetrics.top;
+        canvas.drawText(mHint, 0, mHint.length(), getWidth() - getPaddingRight() + getScrollX() - 4, baseline, mPaint);
+        canvas.restore();
+    }
 }

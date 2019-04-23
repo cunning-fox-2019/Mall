@@ -10,25 +10,42 @@ import java.io.Serializable;
 
 public class CommodityEntity implements Serializable {
 
-    private String title;
-    private String imagePath;
+    /**
+     * thumb : http://img.zhongfu.com/1403225728afeebe.jpg
+     * id : 1
+     * sales : 2
+     * price : 199
+     * goods_name : 七匹狼
+     */
+
+    private String thumb;
+    private int id;
+    private int sales;
     private double price;
-    private int count;
+    private String goods_name;
 
-    public String getImagePath() {
-        return imagePath;
+    public String getThumb() {
+        return thumb;
     }
 
-    public void setImagePath(String imagePath) {
-        this.imagePath = imagePath;
+    public void setThumb(String thumb) {
+        this.thumb = thumb;
     }
 
-    public String getTitle() {
-        return title;
+    public int getId() {
+        return id;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getSales() {
+        return sales;
+    }
+
+    public void setSales(int sales) {
+        this.sales = sales;
     }
 
     public double getPrice() {
@@ -39,11 +56,11 @@ public class CommodityEntity implements Serializable {
         this.price = price;
     }
 
-    public int getCount() {
-        return count;
+    public String getGoods_name() {
+        return goods_name;
     }
 
-    public void setCount(int count) {
-        this.count = count;
+    public void setGoods_name(String goods_name) {
+        this.goods_name = goods_name;
     }
 }

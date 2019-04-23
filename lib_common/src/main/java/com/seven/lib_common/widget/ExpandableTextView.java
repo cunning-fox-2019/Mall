@@ -256,7 +256,7 @@ public class ExpandableTextView extends RelativeLayout implements View.OnClickLi
         mRelayout = false;
 
         // Setup with optimistic case
-        // i.e. Everything fits. No button needed
+        // i.e. Everything fits. No button_cir needed
         mTv.setMaxLines(Integer.MAX_VALUE);
 
         // Measure
@@ -271,7 +271,7 @@ public class ExpandableTextView extends RelativeLayout implements View.OnClickLi
         mTextHeightWithMaxLines = getRealTextViewHeight(mTv);
 
         // Doesn't fit in collapsed mode. Collapse text view as needed. Show
-        // button.
+        // button_cir.
         if (mCollapsed) {
             mTv.setMaxLines(mMaxCollapsedLines);
         }

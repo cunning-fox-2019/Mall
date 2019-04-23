@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <com.youth.banner.Banner
+        android:id="@+id/banner_view"
+        android:layout_width="match_parent"
+        android:layout_height="274dp"
+        app:indicator_drawable_selected="@drawable/radius_primary"
+        app:indicator_drawable_unselected="@drawable/radius_primary_alpha"
+        app:indicator_height="8dp"
+        app:indicator_margin="4dp"
+        app:indicator_width="8dp"
+        app:is_auto_play="false"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/padding_16">
+
+        <com.seven.lib_common.stextview.TypeFaceView
+            android:id="@+id/title_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/cube"
+            android:textSize="@dimen/sp_16"
+            app:SFontStyle="medium_s"
+            android:maxLines="2"
+            android:ellipsize="end"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_20">
+
+            <com.seven.lib_common.stextview.TypeFaceView
+                android:id="@+id/price_unit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/rmb"
+                android:textSize="@dimen/sp_14"
+                android:textColor="@color/currency"
+                android:layout_alignBottom="@+id/price_tv"/>
+
+            <com.seven.lib_common.stextview.TypeFaceView
+                android:id="@+id/price_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/sp_16"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/price_unit"
+                android:layout_marginLeft="@dimen/margin_4"
+                android:textColor="@color/currency"/>
+
+            <com.seven.lib_common.stextview.TypeFaceView
+                android:id="@+id/buy_count_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/sp_12"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:textColor="@color/grey_light"/>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@color/impression"/>
+
+    <RelativeLayout
+        android:id="@+id/specifications_rl"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbar"
+        android:paddingLeft="@dimen/padding_16"
+        android:visibility="gone">
+
+        <com.seven.lib_common.stextview.TypeFaceView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/cube"
+            android:textSize="@dimen/sp_14"
+            app:SFontStyle="regular_s"
+            android:text="@string/label_number"
+            android:layout_centerVertical="true"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/arrow_right"/>
+
+    </RelativeLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@color/impression"/>
+
+    <com.seven.lib_common.stextview.TypeFaceView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/cube"
+        android:textSize="@dimen/sp_14"
+        app:SFontStyle="regular_s"
+        android:text="@string/label_photo"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="@dimen/margin_16"
+        android:layout_marginLeft="@dimen/margin_16"/>
+
+</LinearLayout>

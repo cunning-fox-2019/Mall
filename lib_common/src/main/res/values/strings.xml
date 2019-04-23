@@ -22,7 +22,6 @@
     <string name="week_friday">星期五</string>
     <string name="week_saturday">星期六</string>
 
-
     <!--sheet-->
     <string name="sheet_cancel">取消</string>
     <string name="sheet_delete">删除</string>
@@ -37,12 +36,15 @@
     <string name="save_gallery">保存至手机相册</string>
 
     <string name="hint_sheet">请选择</string>
+    <string name="hint_sheet_stock">请选择规格</string>
+    <string name="hint_stock_null">库存不足</string>
 
     <string name="hint_pay_success">支付成功</string>
     <string name="hint_pay_failure">支付失败</string>
     <string name="hint_pay_cancel">支付已取消</string>
 
     <!-- common -->
+    <string name="rmb">¥</string>
     <string name="common_album">相册</string>
 
     <string name="common_next">下一步</string>
@@ -51,9 +53,16 @@
 
     <!-- app -->
     <string name="hint_auto_jump_error">设置失败,请手动开启权限</string>
+    <string name="tab_home">首页</string>
+    <string name="tab_extension">推广中心</string>
+    <string name="tab_model">C2C</string>
+    <string name="tab_user">我的</string>
 
     <!-- home -->
     <string name="hint_search">搜索你想要的商品吧~</string>
+    <string name="hint_sales_count" formatted="false">销量%s笔</string>
+    <string name="hint_price" formatted="false">价格：</string>
+    <string name="hint_stock" formatted="false">库存：%s</string>
 
     <string name="label_entrance_1">配套产品</string>
     <string name="label_entrance_2">时尚女装</string>
@@ -71,6 +80,107 @@
     <string name="label_global">综合</string>
     <string name="label_sales_volume">销量</string>
     <string name="label_price">价格</string>
+
+    <string name="label_history">历史搜索</string>
+    <string name="label_commodity_details">商品详情</string>
+    <string name="label_number">规格数量选择</string>
+    <string name="label_photo">图文详情</string>
+    <string name="label_color">颜色</string>
+    <string name="label_size">尺码</string>
+    <string name="label_volume">数量</string>
+
+    <string name="label_commodity_order">确认订单</string>
+    <string name="label_address">新增地址</string>
+    <string name="label_specification" formatted="false">规格：%s</string>
+    <string name="hint_address">当前未设置收获地址</string>
+    <string name="tag_normal">默认</string>
+    <string name="label_delivery">配送方式</string>
+    <string name="label_commodity_price">商品金额</string>
+    <string name="label_freight">运费</string>
+    <string name="delivery_express">快递配送</string>
+    <string name="freight_free">免运费</string>
+    <string name="amount">合计：</string>
+
+    <string name="button_cart">加入购物车</string>
+    <string name="button_buy">立即购买</string>
+    <string name="button_payment">去付款</string>
+
+    <string name="label_pay">立即付款</string>
+    <string name="label_pay_method">选择支付方式</string>
+    <string name="label_alipay">支付宝</string>
+    <string name="label_wechat_pay">微信支付</string>
+    <string name="label_app_pay">令牌支付</string>
+    <string name="label_app_pay_hint">(购物比例1:1)</string>
+    <string name="label_app_pay_count" formatted="false">剩余令牌%s个</string>
+    <string name="button_app_pay" formatted="false">确认支付%s令牌</string>
+    <string name="button_sdk_pay" formatted="false">确认支付%s元</string>
+
+    <string name="hint_wx">请先安装微信</string>
+
+    <string name="pay_succeed">支付成功</string>
+    <string name="pay_failure">支付失败</string>
+
+    <string name="dialog_home">返回首页</string>
+    <string name="dialog_details">查看订单</string>
+
+    <!-- model -->
+    <string name="title_model">C2C交易</string>
+
+    <string name="label_demand">发布需求</string>
+    <string name="label_message">交易消息</string>
+    <string name="label_voucher">待上传凭证</string>
+
+    <string name="tab_buy">我要买</string>
+    <string name="tab_sell">我要卖</string>
+    <string name="sort_price">价格高低</string>
+    <string name="sort_time">时间最近</string>
+
+    <string name="token">令牌</string>
+    <string name="radio" formatted="false">成交率%s</string>
+    <string name="volume" formatted="false">成交量%s</string>
+    <string name="pay_method">交易方式</string>
+
+    <string name="label_token_number">令牌数量</string>
+    <string name="hint_token_number_1">请填写卖出的令牌数量</string>
+    <string name="hint_token_number_2">请填写购买的令牌数量</string>
+    <string name="label_sale_price">卖出价格</string>
+    <string name="hint_sale_price">请填写卖出价格</string>
+    <string name="label_buy_price">购买价格</string>
+    <string name="hint_buy_price">请填写购买价格</string>
+    <string name="label_receiving_account">收款账号</string>
+    <string name="hint_receiving_account">(二填一或者都选)</string>
+    <string name="label_alipay_account">支付宝账号</string>
+    <string name="hint_alipay_account">请填写收款的支付宝账号</string>
+    <string name="label_wechat_account">微信账号</string>
+    <string name="hint_wechat_account">请填写收款的微信账号</string>
+
+    <string name="button_release_sale">发布售卖</string>
+    <string name="button_release_buy">发布购买</string>
+
+    <string name="tab_buy_mine">我的购买</string>
+    <string name="tab_sell_mine">我的售卖</string>
+
+    <string name="status_all">全部</string>
+    <string name="status_wait_upload">待上传</string>
+    <string name="status_wait_sure">待确认</string>
+    <string name="status_end">已完成</string>
+
+    <string name="title_transaction_details">交易详情</string>
+    <string name="label_sell_info">卖方信息</string>
+    <string name="label_buy_info">买方信息</string>
+
+    <string name="label_transaction">交易</string>
+    <string name="voucher">凭证</string>
+    <string name="hint_token_number">购买令牌数量</string>
+
+    <string name="button_launch_sell">发起售卖</string>
+    <string name="button_launch_buy">发起购买</string>
+    <string name="button_voucher">上传凭证</string>
+    <string name="button_upload">确认上传</string>
+
+    <string name="hint_voucher">请上传支付宝或微信交易凭证</string>
+    <string name="hint_buy_info">您发起的购买信息\n已成功通知卖方\n请先支付宝或微信购买\n支付成功后请上传凭证</string>
+    <string name="hint_sell_info">您发起的售卖信息\n已成功通知买方\n请等待买方回复</string>
 
     <!-- user login -->
     <string name="login">登录</string>
@@ -90,7 +200,6 @@
     <string name="sms_code">获取验证码</string>
 
     <string name="surplus_time" formatted="false">剩余 %s s </string>
-
 
 
 </resources>

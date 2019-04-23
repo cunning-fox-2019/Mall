@@ -144,6 +144,7 @@ public abstract class BaseAppCompatActivity extends RxAppCompatActivity implemen
         if (mListener != null) {
             mListener.onStart();
         }
+        dismissLoadingDialog();
     }
 
     @Override

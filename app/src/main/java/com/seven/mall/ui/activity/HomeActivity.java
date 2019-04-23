@@ -11,8 +11,21 @@ import android.widget.RelativeLayout;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.seven.lib_common.base.activity.BaseAppCompatActivity;
+import com.seven.lib_model.model.user.RegisterEntity;
+import com.seven.lib_opensource.application.SSDK;
+import com.seven.lib_opensource.event.Event;
+import com.seven.lib_opensource.event.ObjectsEvent;
+import com.seven.lib_router.Constants;
+import com.seven.lib_router.Variable;
+import com.seven.lib_router.db.shard.SharedData;
 import com.seven.lib_router.router.RouterPath;
+import com.seven.lib_router.router.RouterUtils;
 import com.seven.mall.R;
+import com.seven.mall.application.MallApplication;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 
@@ -53,6 +66,8 @@ public class HomeActivity extends BaseAppCompatActivity {
     @Override
     protected void init(Bundle savedInstanceState) {
 
+        EventBus.getDefault().register(this);
+
     }
 
     @Override
@@ -61,6 +76,13 @@ public class HomeActivity extends BaseAppCompatActivity {
         homeFg = (Fragment) ARouter.getInstance().build(RouterPath.FRAGMENT_HOME).navigation();
         changeTabSelected(tabHome, null, homeFg);
 
+        initAppValue();
+    }
+
+    private void initAppValue() {
+
+        MallApplication.getInstance().setToken(SharedData.getInstance().getToken());
+        Variable.getInstance().setToken(SharedData.getInstance().getToken());
     }
 
     public void btClick(View view) {
@@ -75,7 +97,7 @@ public class HomeActivity extends BaseAppCompatActivity {
                 if (homeFg == null)
                     homeFg = (Fragment) ARouter.getInstance().build(RouterPath.FRAGMENT_HOME).navigation();
 
-                fragment=homeFg;
+                fragment = homeFg;
                 tabLayout = tabHome;
 
                 break;
@@ -85,7 +107,7 @@ public class HomeActivity extends BaseAppCompatActivity {
                 if (extensionFg == null)
                     extensionFg = (Fragment) ARouter.getInstance().build(RouterPath.FRAGMENT_EXTENSION).navigation();
 
-                fragment=extensionFg;
+                fragment = extensionFg;
                 tabLayout = tabExtension;
 
                 break;
@@ -95,17 +117,20 @@ public class HomeActivity extends BaseAppCompatActivity {
                 if (modelFg == null)
                     modelFg = (Fragment) ARouter.getInstance().build(RouterPath.FRAGMENT_MODEL).navigation();
 
-                fragment=modelFg;
+                fragment = modelFg;
                 tabLayout = tabModel;
 
                 break;
 
             case R.id.tab_user_ll:
 
+                if (!isLogin())
+                    return;
+
                 if (userFg == null)
                     userFg = (Fragment) ARouter.getInstance().build(RouterPath.FRAGMENT_USER).navigation();
 
-                fragment=userFg;
+                fragment = userFg;
                 tabLayout = tabUser;
 
                 break;
@@ -124,6 +149,32 @@ public class HomeActivity extends BaseAppCompatActivity {
             tabUser.setSelected(layout == tabUser);
             switchFragment(R.id.home_container_fl, from, to);
             fromFg = to;
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(Event event) {
+        switch (event.getWhat()) {
+
+            case Constants.EventConfig.LOGIN:
+            case Constants.EventConfig.REGISTER:
+
+                RegisterEntity registerEntity = (RegisterEntity) ((ObjectsEvent) event).getObjects()[0];
+
+                if (registerEntity == null) return;
+
+                MallApplication.getInstance().setToken(registerEntity.getToken());
+                Variable.getInstance().setToken(registerEntity.getToken());
+                SharedData.getInstance().setToken(registerEntity.getToken());
+
+                break;
+
+            case MallApplication.EVENT_CODE:
+
+                RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_LOGIN);
+
+                break;
+
         }
     }
 
@@ -147,4 +198,9 @@ public class HomeActivity extends BaseAppCompatActivity {
 
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
 }

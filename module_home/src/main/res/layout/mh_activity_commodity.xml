@@ -206,6 +206,57 @@
 
         </android.support.v4.widget.SwipeRefreshLayout>
 
+        <RelativeLayout
+            android:id="@+id/history_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/title_layout"
+            android:background="@color/impression"
+            android:onClick="btClick"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.seven.lib_common.stextview.TypeFaceView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/label_history"
+                        android:textSize="@dimen/sp_14"
+                        android:textColor="@color/grey_medium"
+                        android:layout_centerVertical="true"
+                        app:SFontStyle="medium_s"
+                        android:layout_marginLeft="@dimen/margin_16"/>
+
+                    <ImageView
+                        android:id="@+id/delete_iv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
+                        android:src="@drawable/delete"/>
+
+                </RelativeLayout>
+
+                <com.seven.lib_common.widget.flowlayout.TagFlowLayout
+                    android:id="@+id/tag_flow"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="11dp"
+                    android:layout_marginRight="11dp"
+                    android:layout_marginBottom="@dimen/margin_32"/>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
     </RelativeLayout>
 
 </RelativeLayout>

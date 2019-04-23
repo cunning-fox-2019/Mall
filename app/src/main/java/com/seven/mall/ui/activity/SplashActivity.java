@@ -71,7 +71,7 @@ public class SplashActivity extends BaseAppCompatActivity {
             permissionDialog = new CommonDialog(this, R.style.Dialog,
                     new OnClickListener() {
                         @Override
-                        public void onCancel() {
+                        public void onCancel(View v, Object... objects) {
 
                         }
 

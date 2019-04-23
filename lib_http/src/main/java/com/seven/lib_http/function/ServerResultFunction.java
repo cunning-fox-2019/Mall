@@ -21,8 +21,8 @@ public class ServerResultFunction implements Function<HttpResponse, Object> {
     @Override
     public Object apply(@NonNull HttpResponse response) throws Exception {
         Logger.i(response.toString());
-        if (response.getCode() != 0) {
-            if (response.getCode() >= SSDK.getInstance().getsConfig().getMinCode() && response.getCode() < SSDK.getInstance().getsConfig().getMaxCode()) {
+        if (response.getCode() != 1) {
+            if (response.getCode() == SSDK.getInstance().getsConfig().getEventCode()) {
                 EventBus.getDefault().post(new MessageEvent(SSDK.getInstance().getsConfig().getEventCode(), ""));
             } else {
                 throw new ServerException(response.getCode(), response.getMessage());
