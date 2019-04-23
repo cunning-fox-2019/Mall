@@ -17,6 +17,7 @@ import com.seven.lib_common.utils.ToastUtils;
 import com.seven.lib_opensource.application.SSDK;
 import com.seven.lib_opensource.application.SevenApplication;
 import com.seven.lib_opensource.event.ObjectsEvent;
+import com.seven.lib_router.Variable;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 
 import org.greenrobot.eventbus.EventBus;
@@ -145,6 +146,6 @@ public class PayUtils {
         req.extData = "app data"; // optional
         Logger.i(TAG + "正常调起支付");
         // 在支付之前，如果应用没有注册到微信，应该先调用IWXMsg.registerApp将应用注册到微信
-//        KoloApplication.mWxApi.sendReq(req);
+        Variable.getInstance().getWxApi().sendReq(req);
     }
 }

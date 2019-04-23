@@ -40,7 +40,7 @@ public class RequestHelper {
 
     private RetrofitService getApi(String key) {
 
-        return RetrofitHelper.getInstance().getApi(key, new KoloInterceptor());
+        return RetrofitHelper.getInstance().getApi(key, new AppInterceptor());
     }
 
     private <K> Observable<K> addSchedulers(Observable<K> observable) {
@@ -56,8 +56,59 @@ public class RequestHelper {
 //        return getApi().upload(file);
 //    }
 //
-    public Observable<HttpResponse> login(String url, LoginEntity json){
-        return appService.login(url,json);
+    public Observable<HttpResponse> sms(String json) {
+        return appService.sms(requestBody(json));
     }
 
+    public Observable<HttpResponse> register(String json) {
+        return appService.register(requestBody(json));
+    }
+
+    public Observable<HttpResponse> login(String json) {
+        return appService.login(requestBody(json));
+    }
+
+    public Observable<HttpResponse> password(String json) {
+        return appService.password(requestBody(json));
+    }
+
+    public Observable<HttpResponse> banner() {
+        return appService.banner();
+    }
+
+    public Observable<HttpResponse> entrance() {
+        return appService.entrance();
+    }
+
+    public Observable<HttpResponse> commodityList(String json) {
+        return appService.commodityList(requestBody(json));
+    }
+
+    public Observable<HttpResponse> commodityDetails(String json) {
+        return appService.commodityDetails(requestBody(json));
+    }
+
+    public Observable<HttpResponse> cartTotal() {
+        return appService.cartTotal();
+    }
+
+    public Observable<HttpResponse> cartAdd(String json) {
+        return appService.cartAdd(requestBody(json));
+    }
+
+    public Observable<HttpResponse> orderPayment(String json) {
+        return appService.orderPayment(requestBody(json));
+    }
+
+    public Observable<HttpResponse> orderAdd(String json) {
+        return appService.orderAdd(requestBody(json));
+    }
+
+    public Observable<HttpResponse> contactDefault() {
+        return appService.contactDefault();
+    }
+
+    public Observable<HttpResponse> orderPay(String json) {
+        return appService.orderPay(requestBody(json));
+    }
 }

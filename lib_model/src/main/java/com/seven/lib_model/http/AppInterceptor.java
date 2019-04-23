@@ -4,6 +4,7 @@ import android.text.TextUtils;
 
 import com.seven.lib_common.utils.AppUtils;
 import com.seven.lib_model.HttpSDK;
+import com.seven.lib_opensource.application.SevenApplication;
 
 import java.io.IOException;
 import java.security.MessageDigest;
@@ -19,29 +20,41 @@ import okhttp3.Response;
  * 2017/11/3
  */
 
-public class KoloInterceptor implements Interceptor {
+public class AppInterceptor implements Interceptor {
 
     private String ts;
 
-    public KoloInterceptor() {
+    public AppInterceptor() {
         this.ts = String.valueOf(System.currentTimeMillis() / 1000);
     }
+
+//    @Override
+//    public Response intercept(Chain chain) throws IOException {
+//
+//        Request request = chain.request()
+//                .newBuilder()
+//                .addHeader("Content-Type", "application/json;charset=UTF-8")
+//                .addHeader("X-UUID", TextUtils.isEmpty(HttpSDK.getInstance().getConfig().getUuid()) ? "" : HttpSDK.getInstance().getConfig().getUuid())
+//                .addHeader("X-TS", ts)
+//                .addHeader("X-VERSION", AppUtils.getVersionName(HttpSDK.getInstance().getContext()))
+//                .addHeader("X-ACCESS-TOKEN", TextUtils.isEmpty(HttpSDK.getInstance().getConfig().getToken()) ? "" : HttpSDK.getInstance().getConfig().getToken())
+//                .addHeader("X-LANGUAGE", TextUtils.isEmpty(HttpSDK.getInstance().getConfig().getLanguage()) ? "zh-cn" : HttpSDK.getInstance().getConfig().getLanguage())
+//                .addHeader("X-SIGN", getSign(chain.request()))
+//                .addHeader("X-PLATFORM", "Android")
+//                .addHeader("User-Agent", AppUtils.getSystemVersion() + "," + AppUtils.getDeviceBrand() + "," + AppUtils.getSystemModel())
+//                .build();
+//        return chain.proceed(request);
+//    }
+
 
     @Override
     public Response intercept(Chain chain) throws IOException {
 
         Request request = chain.request()
                 .newBuilder()
-                .addHeader("Content-Type", "application/json;charset=UTF-8")
-                .addHeader("X-UUID", TextUtils.isEmpty(HttpSDK.getInstance().getConfig().getUuid()) ? "" : HttpSDK.getInstance().getConfig().getUuid())
-                .addHeader("X-TS", ts)
-                .addHeader("X-VERSION", AppUtils.getVersionName(HttpSDK.getInstance().getContext()))
-                .addHeader("X-ACCESS-TOKEN", TextUtils.isEmpty(HttpSDK.getInstance().getConfig().getToken()) ? "" : HttpSDK.getInstance().getConfig().getToken())
-                .addHeader("X-LANGUAGE", TextUtils.isEmpty(HttpSDK.getInstance().getConfig().getLanguage()) ? "zh-cn" : HttpSDK.getInstance().getConfig().getLanguage())
-                .addHeader("X-SIGN", getSign(chain.request()))
-                .addHeader("X-PLATFORM", "Android")
-                .addHeader("User-Agent", AppUtils.getSystemVersion() + "," + AppUtils.getDeviceBrand() + "," + AppUtils.getSystemModel())
+                .addHeader("Authorization", SevenApplication.getInstance().getToken() == null ? "" : SevenApplication.getInstance().getToken())
                 .build();
+
         return chain.proceed(request);
     }
 

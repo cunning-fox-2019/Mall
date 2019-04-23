@@ -8,6 +8,7 @@ import android.support.v4.content.ContextCompat;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.TextPaint;
+import android.text.TextUtils;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.LinkMovementMethod;
 import android.text.method.PasswordTransformationMethod;
@@ -19,11 +20,18 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.seven.lib_common.base.activity.BaseTitleActivity;
 import com.seven.lib_common.stextview.TypeFaceEdit;
 import com.seven.lib_common.stextview.TypeFaceView;
+import com.seven.lib_common.task.ActivityStack;
 import com.seven.lib_common.utils.ResourceUtils;
+import com.seven.lib_common.utils.ToastUtils;
+import com.seven.lib_model.presenter.common.ActUserPresenter;
 import com.seven.lib_opensource.application.SevenApplication;
+import com.seven.lib_opensource.event.ObjectsEvent;
+import com.seven.lib_router.Constants;
 import com.seven.lib_router.router.RouterPath;
 import com.seven.module_user.R;
 import com.seven.module_user.R2;
+
+import org.greenrobot.eventbus.EventBus;
 
 import butterknife.BindView;
 
@@ -56,6 +64,8 @@ public class RegisterActivity extends BaseTitleActivity {
 
     private CountDownTimer timer;
 
+    private ActUserPresenter presenter;
+
     @Override
     protected int getLayoutId() {
         return R.layout.mu_activity_register;
@@ -71,6 +81,8 @@ public class RegisterActivity extends BaseTitleActivity {
 
     @Override
     protected void initBundleData(Intent intent) {
+
+        presenter = new ActUserPresenter(this, this);
 
     }
 
@@ -109,13 +121,42 @@ public class RegisterActivity extends BaseTitleActivity {
     public void btClick(View view) {
 
         if (view.getId() == R.id.sms_send_btn) {
-            //todo presenter
-            smsSendCode();
-        } else if (view.getId() == R.id.password_hide_btn) {
+
+            if (TextUtils.isEmpty(mobileEt.getText().toString())) {
+                ToastUtils.showToast(mContext, ResourceUtils.getText(R.string.hint_mobile));
+                return;
+            }
+
+            showLoadingDialog();
+            presenter.sms(Constants.RequestConfig.SMS, mobileEt.getText().toString(), Constants.SMSConfig.REGISTER);
+        }
+
+        if (view.getId() == R.id.password_hide_btn) {
             passwordEt.setTransformationMethod(passwordHide.isSelected() ? PasswordTransformationMethod.getInstance() : HideReturnsTransformationMethod.getInstance());
             passwordHide.setSelected(!passwordHide.isSelected());
             passwordEt.setSelection(passwordEt.getText().toString().length());
-        } else if (view.getId() == R.id.register_btn) {
+        }
+
+        if (view.getId() == R.id.register_btn) {
+
+            if (TextUtils.isEmpty(mobileEt.getText().toString())) {
+                ToastUtils.showToast(mContext, ResourceUtils.getText(R.string.hint_mobile));
+                return;
+            }
+
+            if (TextUtils.isEmpty(smsCodeEt.getText().toString())) {
+                ToastUtils.showToast(mContext, ResourceUtils.getText(R.string.hint_sms_code));
+                return;
+            }
+
+            if (TextUtils.isEmpty(passwordEt.getText().toString())) {
+                ToastUtils.showToast(mContext, ResourceUtils.getText(R.string.hint_password));
+                return;
+            }
+
+            showLoadingDialog();
+            presenter.register(Constants.RequestConfig.REGISTER, mobileEt.getText().toString(),
+                    smsCodeEt.getText().toString(), passwordEt.getText().toString(), inviteEt.getText().toString());
 
         }
 
@@ -157,6 +198,31 @@ public class RegisterActivity extends BaseTitleActivity {
             };
         }
         timer.start();
+    }
+
+    @Override
+    public void result(int code, Boolean hasNextPage, String response, Object object) {
+        super.result(code, hasNextPage, response, object);
+
+        switch (code) {
+
+            case Constants.RequestConfig.SMS:
+
+                smsSendCode();
+
+                break;
+
+            case Constants.RequestConfig.REGISTER:
+
+                if (object == null) return;
+
+                EventBus.getDefault().post(new ObjectsEvent(Constants.EventConfig.REGISTER, object));
+
+                ActivityStack.getInstance().finishActivity(LoginActivity.class);
+                onBackPressed();
+
+                break;
+        }
     }
 
     @Override

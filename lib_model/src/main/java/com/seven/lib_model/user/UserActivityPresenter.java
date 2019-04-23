@@ -27,10 +27,10 @@ public class UserActivityPresenter extends BasePresenter<IBaseView, BaseAppCompa
         // HttpRxObservable.getObservable(RequestHelper.getInstance().getUserInfo(""), getActivity(), ActivityEvent.PAUSE).subscribe(rxObserver);
     }
 
-    public void login(int code,String url, LoginEntity json) {
-        HttpRxObserver rxObserver = get(getView(), code, TokenEntity.class, "data", false);
-        if (rxObserver == null) return;
-        HttpRxObservable.getObservable(RequestHelper.getInstance().login(url,json), getActivity(), ActivityEvent.PAUSE).subscribe(rxObserver);
-    }
+//    public void login(int code,String url, LoginEntity json) {
+//        HttpRxObserver rxObserver = get(getView(), code, TokenEntity.class, "data", false);
+//        if (rxObserver == null) return;
+//        HttpRxObservable.getObservable(RequestHelper.getInstance().login(url,json), getActivity(), ActivityEvent.PAUSE).subscribe(rxObserver);
+//    }
 
 }

@@ -149,8 +149,9 @@
             <enum name="medium_s" value="4" />
             <enum name="regular_s" value="5" />
         </attr>
-        <attr name="SFirstCap" format="boolean"/>
-        <attr name="SMaxLength" format="integer"/>
+        <attr name="SFirstCap" format="boolean" />
+        <attr name="SMaxLength" format="integer" />
+        <attr name="SGravityRight" format="boolean" />
     </declare-styleable>
 
     <!-- dancing number view -->

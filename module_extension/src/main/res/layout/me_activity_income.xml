@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         app:tabIndicatorColor="@color/primary"
         app:tabSelectedTextColor="@color/primary"
-        app:tabTextColor="@color/barColor">
+        app:tabTextColor="@color/cube">
 
         <android.support.design.widget.TabItem
             android:id="@+id/mg_taball"

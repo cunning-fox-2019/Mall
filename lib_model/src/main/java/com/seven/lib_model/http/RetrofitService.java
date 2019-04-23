@@ -2,15 +2,11 @@ package com.seven.lib_model.http;
 
 
 import com.seven.lib_http.retrofit.HttpResponse;
-import com.seven.lib_model.model.user.LoginEntity;
-
 
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
-import retrofit2.http.Query;
-import retrofit2.http.Url;
 
 /**
  * @auhtor seven
@@ -19,8 +15,64 @@ import retrofit2.http.Url;
  */
 
 public interface RetrofitService {
+
+    String sms = "sms/send";
+
+    String register = "register";
     String login = "login";
-    @POST()
-    Observable<HttpResponse> login(@Url String url,@Body LoginEntity requestBody);
+    String password="password/reset";
+
+    String banner="ad/index/banner";
+    String entrance="goods/category/list";
+    String commodityList="goods/top/list";
+    String commodityDetails="goods/info";
+    String cartTotal="cart/total";
+    String cartAdd="cart/add";
+    String orderPayment="order/payment";
+    String orderAdd="order/add";
+    String contactDefault="user/contact/default/info";
+    String orderPay="order/pay";
+
+    @POST(sms)
+    Observable<HttpResponse> sms(@Body RequestBody requestBody);
+
+    @POST(register)
+    Observable<HttpResponse> register(@Body RequestBody requestBody);
+
+    @POST(login)
+    Observable<HttpResponse> login(@Body RequestBody requestBody);
+
+    @POST(password)
+    Observable<HttpResponse> password(@Body RequestBody requestBody);
+
+    @POST(banner)
+    Observable<HttpResponse> banner();
+
+    @POST(entrance)
+    Observable<HttpResponse> entrance();
+
+    @POST(commodityList)
+    Observable<HttpResponse> commodityList(@Body RequestBody requestBody);
+
+    @POST(commodityDetails)
+    Observable<HttpResponse> commodityDetails(@Body RequestBody requestBody);
+
+    @POST(cartTotal)
+    Observable<HttpResponse> cartTotal();
+
+    @POST(cartAdd)
+    Observable<HttpResponse> cartAdd(@Body RequestBody requestBody);
+
+    @POST(orderPayment)
+    Observable<HttpResponse> orderPayment(@Body RequestBody requestBody);
+
+    @POST(orderAdd)
+    Observable<HttpResponse> orderAdd(@Body RequestBody requestBody);
+
+    @POST(contactDefault)
+    Observable<HttpResponse> contactDefault();
+
+    @POST(orderPay)
+    Observable<HttpResponse> orderPay(@Body RequestBody requestBody);
 }
 

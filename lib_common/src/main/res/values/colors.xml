@@ -2,15 +2,19 @@
 <resources>
 
     <color name="transparent">#00000000</color>
-    <color name="barColor">#181818</color>
+    <!--<color name="cube">#181818</color>-->
+    <color name="cube">#1e1d1d</color>
     <color name="black">#000000</color>
     <color name="black_40">#60000000</color>
     <color name="line">#e7e7e7</color>
     <color name="white">#ffffff</color>
     <color name="primary">#198aed</color>
+    <color name="primary_30">#4d198aed</color>
+    <color name="primary_light">#ffc928</color>
     <color name="press">#33000000</color>
     <color name="grey_dark">#333333</color>
     <color name="grey_dark_50">#80333333</color>
+    <color name="grey_low">#999999</color>
     <color name="grey_medium">#666666</color>
     <color name="grey_light">#AAAAAA</color>
     <color name="grey_f4">#F4F4F4</color>
@@ -29,12 +33,21 @@
     <color name="camera_bg">#F8F8F8</color>
     <color name="album_bg">#1E1D22</color>
 
-    <color name="line_between">#E2E2E2</color>
+    <color name="line_between">#eeeeee</color>
     <color name="free_ing_enough">#F2F2F2</color>
 
     <color name="edit_hint">#a7a7a7</color>
     <color name="edit_border">#eeeeee</color>
 
     <color name="grey_80">#c4c4c4</color>
+
+    <color name="refresh_1">#198aed</color>
+    <color name="refresh_2">#198aed</color>
+    <color name="refresh_3">#198aed</color>
+    <color name="refresh_4">#198aed</color>
+
+    <color name="label">#1e1d1d</color>
+    <color name="currency">#eb5a4f</color>
+    <color name="impression">#f5f5f5</color>
 
 </resources>

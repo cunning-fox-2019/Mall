@@ -20,6 +20,10 @@ public class RouterPath {
 
     /* module home */
     public static final String FRAGMENT_HOME = "/home/HomeFragment";
+    public static final String ACTIVITY_COMMODITY="/home/CommodityListActivity";
+    public static final String ACTIVITY_COMMODITY_DETAILS="/home/CommodityDetailsActivity";
+    public static final String ACTIVITY_COMMODITY_ORDER="/home/CommodityOrderActivity";
+    public static final String ACTIVITY_PAY="/home/PayActivity";
 
     /* module extension */
     public static final String FRAGMENT_EXTENSION = "/extension/ExtensionFragment";
@@ -28,6 +32,11 @@ public class RouterPath {
 
     /* module model */
     public static final String FRAGMENT_MODEL = "/model/ModelFragment";
+    public static final String ACTIVITY_RELEASE_DEMAND = "/model/ReleaseDemandActivity";
+    public static final String ACTIVITY_MESSAGE= "/model/MessageActivity";
+    public static final String ACTIVITY_VOUCHER= "/model/VoucherActivity";
+    public static final String ACTIVITY_TRANSACTION_DETAILS= "/model/TransactionDetailsActivity";
+    public static final String ACTIVITY_UPLOAD_VOUCHER= "/model/UploadVoucherActivity";
 
     /* module user */
     public static final String FRAGMENT_USER = "/user/UserFragment";
@@ -36,4 +45,8 @@ public class RouterPath {
     public static final String ACTIVITY_REGISTER="/user/RegisterActivity";
     public static final String ACTIVITY_PASSWORD="/user/PasswordActivity";
     public static final String ACTIVITY_MOBILE="/user/MobileActivity";
+
+    public static final String ACTIVITY_SHOPPING_CART="/user/";
+    public static final String ACTIVITY_ADDRESS="/user/";
+    public static final String ACTIVITY_MINE_ORDER="/user/";
 }

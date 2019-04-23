@@ -3,6 +3,7 @@ package com.seven.module_user.ui.activity.login;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.text.TextUtils;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.view.View;
@@ -13,6 +14,9 @@ import com.seven.lib_common.base.activity.BaseTitleActivity;
 import com.seven.lib_common.stextview.TypeFaceEdit;
 import com.seven.lib_common.stextview.TypeFaceView;
 import com.seven.lib_common.utils.ResourceUtils;
+import com.seven.lib_common.utils.ToastUtils;
+import com.seven.lib_model.presenter.common.ActUserPresenter;
+import com.seven.lib_router.Constants;
 import com.seven.lib_router.router.RouterPath;
 import com.seven.module_user.R;
 import com.seven.module_user.R2;
@@ -42,6 +46,8 @@ public class PasswordActivity extends BaseTitleActivity {
 
     private CountDownTimer timer;
 
+    private ActUserPresenter presenter;
+
     @Override
     protected int getLayoutId() {
         return R.layout.mu_activity_password;
@@ -57,18 +63,46 @@ public class PasswordActivity extends BaseTitleActivity {
     @Override
     protected void initBundleData(Intent intent) {
 
+        presenter = new ActUserPresenter(this, this);
+
     }
 
-    public void btClick(View view){
+    public void btClick(View view) {
 
         if (view.getId() == R.id.sms_send_btn) {
-            //todo presenter
-            smsSendCode();
+
+            if (TextUtils.isEmpty(mobileEt.getText().toString())) {
+                ToastUtils.showToast(mContext, ResourceUtils.getText(R.string.hint_mobile));
+                return;
+            }
+
+            showLoadingDialog();
+            presenter.sms(Constants.RequestConfig.SMS, mobileEt.getText().toString(), Constants.SMSConfig.REGISTER);
+
         } else if (view.getId() == R.id.password_hide_btn) {
             passwordEt.setTransformationMethod(passwordHide.isSelected() ? PasswordTransformationMethod.getInstance() : HideReturnsTransformationMethod.getInstance());
             passwordHide.setSelected(!passwordHide.isSelected());
             passwordEt.setSelection(passwordEt.getText().toString().length());
-        } else if(view.getId()==R.id.submit_btn){
+        } else if (view.getId() == R.id.submit_btn) {
+
+            if (TextUtils.isEmpty(mobileEt.getText().toString())) {
+                ToastUtils.showToast(mContext, ResourceUtils.getText(R.string.hint_mobile));
+                return;
+            }
+
+            if (TextUtils.isEmpty(smsCodeEt.getText().toString())) {
+                ToastUtils.showToast(mContext, ResourceUtils.getText(R.string.hint_sms_code));
+                return;
+            }
+
+            if (TextUtils.isEmpty(passwordEt.getText().toString())) {
+                ToastUtils.showToast(mContext, ResourceUtils.getText(R.string.hint_password));
+                return;
+            }
+
+            showLoadingDialog();
+            presenter.password(Constants.RequestConfig.PASSWORD, mobileEt.getText().toString(),
+                    smsCodeEt.getText().toString(), passwordEt.getText().toString());
 
         }
 
@@ -77,7 +111,7 @@ public class PasswordActivity extends BaseTitleActivity {
     private void smsSendCode() {
         smsSendBtn.setClickable(false);
         smsSendBtn.setSelected(true);
-        countDown();//todo 短信发送成功回调里面
+        countDown();
     }
 
     private void countDown() {
@@ -112,6 +146,25 @@ public class PasswordActivity extends BaseTitleActivity {
         timer.start();
     }
 
+    @Override
+    public void result(int code, Boolean hasNextPage, String response, Object object) {
+        super.result(code, hasNextPage, response, object);
+        switch (code) {
+
+            case Constants.RequestConfig.SMS:
+
+                smsSendCode();
+
+                break;
+
+            case Constants.RequestConfig.PASSWORD:
+
+                onBackPressed();
+
+                break;
+
+        }
+    }
 
     @Override
     protected void rightTextBtnClick(View v) {
