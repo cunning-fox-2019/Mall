@@ -2,6 +2,7 @@ package com.seven.module_extension.ui.fragment;
 
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,9 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.seven.lib_common.base.fragment.BaseFragment;
 import com.seven.lib_common.stextview.TypeFaceView;
 import com.seven.lib_common.utils.ScreenUtils;
+import com.seven.lib_model.ApiManager;
+import com.seven.lib_model.BaseResult;
+import com.seven.lib_model.model.user.extension.ReceiveGoodsEntity;
 import com.seven.lib_router.router.RouterPath;
 import com.seven.lib_router.router.RouterUtils;
 import com.seven.module_extension.R;
@@ -22,6 +26,10 @@ import com.seven.module_extension.R2;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * @auhtor seven
@@ -89,12 +97,40 @@ public class ExtensionFragment extends BaseFragment {
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.me_profit_details){
+        if (v.getId() == R.id.me_profit_details) {
             RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_IN_COME);
-        }else if (v.getId() == R.id.me_buy_up_rl){
-            RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_BUY_ROLE);
+        } else if (v.getId() == R.id.me_buy_up_rl) {
+             RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_BUY_ROLE);
+//            getRecive();
         }
 
+    }
+
+    private void getRecive() {
+        ApiManager.getReciveGoodsList()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Observer<BaseResult<ReceiveGoodsEntity>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(BaseResult<ReceiveGoodsEntity> receiveGoodsEntityBaseResult) {
+                        Log.e("xxxxxxH", receiveGoodsEntityBaseResult.getData().getGoods_list() + "");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 
     @Override

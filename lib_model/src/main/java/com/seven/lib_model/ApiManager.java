@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.seven.lib_model.model.user.LoginEntity;
 import com.seven.lib_model.model.user.TokenEntity;
+import com.seven.lib_model.model.user.extension.ReceiveGoodsEntity;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
@@ -96,9 +97,16 @@ public class ApiManager {
     private interface ApiManagerService {
         @POST("login")
         Observable<BaseResult<TokenEntity>> login(@Body LoginEntity entity);
+
+        @POST("promotion/form/goods/list")
+        Observable<BaseResult<ReceiveGoodsEntity>> getReciveGoodsList();
     }
 
     public static Observable<BaseResult<TokenEntity>> login(LoginEntity entity) {
         return apiManagerService.login(entity);
+    }
+
+    public static Observable<BaseResult<ReceiveGoodsEntity>> getReciveGoodsList(){
+        return apiManagerService.getReciveGoodsList();
     }
 }
