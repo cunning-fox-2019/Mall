@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,37 +17,43 @@ import com.lljjcoder.bean.ProvinceBean;
 import com.lljjcoder.citywheel.CityConfig;
 import com.lljjcoder.style.citypickerview.CityPickerView;
 import com.seven.lib_common.base.activity.BaseAppCompatActivity;
+import com.seven.lib_common.base.activity.BaseTitleActivity;
+import com.seven.lib_common.utils.ToastUtils;
+import com.seven.lib_model.ApiManager;
+import com.seven.lib_model.BaseResult;
+import com.seven.lib_model.model.user.mine.AddAddressEntity;
 import com.seven.module_user.R;
 import com.seven.module_user.R2;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.reactivex.Observer;
+import io.reactivex.Scheduler;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by ouyang on 2019/4/4.
  */
 
-public class UserCreateAddressActivity extends BaseAppCompatActivity {
-    @BindView(R2.id.toolbar)
-    Toolbar mToolBar;
+public class UserCreateAddressActivity extends BaseTitleActivity {
+
     @BindView(R2.id.address_tx)
     TextView addressTx;
     @BindView(R2.id.is_default_address_img)
     ImageView isDefaultAddressImg;
     @BindView(R2.id.is_default_address_tx)
     TextView isDefaultAddressTx;
+    @BindView(R2.id.name_edit)
+    EditText nameEdit;
+    @BindView(R2.id.phone_edit)
+    EditText phoneEdit;
+    @BindView(R2.id.address_detail)
+    EditText addressDetail;
 
     private boolean isDefault;
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
     @Override
     public void showLoading() {
@@ -64,26 +71,27 @@ public class UserCreateAddressActivity extends BaseAppCompatActivity {
     }
 
     @Override
-    protected int getContentViewId() {
-        statusBar = StatusBar.LIGHT;
+    protected int getLayoutId() {
         return R.layout.mu_activity_create_address;
     }
 
     @Override
-    protected void init(Bundle savedInstanceState) {
-        ImmersionBar.with(this).init();
+    protected void initView(Bundle savedInstanceState) {
+        setTitleText(R.string.user_add_address);
+    }
+
+    @Override
+    protected void rightTextBtnClick(View v) {
+
+    }
+
+    @Override
+    protected void rightBtnClick(View v) {
+
     }
 
     @Override
     protected void initBundleData(Intent intent) {
-        setSupportActionBar(mToolBar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setTitle("添加地址");
-    }
-
-    @Override
-    public void onClick(View view) {
 
     }
 
@@ -125,8 +133,61 @@ public class UserCreateAddressActivity extends BaseAppCompatActivity {
 
     @OnClick(R2.id.is_default_address)
     void setDefaultAddress() {
-        isDefaultAddressImg.setImageDrawable(isDefault?getDrawable(R.drawable.item_shopping_cart_default):getDrawable(R.drawable.item_shopping_cart_selector));
-        isDefaultAddressTx.setTextColor(isDefault?getResources().getColor(R.color.add_address_default_n):getResources().getColor(R.color.add_address_default_c));
+        isDefaultAddressImg.setImageDrawable(isDefault ? getDrawable(R.drawable.item_shopping_cart_default) : getDrawable(R.drawable.item_shopping_cart_selector));
+        isDefaultAddressTx.setTextColor(isDefault ? getResources().getColor(R.color.add_address_default_n) : getResources().getColor(R.color.add_address_default_c));
         isDefault = !isDefault;
+    }
+
+    @OnClick(R2.id.add_address)
+    void prepareCommit() {
+        if (nameEdit.getText().toString().isEmpty()) {
+            nameEdit.setError("联系人不能为空！");
+            nameEdit.requestFocus();
+            return;
+        } else if (phoneEdit.getText().toString().isEmpty()) {
+            phoneEdit.setError("联系人电话不能为空！");
+            phoneEdit.requestFocus();
+            return;
+        } else if (addressDetail.getText().toString().isEmpty()) {
+            addressDetail.setError("请输出详细地址!");
+            addressDetail.requestFocus();
+            return;
+        } else if (addressTx.getText().toString().isEmpty()) {
+            ToastUtils.showToast(mContext, "请选择地址!");
+            return;
+        }
+        AddAddressEntity entity = new AddAddressEntity();
+        entity.setAddress(addressDetail.getText().toString());
+        entity.setContact_name(nameEdit.getText().toString());
+        entity.setContact_phone(phoneEdit.getText().toString());
+        entity.setIs_default(isDefault ? 1 : 0);
+        commit(entity);
+    }
+
+    private void commit(AddAddressEntity entity) {
+        ApiManager.addAddress(entity)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<BaseResult>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(BaseResult baseResult) {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 }

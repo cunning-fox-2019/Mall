@@ -7,6 +7,7 @@
     android:padding="@dimen/padding_10">
 
     <ImageView
+        android:id="@+id/goods_img"
         android:layout_width="140dp"
         android:layout_height="140dp"
         android:src="@drawable/image_default_black" />
@@ -29,6 +30,7 @@
             tools:text="全新上市祖玛🐉茉莉全新上市祖玛🐉茉莉全新上市祖玛🐉茉莉全新上市祖玛🐉茉莉全新上市祖玛🐉茉莉全新上市祖玛🐉茉莉全新上市祖玛🐉茉莉" />
 
         <TextView
+            android:id="@+id/sales"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingTop="@dimen/padding_10"
@@ -56,6 +58,7 @@
                 tools:text="10000.00" />
 
             <TextView
+                android:id="@+id/cancel_collection"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/round_box_bg"

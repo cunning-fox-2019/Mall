@@ -2,9 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#fff"
     android:orientation="vertical">
 
-  <include layout="@layout/view_toolbar"/>
 
     <com.seven.module_user.ui.fragment.view.BaseRecyclerView
         android:id="@+id/list_view"
@@ -22,6 +22,6 @@
         android:padding="@dimen/padding_8"
         android:text="添加地址"
         android:textColor="#fff"
-        android:visibility="gone"
-        android:textSize="14sp" />
+        android:textSize="14sp"
+        android:visibility="gone" />
 </LinearLayout>

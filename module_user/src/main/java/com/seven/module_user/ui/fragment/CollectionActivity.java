@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -16,7 +17,13 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.gyf.barlibrary.ImmersionBar;
 import com.seven.lib_common.base.activity.BaseActivity;
 import com.seven.lib_common.base.activity.BaseAppCompatActivity;
+import com.seven.lib_common.base.activity.BaseTitleActivity;
+import com.seven.lib_common.utils.glide.GlideUtils;
+import com.seven.lib_model.ApiManager;
+import com.seven.lib_model.BaseResult;
+import com.seven.lib_model.model.home.CartEntity;
 import com.seven.lib_model.model.user.UserEntity;
+import com.seven.lib_model.model.user.mine.ShopEntity;
 import com.seven.module_user.R;
 import com.seven.module_user.R2;
 import com.seven.module_user.ui.fragment.view.BaseRecyclerView;
@@ -26,26 +33,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import io.reactivex.Observer;
+import io.reactivex.Scheduler;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by ouyang on 2019/3/31.
  */
 
-public class CollectionActivity extends BaseAppCompatActivity {
-    @BindView(R2.id.toolbar)
-    Toolbar mToolBar;
+public class CollectionActivity extends BaseTitleActivity {
     @BindView(R2.id.list_view)
     BaseRecyclerView recyclerView;
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
     @Override
     public void showLoading() {
@@ -63,40 +64,67 @@ public class CollectionActivity extends BaseAppCompatActivity {
     }
 
     @Override
-    protected int getContentViewId() {
-        statusBar = StatusBar.LIGHT;
+    protected int getLayoutId() {
         return R.layout.mu_activity_collect;
     }
 
     @Override
-    protected void init(Bundle savedInstanceState) {
+    protected void initView(Bundle savedInstanceState) {
+        setTitleText(R.string.user_collect);
 
     }
 
     @Override
-    protected void initBundleData(Intent intent) {
-        setSupportActionBar(mToolBar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setTitle("我的收藏");
-        ImmersionBar.with(this).init();
-        ImmersionBar.setTitleBar(this, mToolBar);
-        List<UserEntity> list = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
-            list.add(new UserEntity());
-        }
+    protected void rightTextBtnClick(View v) {
+
+    }
+
+    @Override
+    protected void rightBtnClick(View v) {
+
+    }
+
+    @Override
+    protected void initBundleData(final Intent intent) {
+        ApiManager.getCollectList()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Observer<BaseResult<ShopEntity>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(BaseResult<ShopEntity> shopEntityBaseResult) {
+                        initListView(shopEntityBaseResult.getData().getItems());
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+
+    }
+
+    private void initListView(List<CartEntity> list) {
         LinearLayoutManager manager = new LinearLayoutManager(mContext);
-        recyclerView.init(manager, new BaseQuickAdapter<UserEntity, BaseViewHolder>(R.layout.item_store_up_layout, list) {
+        recyclerView.init(manager, new BaseQuickAdapter<CartEntity, BaseViewHolder>(R.layout.item_store_up_layout, list) {
 
             @Override
-            protected void convert(BaseViewHolder helper, UserEntity item) {
-
+            protected void convert(BaseViewHolder helper, CartEntity item) {
+                helper.setText(R.id.goods_name, item.getGoods_name())
+                        .setText(R.id.sales, item.getSales() + "人付款")
+                        .setText(R.id.money, String.valueOf(item.getPrice()));
+                ImageView imageView = helper.getView(R.id.goods_img);
+                GlideUtils.loadImage(mContext, item.getThumb(), imageView);
             }
         }).changeItemDecoration(new DividerSpaceItemDecoration(4));
-    }
-
-    @Override
-    public void onClick(View view) {
-
     }
 }
