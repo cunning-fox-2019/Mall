@@ -39,9 +39,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-/**
- * Created by ouyang on 2019/3/31.
- */
+
 
 public class CollectionActivity extends BaseTitleActivity {
     @BindView(R2.id.list_view)

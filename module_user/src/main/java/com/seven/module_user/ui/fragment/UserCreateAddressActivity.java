@@ -1,14 +1,20 @@
 package com.seven.module_user.ui.fragment;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.alibaba.android.arouter.facade.annotation.Route;
+import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
+import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
+import com.bigkoo.pickerview.view.OptionsPickerView;
 import com.gyf.barlibrary.ImmersionBar;
 import com.lljjcoder.Interface.OnCityItemClickListener;
 import com.lljjcoder.bean.CityBean;
@@ -22,8 +28,14 @@ import com.seven.lib_common.utils.ToastUtils;
 import com.seven.lib_model.ApiManager;
 import com.seven.lib_model.BaseResult;
 import com.seven.lib_model.model.user.mine.AddAddressEntity;
+import com.seven.lib_model.model.user.mine.DTEntity;
+import com.seven.lib_model.model.user.mine.RegionEntity;
+import com.seven.lib_router.router.RouterPath;
 import com.seven.module_user.R;
 import com.seven.module_user.R2;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -33,10 +45,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-/**
- * Created by ouyang on 2019/4/4.
- */
-
+@Route(path = RouterPath.ACTIVITY_MINE_ADD_ADDRESS)
 public class UserCreateAddressActivity extends BaseTitleActivity {
 
     @BindView(R2.id.address_tx)
@@ -54,6 +63,17 @@ public class UserCreateAddressActivity extends BaseTitleActivity {
 
     private boolean isDefault;
 
+    private List<RegionEntity> provinceList = new ArrayList<>();
+    private List<RegionEntity> cityList = new ArrayList<>();
+    private List<RegionEntity> areaList = new ArrayList<>();
+
+    private List<String> provinceStringList = new ArrayList<>();
+    private List<List<String>> cityStringList = new ArrayList<>();
+    private List<List<List<String>>> areaStringList = new ArrayList<>();
+
+    private int provincePosition;
+    private int cityPosition;
+    private int areaPosition;
 
     @Override
     public void showLoading() {
@@ -78,6 +98,33 @@ public class UserCreateAddressActivity extends BaseTitleActivity {
     @Override
     protected void initView(Bundle savedInstanceState) {
         setTitleText(R.string.user_add_address);
+        ApiManager.getRegionList()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Observer<BaseResult<DTEntity>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(BaseResult<DTEntity> data) {
+                        provinceList.addAll(data.getData().getItems());
+                        cityList.addAll(provinceList.get(0).getSub());
+                        areaList.addAll(cityList.get(0).getSub());
+                        prepareCityList();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 
     @Override
@@ -95,40 +142,61 @@ public class UserCreateAddressActivity extends BaseTitleActivity {
 
     }
 
+    private void prepareCityList() {
+        for (RegionEntity entity : provinceList) {
+            provinceStringList.add(entity.getRegion_name());
+            List<String> list1 = new ArrayList<>();//市
+            List<List<String>> list3 = new ArrayList<>();
+            if (entity.getSub() != null && entity.getSub().size() > 0) {
+                for (RegionEntity entity1 : entity.getSub()) {//遍历市
+                    list1.add(entity1.getRegion_name());
+                    List<String> list = new ArrayList<>();//区
+                    if (entity1.getSub() != null && entity1.getSub().size() > 0) {
+                        for (RegionEntity entity2 : entity1.getSub()) {//遍历区
+                            list.add(entity2.getRegion_name());
+                        }
+                    } else {
+                        list.add("");
+                    }
+                    list3.add(list);
+                }
+            } else {
+                list1.add("");
+            }
+
+            cityStringList.add(list1);
+            areaStringList.add(list3);
+        }
+
+
+    }
+
     @OnClick(R2.id.address_tx)
     void chooseCity() {
-        final StringBuilder builder = new StringBuilder();
-        CityPickerView mPicker = new CityPickerView();
-        mPicker.init(mContext);
-        CityConfig cityConfig = new CityConfig.Builder()
-                .confirTextColor("#000000")
-                .province("四川省")//默认显示的省份
-                .city("成都市")//默认显示省份下面的城市
-                .district("武侯区")//默认显示省市下面的区县数据
-                .provinceCyclic(false)//省份滚轮是否可以循环滚动
-                .cityCyclic(false)//城市滚轮是否可以循环滚动
-                .districtCyclic(false)//区县滚轮是否循环滚动
+        OptionsPickerView cityReasonPickerView = new OptionsPickerBuilder(this, new OnOptionsSelectListener() {
+            @Override
+            public void onOptionsSelect(int options1, int options2, int options3, View v) {
+                Log.e("--->", provinceStringList.get(options1) + "-" + cityStringList.get(options2) + " " + areaStringList.get(options3));
+                addressTx.setText(provinceStringList.get(options1) + " " +
+                        cityStringList.get(options1).get(options2) + " " +
+                        areaStringList.get(options1).get(options2).get(options3));
+                provincePosition = options1;
+                cityPosition = options2;
+                areaPosition = options3;
+            }
+        }).setContentTextSize(20)//设置滚轮文字大小
+                .setDividerColor(Color.LTGRAY)//设置分割线的颜色
+                .setSelectOptions(0)//默认选中项
+                .setBgColor(Color.WHITE)
+                .setTitleBgColor(getResources().getColor(R.color.color_eee))
+                .setCancelColor(getResources().getColor(R.color.color_6c))
+                .setSubmitColor(getResources().getColor(R.color.color_1e1d1d))
+                .setTextColorCenter(getResources().getColor(R.color.color_1e1d1d))
+                .isCenterLabel(false) //是否只显示中间选中项的label文字，false则每项item全部都带有label。
+                .setOutSideColor(0x00000000) //设置外部遮罩颜色
                 .build();
-        mPicker.setConfig(cityConfig);
-        mPicker.setOnCityItemClickListener(new OnCityItemClickListener() {
-            @Override
-            public void onSelected(ProvinceBean province, CityBean city, DistrictBean district) {
-                super.onSelected(province, city, district);
-                builder.append(province.getName())
-                        .append(" ")
-                        .append(city.getName())
-                        .append(" ")
-                        .append(district.getName());
-                addressTx.setText(builder.toString());
-
-            }
-
-            @Override
-            public void onCancel() {
-                super.onCancel();
-            }
-        });
-        mPicker.showCityPicker();
+        cityReasonPickerView.setPicker(provinceStringList, cityStringList, areaStringList);
+        cityReasonPickerView.show();
     }
 
     @OnClick(R2.id.is_default_address)
@@ -161,6 +229,9 @@ public class UserCreateAddressActivity extends BaseTitleActivity {
         entity.setContact_name(nameEdit.getText().toString());
         entity.setContact_phone(phoneEdit.getText().toString());
         entity.setIs_default(isDefault ? 1 : 0);
+        entity.setProvince_id(provinceList.get(provincePosition).getId());
+        entity.setCity_id(provinceList.get(provincePosition).getSub().get(cityPosition).getId());
+        entity.setDistrict_id(provinceList.get(provincePosition).getSub().get(cityPosition).getSub().get(areaPosition).getId());
         commit(entity);
     }
 
@@ -176,7 +247,13 @@ public class UserCreateAddressActivity extends BaseTitleActivity {
 
                     @Override
                     public void onNext(BaseResult baseResult) {
-
+                        Log.e("create",baseResult.getMessage());
+                        Log.e("create",baseResult.getCode()+"--->");
+                        if (baseResult.getCode()==1){
+                            finish();
+                        }else {
+                            showToast(baseResult.getMessage());
+                        }
                     }
 
                     @Override

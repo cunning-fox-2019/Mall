@@ -2,22 +2,27 @@ package com.seven.module_user.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
+import com.alibaba.android.arouter.facade.annotation.Route;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.seven.lib_common.base.activity.BaseTitleActivity;
+import com.seven.lib_common.utils.ToastUtils;
 import com.seven.lib_model.ApiManager;
 import com.seven.lib_model.BaseResult;
 import com.seven.lib_model.model.user.mine.AddressEntity;
+import com.seven.lib_router.router.RouterPath;
 import com.seven.module_user.R;
 import com.seven.module_user.R2;
 import com.seven.module_user.ui.fragment.view.BaseRecyclerView;
+import com.seven.module_user.ui.fragment.view.DividerSpaceItemDecoration;
 
 import java.util.List;
 
@@ -28,13 +33,15 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-
+@Route(path = RouterPath.ACTIVITY_ADDRESS)
 public class UserAddressActivity extends BaseTitleActivity {
     @BindView(R2.id.list_view)
     BaseRecyclerView recyclerView;
     @BindView(R2.id.add_address)
     TextView addAddress;
     private boolean isChoose = false;//false 从账号中心进来查看 不能点击；true 从付款进来 可以点击
+
+    private List<AddressEntity> list;
 
     @Override
     public void showLoading() {
@@ -59,31 +66,7 @@ public class UserAddressActivity extends BaseTitleActivity {
     @Override
     protected void initView(Bundle savedInstanceState) {
         setTitleText(R.string.user_address);
-        ApiManager.getAddressList()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(new Observer<BaseResult<List<AddressEntity>>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onNext(BaseResult<List<AddressEntity>> listBaseResult) {
-                        initListView(listBaseResult.getData());
-                    }
-
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
+        initListView();
     }
 
     @Override
@@ -96,7 +79,7 @@ public class UserAddressActivity extends BaseTitleActivity {
 
     }
 
-    private void initListView(List<AddressEntity> list) {
+    private void initListView() {
         addAddress.setVisibility(list != null && list.size() > 0 ? View.VISIBLE : View.GONE);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -109,19 +92,35 @@ public class UserAddressActivity extends BaseTitleActivity {
                         .addOnClickListener(R.id.is_default_address)
                         .addOnClickListener(R.id.edit_address)
                         .addOnClickListener(R.id.delete_address);
+                TextView isDefault = helper.getView(R.id.is_default_address);
+                if (item.getIs_default() == 0) {
+                    isDefault.setCompoundDrawables(getResources().getDrawable(R.drawable.item_shopping_cart_default), null, null, null);
+                    isDefault.setTextColor(getResources().getColor(R.color.color_abaeb3));
+                } else {
+                    isDefault.setCompoundDrawables(getResources().getDrawable(R.drawable.item_shopping_cart_selector), null, null, null);
+                    isDefault.setTextColor(getResources().getColor(R.color.add_address_default_c));
+                }
             }
-        }, false)
+        }, true)
                 .addOnItemClickListener(new OnItemClickListener() {
                     @Override
                     public void onSimpleItemClick(BaseQuickAdapter adapter, View view, int position) {
-                        //todo 选择是活得地址
+                        AddressEntity entity = (AddressEntity) adapter.getData().get(position);
+                        //todo 选择地址才进来if 查看时不进入
                         if (isChoose) {
-                            AddressEntity entity = (AddressEntity) adapter.getData().get(position);
+
                         }
+                        ToastUtils.showToast(mContext, entity.toString() + isChoose);
+                    }
+                })
+                .setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        getData();
                     }
                 })
                 .setEmptyView(getEmptyView())
-                .removeItemDecoration();
+                .changeItemDecoration(new DividerSpaceItemDecoration(8));
     }
 
     @Override
@@ -146,5 +145,41 @@ public class UserAddressActivity extends BaseTitleActivity {
     @OnClick(R2.id.add_address)
     void addAddress() {
         startActivity(new Intent(mContext, UserCreateAddressActivity.class));
+    }
+
+    private void getData() {
+        ApiManager.getAddressList()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Observer<BaseResult<List<AddressEntity>>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(BaseResult<List<AddressEntity>> listBaseResult) {
+                        list = listBaseResult.getData();
+                        initListView();
+                        recyclerView.setRefreshing(false);
+                    }
+
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getData();
     }
 }

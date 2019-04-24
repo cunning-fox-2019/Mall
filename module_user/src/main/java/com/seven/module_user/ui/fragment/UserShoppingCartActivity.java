@@ -44,7 +44,7 @@ import io.reactivex.schedulers.Schedulers;
 /**
  * Created by xxxxxxH on 2019/4/13.
  */
-@Route(path = RouterPath.ACTIVITY_ADDRESS)
+@Route(path = RouterPath.ACTIVITY_MINE_SHOP_CAR)
 public class UserShoppingCartActivity extends BaseTitleActivity {
 
     @BindView(R2.id.list_view)

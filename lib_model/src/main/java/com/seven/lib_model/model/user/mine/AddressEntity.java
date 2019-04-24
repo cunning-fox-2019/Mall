@@ -119,4 +119,11 @@ public class AddressEntity {
     public void setDistrict_name(String district_name) {
         this.district_name = district_name;
     }
+
+    @Override
+    public String toString() {
+
+        return "id>" + id +
+                "-----address>" + address + "----选择还是查看";
+    }
 }

@@ -9,6 +9,7 @@ import com.seven.lib_model.model.user.TokenEntity;
 import com.seven.lib_model.model.user.extension.ReceiveGoodsEntity;
 import com.seven.lib_model.model.user.mine.AddAddressEntity;
 import com.seven.lib_model.model.user.mine.AddressEntity;
+import com.seven.lib_model.model.user.mine.DTEntity;
 import com.seven.lib_model.model.user.mine.ShopEntity;
 import com.seven.lib_opensource.application.SevenApplication;
 
@@ -122,6 +123,9 @@ public class ApiManager {
 
         @POST("user/contact/add")
         Observable<BaseResult> addAddress(@Body AddAddressEntity entity);
+
+        @POST("region/list")
+        Observable<BaseResult<DTEntity>> getRegionList();
     }
 
     public static Observable<BaseResult<TokenEntity>> login(LoginEntity entity) {
@@ -150,5 +154,9 @@ public class ApiManager {
 
     public static Observable<BaseResult> addAddress(AddAddressEntity entity){
         return apiManagerService.addAddress(entity);
+    }
+
+    public static Observable<BaseResult<DTEntity>> getRegionList(){
+        return apiManagerService.getRegionList();
     }
 }
