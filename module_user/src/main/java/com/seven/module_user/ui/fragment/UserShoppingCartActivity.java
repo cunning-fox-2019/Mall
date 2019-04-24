@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -51,6 +52,16 @@ public class UserShoppingCartActivity extends BaseTitleActivity {
     BaseRecyclerView recyclerView;
     @BindView(R2.id.pay_btn_layout)
     LinearLayout payBtnLayout;
+    @BindView(R2.id.select_all_img)
+    ImageView select_all_img;
+    @BindView(R2.id.select_all_tv)
+    TextView select_all_tv;
+    @BindView(R2.id.select_num)
+    TextView select_num;
+    @BindView(R2.id.money)
+    TextView moneyTv;
+
+    private boolean isSelectAll = false;
 
     @Override
     public void showLoading() {
@@ -139,6 +150,7 @@ public class UserShoppingCartActivity extends BaseTitleActivity {
                         if (view.getId() == R.id.is_select_btn) {
                             entity.setSelect(!entity.isSelect());
                             adapter.notifyItemChanged(position);
+                            changeSelectNum();
                         }
                     }
                 })
@@ -161,12 +173,50 @@ public class UserShoppingCartActivity extends BaseTitleActivity {
 
             }
         }
-        if (selectList.size() < 0) {
+        if (selectList.size() < 1) {
             ToastUtils.showToast(mContext, "没有选择商品");
             return;
         }
-        RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_COMMODITY_ORDER);
-        EventBus.getDefault().post(new MessageEvent(Constants.BundleConfig.EVENT_CODE_INT,shopIds.toString()));
 
+        RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_COMMODITY_ORDER);
+        //todo shopIds.toString()是拼接好的id字符串可以直接用
+
+
+    }
+
+    @OnClick({R2.id.select_all_img, R2.id.select_all_tv})
+    void selectAll() {
+        isSelectAll = !isSelectAll;
+        if (isSelectAll) {
+            select_all_img.setImageDrawable(getResources().getDrawable(R.drawable.item_shopping_cart_selector));
+            select_all_tv.setTextColor(getResources().getColor(R.color.add_address_default_c));
+        } else {
+            select_all_img.setImageDrawable(getResources().getDrawable(R.drawable.item_shopping_cart_default));
+            select_all_tv.setTextColor(getResources().getColor(R.color.add_address_default_n));
+        }
+        changeListDataState(isSelectAll);
+    }
+
+    private void changeListDataState(boolean isSelect) {
+        List<CartEntity> entityList = recyclerView.getAdapter().getData();
+        for (CartEntity entity : entityList) {
+            entity.setSelect(isSelect);
+        }
+        recyclerView.notifyDataSetChanged();
+        changeSelectNum();
+    }
+
+    private void changeSelectNum() {
+        int num = 0;
+        double money = 0.0f;
+        List<CartEntity> entityList = recyclerView.getAdapter().getData();
+        for (CartEntity entity : entityList) {
+            if (entity.isSelect()) {
+                num++;
+                money += entity.getPrice();
+            }
+        }
+        select_num.setText("(" + num + ")");
+        moneyTv.setText("总价：￥" + money);
     }
 }
