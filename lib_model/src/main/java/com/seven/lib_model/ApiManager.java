@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.seven.lib_model.model.user.LoginEntity;
 import com.seven.lib_model.model.user.TokenEntity;
+import com.seven.lib_model.model.user.UserEntity;
 import com.seven.lib_model.model.user.extension.ReceiveGoodsEntity;
 import com.seven.lib_model.model.user.mine.AddAddressEntity;
 import com.seven.lib_model.model.user.mine.AddressEntity;
@@ -126,6 +127,9 @@ public class ApiManager {
 
         @POST("region/list")
         Observable<BaseResult<DTEntity>> getRegionList();
+
+        @POST("user/info")
+        Observable<BaseResult<UserEntity>> getUserInfo();
     }
 
     public static Observable<BaseResult<TokenEntity>> login(LoginEntity entity) {
@@ -148,15 +152,19 @@ public class ApiManager {
         return apiManagerService.getOrderList(page, status);
     }
 
-    public static Observable<BaseResult<List<AddressEntity>>> getAddressList(){
+    public static Observable<BaseResult<List<AddressEntity>>> getAddressList() {
         return apiManagerService.getAddressList();
     }
 
-    public static Observable<BaseResult> addAddress(AddAddressEntity entity){
+    public static Observable<BaseResult> addAddress(AddAddressEntity entity) {
         return apiManagerService.addAddress(entity);
     }
 
-    public static Observable<BaseResult<DTEntity>> getRegionList(){
+    public static Observable<BaseResult<DTEntity>> getRegionList() {
         return apiManagerService.getRegionList();
+    }
+
+    public static Observable<BaseResult<UserEntity>> getUserInfo() {
+        return apiManagerService.getUserInfo();
     }
 }

@@ -8,27 +8,31 @@
         android:id="@+id/list_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="#fff"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:background="#fff" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/margin_16">
 
         <ImageView
+            android:id="@+id/select_all_img"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:src="@drawable/item_shopping_cart_default" />
 
         <TextView
+            android:id="@+id/select_all_tv"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
             android:paddingLeft="@dimen/margin_6"
-            android:text="全选" />
+            android:text="全选"
+            android:textColor="@color/add_address_default_n" />
 
         <TextView
             android:id="@+id/delete_select"
@@ -53,33 +57,36 @@
             android:visibility="visible">
 
             <TextView
+                android:id="@+id/money"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="总价：￥720.00" />
+                android:paddingRight="@dimen/margin_16"
+                android:text="总价：￥0.00"
+                android:textColor="@color/add_address_default_c" />
 
             <LinearLayout
                 android:id="@+id/pay_btn_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:gravity="center_vertical"
                 android:background="@drawable/button_rect"
+                android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:padding="@dimen/margin_16">
 
                 <TextView
-                    android:textColor="#fff"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="去结算" />
+                    android:text="去结算"
+                    android:textColor="#fff" />
 
                 <TextView
                     android:id="@+id/select_num"
-                    android:textColor="#fff"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="(2)" />
+                    android:text="(0)"
+                    android:textColor="#fff" />
             </LinearLayout>
         </LinearLayout>
 

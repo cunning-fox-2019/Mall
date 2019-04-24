@@ -1,6 +1,7 @@
 package com.seven.mall.application;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.multidex.MultiDex;
 
 import com.seven.lib_common.stextview.STextViewSDK;
