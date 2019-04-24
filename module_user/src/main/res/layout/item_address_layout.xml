@@ -56,7 +56,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:button="@drawable/item_shopping_cart_default"
             android:drawableLeft="@drawable/item_shopping_cart_default"
             android:drawablePadding="@dimen/padding_8"
             android:gravity="center_vertical"

@@ -74,7 +74,7 @@ public class OrderListFragment extends BaseFragment {
         recyclerView.init(layoutManager, new BaseQuickAdapter<OrderEntity, BaseViewHolder>(R.layout.item_order_list_layout, list) {
             @Override
             protected void convert(BaseViewHolder helper, OrderEntity item) {
-helper.addOnClickListener(R.id.button_1);
+                helper.addOnClickListener(R.id.button_1);
             }
         }).changeItemDecoration(new DividerSpaceItemDecoration(6))
                 .addOnItemClickListener(new OnItemClickListener() {
@@ -86,15 +86,15 @@ helper.addOnClickListener(R.id.button_1);
                     }
                 })
                 .addOnItemChildClickListener(new OnItemChildClickListener() {
-            @Override
-            public void onSimpleItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                if (currentListType.equals("wait_pay")) {
-                   if (view.getId()==R.id.button_1){
-                       initWaitPay();
-                   }
-                }
-            }
-        });
+                    @Override
+                    public void onSimpleItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                        if (currentListType.equals("wait_pay")) {
+                            if (view.getId() == R.id.button_1) {
+                                initWaitPay();
+                            }
+                        }
+                    }
+                });
     }
 
     @Override
@@ -102,7 +102,7 @@ helper.addOnClickListener(R.id.button_1);
 
     }
 
-    private void initWaitPay(){
+    private void initWaitPay() {
         List<String> cancelReasons = new ArrayList<>();
         cancelReasons.add("原因1");
         cancelReasons.add("原因2");
@@ -113,7 +113,7 @@ helper.addOnClickListener(R.id.button_1);
             public void onOptionsSelect(int options1, int options2, int options3, View v) {
 
             }
-        }) .setContentTextSize(20)//设置滚轮文字大小
+        }).setContentTextSize(20)//设置滚轮文字大小
                 .setDividerColor(Color.LTGRAY)//设置分割线的颜色
                 .setSelectOptions(0)//默认选中项
                 .setBgColor(Color.WHITE)
@@ -124,7 +124,7 @@ helper.addOnClickListener(R.id.button_1);
                 .isCenterLabel(false) //是否只显示中间选中项的label文字，false则每项item全部都带有label。
                 .setOutSideColor(0x00000000) //设置外部遮罩颜色
                 .build();
-cancelReasonPickerView.setPicker(cancelReasons);
+        cancelReasonPickerView.setPicker(cancelReasons);
         cancelReasonPickerView.show();
     }
 }

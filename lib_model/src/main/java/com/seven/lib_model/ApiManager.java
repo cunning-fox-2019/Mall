@@ -9,10 +9,15 @@ import com.seven.lib_model.model.extension.RewardRuleEntity;
 import com.seven.lib_model.model.extension.RewardRuleParam;
 import com.seven.lib_model.model.user.LoginEntity;
 import com.seven.lib_model.model.user.TokenEntity;
+import com.seven.lib_model.model.user.extension.ReceiveGoodsEntity;
+import com.seven.lib_model.model.user.mine.AddAddressEntity;
+import com.seven.lib_model.model.user.mine.AddressEntity;
+import com.seven.lib_model.model.user.mine.DTEntity;
 import com.seven.lib_model.model.user.mine.ShopEntity;
 import com.seven.lib_opensource.application.SevenApplication;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
@@ -26,6 +31,8 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 
@@ -80,9 +87,9 @@ public class ApiManager {
             Request original = chain.request();
             // 配置全局的token
 
-           String authToken = SevenApplication.getInstance().getToken();
+            String authToken = SevenApplication.getInstance().getToken();
             Request.Builder requestBuilder = original.newBuilder()
-                     .header("Authorization", authToken)
+                    .header("Authorization", authToken)
                     .method(original.method(), original.body());
             Request request = requestBuilder.build();
             //执行请求
@@ -100,13 +107,29 @@ public class ApiManager {
      * 服务接口集合
      */
     private interface ApiManagerService {
-        //user-----------------------------------------------
         @POST("login")
         Observable<BaseResult<TokenEntity>> login(@Body LoginEntity entity);
 
+        @POST("promotion/form/goods/list")
+        Observable<BaseResult<ReceiveGoodsEntity>> getReciveGoodsList();
 
         @POST("cart/list")
         Observable<BaseResult<ShopEntity>> getCartList();
+
+        @POST("collect/list")
+        Observable<BaseResult<ShopEntity>> getCollectList();
+
+        @POST("order/list")
+        Observable<BaseResult> getOrderList(@Query("page") int page, @Query("status") int status);
+
+        @POST("user/contact/list")
+        Observable<BaseResult<List<AddressEntity>>> getAddressList();
+
+        @POST("user/contact/add")
+        Observable<BaseResult> addAddress(@Body AddAddressEntity entity);
+
+        @POST("region/list")
+        Observable<BaseResult<DTEntity>> getRegionList();
 
         //extension-------------------------------------------
         @POST("promotion/form/goods/list")
@@ -120,12 +143,32 @@ public class ApiManager {
         return apiManagerService.login(entity);
     }
 
-    public static Observable<BaseResult<ReceiveGoodsEntity>> getReciveGoodsList(){
+    public static Observable<BaseResult<ReceiveGoodsEntity>> getReciveGoodsList() {
         return apiManagerService.getReciveGoodsList();
     }
 
-    public static Observable<BaseResult<ShopEntity>> getCartList(){
+    public static Observable<BaseResult<ShopEntity>> getCartList() {
         return apiManagerService.getCartList();
+    }
+
+    public static Observable<BaseResult<ShopEntity>> getCollectList() {
+        return apiManagerService.getCollectList();
+    }
+
+    public static Observable<BaseResult> getOrderList(int page, int status) {
+        return apiManagerService.getOrderList(page, status);
+    }
+
+    public static Observable<BaseResult<List<AddressEntity>>> getAddressList(){
+        return apiManagerService.getAddressList();
+    }
+
+    public static Observable<BaseResult> addAddress(AddAddressEntity entity){
+        return apiManagerService.addAddress(entity);
+    }
+
+    public static Observable<BaseResult<DTEntity>> getRegionList(){
+        return apiManagerService.getRegionList();
     }
 
     public static Observable<BaseResult<RewardRuleEntity>> getRewardRule(int role){

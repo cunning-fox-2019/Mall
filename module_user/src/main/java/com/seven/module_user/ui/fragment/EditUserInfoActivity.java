@@ -21,9 +21,7 @@ import com.seven.module_user.ui.fragment.view.CustomToolbar;
 
 import butterknife.BindView;
 
-/**
- * Created by ouyang on 2019/3/27.
- */
+
 
 public class EditUserInfoActivity extends BaseAppCompatActivity {
     @BindView(R2.id.toolbar)
