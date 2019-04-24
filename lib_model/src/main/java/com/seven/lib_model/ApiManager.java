@@ -10,7 +10,6 @@ import com.seven.lib_model.model.extension.RewardRuleParam;
 import com.seven.lib_model.model.user.LoginEntity;
 import com.seven.lib_model.model.user.TokenEntity;
 import com.seven.lib_model.model.user.UserEntity;
-import com.seven.lib_model.model.user.extension.ReceiveGoodsEntity;
 import com.seven.lib_model.model.user.mine.AddAddressEntity;
 import com.seven.lib_model.model.user.mine.AddressEntity;
 import com.seven.lib_model.model.user.mine.DTEntity;
@@ -109,9 +108,6 @@ public class ApiManager {
     private interface ApiManagerService {
         @POST("login")
         Observable<BaseResult<TokenEntity>> login(@Body LoginEntity entity);
-
-        @POST("promotion/form/goods/list")
-        Observable<BaseResult<ReceiveGoodsEntity>> getReciveGoodsList();
 
         @POST("cart/list")
         Observable<BaseResult<ShopEntity>> getCartList();
