@@ -4,9 +4,11 @@ import android.content.Context;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.seven.lib_model.model.extension.ReceiveGoodsEntity;
+import com.seven.lib_model.model.extension.RewardRuleEntity;
+import com.seven.lib_model.model.extension.RewardRuleParam;
 import com.seven.lib_model.model.user.LoginEntity;
 import com.seven.lib_model.model.user.TokenEntity;
-import com.seven.lib_model.model.user.extension.ReceiveGoodsEntity;
 import com.seven.lib_model.model.user.mine.ShopEntity;
 import com.seven.lib_opensource.application.SevenApplication;
 
@@ -24,6 +26,7 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 
 
 /**
@@ -97,14 +100,20 @@ public class ApiManager {
      * 服务接口集合
      */
     private interface ApiManagerService {
+        //user-----------------------------------------------
         @POST("login")
         Observable<BaseResult<TokenEntity>> login(@Body LoginEntity entity);
 
-        @POST("promotion/form/goods/list")
-        Observable<BaseResult<ReceiveGoodsEntity>> getReciveGoodsList();
 
         @POST("cart/list")
         Observable<BaseResult<ShopEntity>> getCartList();
+
+        //extension-------------------------------------------
+        @POST("promotion/form/goods/list")
+        Observable<BaseResult<ReceiveGoodsEntity>> getReciveGoodsList();
+
+        @POST("/reward/rule")
+        Observable<BaseResult<RewardRuleEntity>> getRewardRul(@Query("role") int role);
     }
 
     public static Observable<BaseResult<TokenEntity>> login(LoginEntity entity) {
@@ -117,5 +126,9 @@ public class ApiManager {
 
     public static Observable<BaseResult<ShopEntity>> getCartList(){
         return apiManagerService.getCartList();
+    }
+
+    public static Observable<BaseResult<RewardRuleEntity>> getRewardRule(int role){
+        return apiManagerService.getRewardRul(role);
     }
 }

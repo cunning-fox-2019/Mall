@@ -74,5 +74,9 @@ public interface RetrofitService {
 
     @POST(orderPay)
     Observable<HttpResponse> orderPay(@Body RequestBody requestBody);
+
+    //extension
+    @POST("reward/rule")
+    Observable<HttpResponse> rewardrule(@Body RequestBody requestBody);
 }
 

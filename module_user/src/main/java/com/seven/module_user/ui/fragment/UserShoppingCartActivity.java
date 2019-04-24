@@ -3,6 +3,7 @@ package com.seven.module_user.ui.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -44,7 +45,7 @@ import io.reactivex.schedulers.Schedulers;
 /**
  * Created by xxxxxxH on 2019/4/13.
  */
-@Route(path = RouterPath.ACTIVITY_ADDRESS)
+@Route(path = RouterPath.ACTIVITY_SHOPPING_CART)
 public class UserShoppingCartActivity extends BaseTitleActivity {
 
     @BindView(R2.id.list_view)
@@ -74,6 +75,13 @@ public class UserShoppingCartActivity extends BaseTitleActivity {
 
     @Override
     protected void initView(Bundle savedInstanceState) {
+        try {
+            EventBus.getDefault().register(this);
+
+        }catch (Exception e){
+            Log.e("xxxxxx",e.toString());
+        }
+
         setTitleText(R.string.user_shop_cart);
 
         ApiManager.getCartList().observeOn(AndroidSchedulers.mainThread())
@@ -165,8 +173,8 @@ public class UserShoppingCartActivity extends BaseTitleActivity {
             ToastUtils.showToast(mContext, "没有选择商品");
             return;
         }
-        RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_COMMODITY_ORDER);
-        EventBus.getDefault().post(new MessageEvent(Constants.BundleConfig.EVENT_CODE_INT,shopIds.toString()));
+//        RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_COMMODITY_ORDER);
+        EventBus.getDefault().postSticky(new MessageEvent(Constants.BundleConfig.EVENT_CODE_INT,shopIds.toString()));
 
     }
 }

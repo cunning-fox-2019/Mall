@@ -111,4 +111,9 @@ public class RequestHelper {
     public Observable<HttpResponse> orderPay(String json) {
         return appService.orderPay(requestBody(json));
     }
+
+    //extension
+    public Observable<HttpResponse> rewardrule(String json){
+        return appService.rewardrule(requestBody(json));
+    }
 }

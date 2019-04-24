@@ -34,6 +34,9 @@ public class UserFragment extends BaseFragment {
     TextView waitSend;
     @BindView(R2.id.shop_received)
     TextView shopReceived;
+    @BindView(R2.id.shop_cart)
+    TextView shop_cart;
+
 
     @Override
     public int getContentViewId() {

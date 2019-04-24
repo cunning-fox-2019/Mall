@@ -1,4 +1,4 @@
-package com.seven.lib_model.model.user.extension;
+package com.seven.lib_model.model.extension;
 
 import java.io.Serializable;
 import java.util.List;
