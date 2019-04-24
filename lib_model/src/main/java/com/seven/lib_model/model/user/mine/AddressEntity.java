@@ -124,6 +124,9 @@ public class AddressEntity {
     public String toString() {
 
         return "id>" + id +
-                "-----address>" + address + "----选择还是查看";
+                "-----address>" + address +
+                "-----contact_name>" + contact_name +
+                "-----contact_phone>" + contact_phone +
+                "-----选择还是查看";
     }
 }

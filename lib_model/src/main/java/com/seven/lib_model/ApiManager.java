@@ -9,6 +9,7 @@ import com.seven.lib_model.model.extension.RewardRuleEntity;
 import com.seven.lib_model.model.extension.RewardRuleParam;
 import com.seven.lib_model.model.user.LoginEntity;
 import com.seven.lib_model.model.user.TokenEntity;
+import com.seven.lib_model.model.user.UserEntity;
 import com.seven.lib_model.model.user.extension.ReceiveGoodsEntity;
 import com.seven.lib_model.model.user.mine.AddAddressEntity;
 import com.seven.lib_model.model.user.mine.AddressEntity;
@@ -31,7 +32,6 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
-import retrofit2.http.Query;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -137,6 +137,9 @@ public class ApiManager {
 
         @POST("/reward/rule")
         Observable<BaseResult<RewardRuleEntity>> getRewardRul(@Query("role") int role);
+
+        @POST("user/info")
+        Observable<BaseResult<UserEntity>> getUserInfo();
     }
 
     public static Observable<BaseResult<TokenEntity>> login(LoginEntity entity) {
@@ -159,19 +162,19 @@ public class ApiManager {
         return apiManagerService.getOrderList(page, status);
     }
 
-    public static Observable<BaseResult<List<AddressEntity>>> getAddressList(){
+    public static Observable<BaseResult<List<AddressEntity>>> getAddressList() {
         return apiManagerService.getAddressList();
     }
 
-    public static Observable<BaseResult> addAddress(AddAddressEntity entity){
+    public static Observable<BaseResult> addAddress(AddAddressEntity entity) {
         return apiManagerService.addAddress(entity);
     }
 
-    public static Observable<BaseResult<DTEntity>> getRegionList(){
+    public static Observable<BaseResult<DTEntity>> getRegionList() {
         return apiManagerService.getRegionList();
     }
 
-    public static Observable<BaseResult<RewardRuleEntity>> getRewardRule(int role){
-        return apiManagerService.getRewardRul(role);
+    public static Observable<BaseResult<UserEntity>> getUserInfo() {
+        return apiManagerService.getUserInfo();
     }
 }
