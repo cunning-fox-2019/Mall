@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
 import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
@@ -28,6 +29,7 @@ import com.seven.lib_common.utils.ToastUtils;
 import com.seven.lib_model.ApiManager;
 import com.seven.lib_model.BaseResult;
 import com.seven.lib_model.model.user.mine.AddAddressEntity;
+import com.seven.lib_model.model.user.mine.AddressEntity;
 import com.seven.lib_model.model.user.mine.DTEntity;
 import com.seven.lib_model.model.user.mine.RegionEntity;
 import com.seven.lib_router.router.RouterPath;
@@ -47,6 +49,9 @@ import io.reactivex.schedulers.Schedulers;
 
 @Route(path = RouterPath.ACTIVITY_MINE_ADD_ADDRESS)
 public class UserCreateAddressActivity extends BaseTitleActivity {
+
+    @Autowired
+    AddressEntity addressEntity;
 
     @BindView(R2.id.address_tx)
     TextView addressTx;
@@ -139,7 +144,10 @@ public class UserCreateAddressActivity extends BaseTitleActivity {
 
     @Override
     protected void initBundleData(Intent intent) {
-
+        if (intent == null) {
+            intent = getIntent();
+            addressEntity = (AddressEntity) intent.getSerializableExtra("EDIT_ADDRESS");
+        }
     }
 
     private void prepareCityList() {
@@ -224,6 +232,17 @@ public class UserCreateAddressActivity extends BaseTitleActivity {
             ToastUtils.showToast(mContext, "请选择地址!");
             return;
         }
+        if (addressEntity != null) {
+            addressEntity.setAddress(addressDetail.getText().toString());
+            addressEntity.setContact_name(nameEdit.getText().toString());
+            addressEntity.setContact_phone(phoneEdit.getText().toString());
+            addressEntity.setIs_default(isDefault ? 1 : 0);
+            addressEntity.setProvince_id(provinceList.get(provincePosition).getId());
+            addressEntity.setCity_id(provinceList.get(provincePosition).getSub().get(cityPosition).getId());
+            addressEntity.setDistrict_id(provinceList.get(provincePosition).getSub().get(cityPosition).getSub().get(areaPosition).getId());
+            upData();
+            return;
+        }
         AddAddressEntity entity = new AddAddressEntity();
         entity.setAddress(addressDetail.getText().toString());
         entity.setContact_name(nameEdit.getText().toString());
@@ -247,13 +266,43 @@ public class UserCreateAddressActivity extends BaseTitleActivity {
 
                     @Override
                     public void onNext(BaseResult baseResult) {
-                        Log.e("create",baseResult.getMessage());
-                        Log.e("create",baseResult.getCode()+"--->");
-                        if (baseResult.getCode()==1){
+                        Log.e("create", baseResult.getMessage());
+                        Log.e("create", baseResult.getCode() + "--->");
+                        if (baseResult.getCode() == 1) {
                             finish();
-                        }else {
+                        } else {
                             showToast(baseResult.getMessage());
                         }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    private void upData() {
+        ApiManager.editAddress(addressEntity)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Observer<BaseResult>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(BaseResult baseResult) {
+                        if (baseResult.getCode() == 1) {
+                            finish();
+                        }
+                        ToastUtils.showToast(mContext, baseResult.getMessage());
                     }
 
                     @Override

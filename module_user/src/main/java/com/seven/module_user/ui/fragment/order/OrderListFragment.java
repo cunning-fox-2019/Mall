@@ -7,6 +7,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -18,12 +19,15 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.seven.lib_common.base.fragment.BaseFragment;
+import com.seven.lib_common.utils.glide.GlideUtils;
 import com.seven.lib_model.ApiManager;
 import com.seven.lib_model.BaseResult;
 import com.seven.lib_model.model.user.OrderEntity;
 import com.seven.lib_model.model.user.OrderListRequestEntity;
 import com.seven.lib_model.model.user.mine.CommonListPageEntity;
 import com.seven.lib_model.model.user.mine.GoodsListBean;
+import com.seven.lib_router.router.RouterPath;
+import com.seven.lib_router.router.RouterUtils;
 import com.seven.module_user.R;
 import com.seven.module_user.R2;
 import com.seven.module_user.ui.fragment.view.BaseRecyclerView;
@@ -79,8 +83,6 @@ public class OrderListFragment extends BaseFragment {
     @Override
     public void init(Bundle savedInstanceState) {
         getData();
-
-
     }
 
     @Override
@@ -159,6 +161,8 @@ public class OrderListFragment extends BaseFragment {
                             .setText(R.id.goods_number, "X" + goods.getNumber())
                             .setText(R.id.order_number_total, "共" + item.getGoods_list().size() + "件商品")
                             .setText(R.id.order_money_total, "合计：￥" + item.getTotal());
+                    ImageView imageView = helper.getView(R.id.goods_img);
+                    GlideUtils.loadImage(mContext, goods.getGoods_thumb(), imageView);
                 }
             }).setEmptyView(getEmptyView())
                     .setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -177,9 +181,14 @@ public class OrderListFragment extends BaseFragment {
                     .addOnItemClickListener(new OnItemClickListener() {
                         @Override
                         public void onSimpleItemClick(BaseQuickAdapter adapter, View view, int position) {
-                            if (currentListType == 1) {
-                                startActivity(new Intent(getActivity(), UserOrderDetailActivity.class));
-                            }
+//                            if (currentListType == 1) {
+//                                startActivity(new Intent(getActivity(), UserOrderDetailActivity.class));
+//                            }
+                            OrderEntity entity = (OrderEntity) adapter.getData().get(position);
+//                            Intent intent = new Intent(getActivity(), UserOrderDetailActivity.class);
+//                            intent.putExtra("order_id",entity.getId());
+//                            startActivity(intent);
+                           RouterUtils.getInstance().routerWithString(RouterPath.ACTIVITY_MINE_SHOP_PAY, "order_id", String.valueOf(entity.getId()));
                         }
                     })
                     .addOnItemChildClickListener(new OnItemChildClickListener() {
