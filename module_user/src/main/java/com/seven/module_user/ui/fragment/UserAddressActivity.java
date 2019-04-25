@@ -134,13 +134,13 @@ public class UserAddressActivity extends BaseTitleActivity {
         public void onSimpleItemClick(BaseQuickAdapter adapter, View view, int position) {
             AddressEntity entity = (AddressEntity) adapter.getData().get(position);
             //todo 选择地址才进来if 查看时不进入
-            if (isChoose) {
+            if (code!=0) {
                 ContactDefaultEntity entity1 = new ContactDefaultEntity();
                 entity1.setId(entity.getId());
                 entity1.setContact_name(entity.getContact_name());
                 entity1.setContact_phone(entity.getContact_phone());
                 entity1.setAddress(entity.getAddress());
-                EventBus.getDefault().post(new ObjectsEvent(Constants.BundleConfig.EVENT_CODE_INT, entity1));
+                EventBus.getDefault().post(new ObjectsEvent(code, entity1));
             }
             ToastUtils.showToast(mContext, entity.toString() + isChoose);
         }
@@ -167,6 +167,7 @@ public class UserAddressActivity extends BaseTitleActivity {
 
     @Override
     public void onClick(View view) {
+        super.onClick(view);
         if (view.getId() == R.id.empty_add_address) {
             startActivity(new Intent(mContext, UserCreateAddressActivity.class));
         }
