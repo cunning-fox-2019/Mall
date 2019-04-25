@@ -4,12 +4,14 @@ import android.content.Context;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.seven.lib_model.model.extension.ReceiveGoodsEntity;
+import com.seven.lib_model.model.extension.RewardRuleEntity;
+import com.seven.lib_model.model.extension.RewardRuleParam;
 import com.seven.lib_model.model.user.LoginEntity;
 import com.seven.lib_model.model.user.OrderEntity;
 import com.seven.lib_model.model.user.OrderListRequestEntity;
 import com.seven.lib_model.model.user.TokenEntity;
 import com.seven.lib_model.model.user.UserEntity;
-import com.seven.lib_model.model.user.extension.ReceiveGoodsEntity;
 import com.seven.lib_model.model.user.mine.AddAddressEntity;
 import com.seven.lib_model.model.user.mine.AddressEntity;
 import com.seven.lib_model.model.user.mine.CommonListPageEntity;
@@ -110,9 +112,6 @@ public class ApiManager {
         @POST("login")
         Observable<BaseResult<TokenEntity>> login(@Body LoginEntity entity);
 
-        @POST("promotion/form/goods/list")
-        Observable<BaseResult<ReceiveGoodsEntity>> getReciveGoodsList();
-
         @POST("cart/list")
         Observable<BaseResult<ShopEntity>> getCartList();
 
@@ -130,6 +129,13 @@ public class ApiManager {
 
         @POST("region/list")
         Observable<BaseResult<DTEntity>> getRegionList();
+
+        //extension-------------------------------------------
+        @POST("promotion/form/goods/list")
+        Observable<BaseResult<ReceiveGoodsEntity>> getReciveGoodsList();
+
+        @POST("/reward/rule")
+        Observable<BaseResult<RewardRuleEntity>> getRewardRul(@Query("role") int role);
 
         @POST("user/info")
         Observable<BaseResult<UserEntity>> getUserInfo();

@@ -51,6 +51,9 @@ public class UserFragment extends BaseFragment {
     TextView userName;
     @BindView(R2.id.user_photo)
     ImageView userPhoto;
+    @BindView(R2.id.shop_cart)
+    TextView shop_cart;
+
 
     @Override
     public int getContentViewId() {
@@ -119,7 +122,7 @@ public class UserFragment extends BaseFragment {
 
     @OnClick(R2.id.shop_cart)
     void goShopCar() {
-        RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_MINE_SHOP_CAR);
+        RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_SHOPPING_CART);
     }
 
     @OnClick(R2.id.user_info_layout)

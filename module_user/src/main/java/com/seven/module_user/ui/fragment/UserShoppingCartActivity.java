@@ -45,7 +45,7 @@ import io.reactivex.schedulers.Schedulers;
 /**
  * Created by xxxxxxH on 2019/4/13.
  */
-@Route(path = RouterPath.ACTIVITY_MINE_SHOP_CAR)
+@Route(path = RouterPath.ACTIVITY_SHOPPING_CART)
 public class UserShoppingCartActivity extends BaseTitleActivity {
 
     @BindView(R2.id.list_view)
@@ -180,6 +180,7 @@ public class UserShoppingCartActivity extends BaseTitleActivity {
 
         RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_COMMODITY_ORDER);
         //todo shopIds.toString()是拼接好的id字符串可以直接用
+        EventBus.getDefault().post(new ObjectsEvent(Constants.BundleConfig.EVENT_CODE_INT,shopIds));
 
 
     }

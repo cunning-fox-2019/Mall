@@ -17,12 +17,17 @@ import com.seven.lib_common.base.activity.BaseTitleActivity;
 import com.seven.lib_common.utils.ToastUtils;
 import com.seven.lib_model.ApiManager;
 import com.seven.lib_model.BaseResult;
+import com.seven.lib_model.model.home.ContactDefaultEntity;
 import com.seven.lib_model.model.user.mine.AddressEntity;
+import com.seven.lib_opensource.event.ObjectsEvent;
+import com.seven.lib_router.Constants;
 import com.seven.lib_router.router.RouterPath;
 import com.seven.module_user.R;
 import com.seven.module_user.R2;
 import com.seven.module_user.ui.fragment.view.BaseRecyclerView;
 import com.seven.module_user.ui.fragment.view.DividerSpaceItemDecoration;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -108,7 +113,12 @@ public class UserAddressActivity extends BaseTitleActivity {
                         AddressEntity entity = (AddressEntity) adapter.getData().get(position);
                         //todo 选择地址才进来if 查看时不进入
                         if (isChoose) {
-
+                            ContactDefaultEntity entity1 = new ContactDefaultEntity();
+                            entity1.setId(entity.getId());
+                            entity1.setContact_name(entity.getContact_name());
+                            entity1.setContact_phone(entity.getContact_phone());
+                            entity1.setAddress(entity.getAddress());
+                            EventBus.getDefault().post(new ObjectsEvent(Constants.BundleConfig.EVENT_CODE_INT,entity1));
                         }
                         ToastUtils.showToast(mContext, entity.toString() + isChoose);
                     }
