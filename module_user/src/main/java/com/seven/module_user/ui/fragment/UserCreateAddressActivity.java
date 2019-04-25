@@ -148,6 +148,7 @@ public class UserCreateAddressActivity extends BaseTitleActivity {
             intent = getIntent();
             addressEntity = (AddressEntity) intent.getSerializableExtra("EDIT_ADDRESS");
             if (addressEntity != null) {
+                //test
                 nameEdit.setText(addressEntity.getContact_name());
                 phoneEdit.setText(addressEntity.getContact_phone());
                 addressTx.setText(addressEntity.getProvince_name() + " " + addressEntity.getCity_name() + " " + addressEntity.getDistrict_name());
