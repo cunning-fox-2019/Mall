@@ -26,8 +26,6 @@ import butterknife.BindView;
  */
 
 public class UserOrderListActivity extends BaseAppCompatActivity {
-    @BindView(R2.id.toolbar)
-    Toolbar mToolBar;
     @BindView(R2.id.tabLayout)
     SlidingTabLayout tabLayout;
     @BindView(R2.id.viewPager)
@@ -35,7 +33,8 @@ public class UserOrderListActivity extends BaseAppCompatActivity {
     private final String[] mTitles = {
             "全部", "待付款", "待发货", "待收货"};
     private List<Fragment> mFragments = new ArrayList<>();
-    private final String[] mType = {"all", "wait_pay", "wait_send", ""};
+  //  private final String[] mType = {"all", "wait_pay", "wait_send", ""};
+    private final int[] mType = {1,2,3,4};
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -75,13 +74,8 @@ public class UserOrderListActivity extends BaseAppCompatActivity {
 
     @Override
     protected void initBundleData(Intent intent) {
-        setSupportActionBar(mToolBar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setTitle("我的订单");
-//        ImmersionBar.with(this).init();
-//        ImmersionBar.setTitleBar(this, mToolBar);
-        for (String type : mType) {
+
+        for (int type : mType) {
             mFragments.add(OrderListFragment.getInstance(type));
         }
         viewPager.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));

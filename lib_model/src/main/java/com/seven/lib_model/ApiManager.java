@@ -5,11 +5,14 @@ import android.content.Context;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.seven.lib_model.model.user.LoginEntity;
+import com.seven.lib_model.model.user.OrderEntity;
+import com.seven.lib_model.model.user.OrderListRequestEntity;
 import com.seven.lib_model.model.user.TokenEntity;
 import com.seven.lib_model.model.user.UserEntity;
 import com.seven.lib_model.model.user.extension.ReceiveGoodsEntity;
 import com.seven.lib_model.model.user.mine.AddAddressEntity;
 import com.seven.lib_model.model.user.mine.AddressEntity;
+import com.seven.lib_model.model.user.mine.CommonListPageEntity;
 import com.seven.lib_model.model.user.mine.DTEntity;
 import com.seven.lib_model.model.user.mine.ShopEntity;
 import com.seven.lib_opensource.application.SevenApplication;
@@ -130,6 +133,9 @@ public class ApiManager {
 
         @POST("user/info")
         Observable<BaseResult<UserEntity>> getUserInfo();
+
+        @POST("order/list")
+        Observable<BaseResult<CommonListPageEntity<OrderEntity>>> getOrderList(@Body OrderListRequestEntity entity);
     }
 
     public static Observable<BaseResult<TokenEntity>> login(LoginEntity entity) {
@@ -166,5 +172,9 @@ public class ApiManager {
 
     public static Observable<BaseResult<UserEntity>> getUserInfo() {
         return apiManagerService.getUserInfo();
+    }
+
+    public static Observable<BaseResult<CommonListPageEntity<OrderEntity>>> getOrderList(OrderListRequestEntity entity){
+        return apiManagerService.getOrderList(entity);
     }
 }
