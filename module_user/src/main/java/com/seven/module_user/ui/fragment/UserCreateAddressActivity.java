@@ -147,6 +147,15 @@ public class UserCreateAddressActivity extends BaseTitleActivity {
         if (intent == null) {
             intent = getIntent();
             addressEntity = (AddressEntity) intent.getSerializableExtra("EDIT_ADDRESS");
+            if (addressEntity != null) {
+                nameEdit.setText(addressEntity.getContact_name());
+                phoneEdit.setText(addressEntity.getContact_phone());
+                addressTx.setText(addressEntity.getProvince_name() + " " + addressEntity.getCity_name() + " " + addressEntity.getDistrict_name());
+                addressDetail.setText(addressEntity.getAddress());
+                isDefaultAddressImg.setImageDrawable(addressEntity.getIs_default() == 0 ? getDrawable(R.drawable.item_shopping_cart_default) : getDrawable(R.drawable.item_shopping_cart_selector));
+                isDefaultAddressTx.setTextColor(addressEntity.getIs_default() == 0 ? getResources().getColor(R.color.add_address_default_n) : getResources().getColor(R.color.add_address_default_c));
+                isDefault = addressEntity.getIs_default() == 1;
+            }
         }
     }
 
