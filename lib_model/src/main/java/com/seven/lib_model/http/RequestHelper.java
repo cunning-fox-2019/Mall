@@ -80,8 +80,8 @@ public class RequestHelper {
         return appService.entrance();
     }
 
-    public Observable<HttpResponse> commodityList(String json) {
-        return appService.commodityList(requestBody(json));
+    public Observable<HttpResponse> commodityRecommendList(String json) {
+        return appService.commodityRecommendList(requestBody(json));
     }
 
     public Observable<HttpResponse> commodityDetails(String json) {
@@ -110,5 +110,13 @@ public class RequestHelper {
 
     public Observable<HttpResponse> orderPay(String json) {
         return appService.orderPay(requestBody(json));
+    }
+
+    public Observable<HttpResponse> collect(String json) {
+        return appService.collect(requestBody(json));
+    }
+
+    public Observable<HttpResponse> commodityList(String json) {
+        return appService.commodityList(requestBody(json));
     }
 }

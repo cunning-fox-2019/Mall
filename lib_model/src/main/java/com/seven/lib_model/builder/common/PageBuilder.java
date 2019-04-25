@@ -8,41 +8,41 @@ package com.seven.lib_model.builder.common;
 
 public class PageBuilder {
 
-    private String page;
-    private String page_size;
+    private int page;
+    private int page_size;
 
     public PageBuilder(Builder builder) {
         this.page = builder.page;
         this.page_size = builder.page_size;
     }
 
-    public String getPage() {
+    public int getPage() {
         return page;
     }
 
-    public void setPage(String page) {
+    public void setPage(int page) {
         this.page = page;
     }
 
-    public String getPage_size() {
+    public int getPage_size() {
         return page_size;
     }
 
-    public void setPage_size(String page_size) {
+    public void setPage_size(int page_size) {
         this.page_size = page_size;
     }
 
     public static class Builder {
 
-        private String page;
-        private String page_size;
+        private int page;
+        private int page_size;
 
-        public Builder page(String page) {
+        public Builder page(int page) {
             this.page = page;
             return this;
         }
 
-        public Builder page_size(String page_size) {
+        public Builder page_size(int page_size) {
             this.page_size = page_size;
             return this;
         }

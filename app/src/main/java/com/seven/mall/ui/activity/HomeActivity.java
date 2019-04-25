@@ -11,8 +11,8 @@ import android.widget.RelativeLayout;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.seven.lib_common.base.activity.BaseAppCompatActivity;
+import com.seven.lib_common.task.ActivityStack;
 import com.seven.lib_model.model.user.RegisterEntity;
-import com.seven.lib_opensource.application.SSDK;
 import com.seven.lib_opensource.event.Event;
 import com.seven.lib_opensource.event.ObjectsEvent;
 import com.seven.lib_router.Constants;
@@ -59,6 +59,11 @@ public class HomeActivity extends BaseAppCompatActivity {
     private Fragment fromFg;
 
     @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
     protected int getContentViewId() {
         return R.layout.activity_home;
     }
@@ -68,6 +73,7 @@ public class HomeActivity extends BaseAppCompatActivity {
 
         EventBus.getDefault().register(this);
 
+        ActivityStack.getInstance().finishActivity(SplashActivity.class);
     }
 
     @Override

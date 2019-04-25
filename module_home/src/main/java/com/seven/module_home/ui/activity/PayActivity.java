@@ -87,7 +87,7 @@ public class PayActivity extends BaseTitleActivity {
 
         selectTab(alipayRl);
 
-        type = Constants.OrderConfig.PAY_ALI;
+        type = Constants.InterfaceConfig.PAY_ALI;
         payCountTv.setText(ResourceUtils.getFormatText(R.string.label_app_pay_count, Variable.getInstance().getTokenCount()));
         payTv.setText(ResourceUtils.getFormatText(R.string.button_sdk_pay, FormatUtils.formatCurrencyD(orderEntity.getToken_price())));
     }
@@ -105,7 +105,7 @@ public class PayActivity extends BaseTitleActivity {
 
         if (view.getId() == R.id.alipay_rl) {
             selectTab(alipayRl);
-            type = Constants.OrderConfig.PAY_ALI;
+            type = Constants.InterfaceConfig.PAY_ALI;
         }
 
         if (view.getId() == R.id.wechat_pay_rl) {
@@ -116,12 +116,12 @@ public class PayActivity extends BaseTitleActivity {
             }
 
             selectTab(wxPayRl);
-            type = Constants.OrderConfig.PAY_WX;
+            type = Constants.InterfaceConfig.PAY_WX;
         }
 
         if (view.getId() == R.id.app_pay_rl) {
             selectTab(appPayRl);
-            type = Constants.OrderConfig.PAY_APP;
+            type = Constants.InterfaceConfig.PAY_APP;
         }
 
         if (view.getId() == R.id.pay_btn) {
@@ -165,12 +165,12 @@ public class PayActivity extends BaseTitleActivity {
 
             case Constants.RequestConfig.ORDER_PAY:
 
-                if (type.equals(Constants.OrderConfig.PAY_ALI)) {
+                if (type.equals(Constants.InterfaceConfig.PAY_ALI)) {
                     AliPayEntity entity = (AliPayEntity) object;
                     PayUtils.getInstance().aliPay(entity.getPay_info());
                 }
 
-                if (type.equals(Constants.OrderConfig.PAY_WX)) {
+                if (type.equals(Constants.InterfaceConfig.PAY_WX)) {
 
                     WxPayEntity entity = (WxPayEntity) object;
 
@@ -179,7 +179,7 @@ public class PayActivity extends BaseTitleActivity {
 
                 }
 
-                if (type == Constants.OrderConfig.PAY_APP) {
+                if (type == Constants.InterfaceConfig.PAY_APP) {
                     dismissLoadingDialog();
                     ToastUtils.showToast(mContext, ResourceUtils.getText(R.string.hint_pay_success));
                     resultDialog(MallDialog.PAY_SUCCEED);

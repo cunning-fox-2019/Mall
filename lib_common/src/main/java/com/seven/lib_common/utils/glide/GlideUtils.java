@@ -7,7 +7,6 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
-import com.bumptech.glide.load.resource.bitmap.FitCenter;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.seven.lib_common.R;
@@ -95,8 +94,8 @@ public class GlideUtils {
                 .load(bitmap)
                 .transition(withCrossFade())
                 .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-                .placeholder(isWhite ? R.drawable.image_default : R.drawable.common_shade)
-                .error(isWhite ? R.drawable.image_default : R.drawable.common_shade)
+                .placeholder(isWhite ? R.drawable.image_default_max : R.drawable.common_shade)
+                .error(isWhite ? R.drawable.image_default_max : R.drawable.common_shade)
                 .into(imageView);
 
     }

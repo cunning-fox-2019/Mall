@@ -6,11 +6,13 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 
+import com.orhanobut.logger.Logger;
 import com.seven.lib_common.base.activity.BaseAppCompatActivity;
 import com.seven.lib_common.listener.OnClickListener;
 import com.seven.lib_common.ui.dialog.CommonDialog;
 import com.seven.lib_common.utils.PermissionUtils;
 import com.seven.lib_common.utils.ResourceUtils;
+import com.seven.lib_common.utils.ScreenUtils;
 import com.seven.lib_common.utils.ToastUtils;
 import com.seven.lib_router.Constants;
 import com.seven.lib_router.router.RouterPath;
@@ -29,13 +31,13 @@ public class SplashActivity extends BaseAppCompatActivity {
 
     @Override
     protected int getContentViewId() {
-        statusBar = StatusBar.HIDE;
+        independent=true;
         return R.layout.activity_splash;
     }
 
     @Override
     protected void init(Bundle savedInstanceState) {
-
+        ScreenUtils.hideBar(this);
     }
 
     @Override
@@ -60,9 +62,7 @@ public class SplashActivity extends BaseAppCompatActivity {
     }
 
     private void intentHome() {
-
-        RouterUtils.getInstance().routerWithFade(RouterPath.ACTIVITY_HOME,mContext);
-        onBackPressed();
+        RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_HOME);
     }
 
     private void permissionDialog() {

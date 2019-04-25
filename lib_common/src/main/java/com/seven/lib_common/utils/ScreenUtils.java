@@ -114,6 +114,8 @@ public class ScreenUtils {
 
         if (decorView == null || globalLayoutListener == null) return;
         decorView.getViewTreeObserver().removeOnGlobalLayoutListener(globalLayoutListener);
+        globalLayoutListener = null;
+        decorView = null;
     }
 
     private static class GlobalLayoutListener implements ViewTreeObserver.OnGlobalLayoutListener {
@@ -301,12 +303,14 @@ public class ScreenUtils {
         }
         return statusHeight;
     }
+
     /**
      * 获取屏幕宽度
+     *
      * @param context
      * @return 宽度
-     * */
-    public static int getScreenWidth(Context context){
+     */
+    public static int getScreenWidth(Context context) {
         Resources resources = context.getResources();
         DisplayMetrics dm = resources.getDisplayMetrics();
         float density = dm.density;
@@ -314,16 +318,32 @@ public class ScreenUtils {
 
         return width;
     }
+
     /**
      * 获取屏幕高度
+     *
      * @param context
      * @return 高度
-     * */
-    public static int getScreenHeight(Context context){
+     */
+    public static int getScreenHeight(Context context) {
         Resources resources = context.getResources();
         DisplayMetrics dm = resources.getDisplayMetrics();
         float density = dm.density;
         int height = dm.heightPixels;
         return height;
     }
+
+    public static void hideBar(Activity activity) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            View decorView = activity.getWindow().getDecorView();
+            int option = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                    | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+            option = option | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
+            decorView.setSystemUiVisibility(option);
+        }
+    }
+
 }

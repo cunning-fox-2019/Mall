@@ -26,6 +26,8 @@ import com.seven.lib_model.model.home.CartTotalEntity;
 import com.seven.lib_model.model.home.CommodityDetailsEntity;
 import com.seven.lib_model.presenter.home.ActHomePresenter;
 import com.seven.lib_opensource.application.SSDK;
+import com.seven.lib_opensource.event.Event;
+import com.seven.lib_opensource.event.ObjectsEvent;
 import com.seven.lib_router.Constants;
 import com.seven.lib_router.router.RouterPath;
 import com.seven.module_home.R;
@@ -34,6 +36,10 @@ import com.seven.module_home.adapter.CommodityDetailsAdapter;
 import com.seven.module_home.ui.sheet.SpecificationSheet;
 import com.seven.module_home.widget.decoration.CommodityDetailsDecoration;
 import com.youth.banner.Banner;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -86,6 +92,7 @@ public class CommodityDetailsActivity extends BaseTitleActivity implements BaseQ
     protected void initView(Bundle savedInstanceState) {
 
         ARouter.getInstance().inject(this);
+        EventBus.getDefault().register(this);
 
         setTitleText(R.string.label_commodity_details);
 
@@ -169,9 +176,24 @@ public class CommodityDetailsActivity extends BaseTitleActivity implements BaseQ
 
     public void btClick(View view) {
 
+        if (view.getId() == R.id.share_rl) {
+
+        }
+
+        if (view.getId() == R.id.shopping_rl) {
+            ARouter.getInstance().build(RouterPath.ACTIVITY_SHOPPING_CART)
+                    .withInt(Constants.BundleConfig.EVENT_CODE, Constants.EventConfig.SHOPPING_CART)
+                    .navigation();
+
+        }
+
+        if (view.getId() == R.id.collection_rl) {
+            showLoadingDialog();
+            presenter.collect(Constants.RequestConfig.COLLECT, id);
+        }
+
         if (view.getId() == R.id.buy_rl || view.getId() == R.id.shopping_add_rl)
             showSpecifications(detailsEntity);
-
 
     }
 
@@ -216,6 +238,10 @@ public class CommodityDetailsActivity extends BaseTitleActivity implements BaseQ
 
                 break;
 
+            case Constants.RequestConfig.COLLECT:
+
+                break;
+
         }
 
     }
@@ -243,7 +269,7 @@ public class CommodityDetailsActivity extends BaseTitleActivity implements BaseQ
 
                     List<CartEntity> cartList = new ArrayList<>();
                     CartEntity cartEntity = new CartEntity();
-                    cartEntity.setFrom(Constants.OrderConfig.GOODS_DETAILS);
+                    cartEntity.setFrom(Constants.InterfaceConfig.GOODS_DETAILS);
                     cartEntity.setId(detailsEntity.getId());
                     cartEntity.setGoods_name(detailsEntity.getGoods_name());
                     cartEntity.setSku_id(skuBean.getId());
@@ -263,6 +289,27 @@ public class CommodityDetailsActivity extends BaseTitleActivity implements BaseQ
 
         if (!specificationSheet.isShowing())
             specificationSheet.showDialog(0, -screenHeight);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(Event event) {
+        switch (event.getWhat()) {
+
+            case Constants.EventConfig.SHOPPING_CART:
+
+                String ids= (String) ((ObjectsEvent)event).getObjects()[0];
+
+                List<CartEntity> cartList = new ArrayList<>();
+                CartEntity cartEntity = new CartEntity();
+                cartEntity.setFrom(Constants.InterfaceConfig.CART);
+                cartEntity.setCart_ids(ids);
+
+                ARouter.getInstance().build(RouterPath.ACTIVITY_COMMODITY_ORDER)
+                        .withSerializable(Constants.BundleConfig.ENTITY, (Serializable) cartList)
+                        .navigation();
+
+                break;
+        }
     }
 
     @Override
@@ -295,5 +342,11 @@ public class CommodityDetailsActivity extends BaseTitleActivity implements BaseQ
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }

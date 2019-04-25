@@ -27,7 +27,6 @@ import com.seven.lib_model.presenter.home.FgHomePresenter;
 import com.seven.lib_opensource.application.SSDK;
 import com.seven.lib_router.Constants;
 import com.seven.lib_router.router.RouterPath;
-import com.seven.lib_router.router.RouterUtils;
 import com.seven.module_home.R;
 import com.seven.module_home.R2;
 import com.seven.module_home.adapter.BannerEntranceAdapter;
@@ -108,7 +107,7 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
             presenter.banner(Constants.RequestConfig.BANNER);
             presenter.entrance(Constants.RequestConfig.ENTRANCE);
         }
-        presenter.commodityList(Constants.RequestConfig.COMMODITY_LIST, String.valueOf(page));
+        presenter.commodityRecommendList(Constants.RequestConfig.COMMODITY_RECOMMEND_LIST, page);
     }
 
     private void setRecyclerView() {
@@ -242,7 +241,7 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
 
                 break;
 
-            case Constants.RequestConfig.COMMODITY_LIST:
+            case Constants.RequestConfig.COMMODITY_RECOMMEND_LIST:
 
                 if (object == null || ((List<CommodityEntity>) object).size() == 0) {
                     adapter.loadMoreEnd();
@@ -274,7 +273,9 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
     public void onClick(View v) {
 
         if (v.getId() == R.id.title_rl)
-            intentCommodity(Constants.BundleConfig.FLOW_SEARCH);
+            ARouter.getInstance().build(RouterPath.ACTIVITY_COMMODITY)
+                    .withInt(Constants.BundleConfig.FLOW, Constants.BundleConfig.FLOW_SEARCH)
+                    .navigation();
 
     }
 
@@ -302,7 +303,10 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
 
         if (adapter instanceof BannerEntranceAdapter)
-            intentCommodity(Constants.BundleConfig.FLOW_ENTRANCE);
+            ARouter.getInstance().build(RouterPath.ACTIVITY_COMMODITY)
+                    .withInt(Constants.BundleConfig.FLOW, Constants.BundleConfig.FLOW_ENTRANCE)
+                    .withInt(Constants.BundleConfig.ID, ((BannerEntranceAdapter) adapter).getItem(position).getId())
+                    .navigation();
         else
             ARouter.getInstance().build(RouterPath.ACTIVITY_COMMODITY_DETAILS)
                     .withInt(Constants.BundleConfig.ID, this.adapter.getItem(position).getId())

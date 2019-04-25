@@ -23,15 +23,21 @@ public interface RetrofitService {
     String password="password/reset";
 
     String banner="ad/index/banner";
+
     String entrance="goods/category/list";
-    String commodityList="goods/top/list";
+    String commodityRecommendList="goods/top/list";
     String commodityDetails="goods/info";
+    String commodityList="goods/list";
+
     String cartTotal="cart/total";
     String cartAdd="cart/add";
+
     String orderPayment="order/payment";
     String orderAdd="order/add";
-    String contactDefault="user/contact/default/info";
     String orderPay="order/pay";
+    String collect="collect/add";
+
+    String contactDefault="user/contact/default/info";
 
     @POST(sms)
     Observable<HttpResponse> sms(@Body RequestBody requestBody);
@@ -51,8 +57,8 @@ public interface RetrofitService {
     @POST(entrance)
     Observable<HttpResponse> entrance();
 
-    @POST(commodityList)
-    Observable<HttpResponse> commodityList(@Body RequestBody requestBody);
+    @POST(commodityRecommendList)
+    Observable<HttpResponse> commodityRecommendList(@Body RequestBody requestBody);
 
     @POST(commodityDetails)
     Observable<HttpResponse> commodityDetails(@Body RequestBody requestBody);
@@ -74,5 +80,11 @@ public interface RetrofitService {
 
     @POST(orderPay)
     Observable<HttpResponse> orderPay(@Body RequestBody requestBody);
+
+    @POST(collect)
+    Observable<HttpResponse> collect(@Body RequestBody requestBody);
+
+    @POST(commodityList)
+    Observable<HttpResponse> commodityList(@Body RequestBody requestBody);
 }
 

@@ -14,7 +14,8 @@
         tools:replace="android:allowBackup">
         <activity
             android:name=".ui.activity.SplashActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/WelcomeStyle">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

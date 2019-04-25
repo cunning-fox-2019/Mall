@@ -29,7 +29,7 @@ public class Constants {
         public static final int TYPE_BUY = 2;
 
         public static final String ID = "id";
-        public static final String EVENT_CODE="eventCode";
+        public static final String EVENT_CODE = "eventCode";
     }
 
     public static class TimeConfig {
@@ -60,14 +60,20 @@ public class Constants {
         /*home*/
         public static final int BANNER = 3001;
         public static final int ENTRANCE = 3002;
-        public static final int COMMODITY_LIST = 3003;
+        public static final int COMMODITY_RECOMMEND_LIST = 3003;
         public static final int COMMODITY_DETAILS = 3004;
-        public static final int CART_TOTAL = 3005;
-        public static final int CART_ADD = 3006;
-        public static final int ORDER_PAYMENT = 3007;
-        public static final int ORDER_ADD = 3008;
-        public static final int CONTACT_DEFAULT = 3009;
+        public static final int COMMODITY_LIST = 3005;
+
+        public static final int CART_TOTAL = 3006;
+        public static final int CART_ADD = 3007;
+
+        public static final int ORDER_PAYMENT = 3008;
+        public static final int ORDER_ADD = 3009;
         public static final int ORDER_PAY = 3010;
+
+        public static final int CONTACT_DEFAULT = 3011;
+
+        public static final int COLLECT = 3012;
 
         /*user*/
         public static final int REGISTER = 6001;
@@ -81,6 +87,10 @@ public class Constants {
 
         public static final int REGISTER = 100;
         public static final int LOGIN = 101;
+
+        /* router */
+        public static final int SHOPPING_CART = 900;
+        public static final int ADDRESS = 901;
 
         /* 第三方sdk */
         public static final int PAY_RESULT = 1000;
@@ -148,14 +158,19 @@ public class Constants {
         public static final String PAY_PASSWORD = "pay_password";
     }
 
-    public static class OrderConfig {
+    public static class InterfaceConfig {
 
-        public static final String CART="cart";
-        public static final String GOODS_DETAILS="goods_detail";
+        public static final String CART = "cart";//购物车购买
+        public static final String GOODS_DETAILS = "goods_detail";//商品详情购买
 
-        public static final String PAY_ALI="alipay";
-        public static final String PAY_WX="wxpay";
-        public static final String PAY_APP="tokenPay";
+        public static final String PAY_ALI = "alipay";//支付宝支付
+        public static final String PAY_WX = "wxpay";//微信支付
+        public static final String PAY_APP = "tokenPay";//令牌支付
 
+        public static final int SORT_COMPREHENSIVE = 1;//综合排序
+        public static final int SORT_SALES_RISE = 2;//销量升序
+        public static final int SORT_SALES_DROP = 3;//销量降序
+        public static final int SORT_PRICE_RISE = 4;//价格升序
+        public static final int SORT_PRICE_DROP = 5;//价格降序
     }
 }

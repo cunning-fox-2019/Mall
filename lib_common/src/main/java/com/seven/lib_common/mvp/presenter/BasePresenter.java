@@ -46,16 +46,16 @@ public class BasePresenter<V, T> implements LifeCycleListener {
     protected boolean isRequest;
     private boolean isToast;
 
-    protected String page;
-    protected String pageSize;
+    protected int page;
+    protected int pageSize;
 
     public BasePresenter(V view, T activity) {
         attachView(view);
         attachActivity(activity);
         setListener(activity);
         isNetwork();
-        page = "1";
-        pageSize = "20";
+        page = 1;
+        pageSize = 20;
     }
 
     private boolean isNetwork() {

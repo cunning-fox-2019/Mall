@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
@@ -60,6 +61,7 @@ public abstract class BaseAppCompatActivity extends RxAppCompatActivity implemen
     private LoadingDialog loadingDialog;
 
     protected StatusBar statusBar;
+    protected boolean independent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +87,7 @@ public abstract class BaseAppCompatActivity extends RxAppCompatActivity implemen
         init(savedInstanceState);
         initBundleData(null);
 
+        if(!independent)
         setStatusBar();
     }
 
@@ -161,6 +164,7 @@ public abstract class BaseAppCompatActivity extends RxAppCompatActivity implemen
         if (mListener != null) {
             mListener.onResume();
         }
+
     }
 
     @Override
