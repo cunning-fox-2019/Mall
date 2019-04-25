@@ -3,43 +3,33 @@ package com.seven.module_user.ui.fragment;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.graphics.ColorUtils;
-import android.support.v7.widget.Toolbar;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.gyf.barlibrary.ImmersionBar;
-import com.seven.lib_common.base.activity.BaseActivity;
-import com.seven.lib_common.base.activity.BaseAppCompatActivity;
-import com.seven.lib_model.user.UserActivityPresenter;
+import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
+import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
+import com.bigkoo.pickerview.view.OptionsPickerView;
+import com.seven.lib_common.base.activity.BaseTitleActivity;
 import com.seven.module_user.R;
 import com.seven.module_user.R2;
-import com.seven.module_user.ui.fragment.view.CustomToolbar;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 
-
-public class EditUserInfoActivity extends BaseAppCompatActivity {
-    @BindView(R2.id.toolbar)
-    Toolbar mToolBar;
+public class EditUserInfoActivity extends BaseTitleActivity {
 
 
-    private UserActivityPresenter presenter;
-
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
+    @BindView(R2.id.user_photo)
+    TextView userPhoto;
+    @BindView(R2.id.user_nick_name)
+    TextView userNickName;
+    @BindView(R2.id.choose_sex)
+    TextView chooseSex;
 
     @Override
     public void showLoading() {
@@ -57,29 +47,22 @@ public class EditUserInfoActivity extends BaseAppCompatActivity {
     }
 
     @Override
-    protected int getContentViewId() {
-        statusBar = StatusBar.LIGHT;
+    protected int getLayoutId() {
         return R.layout.mu_activity_edit_user_info;
     }
 
-    private void getUserInfoDetail() {
-        presenter.getUserInfoDetail(1, 1);
+    @Override
+    protected void initView(Bundle savedInstanceState) {
+        setTitleText(R.string.user_edit_info);
     }
 
     @Override
-    protected void init(Bundle savedInstanceState) {
-        setSupportActionBar(mToolBar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setTitle("编辑资料");
-        ImmersionBar.with(this).init();
-        ImmersionBar.setTitleBar(this, mToolBar);
-        presenter = new UserActivityPresenter(this, this);
+    protected void rightTextBtnClick(View v) {
+
     }
 
     @Override
-    public void result(int code, Boolean hasNextPage, String response, Object object) {
-        super.result(code, hasNextPage, response, object);
+    protected void rightBtnClick(View v) {
 
     }
 
@@ -88,8 +71,37 @@ public class EditUserInfoActivity extends BaseAppCompatActivity {
 
     }
 
-    @Override
-    public void onClick(View view) {
+    private void chooseSex() {
+        final List<String> sexList = new ArrayList<>();
+        sexList.add("男");
+        sexList.add("女");
+        OptionsPickerView sexPickerView = new OptionsPickerBuilder(this, new OnOptionsSelectListener() {
+            @Override
+            public void onOptionsSelect(int options1, int options2, int options3, View v) {
+                chooseSex.setText(sexList.get(options1));
+            }
+        }).setContentTextSize(20)//设置滚轮文字大小
+                .setDividerColor(Color.LTGRAY)//设置分割线的颜色
+                .setSelectOptions(0)//默认选中项
+                .setBgColor(Color.WHITE)
+                .setTitleBgColor(getResources().getColor(R.color.color_eee))
+                .setCancelColor(getResources().getColor(R.color.color_6c))
+                .setSubmitColor(getResources().getColor(R.color.color_1e1d1d))
+                .setTextColorCenter(getResources().getColor(R.color.color_1e1d1d))
+                .isCenterLabel(false) //是否只显示中间选中项的label文字，false则每项item全部都带有label。
+                .setOutSideColor(0x00000000) //设置外部遮罩颜色
+                .build();
+        sexPickerView.setPicker(sexList);
+        sexPickerView.show();
+    }
 
+
+    @OnClick({R2.id.user_photo, R2.id.choose_sex})
+    public void onViewClicked(View view) {
+        if (view.getId() == R.id.user_photo) {
+
+        } else if (view.getId() == R.id.choose_sex) {
+            chooseSex();
+        }
     }
 }

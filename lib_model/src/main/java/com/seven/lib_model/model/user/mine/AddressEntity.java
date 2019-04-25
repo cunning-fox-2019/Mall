@@ -1,10 +1,12 @@
 package com.seven.lib_model.model.user.mine;
 
+import java.io.Serializable;
+
 /**
  * Created by xxxxxxH on 2019/4/24.
  */
 
-public class AddressEntity {
+public class AddressEntity implements Serializable {
 
     /**
      * id : 1

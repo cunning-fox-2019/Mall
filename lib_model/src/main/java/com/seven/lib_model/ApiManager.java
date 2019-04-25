@@ -9,7 +9,6 @@ import com.seven.lib_model.model.extension.BuyRoleEntity;
 import com.seven.lib_model.model.extension.MyInterViewEntity;
 import com.seven.lib_model.model.extension.ReceiveGoodsEntity;
 import com.seven.lib_model.model.extension.RewardRuleEntity;
-import com.seven.lib_model.model.extension.RewardRuleParam;
 import com.seven.lib_model.model.user.LoginEntity;
 import com.seven.lib_model.model.user.OrderEntity;
 import com.seven.lib_model.model.user.OrderListRequestEntity;
@@ -19,6 +18,8 @@ import com.seven.lib_model.model.user.mine.AddAddressEntity;
 import com.seven.lib_model.model.user.mine.AddressEntity;
 import com.seven.lib_model.model.user.mine.CommonListPageEntity;
 import com.seven.lib_model.model.user.mine.DTEntity;
+import com.seven.lib_model.model.user.mine.OrderDetailEntity;
+import com.seven.lib_model.model.user.mine.OrderDetailRequestEntity;
 import com.seven.lib_model.model.user.mine.ShopEntity;
 import com.seven.lib_opensource.application.SevenApplication;
 
@@ -37,7 +38,6 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
-import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 
@@ -154,6 +154,22 @@ public class ApiManager {
 
         @POST("promote/invite/list")
         Observable<BaseResult<MyInterViewEntity>> getMyInterView(@Query("user_id") String user_id);
+
+
+        @POST("order/info")
+        Observable<BaseResult<OrderDetailEntity>> getOrderDetailInfo(@Body OrderDetailRequestEntity entity);
+
+        @POST("user/info/edit")
+        Observable<BaseResult> editUserInfo(@Body UserEntity entity);
+
+        @POST("user/contact/set_default")
+        Observable<BaseResult> setDefaultAddress(@Body DTEntity entity);
+
+        @POST("user/contact/delete")
+        Observable<BaseResult> deleteAddress(@Body DTEntity entity);
+
+        @POST("user/contact/update")
+        Observable<BaseResult> editAddress(@Body AddressEntity entity);
     }
 
     public static Observable<BaseResult<TokenEntity>> login(LoginEntity entity) {
@@ -206,5 +222,25 @@ public class ApiManager {
 
     public static Observable<BaseResult<MyInterViewEntity>> getMyInterView(String id){
         return apiManagerService.getMyInterView(id);
+    }
+
+    public static Observable<BaseResult<OrderDetailEntity>> getOrderDetailInfo(OrderDetailRequestEntity entity){
+        return apiManagerService.getOrderDetailInfo(entity);
+    }
+
+    public static Observable<BaseResult> editUserInfo(UserEntity entity){
+        return apiManagerService.editUserInfo(entity);
+    }
+
+    public static Observable<BaseResult> setDefaultAddress(DTEntity entity){
+        return apiManagerService.setDefaultAddress(entity);
+    }
+
+    public static Observable<BaseResult> deleteAddress(DTEntity entity){
+        return apiManagerService.deleteAddress(entity);
+    }
+
+    public static Observable<BaseResult> editAddress(AddressEntity entity){
+        return apiManagerService.editAddress(entity);
     }
 }
