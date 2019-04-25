@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -47,6 +48,9 @@ import io.reactivex.schedulers.Schedulers;
  */
 @Route(path = RouterPath.ACTIVITY_SHOPPING_CART)
 public class UserShoppingCartActivity extends BaseTitleActivity {
+
+    @Autowired(name = Constants.BundleConfig.EVENT_CODE)
+    int code = 0;
 
     @BindView(R2.id.list_view)
     BaseRecyclerView recyclerView;
@@ -180,7 +184,7 @@ public class UserShoppingCartActivity extends BaseTitleActivity {
 
         RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_COMMODITY_ORDER);
         //todo shopIds.toString()是拼接好的id字符串可以直接用
-        EventBus.getDefault().post(new ObjectsEvent(Constants.BundleConfig.EVENT_CODE_INT,shopIds));
+        EventBus.getDefault().post(new ObjectsEvent(code, shopIds));
 
 
     }

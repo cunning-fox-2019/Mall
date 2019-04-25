@@ -3,5 +3,7 @@
     <application>
         <activity android:name=".ui.activity.IncomeActivity"/>
         <activity android:name=".ui.activity.BuyRoleActivity"/>
+        <activity android:name=".ui.activity.BuyActivity"/>
+        <activity android:name=".ui.activity.MyInterviewActivity" />
     </application>
 </manifest>

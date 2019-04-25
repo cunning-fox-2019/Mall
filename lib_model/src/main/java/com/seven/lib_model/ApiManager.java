@@ -4,6 +4,9 @@ import android.content.Context;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.seven.lib_model.model.extension.BdGoodsEntity;
+import com.seven.lib_model.model.extension.BuyRoleEntity;
+import com.seven.lib_model.model.extension.MyInterViewEntity;
 import com.seven.lib_model.model.extension.ReceiveGoodsEntity;
 import com.seven.lib_model.model.extension.RewardRuleEntity;
 import com.seven.lib_model.model.extension.RewardRuleParam;
@@ -142,6 +145,15 @@ public class ApiManager {
 
         @POST("order/list")
         Observable<BaseResult<CommonListPageEntity<OrderEntity>>> getOrderList(@Body OrderListRequestEntity entity);
+
+        @POST("promotion/role/price")
+        Observable<BaseResult<BuyRoleEntity>> getRolePrice();
+
+        @POST("promotion/form/goods/list")
+        Observable<BaseResult<BdGoodsEntity>> getBdGoods();
+
+        @POST("promote/invite/list")
+        Observable<BaseResult<MyInterViewEntity>> getMyInterView(@Query("user_id") String user_id);
     }
 
     public static Observable<BaseResult<TokenEntity>> login(LoginEntity entity) {
@@ -182,5 +194,17 @@ public class ApiManager {
 
     public static Observable<BaseResult<CommonListPageEntity<OrderEntity>>> getOrderList(OrderListRequestEntity entity){
         return apiManagerService.getOrderList(entity);
+    }
+
+    public static Observable<BaseResult<BuyRoleEntity>> getRolePrice(){
+        return apiManagerService.getRolePrice();
+    }
+
+    public static Observable<BaseResult<BdGoodsEntity>> getBdGoods(){
+        return apiManagerService.getBdGoods();
+    }
+
+    public static Observable<BaseResult<MyInterViewEntity>> getMyInterView(String id){
+        return apiManagerService.getMyInterView(id);
     }
 }

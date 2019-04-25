@@ -5,10 +5,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.seven.lib_common.base.activity.BaseTitleActivity;
 import com.seven.lib_common.utils.ToastUtils;
+import com.seven.lib_model.ApiManager;
+import com.seven.lib_model.BaseResult;
+import com.seven.lib_model.model.extension.BuyRoleEntity;
 import com.seven.lib_router.router.RouterPath;
 import com.seven.module_extension.R;
 import com.seven.module_extension.R2;
@@ -16,6 +20,10 @@ import com.seven.module_extension.R2;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 @Route(path = RouterPath.ACTIVITY_BUY_ROLE)
 public class BuyRoleActivity extends BaseTitleActivity {
@@ -33,6 +41,12 @@ public class BuyRoleActivity extends BaseTitleActivity {
     CheckBox meCbWechat;
     @BindView(R2.id.me_buy_btn)
     Button meBuyBtn;
+    @BindView(R2.id.me_kz_price)
+    TextView meKzPrice;
+    @BindView(R2.id.me_cz_price)
+    TextView meCzPrice;
+    @BindView(R2.id.me_chengz_price)
+    TextView meChengzPrice;
 
     private String role = "";
     private String pay = "";
@@ -46,6 +60,32 @@ public class BuyRoleActivity extends BaseTitleActivity {
     protected void initView(Bundle savedInstanceState) {
         statusBar = StatusBar.LIGHT;
         setTitleText(R.string.me_buyrole_title);
+        ApiManager.getRolePrice()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Observer<BaseResult<BuyRoleEntity>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(BaseResult<BuyRoleEntity> buyRoleEntityBaseResult) {
+                        meKzPrice.setText("￥" + buyRoleEntityBaseResult.getData().getRole_2());
+                        meCzPrice.setText("￥" + buyRoleEntityBaseResult.getData().getRole_3());
+                        meChengzPrice.setText("￥" + buyRoleEntityBaseResult.getData().getRole_4());
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 
     @Override
@@ -78,12 +118,6 @@ public class BuyRoleActivity extends BaseTitleActivity {
 
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
 
     @OnClick({R2.id.me_cb_kz, R2.id.me_cb_cz, R2.id.me_cb_chengz, R2.id.me_cb_apliy, R2.id.me_cb_wechat, R2.id.me_buy_btn})
     public void onViewClicked(View view) {
