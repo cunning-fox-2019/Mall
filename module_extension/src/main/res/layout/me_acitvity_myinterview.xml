@@ -9,5 +9,14 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/me_rv_myinterview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:layout_weight="1"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/me_btton_bg"
+        android:textColor="@color/white"
+        android:layout_margin="16dp"
+        android:text="立即推广"/>
 </LinearLayout>

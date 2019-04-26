@@ -86,52 +86,7 @@ public class ExtensionFragment extends BaseFragment {
     RelativeLayout me_ext_up_rl;
     @BindView(R2.id.me_rv_slice)
     TextView me_rv_slice;
-    @BindView(R2.id.me_reward_tv1)
-    TextView meRewardTv1;
-    @BindView(R2.id.me_reward_tv1_1)
-    TextView meRewardTv11;
-    @BindView(R2.id.me_reward_tv1_2)
-    TextView meRewardTv12;
-    @BindView(R2.id.me_reward_rl1)
-    RelativeLayout meRewardRl1;
-    @BindView(R2.id.me_reward_tv2)
-    TextView meRewardTv2;
-    @BindView(R2.id.me_reward_tv2_1)
-    TextView meRewardTv21;
-    @BindView(R2.id.me_reward_tv2_2)
-    TextView meRewardTv22;
-    @BindView(R2.id.me_reward_rl2)
-    RelativeLayout meRewardRl2;
-    @BindView(R2.id.me_reward_tv3)
-    TextView meRewardTv3;
-    @BindView(R2.id.me_reward_tv3_1)
-    TextView meRewardTv31;
-    @BindView(R2.id.me_reward_rl3)
-    RelativeLayout meRewardRl3;
-    @BindView(R2.id.me_reward_tv4)
-    TextView meRewardTv4;
-    @BindView(R2.id.me_reward_tv4_1)
-    TextView meRewardTv41;
-    @BindView(R2.id.me_reward_rl4)
-    RelativeLayout meRewardRl4;
-    @BindView(R2.id.me_reward_tv5)
-    TextView meRewardTv5;
-    @BindView(R2.id.me_reward_tv5_1)
-    TextView meRewardTv51;
-    @BindView(R2.id.me_reward_rl5)
-    RelativeLayout meRewardRl5;
-    @BindView(R2.id.me_reward_tv6)
-    TextView meRewardTv6;
-    @BindView(R2.id.me_reward_tv6_1)
-    TextView meRewardTv61;
-    @BindView(R2.id.me_reward_rl6)
-    RelativeLayout meRewardRl6;
-    @BindView(R2.id.me_reward_tv7)
-    TextView meRewardTv7;
-    @BindView(R2.id.me_reward_tv7_1)
-    TextView meRewardTv71;
-    @BindView(R2.id.me_reward_rl7)
-    RelativeLayout meRewardRl7;
+
 
     private ExFragmentPresenter presenter;
     private List<RewardRuleEntity> list;
@@ -153,6 +108,8 @@ public class ExtensionFragment extends BaseFragment {
         me_buy_up_rl.setOnClickListener(this);
         me_ext_up_rl.setOnClickListener(this);
         me_rv_slice.setOnClickListener(this);
+        meBuyBd.setOnClickListener(this);
+        meBuyInterview.setOnClickListener(this);
     }
 
     private void getData(int role) {
@@ -188,9 +145,13 @@ public class ExtensionFragment extends BaseFragment {
         if (v.getId() == R.id.me_profit_details) {
             RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_IN_COME);
         } else if (v.getId() == R.id.me_buy_up_rl) {
-            // RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_BUY_ROLE);
+             RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_BUY_ROLE);
         } else if (v.getId() == R.id.me_rv_slice) {
             showDialog();
+        }else if (v.getId() == R.id.me_buy_bd){
+            RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_BUY_BD);
+        }else if (v.getId() == R.id.me_buy_interview){
+            RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_MY_INTERVIEW);
         }
 
     }
@@ -206,17 +167,25 @@ public class ExtensionFragment extends BaseFragment {
             public void onClick(View v, Object... objects) {
                 String userType = (String) objects[0];
                 me_rv_slice.setText("筛选：" + userType);
+                ViewGroup.LayoutParams params = meRvRewardrules.getLayoutParams();
+
                 if (userType.equals("普通用户")) {
                     type = 0;
+                    params.height = ScreenUtils.dip2px(getActivity(),66*2+55);
                 } else if (userType.equals("VIP")) {
+                    params.height = ScreenUtils.dip2px(getActivity(),66*2+55);
                     type = 1;
                 } else if (userType.equals("矿主")) {
+                    params.height = ScreenUtils.dip2px(getActivity(),66*5+55);
                     type = 2;
                 } else if (userType.equals("场主")) {
+                    params.height = ScreenUtils.dip2px(getActivity(),66*6+55);
                     type = 3;
                 } else if (userType.equals("城主")) {
+                    params.height = ScreenUtils.dip2px(getActivity(),66*7+55);
                     type = 4;
                 }
+                meRvRewardrules.setLayoutParams(params);
                 getData(type);
             }
         });

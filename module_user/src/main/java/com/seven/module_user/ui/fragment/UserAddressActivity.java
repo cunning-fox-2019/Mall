@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
+import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -45,6 +46,8 @@ import io.reactivex.schedulers.Schedulers;
 
 @Route(path = RouterPath.ACTIVITY_ADDRESS)
 public class UserAddressActivity extends BaseTitleActivity {
+    @Autowired(name = Constants.BundleConfig.EVENT_CODE)
+    int code=0;
     @BindView(R2.id.list_view)
     BaseRecyclerView recyclerView;
     @BindView(R2.id.add_address)
@@ -132,13 +135,13 @@ public class UserAddressActivity extends BaseTitleActivity {
         public void onSimpleItemClick(BaseQuickAdapter adapter, View view, int position) {
             AddressEntity entity = (AddressEntity) adapter.getData().get(position);
             //todo 选择地址才进来if 查看时不进入
-            if (isChoose) {
+            if (code!=0) {
                 ContactDefaultEntity entity1 = new ContactDefaultEntity();
                 entity1.setId(entity.getId());
                 entity1.setContact_name(entity.getContact_name());
                 entity1.setContact_phone(entity.getContact_phone());
                 entity1.setAddress(entity.getAddress());
-                EventBus.getDefault().post(new ObjectsEvent(Constants.BundleConfig.EVENT_CODE_INT, entity1));
+                EventBus.getDefault().post(new ObjectsEvent(code, entity1));
             }
             ToastUtils.showToast(mContext, entity.toString() + isChoose);
         }

@@ -82,7 +82,6 @@ public class UserFragment extends BaseFragment {
                         String userString = gson.toJson(userEntityBaseResult.getData());
                         SharedData.getInstance().setUserInfo(userString);
                         setData(userEntityBaseResult.getData());
-                        
                     }
 
                     @Override
@@ -99,7 +98,7 @@ public class UserFragment extends BaseFragment {
 
     private void setData(UserEntity data) {
         userName.setText(data.getPhone());
-        GlideUtils.loadCircleImage(getActivity(), data.getAvatar(), userPhoto);
+        GlideUtils.loadImage(getActivity(), data.getAvatar(), userPhoto, true);
     }
 
     @Override

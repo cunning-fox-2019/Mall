@@ -29,6 +29,8 @@ public class RouterPath {
     public static final String FRAGMENT_EXTENSION = "/extension/ExtensionFragment";
     public static final String ACTIVITY_IN_COME = "/extension/IncomeActivity";
     public static final String ACTIVITY_BUY_ROLE = "/extension/BuyRoleActivity";
+    public static final String ACTIVITY_BUY_BD = "/extension/BuyActivity";
+    public static final String ACTIVITY_MY_INTERVIEW = "/extension/MyInterviewActivity";
 
     /* module model */
     public static final String FRAGMENT_MODEL = "/model/ModelFragment";

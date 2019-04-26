@@ -13,7 +13,7 @@
         android:id="@+id/me_buy_bd_rv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="12dp"
+        android:layout_margin="15dp"
         android:layout_weight="1" />
 
     <LinearLayout
@@ -23,6 +23,7 @@
         android:orientation="horizontal">
 
         <com.seven.lib_common.stextview.TypeFaceView
+            android:id="@+id/me_buy_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="14dp"
@@ -31,7 +32,7 @@
             android:text="总价: ￥268.00"
             android:textColor="#136de8"
             android:textSize="14sp"
-            app:SFontStyle="bold_s" />
+            app:SFontStyle="regular_s" />
 
         <com.seven.lib_common.stextview.TypeFaceView
             android:layout_width="wrap_content"

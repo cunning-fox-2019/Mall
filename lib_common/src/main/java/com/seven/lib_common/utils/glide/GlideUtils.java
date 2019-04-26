@@ -53,8 +53,8 @@ public class GlideUtils {
                 .load(url)
                 .transition(withCrossFade())
                 .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-                .placeholder(isWhite ? R.drawable.glide_default : R.drawable.common_shade)
-                .error(isWhite ? R.drawable.glide_default : R.drawable.common_shade)
+                .placeholder(isWhite ? R.drawable.image_default : R.drawable.common_shade)
+                .error(isWhite ? R.drawable.image_default : R.drawable.common_shade)
                 .override(width, height)
                 .transform(new CenterCrop(), new RoundedCorners(round))
                 .into(imageView);
