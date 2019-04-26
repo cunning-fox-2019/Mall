@@ -78,10 +78,11 @@ public class UserFragment extends BaseFragment {
 
                     @Override
                     public void onNext(BaseResult<UserEntity> userEntityBaseResult) {
-//                        Gson gson = new Gson();
-//                        String userString = gson.toJson(userEntityBaseResult.getData());
-//                        SharedData.getInstance().setUserInfo(userString);
-//                        setData(userEntityBaseResult.getData());
+                        Gson gson = new Gson();
+                        String userString = gson.toJson(userEntityBaseResult.getData());
+                        SharedData.getInstance().setUserInfo(userString);
+                        setData(userEntityBaseResult.getData());
+                        
                     }
 
                     @Override
@@ -98,7 +99,7 @@ public class UserFragment extends BaseFragment {
 
     private void setData(UserEntity data) {
         userName.setText(data.getPhone());
-        GlideUtils.loadImage(getActivity(), data.getAvatar(), userPhoto, true);
+        GlideUtils.loadCircleImage(getActivity(), data.getAvatar(), userPhoto);
     }
 
     @Override

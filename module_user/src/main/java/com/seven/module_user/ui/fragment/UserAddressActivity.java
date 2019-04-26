@@ -18,6 +18,7 @@ import com.seven.lib_common.base.activity.BaseTitleActivity;
 import com.seven.lib_common.utils.ToastUtils;
 import com.seven.lib_model.ApiManager;
 import com.seven.lib_model.BaseResult;
+import com.seven.lib_model.CommonObserver;
 import com.seven.lib_model.model.home.ContactDefaultEntity;
 import com.seven.lib_model.model.user.mine.AddressEntity;
 import com.seven.lib_model.model.user.mine.DTEntity;
@@ -164,6 +165,7 @@ public class UserAddressActivity extends BaseTitleActivity {
 
     @Override
     public void onClick(View view) {
+        super.onClick(view);
         if (view.getId() == R.id.empty_add_address) {
             startActivity(new Intent(mContext, UserCreateAddressActivity.class));
         }
@@ -183,30 +185,12 @@ public class UserAddressActivity extends BaseTitleActivity {
 
     private void getData() {
         ApiManager.getAddressList()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(new Observer<BaseResult<List<AddressEntity>>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-
-                    }
-
+                .subscribe(new CommonObserver<BaseResult<List<AddressEntity>>>() {
                     @Override
                     public void onNext(BaseResult<List<AddressEntity>> listBaseResult) {
                         list = listBaseResult.getData();
                         initListView();
                         recyclerView.setRefreshing(false);
-                    }
-
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onComplete() {
-
                     }
                 });
     }

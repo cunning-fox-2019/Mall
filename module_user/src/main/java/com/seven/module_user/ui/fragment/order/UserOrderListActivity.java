@@ -9,6 +9,9 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.flyco.tablayout.SlidingTabLayout;
 import com.gyf.barlibrary.ImmersionBar;
@@ -20,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * Created by xxxxxxH on 2019/4/9.
@@ -30,21 +34,16 @@ public class UserOrderListActivity extends BaseAppCompatActivity {
     SlidingTabLayout tabLayout;
     @BindView(R2.id.viewPager)
     ViewPager viewPager;
+    @BindView(R2.id.title_tv)
+    TextView titleTv;
+    @BindView(R2.id.left_btn)
+    RelativeLayout backView;
     private final String[] mTitles = {
             "全部", "待付款", "待发货", "待收货"};
     private List<Fragment> mFragments = new ArrayList<>();
-  //  private final String[] mType = {"all", "wait_pay", "wait_send", ""};
-    private final int[] mType = {1,2,3,4};
+    //  private final String[] mType = {"all", "wait_pay", "wait_send", ""};
+    private final int[] mType = {1, 2, 3, 4};
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
     @Override
     public void showLoading() {
@@ -74,7 +73,7 @@ public class UserOrderListActivity extends BaseAppCompatActivity {
 
     @Override
     protected void initBundleData(Intent intent) {
-
+        titleTv.setText("我的订单");
         for (int type : mType) {
             mFragments.add(OrderListFragment.getInstance(type));
         }
@@ -83,9 +82,12 @@ public class UserOrderListActivity extends BaseAppCompatActivity {
         viewPager.setCurrentItem(getIntent().getIntExtra("type", 0));
     }
 
+    @OnClick(R2.id.left_btn)
     @Override
     public void onClick(View view) {
-
+        if (view==backView) {
+            finish();
+        }
     }
 
     private class MyPagerAdapter extends FragmentPagerAdapter {

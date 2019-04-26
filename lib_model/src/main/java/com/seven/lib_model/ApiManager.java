@@ -25,6 +25,9 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
+import io.reactivex.Scheduler;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -105,6 +108,9 @@ public class ApiManager {
         }
     }
 
+    public static Observable subScribe(Observable observable){
+        return observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
+    }
     /**
      * 服务接口集合
      */
@@ -175,12 +181,9 @@ public class ApiManager {
         return apiManagerService.getCollectList();
     }
 
-    public static Observable<BaseResult> getOrderList(int page, int status) {
-        return apiManagerService.getOrderList(page, status);
-    }
 
     public static Observable<BaseResult<List<AddressEntity>>> getAddressList() {
-        return apiManagerService.getAddressList();
+        return subScribe(apiManagerService.getAddressList());
     }
 
     public static Observable<BaseResult> addAddress(AddAddressEntity entity) {
