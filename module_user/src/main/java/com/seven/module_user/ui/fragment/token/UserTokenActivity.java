@@ -33,10 +33,11 @@ import butterknife.OnClick;
  * 我的令牌
  */
 
-public class UserTokenActivity extends BaseTitleActivity {
+public class UserTokenActivity extends BaseAppCompatActivity {
     @BindView(R2.id.list_view)
     BaseRecyclerView recyclerView;
-
+    @BindView(R2.id.title)
+    TextView textView;
 
     @Override
     public void showLoading() {
@@ -54,23 +55,13 @@ public class UserTokenActivity extends BaseTitleActivity {
     }
 
     @Override
-    protected int getLayoutId() {
+    protected int getContentViewId() {
         return R.layout.mu_activity_token;
     }
 
     @Override
-    protected void initView(Bundle savedInstanceState) {
-        setTitleText(R.string.user_token);
-    }
-
-    @Override
-    protected void rightTextBtnClick(View v) {
-
-    }
-
-    @Override
-    protected void rightBtnClick(View v) {
-
+    protected void init(Bundle savedInstanceState) {
+        textView.setText("我的令牌");
     }
 
     @Override
@@ -106,5 +97,13 @@ public class UserTokenActivity extends BaseTitleActivity {
         textView.setGravity(Gravity.CENTER);
         textView.setText("暂无记录");
         return textView;
+    }
+
+    @OnClick({R2.id.imgBack})
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.imgBack) {
+            finish();
+        }
     }
 }

@@ -16,6 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:background="@android:color/white"
             android:padding="@dimen/padding_16">
 
             <TextView
@@ -23,7 +24,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
-                android:background="@android:color/white"
+
                 android:gravity="center_vertical"
                 android:text="头像"
                 android:textColor="#404040" />

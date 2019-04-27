@@ -72,7 +72,7 @@ public class UserSettingActivity extends BaseTitleActivity {
         if (view == updatePassword) {
             startActivity(new Intent(mContext, UserModifyPassWordActivity.class));
         } else if (view == lpPaymentPassword) {
-            startActivity(new Intent(mContext, UserSetPayAccountActivity.class));
+            startActivity(new Intent(mContext, UserSetPayPassWordActivity.class));
         } else if (view == paymentAccount) {
             startActivity(new Intent(mContext, UserSetPayAccountActivity.class));
         } else if (view == cancelAccount) {

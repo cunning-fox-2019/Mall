@@ -18,5 +18,7 @@
         <activity android:name=".ui.activity.login.PasswordActivity" />
         <activity android:name=".ui.activity.login.RegisterActivity" />
         <activity android:name=".ui.fragment.setting.UserSetPayAccountActivity" />
+        <activity android:name=".ui.fragment.setting.UserModifyPassWordActivity" />
+        <activity android:name=".ui.fragment.setting.UserSetPayPassWordActivity" />
     </application>
 </manifest>
