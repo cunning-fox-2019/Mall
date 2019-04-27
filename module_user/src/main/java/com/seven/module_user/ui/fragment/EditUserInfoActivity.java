@@ -9,36 +9,48 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.design.widget.BottomSheetDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
 import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
 import com.bigkoo.pickerview.view.OptionsPickerView;
+import com.google.gson.Gson;
 import com.seven.lib_common.base.activity.BaseTitleActivity;
 import com.seven.lib_common.utils.ToastUtils;
+import com.seven.lib_common.utils.glide.GlideUtils;
 import com.seven.lib_model.ApiManager;
 import com.seven.lib_model.BaseResult;
 import com.seven.lib_model.CommonObserver;
+import com.seven.lib_model.model.user.UserEntity;
+import com.seven.lib_model.model.user.mine.DTEntity;
+import com.seven.lib_model.model.user.mine.UpLoadImageEntity;
+import com.seven.lib_router.db.shard.SharedData;
 import com.seven.module_user.R;
 import com.seven.module_user.R2;
+import com.seven.module_user.ui.fragment.utils.BitmapUtil;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.observers.DefaultObserver;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -50,20 +62,26 @@ public class EditUserInfoActivity extends BaseTitleActivity {
     private RxPermissions mRxPermissions;
     private String TAG = EditUserInfoActivity.class.getName();
     @BindView(R2.id.user_photo)
-    TextView userPhoto;
+    LinearLayout userPhoto;
     @BindView(R2.id.user_nick_name)
-    TextView userNickName;
+    EditText userNickName;
     @BindView(R2.id.choose_sex)
     TextView chooseSex;
+    @BindView(R2.id.user_photo_img)
+    ImageView user_photo_img;
+
+    private Uri PicUri;
+    private Uri PicCropUri;
+    private String currentUrl = "";
 
     @Override
     public void showLoading() {
-
+        showLoadingDialog();
     }
 
     @Override
     public void closeLoading() {
-
+        dismissLoadingDialog();
     }
 
     @Override
@@ -79,6 +97,10 @@ public class EditUserInfoActivity extends BaseTitleActivity {
     @Override
     protected void initView(Bundle savedInstanceState) {
         setTitleText(R.string.user_edit_info);
+        UserEntity entity = new Gson().fromJson(SharedData.getInstance().getUserInfo(), UserEntity.class);
+        userNickName.setText(entity.getUsername());
+        chooseSex.setText(entity.getSex().equals("male") ? "男" : "女");
+        GlideUtils.loadCircleImage(mContext, entity.getAvatar(), user_photo_img);
     }
 
     @Override
@@ -143,7 +165,6 @@ public class EditUserInfoActivity extends BaseTitleActivity {
 
     @Override
     public void onClick(View view) {
-        super.onClick(view);
         if (view.getId() == R.id.cancel) {
             mBottomSheetDialog.dismiss();
         } else if (view.getId() == R.id.photo) {
@@ -152,6 +173,8 @@ public class EditUserInfoActivity extends BaseTitleActivity {
         } else if (view.getId() == R.id.camera) {
             selectCapture();
             mBottomSheetDialog.dismiss();
+        } else if (view.getId() == R.id.left_iv) {
+            modifyUserInfo();
         }
     }
 
@@ -198,7 +221,7 @@ public class EditUserInfoActivity extends BaseTitleActivity {
                         if (aBoolean) {
                             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);//action is capture
                             intent.putExtra("return-data", false);
-                           // intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+                            // intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
                             intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
                             intent.putExtra("noFaceDetection", true);
                             startActivityForResult(intent, 10010);
@@ -221,28 +244,50 @@ public class EditUserInfoActivity extends BaseTitleActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-            Uri uri;
-            String realUri;
-            File file;
-            switch (requestCode) {
-                case 10086:
-                    //选择照片
-                    uri = data.getData();
-                    realUri = uri2filePath(uri, mContext);
-                    file = new File(realUri);
-                    upLoad(file);
-                    break;
-                case 10010:
-                    //拍照
-                    uri = data.getData();
-                    realUri = uri2filePath(uri, mContext);
-                    file = new File(realUri);
-                    upLoad(file);
-                    break;
+        switch (requestCode) {
+            case 10086:
+                //选择照片
+                //选择照片
+                Uri uri = data.getData();
+                String realUri = uri2filePath(uri, mContext);
+                File file = new File(realUri);
+                PicUri = Uri.fromFile(file);
+                PicCropUri = getTargetImageUri(false);
+                //cropImg(PicUri, PicCropUri);
+                GlideUtils.loadCircleImage(mContext, PicUri.getPath(), user_photo_img);
+                upLoad(file);
+                break;
+            case 10010:
+                //拍照
+                PicCropUri = getTargetImageUri(false);
+                cropImg(PicUri, PicCropUri);
+                break;
+            case 12345:
+                currentUrl = PicCropUri.getPath();
+                GlideUtils.loadCircleImage(mContext, currentUrl, user_photo_img);
+                File file1 = new File(currentUrl);
+                upLoad(file1);
+                break;
 
-            }
         }
+
+    }
+
+    public void cropImg(Uri sourceUri, Uri targetUri) {
+        int width = getResources().getDisplayMetrics().widthPixels;
+        int height = width * 2 / 3;
+        Intent intent = new Intent("com.android.camera.action.CROP");
+        intent.setDataAndType(sourceUri, "image/*");
+        intent.putExtra("crop", "true");
+        intent.putExtra("aspectX", 1);
+        intent.putExtra("aspectY", 1);
+        intent.putExtra("outputX", width);
+        intent.putExtra("outputY", width);
+        intent.putExtra("return-data", false);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, targetUri);
+        intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
+        intent.putExtra("noFaceDetection", true);
+        startActivityForResult(intent, 12345);
     }
 
     public String uri2filePath(Uri uri, Context context) {
@@ -282,15 +327,69 @@ public class EditUserInfoActivity extends BaseTitleActivity {
         return path;
     }
 
+    public Uri getTargetImageUri(boolean isTemp) {
+        //组装图片文件夹和裁剪后的目标文件
+        String sdStatus = Environment.getExternalStorageState();
+        if (!sdStatus.equals(Environment.MEDIA_MOUNTED)) { // 检测sd是否可用
+            Log.e(TAG, "SD card is not avaiable/writeable right now.");
+            return null;
+        }
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd_hh-mm-ss", Locale.CHINA);
+        String name;
+        if (isTemp) {
+            name = "/" + format.format(Calendar.getInstance().getTime()) + "_temp.jpg";
+        } else {
+            name = "/" + format.format(Calendar.getInstance().getTime()) + "_crop.jpg";
+        }
+        File imgFileDir = new File(Environment.getExternalStorageDirectory().getPath());
+        if (!imgFileDir.exists()) {
+            // 创建文件夹
+            if (!imgFileDir.mkdirs()) {
+                Log.e(TAG, "创建文件夹失败：" + imgFileDir.getPath());
+            }
+        }
+        File fileName = new File(imgFileDir.getPath() + name);
+        Uri outputUri = Uri.fromFile(fileName);
+        Log.d(TAG, "outputUri:" + outputUri);
+        return outputUri;
+    }
+
     private void upLoad(File file) {
-        RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
-        MultipartBody.Part body = MultipartBody.Part.create(requestBody);
+        MultipartBody.Builder builder = new MultipartBody.Builder();
+        RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), file);
+        builder.addFormDataPart("image", file.getName(), requestBody);
+        builder.setType(MultipartBody.FORM);
+        builder.addFormDataPart("scene", "");
+        MultipartBody body = builder.build();
         ApiManager.upLoad(body)
-                .subscribe(new CommonObserver<BaseResult>() {
+                .subscribe(new CommonObserver<BaseResult<DTEntity>>() {
                     @Override
-                    public void onNext(BaseResult baseResult) {
+                    public void onNext(BaseResult<DTEntity> baseResult) {
                         ToastUtils.showToast(mContext, baseResult.getMessage());
+                        if (baseResult.getCode() == 1) {
+                            currentUrl = baseResult.getData().getUrl();
+                        }
                     }
                 });
     }
+
+    private void modifyUserInfo() {
+        showLoading();
+        UserEntity userEntity = new UserEntity();
+        userEntity.setUsername(userNickName.getText().toString());
+        userEntity.setAvatar(currentUrl);
+        userEntity.setSex(chooseSex.getText().toString().equals("男") ? "male" : "female");
+        ApiManager.editUserInfo(userEntity)
+                .subscribe(new CommonObserver<BaseResult>() {
+                    @Override
+                    public void onNext(BaseResult baseResult) {
+                        if (baseResult.getCode() == 1) {
+                            finish();
+                        }
+                        closeLoading();
+                    }
+                });
+    }
+
+
 }
