@@ -56,6 +56,7 @@ public class MyInterviewActivity extends BaseTitleActivity {
             @Override
             public void onError(Throwable e) {
                 Log.e("xxxxxxH","onError"+e.toString());
+                e.printStackTrace();
             }
 
             @Override

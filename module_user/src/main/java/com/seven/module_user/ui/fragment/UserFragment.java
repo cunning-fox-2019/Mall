@@ -1,7 +1,6 @@
 package com.seven.module_user.ui.fragment;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -15,21 +14,19 @@ import com.seven.lib_common.utils.glide.GlideUtils;
 import com.seven.lib_model.ApiManager;
 import com.seven.lib_model.BaseResult;
 import com.seven.lib_model.model.user.UserEntity;
-import com.seven.lib_opensource.application.SSDK;
 import com.seven.lib_router.db.shard.SharedData;
 import com.seven.lib_router.router.RouterPath;
 import com.seven.lib_router.router.RouterUtils;
 import com.seven.module_user.R;
 import com.seven.module_user.R2;
 import com.seven.module_user.ui.activity.login.LoginActivity;
-import com.seven.module_user.ui.activity.login.RegisterActivity;
 import com.seven.module_user.ui.fragment.order.UserOrderListActivity;
+import com.seven.module_user.ui.fragment.setting.UserSettingActivity;
 import com.seven.module_user.ui.fragment.token.UserTokenActivity;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 import io.reactivex.Observer;
-import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
@@ -57,13 +54,12 @@ public class UserFragment extends BaseFragment {
 
     @Override
     public int getContentViewId() {
-
         return R.layout.mu_fragment_user;
     }
 
     @Override
     public void init(Bundle savedInstanceState) {
-        getUserInfo();
+       // getUserInfo();
     }
 
     private void getUserInfo() {
@@ -82,6 +78,7 @@ public class UserFragment extends BaseFragment {
                         String userString = gson.toJson(userEntityBaseResult.getData());
                         SharedData.getInstance().setUserInfo(userString);
                         setData(userEntityBaseResult.getData());
+                        
                     }
 
                     @Override
@@ -98,7 +95,7 @@ public class UserFragment extends BaseFragment {
 
     private void setData(UserEntity data) {
         userName.setText(data.getPhone());
-        GlideUtils.loadImage(getActivity(), data.getAvatar(), userPhoto, true);
+        GlideUtils.loadCircleImage(getActivity(), data.getAvatar(), userPhoto);
     }
 
     @Override
@@ -179,5 +176,11 @@ public class UserFragment extends BaseFragment {
             intent.putExtra("type", 3);
         }
         startActivity(intent);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getUserInfo();
     }
 }

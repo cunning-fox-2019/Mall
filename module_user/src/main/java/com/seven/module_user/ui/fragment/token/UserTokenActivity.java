@@ -4,13 +4,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.gyf.barlibrary.ImmersionBar;
 import com.seven.lib_common.base.activity.BaseAppCompatActivity;
+import com.seven.lib_common.base.activity.BaseTitleActivity;
 import com.seven.lib_model.model.user.OrderEntity;
 import com.seven.module_user.R;
 import com.seven.module_user.R2;
@@ -29,11 +33,10 @@ import butterknife.OnClick;
  * 我的令牌
  */
 
-public class UserTokenActivity extends BaseAppCompatActivity {
-    @BindView(R2.id.toolbar)
-    Toolbar toolbar;
+public class UserTokenActivity extends BaseTitleActivity {
     @BindView(R2.id.list_view)
     BaseRecyclerView recyclerView;
+
 
     @Override
     public void showLoading() {
@@ -51,20 +54,27 @@ public class UserTokenActivity extends BaseAppCompatActivity {
     }
 
     @Override
-    protected int getContentViewId() {
-        statusBar = StatusBar.LIGHT;
+    protected int getLayoutId() {
         return R.layout.mu_activity_token;
     }
 
     @Override
-    protected void init(Bundle savedInstanceState) {
+    protected void initView(Bundle savedInstanceState) {
+        setTitleText(R.string.user_token);
+    }
+
+    @Override
+    protected void rightTextBtnClick(View v) {
+
+    }
+
+    @Override
+    protected void rightBtnClick(View v) {
 
     }
 
     @Override
     protected void initBundleData(Intent intent) {
-        ImmersionBar.with(this).init();
-        ImmersionBar.setTitleBar(this, toolbar);
         List<OrderEntity> list = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             list.add(new OrderEntity());
@@ -75,18 +85,8 @@ public class UserTokenActivity extends BaseAppCompatActivity {
             protected void convert(BaseViewHolder helper, OrderEntity item) {
 
             }
-        },false).changeItemDecoration(new DividerSpaceItemDecoration(6))
-                .addOnItemClickListener(new OnItemClickListener() {
-                    @Override
-                    public void onSimpleItemClick(BaseQuickAdapter adapter, View view, int position) {
-
-                    }
-                });
-    }
-
-    @Override
-    public void onClick(View view) {
-
+        }, false).changeItemDecoration(new DividerSpaceItemDecoration(6))
+                .setEmptyView(getEmptyView());
     }
 
     @OnClick(R2.id.all)
@@ -99,8 +99,12 @@ public class UserTokenActivity extends BaseAppCompatActivity {
         startActivity(new Intent(mContext, UserReceiveTokenActivity.class));
     }
 
-    @OnClick(R2.id.back)
-    void back() {
-        finish();
+    private View getEmptyView() {
+        TextView textView = new TextView(this);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        textView.setLayoutParams(params);
+        textView.setGravity(Gravity.CENTER);
+        textView.setText("暂无记录");
+        return textView;
     }
 }

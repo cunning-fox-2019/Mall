@@ -173,7 +173,7 @@ public class EditUserInfoActivity extends BaseTitleActivity {
         } else if (view.getId() == R.id.camera) {
             selectCapture();
             mBottomSheetDialog.dismiss();
-        } else if (view.getId() == R.id.left_iv) {
+        } else if (view.getId() == R.id.left_btn) {
             modifyUserInfo();
         }
     }

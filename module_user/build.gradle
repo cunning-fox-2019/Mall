@@ -33,6 +33,7 @@ android {
             jniLibs.srcDirs = ['libs']
         }
     }
+
 }
 repositories {
     flatDir {
@@ -55,4 +56,5 @@ dependencies {
     implementation 'com.flyco.tablayout:FlycoTabLayout_Lib:2.1.2@aar'
     implementation 'liji.library.dev:citypickerview:4.1.2'
     implementation 'com.contrarywind:Android-PickerView:4.1.7'
+    implementation 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.3@aar'
 }

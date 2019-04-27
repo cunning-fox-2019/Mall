@@ -3,7 +3,7 @@
 
     <application>
         <activity android:name=".ui.fragment.EditUserInfoActivity" />
-        <activity android:name=".ui.fragment.UserSettingActivity" />
+        <activity android:name=".ui.fragment.setting.UserSettingActivity" />
         <activity android:name=".ui.fragment.CollectionActivity" />
         <activity android:name=".ui.fragment.UserAddressActivity" />
         <activity android:name=".ui.fragment.UserCreateAddressActivity" />
@@ -17,5 +17,6 @@
         <activity android:name=".ui.activity.login.MobileActivity" />
         <activity android:name=".ui.activity.login.PasswordActivity" />
         <activity android:name=".ui.activity.login.RegisterActivity" />
+        <activity android:name=".ui.fragment.setting.UserSetPayAccountActivity" />
     </application>
 </manifest>
