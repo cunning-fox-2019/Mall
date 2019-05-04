@@ -3,7 +3,7 @@ package com.seven.lib_model.model.extension;
 /**
  * Created by xxxxxxH on 2019/4/25.
  */
-public class ChildList {
+public class ItemsBean {
     private int id;
     private String avatar;
     private String username;

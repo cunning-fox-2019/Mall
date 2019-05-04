@@ -32,6 +32,8 @@ public interface RetrofitService {
     String orderAdd="order/add";
     String contactDefault="user/contact/default/info";
     String orderPay="order/pay";
+    String inviteList="promotion/invite/list";
+    String inComeDetails="promotion/token/list";
 
     @POST(sms)
     Observable<HttpResponse> sms(@Body RequestBody requestBody);
@@ -78,5 +80,11 @@ public interface RetrofitService {
     //extension
     @POST("reward/rule")
     Observable<HttpResponse> rewardrule(@Body RequestBody requestBody);
+
+    @POST(inviteList)
+    Observable<HttpResponse> inviteList(@Body RequestBody requestBody);
+
+    @POST(inComeDetails)
+    Observable<HttpResponse> inComeDetails(@Body RequestBody requestBody);
 }
 

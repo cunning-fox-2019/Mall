@@ -301,8 +301,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="14dp"
-                android:visibility="gone"
-                android:text="各项奖励"
+                android:text="奖励领取"
                 android:textColor="#333333"
                 android:textSize="15sp"
                 app:SFontStyle="bold_s" />
@@ -310,8 +309,8 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/me_rv_everyreward"
                 android:layout_width="match_parent"
-                android:visibility="gone"
                 android:layout_height="wrap_content"
+                android:background="@color/grey_f4"
                 android:layout_marginTop="10dp" />
 
             //奖励规则
@@ -341,16 +340,11 @@
                     android:layout_alignParentRight="true" />
             </RelativeLayout>
 
-            <include
-                android:visibility="gone"
-                layout="@layout/me_item_rewardrole"/>
-
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/me_rv_rewardrules"
                 android:layout_width="match_parent"
-                android:layout_height="132dp"
+                android:layout_height="wrap_content"
                 android:nestedScrollingEnabled="false"
-                android:layout_marginBottom="50dp"
                 android:layout_marginTop="10dp" />
         </LinearLayout>
     </ScrollView>

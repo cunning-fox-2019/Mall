@@ -113,7 +113,13 @@ public class RequestHelper {
     }
 
     //extension
-    public Observable<HttpResponse> rewardrule(String json){
+    public Observable<HttpResponse> rewardrule(String json) {
         return appService.rewardrule(requestBody(json));
     }
+
+    public Observable<HttpResponse> inviteList(String json) {
+        return appService.inviteList(requestBody(json));
+    }
+
+    public Observable<HttpResponse> inComeDetails(String json){return  appService.inComeDetails(requestBody(json));}
 }

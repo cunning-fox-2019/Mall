@@ -20,7 +20,9 @@ import com.seven.lib_common.stextview.TypeFaceView;
 import com.seven.lib_common.utils.ScreenUtils;
 import com.seven.lib_model.ApiManager;
 import com.seven.lib_model.BaseResult;
+import com.seven.lib_model.CommonObserver;
 import com.seven.lib_model.model.extension.ReceiveGoodsEntity;
+import com.seven.lib_model.model.extension.RewardListEntity;
 import com.seven.lib_model.model.extension.RewardRuleEntity;
 import com.seven.lib_model.model.user.UserEntity;
 import com.seven.lib_model.presenter.extension.ExFragmentPresenter;
@@ -29,6 +31,7 @@ import com.seven.lib_router.router.RouterPath;
 import com.seven.lib_router.router.RouterUtils;
 import com.seven.module_extension.R;
 import com.seven.module_extension.R2;
+import com.seven.module_extension.ui.adapter.RewardGetAdapter;
 import com.seven.module_extension.ui.adapter.RewardRuleAdapter;
 import com.seven.module_extension.ui.dialog.NotVipDialog;
 import com.seven.module_extension.ui.dialog.SelectUserTypeDialog;
@@ -98,6 +101,7 @@ public class ExtensionFragment extends BaseFragment {
     private int type = 0;
     private RewardRuleAdapter adapter;
     private NotVipDialog notVipDialog;
+    private RewardGetAdapter getAdapter;
 
     @Override
     public int getContentViewId() {
@@ -138,6 +142,23 @@ public class ExtensionFragment extends BaseFragment {
                 default:
             }
         }
+        ApiManager.rewardList().subscribe(new CommonObserver<BaseResult<RewardListEntity>>(){
+            @Override
+            public void onNext(BaseResult<RewardListEntity> rewardListEntityBaseResult) {
+                LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) meRvEveryreward.getLayoutParams();
+                params.height = ScreenUtils.dip2px(getActivity(),50*(rewardListEntityBaseResult.getData().getItems().size()+1));
+                meRvEveryreward.setLayoutParams(params);
+                getAdapter = new RewardGetAdapter(R.layout.me_item_reward_get,rewardListEntityBaseResult.getData().getItems());
+                LinearLayoutManager manager = new LinearLayoutManager(getActivity()){
+                    @Override
+                    public boolean canScrollVertically() {
+                        return false;
+                    }
+                };
+                meRvEveryreward.setLayoutManager(manager);
+                meRvEveryreward.setAdapter(getAdapter);
+            }
+        });
 
     }
 
@@ -185,6 +206,9 @@ public class ExtensionFragment extends BaseFragment {
         };
         meRvRewardrules.setLayoutManager(manager);
         meRvRewardrules.setAdapter(adapter);
+        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) meRvRewardrules.getLayoutParams();
+        params.height = ScreenUtils.dip2px(getActivity(),66*(data.size()+1));
+        meRvRewardrules.setLayoutParams(params);
     }
 
     @Override
@@ -199,6 +223,8 @@ public class ExtensionFragment extends BaseFragment {
             RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_BUY_BD);
         } else if (v.getId() == R.id.me_buy_interview) {
             RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_MY_INTERVIEW);
+        }else if (v.getId() == R.id.me_ext_up_rl){
+
         }
 
     }
@@ -214,25 +240,25 @@ public class ExtensionFragment extends BaseFragment {
             public void onClick(View v, Object... objects) {
                 String userType = (String) objects[0];
                 me_rv_slice.setText("筛选：" + userType);
-                ViewGroup.LayoutParams params = meRvRewardrules.getLayoutParams();
+//                ViewGroup.LayoutParams params = meRvRewardrules.getLayoutParams();
 
                 if (userType.equals("普通用户")) {
                     type = 0;
-                    params.height = ScreenUtils.dip2px(getActivity(), 66 * 2 + 55);
+//                    params.height = ScreenUtils.dip2px(getActivity(), 66 * 2 + 55);
                 } else if (userType.equals("VIP")) {
-                    params.height = ScreenUtils.dip2px(getActivity(), 66 * 2 + 55);
+//                    params.height = ScreenUtils.dip2px(getActivity(), 66 * 2 + 55);
                     type = 1;
                 } else if (userType.equals("矿主")) {
-                    params.height = ScreenUtils.dip2px(getActivity(), 66 * 5 + 55);
+//                    params.height = ScreenUtils.dip2px(getActivity(), 66 * 5 + 55);
                     type = 2;
                 } else if (userType.equals("场主")) {
-                    params.height = ScreenUtils.dip2px(getActivity(), 66 * 6 + 55);
+//                    params.height = ScreenUtils.dip2px(getActivity(), 66 * 6 + 55);
                     type = 3;
                 } else if (userType.equals("城主")) {
-                    params.height = ScreenUtils.dip2px(getActivity(), 66 * 7 + 55);
+//                    params.height = ScreenUtils.dip2px(getActivity(), 66 * 7 + 55);
                     type = 4;
                 }
-                meRvRewardrules.setLayoutParams(params);
+//                meRvRewardrules.setLayoutParams(params);
                 getData(type);
             }
         });

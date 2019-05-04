@@ -4,10 +4,13 @@ import android.content.Context;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.seven.lib_common.base.activity.BaseActivity;
 import com.seven.lib_model.model.extension.BdGoodsEntity;
 import com.seven.lib_model.model.extension.BuyRoleEntity;
+import com.seven.lib_model.model.extension.InComeDetailsEntity;
 import com.seven.lib_model.model.extension.MyInterViewEntity;
 import com.seven.lib_model.model.extension.ReceiveGoodsEntity;
+import com.seven.lib_model.model.extension.RewardListEntity;
 import com.seven.lib_model.model.extension.RewardRuleEntity;
 import com.seven.lib_model.model.user.LoginEntity;
 import com.seven.lib_model.model.user.OrderEntity;
@@ -196,6 +199,12 @@ public class ApiManager {
         @POST("image/upload")
         Observable<BaseResult<DTEntity>> upLoad(@Body MultipartBody part);
 
+        @POST("promotion/reward/list")
+        Observable<BaseResult<RewardListEntity>> rewardList();
+
+        @POST("promotion/token/list")
+        Observable<BaseResult<InComeDetailsEntity>> inComeDetails(@Query("page") int page,@Query("page_size") int page_size);
+
     }
 
     public static Observable<BaseResult<TokenEntity>> login(LoginEntity entity) {
@@ -281,4 +290,9 @@ public class ApiManager {
     public static Observable<BaseResult<DTEntity>> upLoad(MultipartBody part){
         return subScribe(apiManagerService.upLoad(part));
     }
+
+    public static Observable<BaseResult<RewardListEntity>> rewardList(){
+        return subScribe(apiManagerService.rewardList());}
+
+        public static Observable<BaseResult<InComeDetailsEntity>> inComeDetails(int page,int page_size){return subScribe(apiManagerService.inComeDetails(page,page_size));}
 }

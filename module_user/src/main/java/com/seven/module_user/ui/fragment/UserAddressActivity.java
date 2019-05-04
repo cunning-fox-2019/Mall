@@ -47,7 +47,9 @@ import io.reactivex.schedulers.Schedulers;
 @Route(path = RouterPath.ACTIVITY_ADDRESS)
 public class UserAddressActivity extends BaseTitleActivity {
     @Autowired(name = Constants.BundleConfig.EVENT_CODE)
-    int code=0;
+    int code = 0;
+    //    @Autowired(name = Constants.BundleConfig.BUY_BD)
+//    int code1 = 0;
     @BindView(R2.id.list_view)
     BaseRecyclerView recyclerView;
     @BindView(R2.id.add_address)
@@ -135,13 +137,17 @@ public class UserAddressActivity extends BaseTitleActivity {
         public void onSimpleItemClick(BaseQuickAdapter adapter, View view, int position) {
             AddressEntity entity = (AddressEntity) adapter.getData().get(position);
             //todo 选择地址才进来if 查看时不进入
-            if (code!=0) {
+            if (code != 0 && code != 159357) {
                 ContactDefaultEntity entity1 = new ContactDefaultEntity();
                 entity1.setId(entity.getId());
                 entity1.setContact_name(entity.getContact_name());
                 entity1.setContact_phone(entity.getContact_phone());
                 entity1.setAddress(entity.getAddress());
                 EventBus.getDefault().post(new ObjectsEvent(code, entity1));
+            }
+            if (code == 159357) {
+                EventBus.getDefault().post(new ObjectsEvent(Constants.EventConfig.BUY_BD, entity));
+                UserAddressActivity.this.finish();
             }
             ToastUtils.showToast(mContext, entity.toString() + isChoose);
         }
@@ -163,7 +169,7 @@ public class UserAddressActivity extends BaseTitleActivity {
 
     @Override
     protected void initBundleData(Intent intent) {
-
+        code = getIntent().getIntExtra(Constants.BundleConfig.EVENT_CODE, -1);
     }
 
     @Override

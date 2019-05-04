@@ -31,7 +31,7 @@ public class Constants {
 
         public static final String ID = "id";
         public static final String EVENT_CODE="eventCode";
-        public static final int EVENT_CODE_INT= 10000;
+        public static final String BUY_BD= "buy_bd";
     }
 
     public static class TimeConfig {
@@ -83,6 +83,7 @@ public class Constants {
 
         public static final int REGISTER = 100;
         public static final int LOGIN = 101;
+        public static final int BUY_BD = 102;
 
         /* 第三方sdk */
         public static final int PAY_RESULT = 1000;
