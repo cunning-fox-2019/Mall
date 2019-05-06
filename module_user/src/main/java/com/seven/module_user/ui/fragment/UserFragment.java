@@ -1,14 +1,22 @@
 package com.seven.module_user.ui.fragment;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.google.gson.Gson;
 import com.seven.lib_common.base.fragment.BaseFragment;
 import com.seven.lib_common.utils.ToastUtils;
+import com.seven.lib_common.utils.glide.GlideUtils;
+import com.seven.lib_model.ApiManager;
+import com.seven.lib_model.BaseResult;
+import com.seven.lib_model.model.user.UserEntity;
 import com.seven.lib_opensource.application.SSDK;
+import com.seven.lib_router.db.shard.SharedData;
 import com.seven.lib_router.router.RouterPath;
 import com.seven.lib_router.router.RouterUtils;
 import com.seven.module_user.R;
@@ -20,6 +28,11 @@ import com.seven.module_user.ui.fragment.token.UserTokenActivity;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.reactivex.Observer;
+import io.reactivex.Scheduler;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * @auhtor seven
@@ -34,6 +47,13 @@ public class UserFragment extends BaseFragment {
     TextView waitSend;
     @BindView(R2.id.shop_received)
     TextView shopReceived;
+    @BindView(R2.id.user_name)
+    TextView userName;
+    @BindView(R2.id.user_photo)
+    ImageView userPhoto;
+    @BindView(R2.id.shop_cart)
+    TextView shop_cart;
+
 
     @Override
     public int getContentViewId() {
@@ -43,6 +63,42 @@ public class UserFragment extends BaseFragment {
 
     @Override
     public void init(Bundle savedInstanceState) {
+        getUserInfo();
+    }
+
+    private void getUserInfo() {
+        ApiManager.getUserInfo()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<BaseResult<UserEntity>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(BaseResult<UserEntity> userEntityBaseResult) {
+//                        Gson gson = new Gson();
+//                        String userString = gson.toJson(userEntityBaseResult.getData());
+//                        SharedData.getInstance().setUserInfo(userString);
+//                        setData(userEntityBaseResult.getData());
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    private void setData(UserEntity data) {
+        userName.setText(data.getPhone());
+        GlideUtils.loadImage(getActivity(), data.getAvatar(), userPhoto, true);
     }
 
     @Override
@@ -62,6 +118,11 @@ public class UserFragment extends BaseFragment {
     @Override
     public void showToast(String msg) {
 
+    }
+
+    @OnClick(R2.id.shop_cart)
+    void goShopCar() {
+        RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_SHOPPING_CART);
     }
 
     @OnClick(R2.id.user_info_layout)

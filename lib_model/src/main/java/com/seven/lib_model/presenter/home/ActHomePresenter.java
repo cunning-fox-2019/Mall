@@ -7,7 +7,7 @@ import com.seven.lib_common.mvp.presenter.BasePresenter;
 import com.seven.lib_common.mvp.view.IBaseView;
 import com.seven.lib_http.observer.HttpRxObservable;
 import com.seven.lib_http.observer.HttpRxObserver;
-import com.seven.lib_model.builder.common.CommodityListBuilder;
+import com.seven.lib_model.builder.home.CommodityListBuilder;
 import com.seven.lib_model.builder.home.CartAddBuilder;
 import com.seven.lib_model.builder.home.CommodityDetailsBuilder;
 import com.seven.lib_model.builder.home.OrderAddBuilder;

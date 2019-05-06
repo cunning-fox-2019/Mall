@@ -19,6 +19,7 @@
         android:id="@+id/goods_img"
         android:layout_width="100dp"
         android:layout_height="100dp"
+        android:scaleType="centerInside"
         android:src="@drawable/image_default_black" />
 
     <LinearLayout
@@ -39,6 +40,7 @@
             tools:text="全新上市祖玛🐉茉莉全新上市祖玛🐉茉莉全新上市祖玛🐉茉莉全新上市祖玛🐉茉莉全新上市祖玛🐉茉莉全新上市祖玛🐉茉莉全新上市祖玛🐉茉莉" />
 
         <TextView
+            android:id="@+id/sales"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingTop="@dimen/padding_10"
@@ -64,6 +66,7 @@
                 android:layout_weight="1"
                 android:textSize="18sp"
                 tools:text="10000.00" />
+
             <TextView
                 android:id="@+id/add"
                 android:layout_width="wrap_content"
@@ -73,7 +76,9 @@
                 android:paddingRight="@dimen/padding_10"
                 android:paddingTop="@dimen/dp_4"
                 android:text="-"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:visibility="gone" />
+
             <TextView
                 android:id="@+id/number"
                 android:layout_width="wrap_content"
@@ -82,8 +87,9 @@
                 android:paddingLeft="@dimen/padding_10"
                 android:paddingRight="@dimen/padding_10"
                 android:paddingTop="@dimen/dp_4"
-                android:text="1"
+                android:text="1件"
                 android:textSize="14sp" />
+
             <TextView
                 android:id="@+id/delete"
                 android:layout_width="wrap_content"
@@ -93,7 +99,8 @@
                 android:paddingRight="@dimen/padding_10"
                 android:paddingTop="@dimen/dp_4"
                 android:text="+"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:visibility="gone" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

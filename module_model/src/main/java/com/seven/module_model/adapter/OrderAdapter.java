@@ -7,8 +7,9 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.seven.lib_common.utils.ResourceUtils;
 import com.seven.lib_common.utils.glide.GlideUtils;
-import com.seven.lib_model.model.model.OrderEntity;
+import com.seven.lib_model.model.model.BusinessEntity;
 import com.seven.lib_opensource.application.SSDK;
+import com.seven.lib_router.Constants;
 import com.seven.module_model.R;
 
 import java.util.List;
@@ -19,23 +20,46 @@ import java.util.List;
  * 2019/4/19
  */
 
-public class OrderAdapter extends BaseQuickAdapter<OrderEntity, BaseViewHolder> {
+public class OrderAdapter extends BaseQuickAdapter<BusinessEntity, BaseViewHolder> {
 
-    public OrderAdapter(int layoutResId, @Nullable List<OrderEntity> data) {
+    public OrderAdapter(int layoutResId, @Nullable List<BusinessEntity> data) {
         super(layoutResId, data);
         mContext = SSDK.getInstance().getContext();
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, OrderEntity item) {
+    protected void convert(BaseViewHolder helper, BusinessEntity item) {
 
         GlideUtils.loadCircleImage(mContext, item.getAvatar(), (ImageView) helper.getView(R.id.avatar_iv));
 
-        helper.setText(R.id.name_tv, item.getName())
+        helper.setText(R.id.name_tv, item.getUsername())
                 .setText(R.id.radio_tv, ResourceUtils.getFormatText(R.string.radio, item.getRatio() + "%"))
-                .setText(R.id.volume_tv, ResourceUtils.getFormatText(R.string.volume, item.getVolume()))
-                .setText(R.id.token_tv, item.getToken() + "")
-                .setText(R.id.price_tv, item.getPrice() + "")
-                .setText(R.id.status_tv, item.getStatus() + "");
+                .setText(R.id.volume_tv, ResourceUtils.getFormatText(R.string.volume, item.getBusiness_success()))
+                .setText(R.id.token_tv, String.valueOf(item.getToken_number()))
+                .setText(R.id.price_tv, String.valueOf(item.getPrice()))
+                .setText(R.id.status_tv, getStatus(item.getStatus()));
     }
+
+    private String getStatus(int status) {
+
+        switch (status) {
+
+            case Constants.InterfaceConfig.BUSINESS_STATUS_BUSINESS:
+                return ResourceUtils.getText(R.string.status_wait_business);
+
+            case Constants.InterfaceConfig.BUSINESS_STATUS_UPLOAD:
+                return ResourceUtils.getText(R.string.status_wait_upload);
+
+            case Constants.InterfaceConfig.BUSINESS_STATUS_SURE:
+                return ResourceUtils.getText(R.string.status_wait_sure);
+
+            case Constants.InterfaceConfig.BUSINESS_STATUS_END:
+                return ResourceUtils.getText(R.string.status_end);
+
+            default:
+                return "" + status;
+        }
+
+    }
+
 }

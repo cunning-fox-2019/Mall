@@ -55,7 +55,7 @@ public class BasePresenter<V, T> implements LifeCycleListener {
         setListener(activity);
         isNetwork();
         page = 1;
-        pageSize = 20;
+        pageSize = 10;
     }
 
     private boolean isNetwork() {

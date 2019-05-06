@@ -107,7 +107,7 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
             presenter.banner(Constants.RequestConfig.BANNER);
             presenter.entrance(Constants.RequestConfig.ENTRANCE);
         }
-        presenter.commodityRecommendList(Constants.RequestConfig.COMMODITY_RECOMMEND_LIST, page);
+        presenter.commodityRecommendList(Constants.RequestConfig.COMMODITY_RECOMMEND_LIST, page, pageSize);
     }
 
     private void setRecyclerView() {

@@ -17,6 +17,7 @@ import retrofit2.http.POST;
 public interface RetrofitService {
 
     String sms = "sms/send";
+    String payPassword="user/pay_password/is_correct";
 
     String register = "register";
     String login = "login";
@@ -39,9 +40,18 @@ public interface RetrofitService {
 
     String contactDefault="user/contact/default/info";
 
+    String looperMessage="business/notice/message";
+    String businessList="business/list";
+    String business="business/add";
+    String businessOrderList="business/order/list";
+
     @POST(sms)
     Observable<HttpResponse> sms(@Body RequestBody requestBody);
 
+    @POST(payPassword)
+    Observable<HttpResponse> payPassword(@Body RequestBody requestBody);
+
+    /* module user */
     @POST(register)
     Observable<HttpResponse> register(@Body RequestBody requestBody);
 
@@ -51,6 +61,7 @@ public interface RetrofitService {
     @POST(password)
     Observable<HttpResponse> password(@Body RequestBody requestBody);
 
+    /* module home */
     @POST(banner)
     Observable<HttpResponse> banner();
 
@@ -86,5 +97,22 @@ public interface RetrofitService {
 
     @POST(commodityList)
     Observable<HttpResponse> commodityList(@Body RequestBody requestBody);
+
+    /* module model */
+    @POST(looperMessage)
+    Observable<HttpResponse> looperMessage();
+
+    @POST(businessList)
+    Observable<HttpResponse> businessList(@Body RequestBody requestBody);
+
+    @POST(business)
+    Observable<HttpResponse> business(@Body RequestBody requestBody);
+
+    @POST(businessOrderList)
+    Observable<HttpResponse> businessOrderList(@Body RequestBody requestBody);
+
+    //extension
+    @POST("reward/rule")
+    Observable<HttpResponse> rewardrule(@Body RequestBody requestBody);
 }
 

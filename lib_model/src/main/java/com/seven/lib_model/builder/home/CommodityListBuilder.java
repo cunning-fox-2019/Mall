@@ -1,4 +1,6 @@
-package com.seven.lib_model.builder.common;
+package com.seven.lib_model.builder.home;
+
+import com.seven.lib_model.builder.common.PageBuilder;
 
 /**
  * @auhtor seven
@@ -17,30 +19,6 @@ public class CommodityListBuilder extends PageBuilder {
         this.sort=builder.sort;
         this.keyword=builder.keyword;
         this.category=builder.category;
-    }
-
-    public int getSort() {
-        return sort;
-    }
-
-    public void setSort(int sort) {
-        this.sort = sort;
-    }
-
-    public String getKeyword() {
-        return keyword;
-    }
-
-    public void setKeyword(String keyword) {
-        this.keyword = keyword;
-    }
-
-    public int getCategory() {
-        return category;
-    }
-
-    public void setCategory(int category) {
-        this.category = category;
     }
 
     public static class Builder extends PageBuilder.Builder {

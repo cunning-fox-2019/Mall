@@ -4,10 +4,7 @@ import android.graphics.Rect;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-/**
- * Created by Edison on 2016/7/22.
- * 自定义高度的空白分割线
- */
+
 public class DividerSpaceItemDecoration extends RecyclerView.ItemDecoration{
 
     private int space;

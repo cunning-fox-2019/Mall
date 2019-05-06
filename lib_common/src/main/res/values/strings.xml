@@ -128,7 +128,7 @@
 
     <string name="label_demand">发布需求</string>
     <string name="label_message">交易消息</string>
-    <string name="label_voucher">待上传凭证</string>
+    <string name="label_voucher">交易订单</string>
 
     <string name="tab_buy">我要买</string>
     <string name="tab_sell">我要卖</string>
@@ -156,11 +156,13 @@
 
     <string name="button_release_sale">发布售卖</string>
     <string name="button_release_buy">发布购买</string>
+    <string name="hint_release_succeed">发布成功</string>
 
     <string name="tab_buy_mine">我的购买</string>
     <string name="tab_sell_mine">我的售卖</string>
 
     <string name="status_all">全部</string>
+    <string name="status_wait_business">待交易</string>
     <string name="status_wait_upload">待上传</string>
     <string name="status_wait_sure">待确认</string>
     <string name="status_end">已完成</string>
@@ -172,6 +174,7 @@
     <string name="label_transaction">交易</string>
     <string name="voucher">凭证</string>
     <string name="hint_token_number">购买令牌数量</string>
+    <string name="hint_token_number_insufficient">令牌不足</string>
 
     <string name="button_launch_sell">发起售卖</string>
     <string name="button_launch_buy">发起购买</string>
@@ -190,6 +193,7 @@
 
     <string name="hint_mobile">请输入11位手机号</string>
     <string name="hint_password">请输入6-12位密码</string>
+    <string name="hint_pay_password">请输入交易密码</string>
     <string name="hint_sms_code">请输入获取的验证码</string>
     <string name="hint_invite_code">请输入邀请码</string>
     <string name="hint_agreement_all">注册/登录代表您已阅读并同意《购物商城服务条款》</string>

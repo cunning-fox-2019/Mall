@@ -60,6 +60,11 @@ public class RequestHelper {
         return appService.sms(requestBody(json));
     }
 
+    public Observable<HttpResponse> payPassword(String json) {
+        return appService.payPassword(requestBody(json));
+    }
+
+    /* module user */
     public Observable<HttpResponse> register(String json) {
         return appService.register(requestBody(json));
     }
@@ -72,6 +77,7 @@ public class RequestHelper {
         return appService.password(requestBody(json));
     }
 
+    /* module home */
     public Observable<HttpResponse> banner() {
         return appService.banner();
     }
@@ -118,5 +124,27 @@ public class RequestHelper {
 
     public Observable<HttpResponse> commodityList(String json) {
         return appService.commodityList(requestBody(json));
+    }
+
+    /* module model */
+    public Observable<HttpResponse> looperMessage() {
+        return appService.looperMessage();
+    }
+
+    public Observable<HttpResponse> businessList(String json) {
+        return appService.businessList(requestBody(json));
+    }
+
+    public Observable<HttpResponse> business(String json) {
+        return appService.business(requestBody(json));
+    }
+
+    public Observable<HttpResponse> businessOrderList(String json) {
+        return appService.businessOrderList(requestBody(json));
+    }
+
+    //extension
+    public Observable<HttpResponse> rewardrule(String json) {
+        return appService.rewardrule(requestBody(json));
     }
 }

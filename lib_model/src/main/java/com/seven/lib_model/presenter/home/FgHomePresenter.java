@@ -41,7 +41,7 @@ public class FgHomePresenter extends BasePresenter<IBaseView,BaseFragment> {
         HttpRxObservable.getObservable(RequestHelper.getInstance().entrance(), null, FragmentEvent.PAUSE).subscribe(rxObserver);
     }
 
-    public void commodityRecommendList(int requestCode,int page) {
+    public void commodityRecommendList(int requestCode,int page,int pageSize) {
 
         PageBuilder.Builder builder = new PageBuilder.Builder();
         PageBuilder json = builder

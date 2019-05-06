@@ -14,6 +14,7 @@ public class Constants {
 
         public static final String FIRST = "first";
         public static final String TOKEN = "token";
+        public static final String USER_INFO = "user_info";
     }
 
     public static class BundleConfig {
@@ -55,7 +56,8 @@ public class Constants {
     public static class RequestConfig {
 
         /* common */
-        public static final int SMS = 1000;
+        public static final int SMS = 1001;
+        public static final int PAY_PASSWORD = 1002;
 
         /*home*/
         public static final int BANNER = 3001;
@@ -74,6 +76,12 @@ public class Constants {
         public static final int CONTACT_DEFAULT = 3011;
 
         public static final int COLLECT = 3012;
+
+        /* model */
+        public static final int LOOPER_MESSAGE = 5001;
+        public static final int BUSINESS_LIST = 5002;
+        public static final int BUSINESS = 5003;
+        public static final int BUSINESS_ORDER_LIST = 5004;
 
         /*user*/
         public static final int REGISTER = 6001;
@@ -172,5 +180,21 @@ public class Constants {
         public static final int SORT_SALES_DROP = 3;//销量降序
         public static final int SORT_PRICE_RISE = 4;//价格升序
         public static final int SORT_PRICE_DROP = 5;//价格降序
+
+        public static final int BUSINESS_TYPE_SALE = 1;//我要卖
+        public static final int BUSINESS_TYPE_BUY = 2;//我要买
+
+        public static final int BUSINESS_SORT_NORMAL = 0;//综合
+        public static final int BUSINESS_SORT_TIME = 1;//时间
+        public static final int BUSINESS_SORT_PRICE = 2;//价格
+
+        public static final int BUSINESS_BUY = 1;//购买交易
+        public static final int BUSINESS_SALE = 2;//售卖交易
+
+        public static final int BUSINESS_STATUS_ALL=0;//全部
+        public static final int BUSINESS_STATUS_BUSINESS=1;//待交易
+        public static final int BUSINESS_STATUS_UPLOAD=2;//待上传凭证
+        public static final int BUSINESS_STATUS_SURE=3;//待确认
+        public static final int BUSINESS_STATUS_END=4;//已完成
     }
 }

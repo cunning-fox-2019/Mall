@@ -18,11 +18,20 @@ import com.seven.lib_model.model.home.ContactDefaultEntity;
 import com.seven.lib_model.model.home.OrderEntity;
 import com.seven.lib_model.model.home.OrderListEntity;
 import com.seven.lib_model.presenter.home.ActHomePresenter;
+import com.seven.lib_opensource.event.Event;
+import com.seven.lib_opensource.event.ObjectsEvent;
+import com.seven.lib_opensource.event.Event;
+import com.seven.lib_opensource.event.MessageEvent;
+import com.seven.lib_opensource.event.ObjectsEvent;
 import com.seven.lib_router.Constants;
 import com.seven.lib_router.router.RouterPath;
 import com.seven.module_home.R;
 import com.seven.module_home.R2;
 import com.seven.module_home.adapter.OrderAdapter;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,7 +86,6 @@ public class CommodityOrderActivity extends BaseTitleActivity {
 
         if (intent == null)
             intent = getIntent();
-
         cartList = (List<CartEntity>) intent.getSerializableExtra(Constants.BundleConfig.ENTITY);
 
         if (cartList == null || cartList.size() == 0) return;
@@ -196,4 +204,5 @@ public class CommodityOrderActivity extends BaseTitleActivity {
     public void showToast(String msg) {
 
     }
+
 }

@@ -3,34 +3,30 @@ package com.seven.module_user.ui.fragment.order;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.view.MenuItem;
 import android.view.View;
 
-import com.gyf.barlibrary.ImmersionBar;
-import com.seven.lib_common.base.activity.BaseAppCompatActivity;
+import com.alibaba.android.arouter.facade.annotation.Autowired;
+import com.alibaba.android.arouter.facade.annotation.Route;
+import com.seven.lib_common.base.activity.BaseTitleActivity;
+import com.seven.lib_model.model.home.CartEntity;
+import com.seven.lib_router.router.RouterPath;
 import com.seven.module_user.R;
 import com.seven.module_user.R2;
+
+import java.util.List;
 
 import butterknife.BindView;
 
 /**
  * Created by xxxxxxH on 2019/4/9.
- *
  */
-
-public class UserOrderDetailActivity extends BaseAppCompatActivity {
+@Route(path = RouterPath.ACTIVITY_MINE_SHOP_PAY)
+public class UserOrderDetailActivity extends BaseTitleActivity {
     @BindView(R2.id.toolbar)
     Toolbar mToolBar;
+    @Autowired(name = "shop")
+    List<CartEntity> shopList;
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
     @Override
     public void showLoading() {
@@ -47,29 +43,39 @@ public class UserOrderDetailActivity extends BaseAppCompatActivity {
 
     }
 
+
     @Override
-    protected int getContentViewId() {
+    protected void init(Bundle savedInstanceState) {
+    }
+
+    @Override
+    protected void initBundleData(Intent intent) {
+
+    }
+
+    @Override
+    public void onClick(View view) {
+
+    }
+
+    @Override
+    protected int getLayoutId() {
         statusBar = StatusBar.LIGHT;
         return R.layout.mu_activity_order_detail;
     }
 
     @Override
-    protected void init(Bundle savedInstanceState) {
+    protected void initView(Bundle savedInstanceState) {
 
     }
 
     @Override
-    protected void initBundleData(Intent intent) {
-        setSupportActionBar(mToolBar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setTitle("订单详情");
-        ImmersionBar.with(this).init();
-        ImmersionBar.setTitleBar(this, mToolBar);
+    protected void rightTextBtnClick(View v) {
+
     }
 
     @Override
-    public void onClick(View view) {
+    protected void rightBtnClick(View v) {
 
     }
 }

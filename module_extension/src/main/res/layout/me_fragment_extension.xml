@@ -203,6 +203,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/me_tab"
+        android:scrollbars="none"
+        android:fillViewport="true"
+        android:layout_marginBottom="50dp"
         android:layout_marginLeft="23dp"
         android:layout_marginTop="26dp"
         android:layout_marginRight="23dp">
@@ -298,6 +301,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="14dp"
+                android:visibility="gone"
                 android:text="各项奖励"
                 android:textColor="#333333"
                 android:textSize="15sp"
@@ -306,6 +310,7 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/me_rv_everyreward"
                 android:layout_width="match_parent"
+                android:visibility="gone"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp" />
 
@@ -325,17 +330,27 @@
                     android:textSize="@dimen/sp_14"
                     app:SFontStyle="bold_s" />
 
-                <Spinner
-                    android:id="@+id/me_rv_everyreward_sp"
+                <TextView
+                    android:id="@+id/me_rv_slice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="筛选：普通用户"
+                    android:drawableRight="@drawable/me_slice"
+                    android:textSize="12sp"
+                    android:textColor="@color/primary"
                     android:layout_alignParentRight="true" />
             </RelativeLayout>
+
+            <include
+                android:visibility="gone"
+                layout="@layout/me_item_rewardrole"/>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/me_rv_rewardrules"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="800dp"
+                android:nestedScrollingEnabled="false"
+                android:layout_marginBottom="50dp"
                 android:layout_marginTop="10dp" />
         </LinearLayout>
     </ScrollView>

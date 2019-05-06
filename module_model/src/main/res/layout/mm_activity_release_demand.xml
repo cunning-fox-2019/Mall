@@ -32,7 +32,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
-                        android:text="@string/tab_buy"
+                        android:text="@string/button_release_sale"
                         android:textColor="@color/demand_tab"
                         android:textSize="@dimen/sp_14"
                         app:SFontStyle="regular_s" />
@@ -58,7 +58,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
-                        android:text="@string/tab_sell"
+                        android:text="@string/button_release_buy"
                         android:textColor="@color/demand_tab"
                         android:textSize="@dimen/sp_14"
                         app:SFontStyle="regular_s" />
@@ -104,16 +104,16 @@
                     android:layout_weight="1"
                     android:background="@null"
                     android:gravity="end|center_vertical"
+                    android:hint="@string/hint_token_number_1"
                     android:inputType="numberDecimal"
                     android:maxLines="1"
-                    android:hint="@string/hint_token_number_1"
                     android:textColor="@color/cube"
                     android:textColorHint="@color/grey_light"
                     android:textCursorDrawable="@drawable/cursor"
                     android:textSize="@dimen/sp_14"
+                    android:visibility="gone"
                     app:SFontStyle="light_s"
-                    app:SGravityRight="true"
-                    android:visibility="gone"/>
+                    app:SGravityRight="true" />
 
                 <com.seven.lib_common.stextview.TypeFaceEdit
                     android:id="@+id/buy_token_et"
@@ -123,16 +123,16 @@
                     android:layout_weight="1"
                     android:background="@null"
                     android:gravity="end|center_vertical"
+                    android:hint="@string/hint_token_number_2"
                     android:inputType="numberDecimal"
                     android:maxLines="1"
-                    android:hint="@string/hint_token_number_2"
                     android:textColor="@color/cube"
                     android:textColorHint="@color/grey_light"
                     android:textCursorDrawable="@drawable/cursor"
                     android:textSize="@dimen/sp_14"
+                    android:visibility="gone"
                     app:SFontStyle="light_s"
-                    app:SGravityRight="true"
-                    android:visibility="gone"/>
+                    app:SGravityRight="true" />
 
             </LinearLayout>
 
@@ -166,16 +166,16 @@
                     android:layout_weight="1"
                     android:background="@null"
                     android:gravity="end|center_vertical"
+                    android:hint="@string/hint_sale_price"
                     android:inputType="numberDecimal"
                     android:maxLines="1"
-                    android:hint="@string/hint_sale_price"
                     android:textColor="@color/cube"
                     android:textColorHint="@color/grey_light"
                     android:textCursorDrawable="@drawable/cursor"
                     android:textSize="@dimen/sp_14"
+                    android:visibility="gone"
                     app:SFontStyle="light_s"
-                    app:SGravityRight="true"
-                    android:visibility="gone"/>
+                    app:SGravityRight="true" />
 
 
                 <com.seven.lib_common.stextview.TypeFaceEdit
@@ -186,16 +186,16 @@
                     android:layout_weight="1"
                     android:background="@null"
                     android:gravity="end|center_vertical"
+                    android:hint="@string/hint_buy_price"
                     android:inputType="numberDecimal"
                     android:maxLines="1"
-                    android:hint="@string/hint_buy_price"
                     android:textColor="@color/cube"
                     android:textColorHint="@color/grey_light"
                     android:textCursorDrawable="@drawable/cursor"
                     android:textSize="@dimen/sp_14"
+                    android:visibility="gone"
                     app:SFontStyle="light_s"
-                    app:SGravityRight="true"
-                    android:visibility="gone"/>
+                    app:SGravityRight="true" />
 
             </LinearLayout>
 
@@ -321,8 +321,6 @@
 
     </LinearLayout>
 
-
-
     <RelativeLayout
         android:id="@+id/demand_btn"
         style="@style/Button_Long"
@@ -337,9 +335,68 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
+            android:text="@string/button_release_sale"
             android:textColor="@color/white"
-            android:textSize="@dimen/sp_14"
-            android:text="@string/button_release_sale"/>
+            android:textSize="@dimen/sp_14" />
+
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/password_bg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/press"
+        android:onClick="btClick"
+        android:visibility="gone" />
+
+    <RelativeLayout
+        android:id="@+id/password_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/impression"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/sheet_password"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/sheet_password_r">
+
+                <com.seven.lib_common.stextview.TypeFaceView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="@string/hint_pay_password"
+                    android:textColor="@color/grey_dark"
+                    android:textSize="@dimen/sp_14"
+                    app:SFontStyle="medium_s" />
+
+            </RelativeLayout>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/line_between" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <com.seven.lib_common.widget.password.GridPasswordView
+                    android:id="@+id/password_tv"
+                    android:layout_width="240dp"
+                    android:layout_height="40dp"
+                    android:layout_centerInParent="true" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
 
     </RelativeLayout>
 

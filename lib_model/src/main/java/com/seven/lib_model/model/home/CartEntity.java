@@ -28,6 +28,15 @@ public class CartEntity implements Serializable {
     private int id;
     private String thumb;
     private String goods_sku_name;
+    private boolean isSelect;
+
+    public boolean isSelect() {
+        return isSelect;
+    }
+
+    public void setSelect(boolean select) {
+        isSelect = select;
+    }
 
     private String from;//来源(购物车:cart,订单详情:goods_detail)
     private String cart_ids;//购物车id列表(逗号分隔)

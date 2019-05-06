@@ -18,9 +18,6 @@ import java.util.List;
 
 import butterknife.BindView;
 
-/**
- * Created by ouyang on 2019/3/27.
- */
 
 public class UserSettingActivity extends BaseAppCompatActivity {
     @BindView(R2.id.toolbar)
