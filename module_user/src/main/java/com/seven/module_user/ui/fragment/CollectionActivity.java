@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.ColorUtils;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
@@ -85,6 +86,11 @@ public class CollectionActivity extends BaseTitleActivity {
 
     @Override
     protected void initBundleData(final Intent intent) {
+
+        getData();
+    }
+
+    private void getData() {
         ApiManager.getCollectList()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
@@ -109,10 +115,10 @@ public class CollectionActivity extends BaseTitleActivity {
 
                     }
                 });
-
     }
 
     private void initListView(List<CartEntity> list) {
+        recyclerView.setRefreshing(false);
         LinearLayoutManager manager = new LinearLayoutManager(mContext);
         recyclerView.init(manager, new BaseQuickAdapter<CartEntity, BaseViewHolder>(R.layout.item_store_up_layout, list) {
 
@@ -125,7 +131,13 @@ public class CollectionActivity extends BaseTitleActivity {
                 GlideUtils.loadImage(mContext, item.getThumb(), imageView);
             }
         }).changeItemDecoration(new DividerSpaceItemDecoration(4))
-                .setEmptyView(getEmptyView());
+                .setEmptyView(getEmptyView())
+                .setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        getData();
+                    }
+                });
     }
 
     private View getEmptyView() {

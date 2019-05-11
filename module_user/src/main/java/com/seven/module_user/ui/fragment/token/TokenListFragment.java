@@ -68,9 +68,7 @@ public class TokenListFragment extends BaseFragment {
     @Override
     public void init(Bundle savedInstanceState) {
         List<OrderEntity> list = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            list.add(new OrderEntity());
-        }
+
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.init(layoutManager, new BaseQuickAdapter<OrderEntity, BaseViewHolder>(R.layout.item_token_list_layout, list) {
             @Override

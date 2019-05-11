@@ -2,6 +2,7 @@ package com.seven.module_user.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.widget.ImageView;
@@ -91,29 +92,7 @@ public class UserShoppingCartActivity extends BaseTitleActivity {
     protected void initView(Bundle savedInstanceState) {
         setTitleText(R.string.user_shop_cart);
 
-        ApiManager.getCartList().observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(new Observer<BaseResult<ShopEntity>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onNext(BaseResult<ShopEntity> data) {
-                        initListView(data.getData().getItems());
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
+        getData();
     }
 
     @Override
@@ -131,7 +110,35 @@ public class UserShoppingCartActivity extends BaseTitleActivity {
 
     }
 
+    private void getData() {
+        ApiManager.getCartList().observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Observer<BaseResult<ShopEntity>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(BaseResult<ShopEntity> data) {
+                        initListView(data.getData().getItems());
+                        //。。。
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
     private void initListView(List<CartEntity> list) {
+        recyclerView.setRefreshing(false);
         LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
         recyclerView.init(layoutManager, new BaseQuickAdapter<CartEntity, BaseViewHolder>(R.layout.item_shopping_cart_layout, list) {
 
@@ -158,7 +165,13 @@ public class UserShoppingCartActivity extends BaseTitleActivity {
                         }
                     }
                 })
-                .removeItemDecoration();
+                .removeItemDecoration()
+                .setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        getData();
+                    }
+                });
     }
 
     StringBuilder shopIds = new StringBuilder();

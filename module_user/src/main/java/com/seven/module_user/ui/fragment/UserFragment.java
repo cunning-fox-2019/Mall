@@ -2,6 +2,7 @@ package com.seven.module_user.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -13,7 +14,12 @@ import com.seven.lib_common.utils.ToastUtils;
 import com.seven.lib_common.utils.glide.GlideUtils;
 import com.seven.lib_model.ApiManager;
 import com.seven.lib_model.BaseResult;
+import com.seven.lib_model.model.user.RegisterEntity;
 import com.seven.lib_model.model.user.UserEntity;
+import com.seven.lib_opensource.event.Event;
+import com.seven.lib_opensource.event.ObjectsEvent;
+import com.seven.lib_router.Constants;
+import com.seven.lib_router.Variable;
 import com.seven.lib_router.db.shard.SharedData;
 import com.seven.lib_router.router.RouterPath;
 import com.seven.lib_router.router.RouterUtils;
@@ -23,6 +29,9 @@ import com.seven.module_user.ui.activity.login.LoginActivity;
 import com.seven.module_user.ui.fragment.order.UserOrderListActivity;
 import com.seven.module_user.ui.fragment.setting.UserSettingActivity;
 import com.seven.module_user.ui.fragment.token.UserTokenActivity;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -82,6 +91,8 @@ public class UserFragment extends BaseFragment {
                         } else {
                             RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_LOGIN);
                         }
+                        Log.e("userInfo",SharedData.getInstance().getUserInfo());
+                        Log.e("token",SharedData.getInstance().getToken());
                     }
 
                     @Override
@@ -185,5 +196,21 @@ public class UserFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         getUserInfo();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(Event event) {
+        switch (event.getWhat()) {
+
+            case Constants.EventConfig.LOGIN:
+            case Constants.EventConfig.REGISTER:
+
+                RegisterEntity registerEntity = (RegisterEntity) ((ObjectsEvent) event).getObjects()[0];
+
+                if (registerEntity == null) return;
+                getUserInfo();
+                break;
+
+        }
     }
 }

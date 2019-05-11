@@ -67,9 +67,6 @@ public class UserTokenActivity extends BaseAppCompatActivity {
     @Override
     protected void initBundleData(Intent intent) {
         List<OrderEntity> list = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            list.add(new OrderEntity());
-        }
         LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
         recyclerView.init(layoutManager, new BaseQuickAdapter<OrderEntity, BaseViewHolder>(R.layout.item_token_list_layout, list) {
             @Override
