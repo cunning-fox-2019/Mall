@@ -4,9 +4,18 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/me_income_rv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/grey_f4"/>
+        android:background="@color/grey_f4" />
+
+    <TextView
+        android:id="@+id/me_empty"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:text="已经全部加载完毕" />
 </LinearLayout>

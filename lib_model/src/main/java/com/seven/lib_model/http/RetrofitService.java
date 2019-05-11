@@ -86,5 +86,8 @@ public interface RetrofitService {
 
     @POST(inComeDetails)
     Observable<HttpResponse> inComeDetails(@Body RequestBody requestBody);
+
+    @POST("article/info")
+    Observable<HttpResponse> getLevel(@Body RequestBody requestBody);
 }
 

@@ -5,9 +5,11 @@ import android.content.Context;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.seven.lib_common.base.activity.BaseActivity;
+import com.seven.lib_http.retrofit.HttpResponse;
 import com.seven.lib_model.model.extension.BdGoodsEntity;
 import com.seven.lib_model.model.extension.BuyRoleEntity;
 import com.seven.lib_model.model.extension.InComeDetailsEntity;
+import com.seven.lib_model.model.extension.LevelEntity;
 import com.seven.lib_model.model.extension.MyInterViewEntity;
 import com.seven.lib_model.model.extension.ReceiveGoodsEntity;
 import com.seven.lib_model.model.extension.RewardListEntity;
@@ -41,6 +43,7 @@ import okhttp3.Interceptor;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -205,6 +208,8 @@ public class ApiManager {
         @POST("promotion/token/list")
         Observable<BaseResult<InComeDetailsEntity>> inComeDetails(@Query("page") int page,@Query("page_size") int page_size);
 
+        @POST("article/info")
+        Observable<HttpResponse> getLevel(@Body RequestBody requestBody);
     }
 
     public static Observable<BaseResult<TokenEntity>> login(LoginEntity entity) {

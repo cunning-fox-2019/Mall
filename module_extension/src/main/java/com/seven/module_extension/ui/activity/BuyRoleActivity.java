@@ -7,6 +7,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
+import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.google.gson.Gson;
 import com.seven.lib_common.base.activity.BaseTitleActivity;
@@ -31,7 +32,8 @@ import io.reactivex.schedulers.Schedulers;
 @Route(path = RouterPath.ACTIVITY_BUY_ROLE)
 public class BuyRoleActivity extends BaseTitleActivity {
 
-
+    @Autowired(name = "level")
+    String level = "";
     @BindView(R2.id.me_cb_kz)
     CheckBox meCbKz;
     @BindView(R2.id.me_cb_cz)
@@ -103,7 +105,20 @@ public class BuyRoleActivity extends BaseTitleActivity {
 
     @Override
     protected void initBundleData(Intent intent) {
-
+        if (intent == null) intent = getIntent();
+        level = intent.getStringExtra("level");
+        switch (level) {
+            case "2":
+                meCbKz.setEnabled(false);
+                break;
+            case "3":
+                meCbKz.setEnabled(false);
+                meCbCz.setEnabled(false);
+                break;
+            case "4":
+                break;
+            default:
+        }
     }
 
     @Override
@@ -149,8 +164,8 @@ public class BuyRoleActivity extends BaseTitleActivity {
             meCbWechat.setChecked(true);
             pay = "1";
         } else if (i == R.id.me_buy_btn) {
-            if (new Gson().fromJson(SharedData.getInstance().getUserInfo(),UserEntity.class).getRole() == 0){
-                ToastUtils.showToast(mContext,"需要购买报单成为vip才能购买");
+            if (new Gson().fromJson(SharedData.getInstance().getUserInfo(), UserEntity.class).getRole() == 0) {
+                ToastUtils.showToast(mContext, "需要购买报单成为vip才能购买");
                 return;
             }
             if (role.isEmpty()) {

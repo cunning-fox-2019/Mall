@@ -41,9 +41,17 @@
         app:tl_textSelectColor="@color/primary"
         app:tl_textUnselectColor="#1e1d1d" />
 
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/me_refresh"
+        android:background="@color/transparent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
     <android.support.v4.view.ViewPager
         android:id="@+id/me_viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/grey_f4" />
+
+    </android.support.v4.widget.SwipeRefreshLayout>
 </LinearLayout>

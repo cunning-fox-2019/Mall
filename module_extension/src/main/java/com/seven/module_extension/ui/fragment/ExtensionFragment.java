@@ -18,6 +18,7 @@ import com.seven.lib_common.base.fragment.BaseFragment;
 import com.seven.lib_common.listener.OnClickListener;
 import com.seven.lib_common.stextview.TypeFaceView;
 import com.seven.lib_common.utils.ScreenUtils;
+import com.seven.lib_common.utils.ToastUtils;
 import com.seven.lib_model.ApiManager;
 import com.seven.lib_model.BaseResult;
 import com.seven.lib_model.CommonObserver;
@@ -93,6 +94,8 @@ public class ExtensionFragment extends BaseFragment {
     RelativeLayout me_ext_up_rl;
     @BindView(R2.id.me_rv_slice)
     TextView me_rv_slice;
+    @BindView(R2.id.me_reward_tv)
+    TypeFaceView me_reward_tv;
 
 
     private ExFragmentPresenter presenter;
@@ -102,6 +105,7 @@ public class ExtensionFragment extends BaseFragment {
     private RewardRuleAdapter adapter;
     private NotVipDialog notVipDialog;
     private RewardGetAdapter getAdapter;
+    UserEntity user;
 
     @Override
     public int getContentViewId() {
@@ -119,9 +123,10 @@ public class ExtensionFragment extends BaseFragment {
         me_rv_slice.setOnClickListener(this);
         meBuyBd.setOnClickListener(this);
         meBuyInterview.setOnClickListener(this);
+        meTitleRight.setOnClickListener(this);
         String userInfo = SharedData.getInstance().getUserInfo();
-        if (!userInfo.isEmpty()) {
-            UserEntity user = new Gson().fromJson(userInfo, UserEntity.class);
+        if (userInfo != null && !userInfo.equals("null")) {
+            user = new Gson().fromJson(userInfo, UserEntity.class);
             switch (user.getRole()) {
                 case 0:
                     meUserlevel.setBackgroundResource(R.drawable.me_normaluser);
@@ -142,28 +147,36 @@ public class ExtensionFragment extends BaseFragment {
                 default:
             }
         }
-        ApiManager.rewardList().subscribe(new CommonObserver<BaseResult<RewardListEntity>>(){
+        ApiManager.rewardList().subscribe(new CommonObserver<BaseResult<RewardListEntity>>() {
             @Override
             public void onNext(BaseResult<RewardListEntity> rewardListEntityBaseResult) {
-                LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) meRvEveryreward.getLayoutParams();
-                params.height = ScreenUtils.dip2px(getActivity(),50*(rewardListEntityBaseResult.getData().getItems().size()+1));
-                meRvEveryreward.setLayoutParams(params);
-                getAdapter = new RewardGetAdapter(R.layout.me_item_reward_get,rewardListEntityBaseResult.getData().getItems());
-                LinearLayoutManager manager = new LinearLayoutManager(getActivity()){
-                    @Override
-                    public boolean canScrollVertically() {
-                        return false;
-                    }
-                };
-                meRvEveryreward.setLayoutManager(manager);
-                meRvEveryreward.setAdapter(getAdapter);
+
+                if (rewardListEntityBaseResult.getData().getItems().size() != 0) {
+                    meRvEveryreward.setVisibility(View.VISIBLE);
+                    me_reward_tv.setVisibility(View.VISIBLE);
+                    LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) meRvEveryreward.getLayoutParams();
+                    params.height = ScreenUtils.dip2px(getActivity(), 50 * (rewardListEntityBaseResult.getData().getItems().size() + 1));
+                    meRvEveryreward.setLayoutParams(params);
+                    getAdapter = new RewardGetAdapter(R.layout.me_item_reward_get, rewardListEntityBaseResult.getData().getItems());
+                    LinearLayoutManager manager = new LinearLayoutManager(getActivity()) {
+                        @Override
+                        public boolean canScrollVertically() {
+                            return false;
+                        }
+                    };
+                    meRvEveryreward.setLayoutManager(manager);
+                    meRvEveryreward.setAdapter(getAdapter);
+                } else {
+                    meRvEveryreward.setVisibility(View.GONE);
+                    me_reward_tv.setVisibility(View.GONE);
+                }
             }
         });
 
     }
 
-    private void showNotVipDialog(){
-        if (notVipDialog == null){
+    private void showNotVipDialog() {
+        if (notVipDialog == null) {
             notVipDialog = new NotVipDialog(getActivity(), R.style.Dialog, new OnClickListener() {
                 @Override
                 public void onCancel(View v, Object... objects) {
@@ -172,7 +185,7 @@ public class ExtensionFragment extends BaseFragment {
 
                 @Override
                 public void onClick(View v, Object... objects) {
-                    if (objects[0] != null){
+                    if (objects[0] != null) {
                         RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_BUY_BD);
                     }
                 }
@@ -181,6 +194,7 @@ public class ExtensionFragment extends BaseFragment {
                 notVipDialog.show();
         }
     }
+
     private void getData(int role) {
         presenter.rewardRule(1, role);
     }
@@ -207,7 +221,7 @@ public class ExtensionFragment extends BaseFragment {
         meRvRewardrules.setLayoutManager(manager);
         meRvRewardrules.setAdapter(adapter);
         LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) meRvRewardrules.getLayoutParams();
-        params.height = ScreenUtils.dip2px(getActivity(),66*(data.size()+1));
+        params.height = ScreenUtils.dip2px(getActivity(), 66 * (data.size() + 1));
         meRvRewardrules.setLayoutParams(params);
     }
 
@@ -216,15 +230,21 @@ public class ExtensionFragment extends BaseFragment {
         if (v.getId() == R.id.me_profit_details) {
             RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_IN_COME);
         } else if (v.getId() == R.id.me_buy_up_rl) {
-            RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_BUY_ROLE);
+            if (user.getRole() == 4){
+                ToastUtils.showToast(getActivity(),"你已经是最高等级");
+            }else {
+                RouterUtils.getInstance().routerWithString(RouterPath.ACTIVITY_BUY_ROLE,"level",user.getRole()+"");
+            }
         } else if (v.getId() == R.id.me_rv_slice) {
             showDialog();
         } else if (v.getId() == R.id.me_buy_bd) {
             RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_BUY_BD);
         } else if (v.getId() == R.id.me_buy_interview) {
             RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_MY_INTERVIEW);
-        }else if (v.getId() == R.id.me_ext_up_rl){
-
+        } else if (v.getId() == R.id.me_ext_up_rl) {
+            RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_MY_INTERVIEW);
+        }else if (v.getId() == R.id.me_title_right){
+            RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_LEVEL);
         }
 
     }
@@ -240,25 +260,17 @@ public class ExtensionFragment extends BaseFragment {
             public void onClick(View v, Object... objects) {
                 String userType = (String) objects[0];
                 me_rv_slice.setText("筛选：" + userType);
-//                ViewGroup.LayoutParams params = meRvRewardrules.getLayoutParams();
-
                 if (userType.equals("普通用户")) {
                     type = 0;
-//                    params.height = ScreenUtils.dip2px(getActivity(), 66 * 2 + 55);
                 } else if (userType.equals("VIP")) {
-//                    params.height = ScreenUtils.dip2px(getActivity(), 66 * 2 + 55);
                     type = 1;
                 } else if (userType.equals("矿主")) {
-//                    params.height = ScreenUtils.dip2px(getActivity(), 66 * 5 + 55);
                     type = 2;
                 } else if (userType.equals("场主")) {
-//                    params.height = ScreenUtils.dip2px(getActivity(), 66 * 6 + 55);
                     type = 3;
                 } else if (userType.equals("城主")) {
-//                    params.height = ScreenUtils.dip2px(getActivity(), 66 * 7 + 55);
                     type = 4;
                 }
-//                meRvRewardrules.setLayoutParams(params);
                 getData(type);
             }
         });

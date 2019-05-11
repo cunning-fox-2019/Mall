@@ -59,7 +59,7 @@ public class UserFragment extends BaseFragment {
 
     @Override
     public void init(Bundle savedInstanceState) {
-       // getUserInfo();
+        // getUserInfo();
     }
 
     private void getUserInfo() {
@@ -76,9 +76,12 @@ public class UserFragment extends BaseFragment {
                     public void onNext(BaseResult<UserEntity> userEntityBaseResult) {
                         Gson gson = new Gson();
                         String userString = gson.toJson(userEntityBaseResult.getData());
-                        SharedData.getInstance().setUserInfo(userString);
-                        setData(userEntityBaseResult.getData());
-                        
+                        if (userString != null && !userString.equals("null")) {
+                            SharedData.getInstance().setUserInfo(userString);
+                            setData(userEntityBaseResult.getData());
+                        } else {
+                            RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_LOGIN);
+                        }
                     }
 
                     @Override
@@ -94,7 +97,7 @@ public class UserFragment extends BaseFragment {
     }
 
     private void setData(UserEntity data) {
-        userName.setText(data.getPhone());
+        userName.setText(data.getUsername() != null && !data.getUsername().equals("") ? data.getUsername() : "昵称暂未设置");
         GlideUtils.loadCircleImage(getActivity(), data.getAvatar(), userPhoto);
     }
 

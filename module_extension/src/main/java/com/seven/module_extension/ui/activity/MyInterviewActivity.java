@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.google.gson.Gson;
@@ -35,6 +36,8 @@ public class MyInterviewActivity extends BaseTitleActivity {
 
     @BindView(R2.id.me_rv_myinterview)
     RecyclerView meRvMyinterview;
+    @BindView(R2.id.me_empty)
+    TextView me_empty;
     private ExActivityPresenter presenter;
     private List<MyInterViewEntity> interViewList;
     private MyInviteAdapter adapter;
@@ -57,8 +60,16 @@ public class MyInterviewActivity extends BaseTitleActivity {
             if (object == null) return;
             interViewList = new ArrayList<>();
             MyInterViewEntity entity = (MyInterViewEntity) object;
-            interViewList.add(entity);
-            setRv(interViewList);
+            if (entity.getItems().size()>0){
+                interViewList.add(entity);
+                setRv(interViewList);
+                me_empty.setVisibility(View.GONE);
+                meRvMyinterview.setVisibility(View.VISIBLE);
+            }else {
+                me_empty.setVisibility(View.VISIBLE);
+                meRvMyinterview.setVisibility(View.GONE);
+            }
+
         }
     }
 

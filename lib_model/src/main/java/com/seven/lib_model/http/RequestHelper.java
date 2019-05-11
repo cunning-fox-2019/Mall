@@ -122,4 +122,6 @@ public class RequestHelper {
     }
 
     public Observable<HttpResponse> inComeDetails(String json){return  appService.inComeDetails(requestBody(json));}
+
+    public Observable<HttpResponse> level(String json){return appService.getLevel(requestBody(json));}
 }

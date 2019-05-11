@@ -8,8 +8,10 @@ import com.seven.lib_http.observer.HttpRxObservable;
 import com.seven.lib_http.observer.HttpRxObserver;
 import com.seven.lib_model.builder.common.PageBuilder;
 import com.seven.lib_model.builder.extension.InviteBuilder;
+import com.seven.lib_model.builder.extension.LevelBuilder;
 import com.seven.lib_model.http.RequestHelper;
 import com.seven.lib_model.model.extension.InComeDetailsEntity;
+import com.seven.lib_model.model.extension.LevelEntity;
 import com.seven.lib_model.model.extension.MyInterViewEntity;
 import com.trello.rxlifecycle2.android.ActivityEvent;
 
@@ -34,4 +36,12 @@ public class ExActivityPresenter extends BasePresenter<IBaseView, BaseActivity> 
         HttpRxObservable.getObservable(RequestHelper.getInstance().inviteList(jsonStr), getActivity(), ActivityEvent.PAUSE).subscribe(rxObserver);
     }
 
+    public void level(int code,int id){
+        LevelBuilder.Builder builder = new LevelBuilder.Builder();
+        LevelBuilder json = builder.id(id).build();
+        String jsonStr = new Gson().toJson(json);
+        HttpRxObserver rxObserver = get(getView(),code,LevelEntity.class,null,false);
+        if (rxObserver == null)return;
+        HttpRxObservable.getObservable(RequestHelper.getInstance().level(jsonStr),getActivity(),ActivityEvent.PAUSE).subscribe(rxObserver);
+    }
 }
