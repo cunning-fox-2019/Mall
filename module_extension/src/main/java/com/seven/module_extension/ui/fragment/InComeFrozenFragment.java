@@ -36,6 +36,10 @@ public class InComeFrozenFragment extends BaseFragment {
         return R.layout.me_fragment_income;
     }
 
+    public InComeFrozenFragment(){
+
+    }
+
     @Override
     public void init(Bundle savedInstanceState) {
         setRv();

@@ -7,13 +7,20 @@ import com.seven.lib_common.mvp.view.IBaseView;
 import com.seven.lib_http.observer.HttpRxObservable;
 import com.seven.lib_http.observer.HttpRxObserver;
 import com.seven.lib_model.builder.common.PageBuilder;
+import com.seven.lib_model.builder.extension.BindingBuilder;
 import com.seven.lib_model.builder.extension.InviteBuilder;
 import com.seven.lib_model.builder.extension.LevelBuilder;
+import com.seven.lib_model.builder.extension.ReceiveBuilder;
 import com.seven.lib_model.http.RequestHelper;
+import com.seven.lib_model.model.extension.BindEntity;
+import com.seven.lib_model.model.extension.BindItemEntity;
 import com.seven.lib_model.model.extension.InComeDetailsEntity;
 import com.seven.lib_model.model.extension.LevelEntity;
 import com.seven.lib_model.model.extension.MyInterViewEntity;
+import com.seven.lib_model.model.extension.RewardLsitItemEntity;
 import com.trello.rxlifecycle2.android.ActivityEvent;
+
+import java.security.PublicKey;
 
 /**
  * Created by xxxxxxH on 2019/5/3.
@@ -44,4 +51,45 @@ public class ExActivityPresenter extends BasePresenter<IBaseView, BaseActivity> 
         if (rxObserver == null)return;
         HttpRxObservable.getObservable(RequestHelper.getInstance().level(jsonStr),getActivity(),ActivityEvent.PAUSE).subscribe(rxObserver);
     }
+
+    //绑定名额
+    public void  bind(int code,String phone,String id){
+        BindingBuilder.Builder builder = new BindingBuilder.Builder();
+        BindingBuilder json = builder.phone(phone).id(id).build();
+        String jsonStr = new Gson().toJson(json);
+        HttpRxObserver rxObserver = get(getView(),code,BindEntity.class,null,false);
+        if (rxObserver == null)return;
+        HttpRxObservable.getObservable(RequestHelper.getInstance().binding(jsonStr),getActivity(),ActivityEvent.PAUSE).subscribe(rxObserver);
+    }
+    //获取绑定列表
+    public  void getBindList(int code,String id){
+        BindingBuilder.Builder builder = new BindingBuilder.Builder();
+        BindingBuilder json = builder.id(id).build();
+        String jsonStr = new Gson().toJson(json);
+        HttpRxObserver rxObserver = getList(getView(),code,BindItemEntity.class,"items",true);
+        if (rxObserver == null)return;
+        HttpRxObservable.getObservable(RequestHelper.getInstance().getBindList(jsonStr),getActivity(),ActivityEvent.PAUSE).subscribe(rxObserver);
+    }
+
+    //领取报单奖励
+    public void getReceive(int code,String ids,String contact_id){
+        ReceiveBuilder.Builder builder = new ReceiveBuilder.Builder();
+        ReceiveBuilder json = builder.ids(ids).contact_id(contact_id).build();
+        String jsonStr = new Gson().toJson(json);
+        HttpRxObserver rxObserver = get(getView(),code,BindEntity.class,null,false);
+        if (rxObserver == null)return;
+        HttpRxObservable.getObservable(RequestHelper.getInstance().getReceive(jsonStr),getActivity(),ActivityEvent.PAUSE).subscribe(rxObserver);
+    }
+
+    //报表奖励列表
+    public void rewardList(int code,String id){
+        BindingBuilder.Builder builder = new BindingBuilder.Builder();
+        BindingBuilder json = builder.id(id).build();
+        String jsonStr = new Gson().toJson(json);
+        HttpRxObserver rxObserver = getList(getView(),code,RewardLsitItemEntity.class,"items",true);
+        if (rxObserver == null)return;
+        HttpRxObservable.getObservable(RequestHelper.getInstance().rewardLsit(jsonStr),getActivity(),ActivityEvent.PAUSE).subscribe(rxObserver);
+    }
+
+
 }
