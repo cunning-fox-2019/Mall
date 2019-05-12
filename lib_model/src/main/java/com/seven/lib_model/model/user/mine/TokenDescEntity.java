@@ -1,5 +1,7 @@
 package com.seven.lib_model.model.user.mine;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by xxxxxxH on 2019/5/12.
  */
@@ -14,7 +16,11 @@ public class TokenDescEntity {
 
     private String content;
     private String title;
-    private String id;
+    private int id;
+    /**
+     * id : 2
+     */
+
 
     public String getContent() {
         return content;
@@ -32,11 +38,12 @@ public class TokenDescEntity {
         this.title = title;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
+
 }

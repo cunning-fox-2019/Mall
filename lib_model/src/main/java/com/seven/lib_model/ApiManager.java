@@ -27,6 +27,7 @@ import com.seven.lib_model.model.user.mine.OrderDetailEntity;
 import com.seven.lib_model.model.user.mine.OrderDetailRequestEntity;
 import com.seven.lib_model.model.user.mine.PayAccountEntity;
 import com.seven.lib_model.model.user.mine.ResetPasswordEntity;
+import com.seven.lib_model.model.user.mine.SB;
 import com.seven.lib_model.model.user.mine.ShopEntity;
 import com.seven.lib_model.model.user.mine.TokenDescEntity;
 import com.seven.lib_model.model.user.mine.UpLoadImageEntity;
@@ -34,6 +35,7 @@ import com.seven.lib_opensource.application.SevenApplication;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
@@ -51,10 +53,13 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Body;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.Query;
+import retrofit2.http.QueryMap;
 
 
 /**
@@ -215,8 +220,9 @@ public class ApiManager {
         @POST("promotion/reward/receive")
         Observable<BaseResult> kfabf(@Query("reward_info_id") String id);
 
+
         @POST("article/info")
-        Observable<BaseResult<TokenDescEntity>> getTokenDesc(@Query("id") int id);
+        Observable<BaseResult<TokenDescEntity>> getTokenDesc(@Body SB sb);
     }
 
     public static Observable<BaseResult<TokenEntity>> login(LoginEntity entity) {
@@ -317,6 +323,6 @@ public class ApiManager {
     }
 
     public static Observable<BaseResult<TokenDescEntity>> getTokenDesc(){
-        return subScribe(apiManagerService.getTokenDesc(2));
+        return subScribe(apiManagerService.getTokenDesc(new SB(2)));
     }
 }

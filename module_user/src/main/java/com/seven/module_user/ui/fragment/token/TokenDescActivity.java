@@ -14,6 +14,9 @@ import com.seven.lib_model.model.user.mine.TokenDescEntity;
 import com.seven.module_user.R;
 import com.seven.module_user.R2;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import butterknife.BindView;
 
 /**
@@ -47,13 +50,14 @@ public class TokenDescActivity extends BaseTitleActivity {
 
     @Override
     protected void initView(Bundle savedInstanceState) {
+
         ApiManager.getTokenDesc()
                 .subscribe(new CommonObserver<BaseResult<TokenDescEntity>>() {
                     @Override
                     public void onNext(BaseResult<TokenDescEntity> tokenDescEntityBaseResult) {
                         TokenDescEntity entity = tokenDescEntityBaseResult.getData();
                         if (entity != null) {
-                            textView.setText(entity.getContent() != null ? Html.fromHtml(entity.getContent().substring(entity.getContent().lastIndexOf("</style>"))) : "");
+                            textView.setText(Html.fromHtml(entity.getContent()));
                             setTitleText(entity.getTitle());
                         }
                     }
