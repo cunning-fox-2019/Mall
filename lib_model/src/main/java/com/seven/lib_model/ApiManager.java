@@ -206,7 +206,7 @@ public class ApiManager {
         Observable<BaseResult<RewardListEntity>> rewardList();
 
         @POST("promotion/token/list")
-        Observable<BaseResult<InComeDetailsEntity>> inComeDetails(@Query("page") int page,@Query("page_size") int page_size);
+        Observable<BaseResult<InComeDetailsEntity>> inComeDetails(@Query("page") int page, @Query("page_size") int page_size,@Query("status") String status);
 
         @POST("article/info")
         Observable<HttpResponse> getLevel(@Body RequestBody requestBody);
@@ -288,16 +288,20 @@ public class ApiManager {
     public static Observable<BaseResult> modifyPassword(ResetPasswordEntity entity) {
         return subScribe(apiManagerService.modifyPassword(entity));
     }
+
     public static Observable<BaseResult> modifyPayPassword(ResetPasswordEntity entity) {
         return subScribe(apiManagerService.modifyPayPassword(entity));
     }
 
-    public static Observable<BaseResult<DTEntity>> upLoad(MultipartBody part){
+    public static Observable<BaseResult<DTEntity>> upLoad(MultipartBody part) {
         return subScribe(apiManagerService.upLoad(part));
     }
 
-    public static Observable<BaseResult<RewardListEntity>> rewardList(){
-        return subScribe(apiManagerService.rewardList());}
+    public static Observable<BaseResult<RewardListEntity>> rewardList() {
+        return subScribe(apiManagerService.rewardList());
+    }
 
-        public static Observable<BaseResult<InComeDetailsEntity>> inComeDetails(int page,int page_size){return subScribe(apiManagerService.inComeDetails(page,page_size));}
+    public static Observable<BaseResult<InComeDetailsEntity>> inComeDetails(int page, int page_size,String status) {
+        return subScribe(apiManagerService.inComeDetails(page, page_size,status));
+    }
 }

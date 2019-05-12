@@ -41,7 +41,7 @@ public class UserTokenListActivity extends BaseAppCompatActivity {
     private final String[] mTitles = {
             "全部", "收入", "支出", "冻结"};
     private List<Fragment> mFragments = new ArrayList<>();
-    private final String[] mType = {"all", "income", "expend", "frozen"};
+    private final String[] mType = {"", "1", "2", "3"};
 
     @Override
     public void showLoading() {

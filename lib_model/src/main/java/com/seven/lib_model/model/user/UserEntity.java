@@ -23,6 +23,25 @@ public class UserEntity {
     private int role;
     private int is_set_pay_password;
     private String invite_code;
+    /**
+     * wx_account : xxx123
+     * ali_account : xxx321
+     * promotion_token_number : 123
+     * token_number : 1
+     * freeze_token_number : 1
+     * token_number_total : 2
+     * form_goods_number : 1
+     * invite_number : 1
+     */
+
+    private String wx_account;
+    private String ali_account;
+    private int promotion_token_number;
+    private int token_number;
+    private int freeze_token_number;
+    private int token_number_total;
+    private int form_goods_number;
+    private int invite_number;
 
     public int getId() {
         return id;
@@ -86,5 +105,69 @@ public class UserEntity {
 
     public void setInvite_code(String invite_code) {
         this.invite_code = invite_code;
+    }
+
+    public String getWx_account() {
+        return wx_account;
+    }
+
+    public void setWx_account(String wx_account) {
+        this.wx_account = wx_account;
+    }
+
+    public String getAli_account() {
+        return ali_account;
+    }
+
+    public void setAli_account(String ali_account) {
+        this.ali_account = ali_account;
+    }
+
+    public int getPromotion_token_number() {
+        return promotion_token_number;
+    }
+
+    public void setPromotion_token_number(int promotion_token_number) {
+        this.promotion_token_number = promotion_token_number;
+    }
+
+    public int getToken_number() {
+        return token_number;
+    }
+
+    public void setToken_number(int token_number) {
+        this.token_number = token_number;
+    }
+
+    public int getFreeze_token_number() {
+        return freeze_token_number;
+    }
+
+    public void setFreeze_token_number(int freeze_token_number) {
+        this.freeze_token_number = freeze_token_number;
+    }
+
+    public int getToken_number_total() {
+        return token_number_total;
+    }
+
+    public void setToken_number_total(int token_number_total) {
+        this.token_number_total = token_number_total;
+    }
+
+    public int getForm_goods_number() {
+        return form_goods_number;
+    }
+
+    public void setForm_goods_number(int form_goods_number) {
+        this.form_goods_number = form_goods_number;
+    }
+
+    public int getInvite_number() {
+        return invite_number;
+    }
+
+    public void setInvite_number(int invite_number) {
+        this.invite_number = invite_number;
     }
 }

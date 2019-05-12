@@ -116,6 +116,7 @@
                     android:paddingLeft="@dimen/margin_16">
 
                     <TextView
+                        android:id="@+id/token_total"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="0"
@@ -146,7 +147,7 @@
                     android:paddingLeft="@dimen/margin_16">
 
                     <TextView
-
+                        android:id="@+id/freeze_token_number"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="0"
@@ -191,6 +192,7 @@
 
         <com.seven.module_user.ui.fragment.view.BaseRecyclerView
             android:id="@+id/list_view"
+            android:background="#fff"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </LinearLayout>
