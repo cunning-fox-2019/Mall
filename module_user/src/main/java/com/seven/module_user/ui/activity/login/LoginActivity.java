@@ -75,8 +75,6 @@ public class LoginActivity extends BaseActivity {
             RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_PASSWORD);
         else if (view.getId() == R.id.register_btn)
             RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_REGISTER);
-
-
     }
 
     private void login() {

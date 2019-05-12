@@ -6,5 +6,6 @@
         <activity android:name=".ui.activity.BuyActivity"/>
         <activity android:name=".ui.activity.MyInterviewActivity" />
         <activity android:name=".ui.activity.LevelRuleActivity" />
+        <activity android:name=".ui.activity.ReceivAwardsActivity" />
     </application>
 </manifest>

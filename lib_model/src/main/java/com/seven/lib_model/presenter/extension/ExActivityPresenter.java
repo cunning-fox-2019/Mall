@@ -11,12 +11,14 @@ import com.seven.lib_model.builder.extension.BindingBuilder;
 import com.seven.lib_model.builder.extension.InviteBuilder;
 import com.seven.lib_model.builder.extension.LevelBuilder;
 import com.seven.lib_model.builder.extension.ReceiveBuilder;
+import com.seven.lib_model.builder.extension.RewardListBuilder;
 import com.seven.lib_model.http.RequestHelper;
 import com.seven.lib_model.model.extension.BindEntity;
 import com.seven.lib_model.model.extension.BindItemEntity;
 import com.seven.lib_model.model.extension.InComeDetailsEntity;
 import com.seven.lib_model.model.extension.LevelEntity;
 import com.seven.lib_model.model.extension.MyInterViewEntity;
+import com.seven.lib_model.model.extension.RewardListEntity;
 import com.seven.lib_model.model.extension.RewardLsitItemEntity;
 import com.trello.rxlifecycle2.android.ActivityEvent;
 
@@ -91,5 +93,14 @@ public class ExActivityPresenter extends BasePresenter<IBaseView, BaseActivity> 
         HttpRxObservable.getObservable(RequestHelper.getInstance().rewardLsit(jsonStr),getActivity(),ActivityEvent.PAUSE).subscribe(rxObserver);
     }
 
+    //获取令牌详情
+    public void rewardInfo(int code,int id){
+        RewardListBuilder.Builder builder = new RewardListBuilder.Builder();
+        RewardListBuilder json = builder.reward_id(id).build();
+        String jsonStr = new Gson().toJson(json);
+        HttpRxObserver rxObserver = getList(getView(),code,RewardListEntity.class,null,true);
+        if (rxObserver == null)return;
+        HttpRxObservable.getObservable(RequestHelper.getInstance().rewardInfo(jsonStr),getActivity(),ActivityEvent.PAUSE).subscribe(rxObserver);
+    }
 
 }

@@ -32,6 +32,7 @@ public class RouterPath {
     public static final String ACTIVITY_BUY_BD = "/extension/BuyActivity";
     public static final String ACTIVITY_MY_INTERVIEW = "/extension/MyInterviewActivity";
     public static final String ACTIVITY_LEVEL = "/extension/LevelRuleActivity";
+    public static final String ACTIVITY_REWARD_LIST = "/extension/ReceivAwardsActivity";
 
     /* module model */
     public static final String FRAGMENT_MODEL = "/model/ModelFragment";

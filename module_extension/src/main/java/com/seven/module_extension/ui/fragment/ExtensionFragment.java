@@ -13,6 +13,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.gson.Gson;
 import com.seven.lib_common.base.fragment.BaseFragment;
 import com.seven.lib_common.listener.OnClickListener;
@@ -23,6 +25,7 @@ import com.seven.lib_model.ApiManager;
 import com.seven.lib_model.BaseResult;
 import com.seven.lib_model.CommonObserver;
 import com.seven.lib_model.model.extension.ReceiveGoodsEntity;
+import com.seven.lib_model.model.extension.RewardItem;
 import com.seven.lib_model.model.extension.RewardListEntity;
 import com.seven.lib_model.model.extension.RewardRuleEntity;
 import com.seven.lib_model.model.user.UserEntity;
@@ -166,6 +169,16 @@ public class ExtensionFragment extends BaseFragment {
                     };
                     meRvEveryreward.setLayoutManager(manager);
                     meRvEveryreward.setAdapter(getAdapter);
+                    getAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                            List<RewardItem> list = adapter.getData();
+                            int id = list.get(position).getId();
+                            ARouter.getInstance().build(RouterPath.ACTIVITY_REWARD_LIST)
+                                    .withInt("id",id)
+                                    .navigation();
+                        }
+                    });
                 } else {
                     meRvEveryreward.setVisibility(View.GONE);
                     me_reward_tv.setVisibility(View.GONE);
