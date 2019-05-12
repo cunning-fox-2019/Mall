@@ -1,6 +1,7 @@
 package com.seven.module_user.ui.fragment;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -59,6 +60,8 @@ public class UserFragment extends BaseFragment {
     ImageView userPhoto;
     @BindView(R2.id.shop_cart)
     TextView shop_cart;
+    @BindView(R2.id.vip_lv)
+    ImageView vipLv;
 
 
     @Override
@@ -91,8 +94,8 @@ public class UserFragment extends BaseFragment {
                         } else {
                             RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_LOGIN);
                         }
-                        Log.e("userInfo",SharedData.getInstance().getUserInfo());
-                        Log.e("token",SharedData.getInstance().getToken());
+                        Log.e("userInfo", SharedData.getInstance().getUserInfo());
+                        Log.e("token", SharedData.getInstance().getToken());
                     }
 
                     @Override
@@ -109,6 +112,26 @@ public class UserFragment extends BaseFragment {
 
     private void setData(UserEntity data) {
         userName.setText(data.getUsername() != null && !data.getUsername().equals("") ? data.getUsername() : "昵称暂未设置");
+        Drawable drawable = getResources().getDrawable(R.drawable.lv_0);
+        switch (data.getRole()) {
+            case 0:
+                drawable = getResources().getDrawable(R.drawable.lv_0);
+                break;
+            case 1:
+                drawable = getResources().getDrawable(R.drawable.lv_1);
+                break;
+            case 2:
+                drawable = getResources().getDrawable(R.drawable.lv_2);
+                break;
+            case 3:
+                drawable = getResources().getDrawable(R.drawable.lv_3);
+                break;
+            case 4:
+                drawable = getResources().getDrawable(R.drawable.lv_4);
+                break;
+            default:
+        }
+        vipLv.setImageDrawable(drawable);
         GlideUtils.loadCircleImage(getActivity(), data.getAvatar(), userPhoto);
     }
 
