@@ -94,6 +94,11 @@ public class UserTokenActivity extends BaseAppCompatActivity {
         startActivity(new Intent(mContext, UserReceiveTokenActivity.class));
     }
 
+    @OnClick(R2.id.token_desc_btn)
+    void tokenDesc() {
+        startActivity(new Intent(this, TokenDescActivity.class));
+    }
+
     private View getEmptyView() {
         TextView textView = new TextView(this);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);

@@ -28,6 +28,7 @@ import com.seven.lib_model.model.user.mine.OrderDetailRequestEntity;
 import com.seven.lib_model.model.user.mine.PayAccountEntity;
 import com.seven.lib_model.model.user.mine.ResetPasswordEntity;
 import com.seven.lib_model.model.user.mine.ShopEntity;
+import com.seven.lib_model.model.user.mine.TokenDescEntity;
 import com.seven.lib_model.model.user.mine.UpLoadImageEntity;
 import com.seven.lib_opensource.application.SevenApplication;
 
@@ -210,6 +211,12 @@ public class ApiManager {
 
         @POST("article/info")
         Observable<HttpResponse> getLevel(@Body RequestBody requestBody);
+
+        @POST("promotion/reward/receive")
+        Observable<BaseResult> kfabf(@Query("reward_info_id") String id);
+
+        @POST("article/info")
+        Observable<BaseResult<TokenDescEntity>> getTokenDesc(@Query("id") int id);
     }
 
     public static Observable<BaseResult<TokenEntity>> login(LoginEntity entity) {
@@ -303,5 +310,13 @@ public class ApiManager {
 
     public static Observable<BaseResult<InComeDetailsEntity>> inComeDetails(int page, int page_size,String status) {
         return subScribe(apiManagerService.inComeDetails(page, page_size,status));
+    }
+
+    public static Observable<BaseResult> daskgja(String id){
+        return subScribe(apiManagerService.kfabf(id));
+    }
+
+    public static Observable<BaseResult<TokenDescEntity>> getTokenDesc(){
+        return subScribe(apiManagerService.getTokenDesc(2));
     }
 }

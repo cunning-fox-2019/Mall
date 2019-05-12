@@ -38,6 +38,14 @@
                     android:layout_centerInParent="true"
                     android:textColor="#fff"
                     android:textSize="18sp" />
+
+                <ImageView
+                    android:id="@+id/token_desc_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/token_desc_icon" />
             </RelativeLayout>
 
             <LinearLayout
@@ -78,7 +86,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
-                    android:paddingRight="@dimen/padding_16">
+                    android:paddingRight="@dimen/padding_16"
+                    android:visibility="gone">
 
                     <ImageView
                         android:id="@+id/receive_token_btn"
@@ -192,9 +201,9 @@
 
         <com.seven.module_user.ui.fragment.view.BaseRecyclerView
             android:id="@+id/list_view"
-            android:background="#fff"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:background="#fff" />
     </LinearLayout>
 
 </LinearLayout>
