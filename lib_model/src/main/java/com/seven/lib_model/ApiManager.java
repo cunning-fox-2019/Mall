@@ -27,6 +27,7 @@ import com.seven.lib_model.model.user.mine.OrderDetailEntity;
 import com.seven.lib_model.model.user.mine.OrderDetailRequestEntity;
 import com.seven.lib_model.model.user.mine.PayAccountEntity;
 import com.seven.lib_model.model.user.mine.ResetPasswordEntity;
+import com.seven.lib_model.model.user.mine.SB;
 import com.seven.lib_model.model.user.mine.ShopEntity;
 import com.seven.lib_model.model.user.mine.TokenDescEntity;
 import com.seven.lib_model.model.user.mine.UpLoadImageEntity;
@@ -215,8 +216,9 @@ public class ApiManager {
         @POST("promotion/reward/receive")
         Observable<BaseResult> kfabf(@Query("reward_info_id") String id);
 
+
         @POST("article/info")
-        Observable<BaseResult<TokenDescEntity>> getTokenDesc(@Query("id") int id);
+        Observable<BaseResult<TokenDescEntity>> getTokenDesc(@Body SB sb);
 
         @POST("promotion/form/reward/receive")
         Observable<BaseResult> getReceive(@Query("ids") String ids,@Query("contact_id") String contact_id);
@@ -324,6 +326,6 @@ public class ApiManager {
     }
 
     public static Observable<BaseResult<TokenDescEntity>> getTokenDesc(){
-        return subScribe(apiManagerService.getTokenDesc(2));
+        return subScribe(apiManagerService.getTokenDesc(new SB(2)));
     }
 }
