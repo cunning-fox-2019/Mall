@@ -84,6 +84,8 @@ public class Constants {
         public static final int REGISTER = 100;
         public static final int LOGIN = 101;
         public static final int BUY_BD = 102;
+        public static final int LOGIN_OUT = 103;
+        public static final int USER_DATA_CHANGE = 104;
 
         /* 第三方sdk */
         public static final int PAY_RESULT = 1000;

@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/grey_f4">
+    android:background="@color/grey_f4"
+    android:fillViewport="true"
+    android:scrollbars="none">
 
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     //推广中心00title
 
     <LinearLayout
@@ -23,11 +28,11 @@
             <com.seven.lib_common.stextview.TypeFaceView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/white"
-                android:text="推广中心"
                 android:layout_centerInParent="true"
+                android:text="推广中心"
+                android:textColor="@color/white"
                 android:textSize="@dimen/sp_18"
-                app:SFontStyle="regular_s"/>
+                app:SFontStyle="regular_s" />
 
             <ImageView
                 android:id="@+id/me_title_right"
@@ -35,7 +40,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:src="@drawable/me_title_rigth"/>
+                android:src="@drawable/me_title_rigth" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -199,21 +204,16 @@
 
     //推广中心content
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/me_tab"
-        android:scrollbars="none"
-        android:fillViewport="true"
-        android:layout_marginBottom="50dp"
-        android:layout_marginLeft="23dp"
-        android:layout_marginTop="26dp"
-        android:layout_marginRight="23dp">
 
         <LinearLayout
             android:id="@+id/me_content"
+            android:layout_below="@+id/me_tab"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="23dp"
+            android:layout_marginRight="23dp"
+            android:layout_marginBottom="60dp"
             android:orientation="vertical">
 
             //购买报单
@@ -297,23 +297,29 @@
 
             //各项奖励
 
-            <com.seven.lib_common.stextview.TypeFaceView
-                android:id="@+id/me_reward_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="14dp"
-                android:text="奖励领取"
-                android:textColor="#333333"
-                android:textSize="15sp"
-                app:SFontStyle="bold_s" />
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/me_rv_everyreward"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/grey_f4"
-                android:layout_marginTop="10dp" />
+                android:descendantFocusability="blocksDescendants"
+                android:orientation="vertical">
 
+                <com.seven.lib_common.stextview.TypeFaceView
+                    android:id="@+id/me_reward_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:text="奖励领取"
+                    android:textColor="#333333"
+                    android:textSize="15sp"
+                    app:SFontStyle="bold_s" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/me_rv_everyreward"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/grey_f4" />
+            </LinearLayout>
             //奖励规则
 
             <RelativeLayout
@@ -334,20 +340,26 @@
                     android:id="@+id/me_rv_slice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="筛选：普通用户"
+                    android:layout_alignParentRight="true"
                     android:drawableRight="@drawable/me_slice"
-                    android:textSize="12sp"
+                    android:text="筛选：普通用户"
                     android:textColor="@color/primary"
-                    android:layout_alignParentRight="true" />
+                    android:textSize="12sp" />
             </RelativeLayout>
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/me_rv_rewardrules"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:nestedScrollingEnabled="false"
-                android:layout_marginTop="10dp" />
-        </LinearLayout>
-    </ScrollView>
+                android:descendantFocusability="blocksDescendants"
+                android:orientation="vertical">
 
-</RelativeLayout>
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/me_rv_rewardrules"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:nestedScrollingEnabled="false" />
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
+</android.support.v4.widget.NestedScrollView>

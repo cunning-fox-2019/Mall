@@ -21,6 +21,8 @@ import com.seven.lib_model.model.extension.InComeItem;
 import com.seven.lib_model.model.user.OrderEntity;
 import com.seven.lib_model.model.user.UserEntity;
 import com.seven.lib_router.db.shard.SharedData;
+import com.seven.lib_router.router.RouterPath;
+import com.seven.lib_router.router.RouterUtils;
 import com.seven.module_user.R;
 import com.seven.module_user.R2;
 import com.seven.module_user.ui.fragment.view.BaseRecyclerView;
@@ -86,7 +88,8 @@ public class UserTokenActivity extends BaseAppCompatActivity {
 
     @OnClick(R2.id.all)
     void checkAll() {
-        startActivity(new Intent(mContext, UserTokenListActivity.class));
+//        startActivity(new Intent(mContext, UserTokenListActivity.class));
+        RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_IN_COME);
     }
 
     @OnClick(R2.id.receive_token_btn)

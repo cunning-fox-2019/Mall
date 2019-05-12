@@ -31,6 +31,7 @@ import com.seven.module_user.ui.fragment.order.UserOrderListActivity;
 import com.seven.module_user.ui.fragment.setting.UserSettingActivity;
 import com.seven.module_user.ui.fragment.token.UserTokenActivity;
 
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -72,7 +73,9 @@ public class UserFragment extends BaseFragment {
     @Override
     public void init(Bundle savedInstanceState) {
         // getUserInfo();
+        EventBus.getDefault().register(this);
     }
+
 
     private void getUserInfo() {
         ApiManager.getUserInfo()
@@ -91,6 +94,7 @@ public class UserFragment extends BaseFragment {
                         if (userString != null && !userString.equals("null")) {
                             SharedData.getInstance().setUserInfo(userString);
                             setData(userEntityBaseResult.getData());
+                            EventBus.getDefault().post(new ObjectsEvent(Constants.EventConfig.USER_DATA_CHANGE,"change"));
                         } else {
                             RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_LOGIN);
                         }
@@ -183,6 +187,7 @@ public class UserFragment extends BaseFragment {
 
     @OnClick(R2.id.logout)
     void logout() {
+        EventBus.getDefault().post(new ObjectsEvent(Constants.EventConfig.LOGIN_OUT,"loginout"));
         startActivity(new Intent(getActivity(), LoginActivity.class));
         //ToastUtils.showToast(getActivity(), "退出");
     }
@@ -227,11 +232,11 @@ public class UserFragment extends BaseFragment {
 
             case Constants.EventConfig.LOGIN:
             case Constants.EventConfig.REGISTER:
-
+                getUserInfo();
                 RegisterEntity registerEntity = (RegisterEntity) ((ObjectsEvent) event).getObjects()[0];
 
                 if (registerEntity == null) return;
-                getUserInfo();
+
                 break;
 
         }

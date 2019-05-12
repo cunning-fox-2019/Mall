@@ -303,7 +303,7 @@ public class ApiManager {
     public static Observable<BaseResult<RewardListEntity>> rewardList() {
         return subScribe(apiManagerService.rewardList());
     }
-    
+
     public static Observable<BaseResult<InComeDetailsEntity>> inComeDetails(int page, int page_size,String status) {
         return subScribe(apiManagerService.inComeDetails(page, page_size,status));
     }

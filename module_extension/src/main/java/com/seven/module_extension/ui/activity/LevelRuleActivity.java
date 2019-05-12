@@ -2,6 +2,7 @@ package com.seven.module_extension.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.View;
 import android.widget.TextView;
 
@@ -9,6 +10,7 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.seven.lib_common.base.activity.BaseTitleActivity;
 import com.seven.lib_model.model.extension.LevelEntity;
 import com.seven.lib_model.presenter.extension.ExActivityPresenter;
+import com.seven.lib_router.Variable;
 import com.seven.lib_router.router.RouterPath;
 import com.seven.module_extension.R;
 import com.seven.module_extension.R2;
@@ -45,7 +47,7 @@ public class LevelRuleActivity extends BaseTitleActivity {
         if (code == 1) {
             if (object == null) return;
             entity = (LevelEntity) object;
-            meLevelTv.setText(entity.getContent()!=null?entity.getContent():"");
+            meLevelTv.setText(entity.getContent()!=null?Html.fromHtml(entity.getContent().substring(entity.getContent().lastIndexOf("</style>"))) :"");
         }
     }
 
@@ -79,10 +81,4 @@ public class LevelRuleActivity extends BaseTitleActivity {
 
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
 }

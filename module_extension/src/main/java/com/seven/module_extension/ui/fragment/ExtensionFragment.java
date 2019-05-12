@@ -30,6 +30,8 @@ import com.seven.lib_model.model.extension.RewardListEntity;
 import com.seven.lib_model.model.extension.RewardRuleEntity;
 import com.seven.lib_model.model.user.UserEntity;
 import com.seven.lib_model.presenter.extension.ExFragmentPresenter;
+import com.seven.lib_opensource.event.Event;
+import com.seven.lib_router.Constants;
 import com.seven.lib_router.db.shard.SharedData;
 import com.seven.lib_router.router.RouterPath;
 import com.seven.lib_router.router.RouterUtils;
@@ -39,6 +41,10 @@ import com.seven.module_extension.ui.adapter.RewardGetAdapter;
 import com.seven.module_extension.ui.adapter.RewardRuleAdapter;
 import com.seven.module_extension.ui.dialog.NotVipDialog;
 import com.seven.module_extension.ui.dialog.SelectUserTypeDialog;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -118,6 +124,7 @@ public class ExtensionFragment extends BaseFragment {
 
     @Override
     public void init(Bundle savedInstanceState) {
+        EventBus.getDefault().register(this);
         presenter = new ExFragmentPresenter(this, this);
         getData(0);
         meProfitDetails.setOnClickListener(this);
@@ -127,9 +134,16 @@ public class ExtensionFragment extends BaseFragment {
         meBuyBd.setOnClickListener(this);
         meBuyInterview.setOnClickListener(this);
         meTitleRight.setOnClickListener(this);
+        setUserData();
+        getRewardList();
+
+    }
+
+    private void setUserData() {
         String userInfo = SharedData.getInstance().getUserInfo();
         if (userInfo != null && !userInfo.equals("null")) {
             user = new Gson().fromJson(userInfo, UserEntity.class);
+            meProfitNum.setText(user.getPromotion_token_number() + "");
             switch (user.getRole()) {
                 case 0:
                     meUserlevel.setBackgroundResource(R.drawable.me_normaluser);
@@ -150,6 +164,9 @@ public class ExtensionFragment extends BaseFragment {
                 default:
             }
         }
+    }
+
+    private void getRewardList() {
         ApiManager.rewardList().subscribe(new CommonObserver<BaseResult<RewardListEntity>>() {
             @Override
             public void onNext(BaseResult<RewardListEntity> rewardListEntityBaseResult) {
@@ -157,9 +174,6 @@ public class ExtensionFragment extends BaseFragment {
                 if (rewardListEntityBaseResult.getData().getItems().size() != 0) {
                     meRvEveryreward.setVisibility(View.VISIBLE);
                     me_reward_tv.setVisibility(View.VISIBLE);
-                    LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) meRvEveryreward.getLayoutParams();
-                    params.height = ScreenUtils.dip2px(getActivity(), 50 * (rewardListEntityBaseResult.getData().getItems().size() + 1) + 20);
-                    meRvEveryreward.setLayoutParams(params);
                     getAdapter = new RewardGetAdapter(R.layout.me_item_reward_get, rewardListEntityBaseResult.getData().getItems());
                     LinearLayoutManager manager = new LinearLayoutManager(getActivity()) {
                         @Override
@@ -174,13 +188,13 @@ public class ExtensionFragment extends BaseFragment {
                         public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                             List<RewardItem> list = adapter.getData();
                             int id = list.get(position).getId();
-                            if (!list.get(position).getReward_name().contains("报单奖励")){
-                            ARouter.getInstance().build(RouterPath.ACTIVITY_REWARD_LIST)
-                                    .withInt("id",id)
-                                    .navigation();
-                            }else {
+                            if (!list.get(position).getReward_name().contains("报单奖励")) {
+                                ARouter.getInstance().build(RouterPath.ACTIVITY_REWARD_LIST)
+                                        .withInt("id", id)
+                                        .navigation();
+                            } else {
                                 ARouter.getInstance().build(RouterPath.ACTIVITY_BD_LIST)
-                                        .withInt("id",id)
+                                        .withInt("id", id)
                                         .navigation();
                             }
                         }
@@ -191,7 +205,6 @@ public class ExtensionFragment extends BaseFragment {
                 }
             }
         });
-
     }
 
     private void showNotVipDialog() {
@@ -239,9 +252,6 @@ public class ExtensionFragment extends BaseFragment {
         };
         meRvRewardrules.setLayoutManager(manager);
         meRvRewardrules.setAdapter(adapter);
-        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) meRvRewardrules.getLayoutParams();
-        params.height = ScreenUtils.dip2px(getActivity(), 66 * (data.size() + 1));
-        meRvRewardrules.setLayoutParams(params);
     }
 
     @Override
@@ -249,10 +259,10 @@ public class ExtensionFragment extends BaseFragment {
         if (v.getId() == R.id.me_profit_details) {
             RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_IN_COME);
         } else if (v.getId() == R.id.me_buy_up_rl) {
-            if (user.getRole() == 4){
-                ToastUtils.showToast(getActivity(),"你已经是最高等级");
-            }else {
-                RouterUtils.getInstance().routerWithString(RouterPath.ACTIVITY_BUY_ROLE,"level",user.getRole()+"");
+            if (user.getRole() == 4) {
+                ToastUtils.showToast(getActivity(), "你已经是最高等级");
+            } else {
+                RouterUtils.getInstance().routerWithString(RouterPath.ACTIVITY_BUY_ROLE, "level", user.getRole() + "");
             }
         } else if (v.getId() == R.id.me_rv_slice) {
             showDialog();
@@ -262,7 +272,7 @@ public class ExtensionFragment extends BaseFragment {
             RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_MY_INTERVIEW);
         } else if (v.getId() == R.id.me_ext_up_rl) {
             RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_MY_INTERVIEW);
-        }else if (v.getId() == R.id.me_title_right){
+        } else if (v.getId() == R.id.me_title_right) {
             RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_LEVEL);
         }
 
@@ -312,4 +322,24 @@ public class ExtensionFragment extends BaseFragment {
 
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(Event event) {
+        switch (event.getWhat()) {
+            case Constants.EventConfig.USER_DATA_CHANGE:
+                getData(1);
+                getRewardList();
+                setUserData();
+                break;
+            case Constants.EventConfig.LOGIN_OUT:
+
+                break;
+            default:
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
 }
