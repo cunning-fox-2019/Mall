@@ -48,6 +48,7 @@ public class LevelRuleActivity extends BaseTitleActivity {
             if (object == null) return;
             entity = (LevelEntity) object;
             meLevelTv.setText(entity.getContent()!=null?Html.fromHtml(entity.getContent().substring(entity.getContent().lastIndexOf("</style>"))) :"");
+            //meLevelTv.setText(entity.getContent()!=null?Html.fromHtml(entity.getContent()):"");
         }
     }
 

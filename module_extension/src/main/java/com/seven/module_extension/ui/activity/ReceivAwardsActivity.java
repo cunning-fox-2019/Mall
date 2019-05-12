@@ -75,6 +75,17 @@ public class ReceivAwardsActivity extends BaseTitleActivity {
     protected void initBundleData(Intent intent) {
         if (intent == null) intent = getIntent();
         id = intent.getIntExtra("id", -1);
+        meLingquRefresh.setColorSchemeResources(
+                R.color.primary,
+                R.color.primary,
+                R.color.primary,
+                R.color.primary);
+        meLingquRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                request(id);
+            }
+        });
         setRv();
         request(id);
     }
@@ -137,7 +148,8 @@ public class ReceivAwardsActivity extends BaseTitleActivity {
 
     @Override
     public void closeLoading() {
-
+        if (meLingquRefresh.isRefreshing())
+            meLingquRefresh.setRefreshing(false);
     }
 
     @Override

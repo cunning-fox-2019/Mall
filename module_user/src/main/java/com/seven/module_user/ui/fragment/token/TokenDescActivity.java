@@ -10,7 +10,9 @@ import com.seven.lib_common.base.activity.BaseTitleActivity;
 import com.seven.lib_model.ApiManager;
 import com.seven.lib_model.BaseResult;
 import com.seven.lib_model.CommonObserver;
+import com.seven.lib_model.model.extension.LevelEntity;
 import com.seven.lib_model.model.user.mine.TokenDescEntity;
+import com.seven.lib_model.presenter.extension.ExActivityPresenter;
 import com.seven.module_user.R;
 import com.seven.module_user.R2;
 
@@ -24,6 +26,8 @@ public class TokenDescActivity extends BaseTitleActivity {
 
     @BindView(R2.id.text)
     TextView textView;
+    private ExActivityPresenter presenter;
+    private LevelEntity entity;
 
     @Override
     public void showLoading() {
@@ -47,17 +51,30 @@ public class TokenDescActivity extends BaseTitleActivity {
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        ApiManager.getTokenDesc()
-                .subscribe(new CommonObserver<BaseResult<TokenDescEntity>>() {
-                    @Override
-                    public void onNext(BaseResult<TokenDescEntity> tokenDescEntityBaseResult) {
-                        TokenDescEntity entity = tokenDescEntityBaseResult.getData();
-                        if (entity != null) {
-                            textView.setText(entity.getContent() != null ? Html.fromHtml(entity.getContent().substring(entity.getContent().lastIndexOf("</style>"))) : "");
-                            setTitleText(entity.getTitle());
-                        }
-                    }
-                });
+//        ApiManager.getTokenDesc()
+//                .subscribe(new CommonObserver<BaseResult<TokenDescEntity>>() {
+//                    @Override
+//                    public void onNext(BaseResult<TokenDescEntity> tokenDescEntityBaseResult) {
+//                        TokenDescEntity entity = tokenDescEntityBaseResult.getData();
+//                        if (entity != null) {
+//                            textView.setText(entity.getContent() != null ? Html.fromHtml(entity.getContent()) : "");
+//                            setTitleText(entity.getTitle());
+//                        }
+//                    }
+//                });
+        presenter = new ExActivityPresenter(this,this);
+        presenter.level(1,2);
+    }
+
+    @Override
+    public void result(int code, Boolean hasNextPage, String response, Object object) {
+        super.result(code, hasNextPage, response, object);
+        if (code == 1){
+            if (object == null)return;
+            entity = (LevelEntity) object;
+            textView.setText(entity.getContent() != null?Html.fromHtml(entity.getContent()):"");
+            setTitleText(entity.getTitle() != null?entity.getTitle():"");
+        }
     }
 
     @Override

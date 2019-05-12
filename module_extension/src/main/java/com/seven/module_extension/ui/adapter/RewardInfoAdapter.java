@@ -1,5 +1,6 @@
 package com.seven.module_extension.ui.adapter;
 
+import android.graphics.Color;
 import android.support.annotation.Nullable;
 import android.widget.TextView;
 
@@ -28,7 +29,7 @@ public class RewardInfoAdapter extends BaseQuickAdapter<RewardInfoLlistEntity,Ba
         switch (item.getCan_processed()){
             case 1:
                 me_item_btn.setText("已领取");
-                me_item_btn.setTextColor(mContext.getResources().getColor(R.color.grey_f4));
+                me_item_btn.setTextColor(Color.parseColor("#abaeb3"));
                 me_item_btn.setBackgroundResource(R.drawable.me_grey_btn);
                 break;
             case 2:
@@ -39,7 +40,7 @@ public class RewardInfoAdapter extends BaseQuickAdapter<RewardInfoLlistEntity,Ba
                 break;
             case 3:
                 me_item_btn.setText("时间未到");
-                me_item_btn.setTextColor(mContext.getResources().getColor(R.color.grey_f4));
+                me_item_btn.setTextColor(Color.parseColor("#abaeb3"));
                 me_item_btn.setBackgroundResource(R.drawable.me_grey_btn);
                 break;
             default:
