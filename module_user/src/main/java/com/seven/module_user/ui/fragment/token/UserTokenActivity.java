@@ -18,7 +18,6 @@ import com.seven.lib_model.BaseResult;
 import com.seven.lib_model.CommonObserver;
 import com.seven.lib_model.model.extension.InComeDetailsEntity;
 import com.seven.lib_model.model.extension.InComeItem;
-import com.seven.lib_model.model.user.OrderEntity;
 import com.seven.lib_model.model.user.UserEntity;
 import com.seven.lib_router.db.shard.SharedData;
 import com.seven.lib_router.router.RouterPath;
@@ -29,7 +28,6 @@ import com.seven.module_user.ui.fragment.view.BaseRecyclerView;
 import com.seven.module_user.ui.fragment.view.DividerSpaceItemDecoration;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -97,6 +95,11 @@ public class UserTokenActivity extends BaseAppCompatActivity {
         startActivity(new Intent(mContext, UserReceiveTokenActivity.class));
     }
 
+    @OnClick(R2.id.token_desc_btn)
+    void tokenDesc() {
+        startActivity(new Intent(this, TokenDescActivity.class));
+    }
+
     private View getEmptyView() {
         TextView textView = new TextView(this);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
@@ -131,10 +134,10 @@ public class UserTokenActivity extends BaseAppCompatActivity {
             recyclerView.init(layoutManager, new BaseQuickAdapter<InComeItem, BaseViewHolder>(R.layout.item_token_list_layout, null) {
                 @Override
                 protected void convert(BaseViewHolder helper, InComeItem item) {
-                        helper.setText(R.id.name,item.getTitle())
-                                .setText(R.id.comment,item.getComment())
-                                .setText(R.id.number,item.getNumber())
-                                .setText(R.id.time,item.getCreated_at());
+                    helper.setText(R.id.name, item.getTitle())
+                            .setText(R.id.comment, item.getComment())
+                            .setText(R.id.number, item.getNumber())
+                            .setText(R.id.time, item.getCreated_at());
                 }
             }, true).changeItemDecoration(new DividerSpaceItemDecoration(6))
                     .setEmptyView(getEmptyView())
