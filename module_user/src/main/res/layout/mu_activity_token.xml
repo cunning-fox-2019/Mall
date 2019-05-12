@@ -21,22 +21,23 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_marginTop="24dp"
-                android:layout_height="48dp">
+                android:layout_height="48dp"
+                android:layout_marginTop="24dp">
 
                 <ImageView
                     android:id="@+id/imgBack"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:src="@drawable/back_white" />
+
                 <TextView
+                    android:id="@+id/title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/title"
+                    android:layout_centerInParent="true"
                     android:textColor="#fff"
-                    android:textSize="18sp"
-                    android:layout_centerInParent="true"/>
+                    android:textSize="18sp" />
             </RelativeLayout>
 
             <LinearLayout
@@ -60,7 +61,7 @@
                         android:id="@+id/token_number"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="200000.00"
+                        android:text="0"
                         android:textColor="#fff"
                         android:textSize="20sp" />
 
@@ -93,6 +94,7 @@
                         android:background="@drawable/test"
                         android:gravity="center"
                         android:textColor="#fff"
+                        android:visibility="gone"
                         tools:text="2" />
                 </RelativeLayout>
             </LinearLayout>
@@ -116,7 +118,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="200000.00"
+                        android:text="0"
                         android:textColor="#fff"
                         android:textSize="18sp" />
 
@@ -147,7 +149,7 @@
 
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="200000.00"
+                        android:text="0"
                         android:textColor="#fff"
                         android:textSize="18sp" />
 
@@ -163,9 +165,9 @@
         </LinearLayout>
         <!--列表-->
         <LinearLayout
-            android:background="#fff"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="#fff"
             android:orientation="horizontal"
             android:padding="@dimen/margin_16">
 

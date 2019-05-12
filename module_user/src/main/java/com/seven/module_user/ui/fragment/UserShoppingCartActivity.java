@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -35,6 +36,7 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import butterknife.BindView;
@@ -65,8 +67,13 @@ public class UserShoppingCartActivity extends BaseTitleActivity {
     TextView select_num;
     @BindView(R2.id.money)
     TextView moneyTv;
+    @BindView(R2.id.delete_select)
+    TextView delete;
+    @BindView(R2.id.pay_layout)
+    LinearLayout payLayout;
 
     private boolean isSelectAll = false;
+    private boolean isManager = false;
 
     @Override
     public void showLoading() {
@@ -85,12 +92,15 @@ public class UserShoppingCartActivity extends BaseTitleActivity {
 
     @Override
     protected int getLayoutId() {
+        isRightImageBtn = true;
         return R.layout.mu_activity_shopping_cart;
     }
 
     @Override
     protected void initView(Bundle savedInstanceState) {
         setTitleText(R.string.user_shop_cart);
+
+        setRightImg(R.drawable.shopping_cart_manager_icon);
 
         getData();
     }
@@ -102,7 +112,9 @@ public class UserShoppingCartActivity extends BaseTitleActivity {
 
     @Override
     protected void rightBtnClick(View v) {
-
+        isManager = !isManager;
+        payLayout.setVisibility(isManager ? View.GONE : View.VISIBLE);
+        delete.setVisibility(isManager ? View.VISIBLE : View.GONE);
     }
 
     @Override
@@ -171,7 +183,8 @@ public class UserShoppingCartActivity extends BaseTitleActivity {
                     public void onRefresh() {
                         getData();
                     }
-                });
+                })
+                .setEmptyView(getEmptyView());
     }
 
     StringBuilder shopIds = new StringBuilder();
@@ -215,6 +228,18 @@ public class UserShoppingCartActivity extends BaseTitleActivity {
         changeListDataState(isSelectAll);
     }
 
+    @OnClick(R2.id.delete_select)
+    void delete() {
+        List<CartEntity> dataList = recyclerView.getAdapter().getData();
+        for (Iterator<CartEntity> it = dataList.iterator(); it.hasNext(); ) {
+            CartEntity entity = it.next();
+            if (entity.isSelect()) {
+                it.remove();
+            }
+        }
+        recyclerView.notifyDataSetChanged();
+    }
+
     private void changeListDataState(boolean isSelect) {
         List<CartEntity> entityList = recyclerView.getAdapter().getData();
         for (CartEntity entity : entityList) {
@@ -236,5 +261,14 @@ public class UserShoppingCartActivity extends BaseTitleActivity {
         }
         select_num.setText("(" + num + ")");
         moneyTv.setText("总价：￥" + money);
+    }
+
+    private View getEmptyView() {
+        TextView textView = new TextView(this);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        textView.setLayoutParams(params);
+        textView.setGravity(Gravity.CENTER);
+        textView.setText("没有商品");
+        return textView;
     }
 }

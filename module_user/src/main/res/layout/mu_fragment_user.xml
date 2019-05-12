@@ -52,7 +52,6 @@
                     android:layout_alignBottom="@+id/user_photo"
                     android:layout_below="@+id/user_name"
                     android:layout_toRightOf="@+id/user_photo"
-
                     android:src="@drawable/vip_lv_icon" />
 
                 <ImageView
