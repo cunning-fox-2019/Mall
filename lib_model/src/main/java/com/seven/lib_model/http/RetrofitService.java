@@ -104,5 +104,8 @@ public interface RetrofitService {
 
     @POST("promotion/reward/info/list")
     Observable<HttpResponse> rewardInfo(@Body RequestBody requestBody);
+
+    @POST("promotion/reward/receive")
+    Observable<HttpResponse> getReward(@Body RequestBody requestBody);
 }
 

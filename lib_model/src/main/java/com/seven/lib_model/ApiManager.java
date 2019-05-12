@@ -7,6 +7,7 @@ import com.google.gson.GsonBuilder;
 import com.seven.lib_common.base.activity.BaseActivity;
 import com.seven.lib_http.retrofit.HttpResponse;
 import com.seven.lib_model.model.extension.BdGoodsEntity;
+import com.seven.lib_model.model.extension.BindEntity;
 import com.seven.lib_model.model.extension.BuyRoleEntity;
 import com.seven.lib_model.model.extension.InComeDetailsEntity;
 import com.seven.lib_model.model.extension.LevelEntity;
@@ -206,10 +207,13 @@ public class ApiManager {
         Observable<BaseResult<RewardListEntity>> rewardList();
 
         @POST("promotion/token/list")
-        Observable<BaseResult<InComeDetailsEntity>> inComeDetails(@Query("page") int page,@Query("page_size") int page_size);
+        Observable<BaseResult<InComeDetailsEntity>> inComeDetails(@Query("page") int page, @Query("page_size") int page_size);
 
         @POST("article/info")
         Observable<HttpResponse> getLevel(@Body RequestBody requestBody);
+
+        @POST("promotion/form/reward/receive")
+        Observable<BaseResult> getReceive(@Query("ids") String ids,@Query("contact_id") String contact_id);
     }
 
     public static Observable<BaseResult<TokenEntity>> login(LoginEntity entity) {
@@ -288,16 +292,25 @@ public class ApiManager {
     public static Observable<BaseResult> modifyPassword(ResetPasswordEntity entity) {
         return subScribe(apiManagerService.modifyPassword(entity));
     }
+
     public static Observable<BaseResult> modifyPayPassword(ResetPasswordEntity entity) {
         return subScribe(apiManagerService.modifyPayPassword(entity));
     }
 
-    public static Observable<BaseResult<DTEntity>> upLoad(MultipartBody part){
+    public static Observable<BaseResult<DTEntity>> upLoad(MultipartBody part) {
         return subScribe(apiManagerService.upLoad(part));
     }
 
-    public static Observable<BaseResult<RewardListEntity>> rewardList(){
-        return subScribe(apiManagerService.rewardList());}
+    public static Observable<BaseResult<RewardListEntity>> rewardList() {
+        return subScribe(apiManagerService.rewardList());
+    }
 
-        public static Observable<BaseResult<InComeDetailsEntity>> inComeDetails(int page,int page_size){return subScribe(apiManagerService.inComeDetails(page,page_size));}
+    public static Observable<BaseResult<InComeDetailsEntity>> inComeDetails(int page, int page_size) {
+        return subScribe(apiManagerService.inComeDetails(page, page_size));
+    }
+
+    public static  Observable<BaseResult> getReceive(String ids,String contact_id){
+        return subScribe(apiManagerService.getReceive(ids,contact_id));
+    }
+
 }

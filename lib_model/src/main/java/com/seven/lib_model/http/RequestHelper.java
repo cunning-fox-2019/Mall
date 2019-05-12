@@ -133,7 +133,8 @@ public class RequestHelper {
 
     public Observable<HttpResponse> rewardLsit(String json){return appService.rewardList(requestBody(json));}
 
-    public Observable<HttpResponse> rewardInfo(String json){return appService.rewardList(requestBody(json));}
+    public Observable<HttpResponse> rewardInfo(String json){return appService.rewardInfo(requestBody(json));}
 
+    public Observable<HttpResponse> getReward(String json){return appService.getReward(requestBody(json));}
 
 }

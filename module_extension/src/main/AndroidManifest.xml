@@ -7,5 +7,6 @@
         <activity android:name=".ui.activity.MyInterviewActivity" />
         <activity android:name=".ui.activity.LevelRuleActivity" />
         <activity android:name=".ui.activity.ReceivAwardsActivity" />
+        <activity android:name=".ui.activity.ReceiveBDActivity" />
     </application>
 </manifest>

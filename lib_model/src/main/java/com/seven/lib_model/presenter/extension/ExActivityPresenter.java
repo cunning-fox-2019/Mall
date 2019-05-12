@@ -11,13 +11,16 @@ import com.seven.lib_model.builder.extension.BindingBuilder;
 import com.seven.lib_model.builder.extension.InviteBuilder;
 import com.seven.lib_model.builder.extension.LevelBuilder;
 import com.seven.lib_model.builder.extension.ReceiveBuilder;
+import com.seven.lib_model.builder.extension.RewardBilder;
 import com.seven.lib_model.builder.extension.RewardListBuilder;
 import com.seven.lib_model.http.RequestHelper;
 import com.seven.lib_model.model.extension.BindEntity;
 import com.seven.lib_model.model.extension.BindItemEntity;
+import com.seven.lib_model.model.extension.GoodsItemEntity;
 import com.seven.lib_model.model.extension.InComeDetailsEntity;
 import com.seven.lib_model.model.extension.LevelEntity;
 import com.seven.lib_model.model.extension.MyInterViewEntity;
+import com.seven.lib_model.model.extension.RewardInfoLlistEntity;
 import com.seven.lib_model.model.extension.RewardListEntity;
 import com.seven.lib_model.model.extension.RewardLsitItemEntity;
 import com.trello.rxlifecycle2.android.ActivityEvent;
@@ -78,7 +81,7 @@ public class ExActivityPresenter extends BasePresenter<IBaseView, BaseActivity> 
         ReceiveBuilder.Builder builder = new ReceiveBuilder.Builder();
         ReceiveBuilder json = builder.ids(ids).contact_id(contact_id).build();
         String jsonStr = new Gson().toJson(json);
-        HttpRxObserver rxObserver = get(getView(),code,BindEntity.class,null,false);
+        HttpRxObserver rxObserver = get(getView(),code,null,null,false);
         if (rxObserver == null)return;
         HttpRxObservable.getObservable(RequestHelper.getInstance().getReceive(jsonStr),getActivity(),ActivityEvent.PAUSE).subscribe(rxObserver);
     }
@@ -88,7 +91,7 @@ public class ExActivityPresenter extends BasePresenter<IBaseView, BaseActivity> 
         BindingBuilder.Builder builder = new BindingBuilder.Builder();
         BindingBuilder json = builder.id(id).build();
         String jsonStr = new Gson().toJson(json);
-        HttpRxObserver rxObserver = getList(getView(),code,RewardLsitItemEntity.class,"items",true);
+        HttpRxObserver rxObserver = getList(getView(),code,GoodsItemEntity.class,"items",true);
         if (rxObserver == null)return;
         HttpRxObservable.getObservable(RequestHelper.getInstance().rewardLsit(jsonStr),getActivity(),ActivityEvent.PAUSE).subscribe(rxObserver);
     }
@@ -98,9 +101,18 @@ public class ExActivityPresenter extends BasePresenter<IBaseView, BaseActivity> 
         RewardListBuilder.Builder builder = new RewardListBuilder.Builder();
         RewardListBuilder json = builder.reward_id(id).build();
         String jsonStr = new Gson().toJson(json);
-        HttpRxObserver rxObserver = getList(getView(),code,RewardListEntity.class,null,true);
+        HttpRxObserver rxObserver = getList(getView(),code,RewardInfoLlistEntity.class,null,true);
         if (rxObserver == null)return;
         HttpRxObservable.getObservable(RequestHelper.getInstance().rewardInfo(jsonStr),getActivity(),ActivityEvent.PAUSE).subscribe(rxObserver);
     }
 
+    //领取奖励
+    public void getReward(int code,String id){
+        RewardBilder.Builder builder = new RewardBilder.Builder();
+        RewardBilder json = builder.reward_info_id(id).build();
+        String jsonStr = new Gson().toJson(json);
+        HttpRxObserver rxObserver = get(getView(),code,null,null,false);
+        if (rxObserver == null)return;
+        HttpRxObservable.getObservable(RequestHelper.getInstance().getReward(jsonStr),getActivity(),ActivityEvent.PAUSE).subscribe(rxObserver);
+    }
 }

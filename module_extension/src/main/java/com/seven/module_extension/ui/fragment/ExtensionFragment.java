@@ -158,7 +158,7 @@ public class ExtensionFragment extends BaseFragment {
                     meRvEveryreward.setVisibility(View.VISIBLE);
                     me_reward_tv.setVisibility(View.VISIBLE);
                     LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) meRvEveryreward.getLayoutParams();
-                    params.height = ScreenUtils.dip2px(getActivity(), 50 * (rewardListEntityBaseResult.getData().getItems().size() + 1));
+                    params.height = ScreenUtils.dip2px(getActivity(), 50 * (rewardListEntityBaseResult.getData().getItems().size() + 1) + 20);
                     meRvEveryreward.setLayoutParams(params);
                     getAdapter = new RewardGetAdapter(R.layout.me_item_reward_get, rewardListEntityBaseResult.getData().getItems());
                     LinearLayoutManager manager = new LinearLayoutManager(getActivity()) {
@@ -174,9 +174,15 @@ public class ExtensionFragment extends BaseFragment {
                         public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                             List<RewardItem> list = adapter.getData();
                             int id = list.get(position).getId();
+                            if (!list.get(position).getReward_name().contains("报单奖励")){
                             ARouter.getInstance().build(RouterPath.ACTIVITY_REWARD_LIST)
                                     .withInt("id",id)
                                     .navigation();
+                            }else {
+                                ARouter.getInstance().build(RouterPath.ACTIVITY_BD_LIST)
+                                        .withInt("id",id)
+                                        .navigation();
+                            }
                         }
                     });
                 } else {

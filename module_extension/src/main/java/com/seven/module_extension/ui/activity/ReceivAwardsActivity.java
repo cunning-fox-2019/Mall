@@ -9,14 +9,21 @@ import android.view.View;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.google.gson.Gson;
 import com.seven.lib_common.base.activity.BaseTitleActivity;
+import com.seven.lib_common.listener.OnClickListener;
 import com.seven.lib_model.model.extension.RewardInfoLlistEntity;
 import com.seven.lib_model.model.extension.RewardListEntity;
+import com.seven.lib_model.model.user.UserEntity;
 import com.seven.lib_model.presenter.extension.ExActivityPresenter;
+import com.seven.lib_router.Variable;
+import com.seven.lib_router.db.shard.SharedData;
 import com.seven.lib_router.router.RouterPath;
 import com.seven.module_extension.R;
 import com.seven.module_extension.R2;
 import com.seven.module_extension.ui.adapter.RewardInfoAdapter;
+import com.seven.module_extension.ui.dialog.ReceiveDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +45,8 @@ public class ReceivAwardsActivity extends BaseTitleActivity {
     private List<RewardInfoLlistEntity> rewardList;
 
     private RewardInfoAdapter adapter;
+    private UserEntity userEntity;
+    private ReceiveDialog dialog;
 
     @Override
     protected int getLayoutId() {
@@ -46,8 +55,10 @@ public class ReceivAwardsActivity extends BaseTitleActivity {
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        //setTitleText(R.string);i
-        presenter = new ExActivityPresenter(this,this);
+        setTitleText(R.string.me_receivelingpai_title);
+        presenter = new ExActivityPresenter(this, this);
+        String userInfo = SharedData.getInstance().getUserInfo();
+        userEntity = new Gson().fromJson(userInfo, UserEntity.class);
     }
 
     @Override
@@ -62,35 +73,63 @@ public class ReceivAwardsActivity extends BaseTitleActivity {
 
     @Override
     protected void initBundleData(Intent intent) {
-        if (intent == null)intent=getIntent();
-        id =intent.getIntExtra("id",-1);
+        if (intent == null) intent = getIntent();
+        id = intent.getIntExtra("id", -1);
         setRv();
         request(id);
     }
 
-    private void setRv(){
-        adapter = new RewardInfoAdapter(R.layout.me_item_lingqu,rewardList);
+    private void setRv() {
+        adapter = new RewardInfoAdapter(R.layout.me_item_lingqu, rewardList);
         meLingquRv.setLayoutManager(new LinearLayoutManager(mContext));
         meLingquRv.setAdapter(adapter);
+        adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                List<RewardInfoLlistEntity> list = adapter.getData();
+                int id = list.get(position).getId();
+                if (!isLogin())return;
+                presenter.getReward(2, String.valueOf(id));
+            }
+        });
     }
 
-    private void request(int id){
-        presenter.rewardInfo(1,id);
+    private void request(int id) {
+        presenter.rewardInfo(1, id);
     }
 
     @Override
     public void result(int code, Boolean hasNextPage, String response, Object object) {
         super.result(code, hasNextPage, response, object);
-        if (code == 1){
-            if (object == null)return;
+        if (code == 1) {
+            if (object == null) return;
             rewardList = new ArrayList<>();
             rewardList = (List<RewardInfoLlistEntity>) object;
-            if (rewardList.size()>0){
+            if (rewardList.size() > 0) {
                 adapter.setNewData(rewardList);
             }
         }
+        if (code == 2){
+            showDialog();
+        }
     }
+    private void showDialog(){
+        if (dialog == null){
+            dialog = new ReceiveDialog(ReceivAwardsActivity.this, R.style.Dialog, new OnClickListener() {
+                @Override
+                public void onCancel(View v, Object... objects) {
 
+                }
+
+                @Override
+                public void onClick(View v, Object... objects) {
+
+                }
+            });
+        }
+        if (!dialog.isShowing())
+            dialog.show();
+    }
     @Override
     public void showLoading() {
 
