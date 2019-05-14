@@ -20,6 +20,8 @@ import com.seven.lib_model.model.extension.GoodsItemEntity;
 import com.seven.lib_model.model.extension.InComeDetailsEntity;
 import com.seven.lib_model.model.extension.LevelEntity;
 import com.seven.lib_model.model.extension.MyInterViewEntity;
+import com.seven.lib_model.model.extension.QuotaEntity;
+import com.seven.lib_model.model.extension.QuotaItem;
 import com.seven.lib_model.model.extension.RewardInfoLlistEntity;
 import com.seven.lib_model.model.extension.RewardListEntity;
 import com.seven.lib_model.model.extension.RewardLsitItemEntity;
@@ -62,7 +64,7 @@ public class ExActivityPresenter extends BasePresenter<IBaseView, BaseActivity> 
         BindingBuilder.Builder builder = new BindingBuilder.Builder();
         BindingBuilder json = builder.phone(phone).id(id).build();
         String jsonStr = new Gson().toJson(json);
-        HttpRxObserver rxObserver = get(getView(),code,BindEntity.class,null,false);
+        HttpRxObserver rxObserver = get(getView(),code,null,null,false);
         if (rxObserver == null)return;
         HttpRxObservable.getObservable(RequestHelper.getInstance().binding(jsonStr),getActivity(),ActivityEvent.PAUSE).subscribe(rxObserver);
     }
@@ -114,5 +116,16 @@ public class ExActivityPresenter extends BasePresenter<IBaseView, BaseActivity> 
         HttpRxObserver rxObserver = get(getView(),code,null,null,false);
         if (rxObserver == null)return;
         HttpRxObservable.getObservable(RequestHelper.getInstance().getReward(jsonStr),getActivity(),ActivityEvent.PAUSE).subscribe(rxObserver);
+    }
+
+    //获取名额
+    public void  getQuota(int code, String id){
+        LevelBuilder.Builder builder = new LevelBuilder.Builder();
+        LevelBuilder json = builder.id(Integer.parseInt(id)).build();
+        String jsonStr = new Gson().toJson(json);
+        HttpRxObserver rxObserver = getList(getView(),code,QuotaItem.class,"items",true);
+        if (rxObserver == null)return;
+        HttpRxObservable.getObservable(RequestHelper.getInstance().getQuota(jsonStr),getActivity(),ActivityEvent.PAUSE).subscribe(rxObserver);
+
     }
 }

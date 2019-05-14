@@ -137,4 +137,6 @@ public class RequestHelper {
 
     public Observable<HttpResponse> getReward(String json){return appService.getReward(requestBody(json));}
 
+    public Observable<HttpResponse> getQuota(String json){return  appService.getQuota(requestBody(json));}
+
 }

@@ -60,15 +60,21 @@ public class MyInterviewActivity extends BaseTitleActivity {
             if (object == null) return;
             interViewList = new ArrayList<>();
             MyInterViewEntity entity = (MyInterViewEntity) object;
-            if (entity.getItems().size() > 0) {
+            if (entity != null && entity.getParent_info() != null) {
                 interViewList.add(entity);
                 setRv(interViewList);
-                me_empty.setVisibility(View.GONE);
-                meRvMyinterview.setVisibility(View.VISIBLE);
             } else {
-                me_empty.setVisibility(View.VISIBLE);
-                meRvMyinterview.setVisibility(View.GONE);
+                if (entity.getItems().size() > 0) {
+                    interViewList.add(entity);
+                    setRv(interViewList);
+                    me_empty.setVisibility(View.GONE);
+                    meRvMyinterview.setVisibility(View.VISIBLE);
+                } else {
+                    me_empty.setVisibility(View.VISIBLE);
+                    meRvMyinterview.setVisibility(View.GONE);
+                }
             }
+
 
         }
     }

@@ -11,6 +11,7 @@ import com.seven.lib_model.model.extension.BuyRoleEntity;
 import com.seven.lib_model.model.extension.InComeDetailsEntity;
 import com.seven.lib_model.model.extension.LevelEntity;
 import com.seven.lib_model.model.extension.MyInterViewEntity;
+import com.seven.lib_model.model.extension.QuotaEntity;
 import com.seven.lib_model.model.extension.ReceiveGoodsEntity;
 import com.seven.lib_model.model.extension.RewardListEntity;
 import com.seven.lib_model.model.extension.RewardRuleEntity;
@@ -222,6 +223,7 @@ public class ApiManager {
 
         @POST("promotion/form/reward/receive")
         Observable<BaseResult> getReceive(@Query("ids") String ids,@Query("contact_id") String contact_id);
+
     }
 
     public static Observable<BaseResult<TokenEntity>> login(LoginEntity entity) {
@@ -328,4 +330,5 @@ public class ApiManager {
     public static Observable<BaseResult<TokenDescEntity>> getTokenDesc(){
         return subScribe(apiManagerService.getTokenDesc(new SB(2)));
     }
+
 }

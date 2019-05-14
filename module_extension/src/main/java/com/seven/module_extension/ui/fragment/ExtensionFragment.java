@@ -188,13 +188,22 @@ public class ExtensionFragment extends BaseFragment {
                         public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                             List<RewardItem> list = adapter.getData();
                             int id = list.get(position).getId();
-                            if (!list.get(position).getReward_name().contains("报单奖励")) {
+                            if (list.get(position).getReward_type() == 6) {
+                                ARouter.getInstance().build(RouterPath.ACTIVITY_BD_LIST)
+                                        .withInt("id", id)
+                                        .navigation();
+                            } else if (list.get(position).getReward_type() == 1 ||
+                                    list.get(position).getReward_type() == 2||
+                                    list.get(position).getReward_type() == 7||
+                                    list.get(position).getReward_type() == 8){
                                 ARouter.getInstance().build(RouterPath.ACTIVITY_REWARD_LIST)
                                         .withInt("id", id)
                                         .navigation();
-                            } else {
-                                ARouter.getInstance().build(RouterPath.ACTIVITY_BD_LIST)
+                            }else if (list.get(position).getReward_type() == 4||
+                                    list.get(position).getReward_type() == 5){
+                                ARouter.getInstance().build(RouterPath.ACTIVITY_QUOTA)
                                         .withInt("id", id)
+                                        .withInt("type",list.get(position).getReward_type())
                                         .navigation();
                             }
                         }
