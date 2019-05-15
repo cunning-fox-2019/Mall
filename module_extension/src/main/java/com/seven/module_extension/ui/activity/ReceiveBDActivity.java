@@ -28,6 +28,7 @@ import com.seven.lib_opensource.event.Event;
 import com.seven.lib_opensource.event.ObjectsEvent;
 import com.seven.lib_router.Constants;
 import com.seven.lib_router.router.RouterPath;
+import com.seven.lib_router.router.RouterUtils;
 import com.seven.module_extension.R;
 import com.seven.module_extension.R2;
 import com.seven.module_extension.ui.adapter.BuyBdAdapter;
@@ -159,7 +160,7 @@ public class ReceiveBDActivity extends BaseTitleActivity {
 
                 @Override
                 public void onClick(View v, Object... objects) {
-
+                    RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_MINE_ORDER);
                 }
 
                 @Override

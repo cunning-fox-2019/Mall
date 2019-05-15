@@ -31,9 +31,12 @@ import com.seven.lib_common.utils.glide.GlideUtils;
 import com.seven.lib_model.ApiManager;
 import com.seven.lib_model.BaseResult;
 import com.seven.lib_model.CommonObserver;
+import com.seven.lib_model.model.model.UploadEntity;
 import com.seven.lib_model.model.user.UserEntity;
 import com.seven.lib_model.model.user.mine.DTEntity;
 import com.seven.lib_model.model.user.mine.UpLoadImageEntity;
+import com.seven.lib_model.presenter.model.ActModelPresenter;
+import com.seven.lib_router.Constants;
 import com.seven.lib_router.db.shard.SharedData;
 import com.seven.module_user.R;
 import com.seven.module_user.R2;
@@ -74,6 +77,8 @@ public class EditUserInfoActivity extends BaseTitleActivity {
     private Uri PicCropUri;
     private String currentUrl = "";
 
+    ActModelPresenter presenter;
+
     @Override
     public void showLoading() {
         showLoadingDialog();
@@ -101,6 +106,7 @@ public class EditUserInfoActivity extends BaseTitleActivity {
         userNickName.setText(entity.getUsername());
         chooseSex.setText(entity.getSex().equals("male") ? "男" : "女");
         GlideUtils.loadCircleImage(mContext, entity.getAvatar(), user_photo_img);
+        presenter = new ActModelPresenter(this,this);
     }
 
     @Override
@@ -247,7 +253,7 @@ public class EditUserInfoActivity extends BaseTitleActivity {
         switch (requestCode) {
             case 10086:
                 //选择照片
-                //选择照片
+                if (data == null)return;
                 Uri uri = data.getData();
                 String realUri = uri2filePath(uri, mContext);
                 File file = new File(realUri);
@@ -255,7 +261,19 @@ public class EditUserInfoActivity extends BaseTitleActivity {
                 PicCropUri = getTargetImageUri(false);
                 //cropImg(PicUri, PicCropUri);
                 GlideUtils.loadCircleImage(mContext, PicUri.getPath(), user_photo_img);
-                upLoad(file);
+//                upLoad(file);
+//                Uri originalUri = data.getData();        //获得图片的uri
+//                String[] proj = {MediaStore.Images.Media.DATA};
+//
+//                Cursor cursor = getContentResolver().query(originalUri, proj, null, null, null);
+//                String path = "";
+//                if (cursor.moveToFirst()) {
+//                    int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+//                    path = cursor.getString(column_index);
+//                }
+//                cursor.close();
+//                GlideUtils.loadCircleImage(mContext, path, user_photo_img);
+                presenter.upload(Constants.RequestConfig.UPLOAD, file.getPath(), Constants.InterfaceConfig.UPLOAD_AVATAR);
                 break;
             case 10010:
                 //拍照
@@ -266,11 +284,21 @@ public class EditUserInfoActivity extends BaseTitleActivity {
                 currentUrl = PicCropUri.getPath();
                 GlideUtils.loadCircleImage(mContext, currentUrl, user_photo_img);
                 File file1 = new File(currentUrl);
-                upLoad(file1);
+//                upLoad(file1);
+                presenter.upload(Constants.RequestConfig.UPLOAD, file1.getPath(), Constants.InterfaceConfig.UPLOAD_AVATAR);
                 break;
 
         }
 
+    }
+
+    @Override
+    public void result(int code, Boolean hasNextPage, String response, Object object) {
+        super.result(code, hasNextPage, response, object);
+        if (code == Constants.RequestConfig.UPLOAD){
+            if (object == null) return;
+            UploadEntity  uploadEntity= (UploadEntity) object;
+        }
     }
 
     public void cropImg(Uri sourceUri, Uri targetUri) {

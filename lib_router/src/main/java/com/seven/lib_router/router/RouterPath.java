@@ -56,7 +56,7 @@ public class RouterPath {
 
     public static final String ACTIVITY_SHOPPING_CART="/user/UserShoppingCartActivity";//购物车
     public static final String ACTIVITY_ADDRESS="/user/AddressList";
-    public static final String ACTIVITY_PAY_PASSWORD="/user/";
+    public static final String ACTIVITY_PAY_PASSWORD="/user/UserSetPayPassWordActivity";
     public static final String ACTIVITY_MINE_ORDER="/user/UserOrderListActivity";//我的订单
     public static final String ACTIVITY_MINE_SHOP_CAR="/user/ShopCartActivity";
     public static final String ACTIVITY_MINE_SHOP_PAY="/user/PayActivity";

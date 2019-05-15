@@ -46,7 +46,6 @@ public class UserOrderListActivity extends BaseAppCompatActivity {
     //  private final String[] mType = {"all", "wait_pay", "wait_send", ""};
     private final int[] mType = {0, 1, 2, 3,4};
 
-
     @Override
     public void showLoading() {
 
