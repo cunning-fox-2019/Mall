@@ -28,6 +28,7 @@ public class Constants {
         public static final String TYPE = "type";
         public static final int TYPE_SELL = 1;
         public static final int TYPE_BUY = 2;
+
         public static final String ID = "id";
         public static final String DETAILS="details";
         public static final String STATUS="status";
@@ -116,6 +117,7 @@ public class Constants {
         /* router */
         public static final int SHOPPING_CART = 900;
         public static final int ADDRESS = 901;
+        public static final int USER_DATA_CHANGE = 104;
 
         /* 第三方sdk */
         public static final int PAY_RESULT = 1000;

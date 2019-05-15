@@ -13,9 +13,11 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.alibaba.android.arouter.facade.annotation.Route;
 import com.flyco.tablayout.SlidingTabLayout;
 import com.gyf.barlibrary.ImmersionBar;
 import com.seven.lib_common.base.activity.BaseAppCompatActivity;
+import com.seven.lib_router.router.RouterPath;
 import com.seven.module_user.R;
 import com.seven.module_user.R2;
 
@@ -28,7 +30,7 @@ import butterknife.OnClick;
 /**
  * Created by xxxxxxH on 2019/4/9.
  */
-
+@Route(path = RouterPath.ACTIVITY_MINE_ORDER)
 public class UserOrderListActivity extends BaseAppCompatActivity {
     @BindView(R2.id.tabLayout)
     SlidingTabLayout tabLayout;

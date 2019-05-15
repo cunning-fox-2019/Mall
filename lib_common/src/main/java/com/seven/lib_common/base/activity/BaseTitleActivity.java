@@ -114,6 +114,10 @@ public abstract class BaseTitleActivity extends BaseActivity {
         titleTv.setText(getResources().getString(id));
     }
 
+    protected void setTitleText(String s){
+        titleTv.setText(s);
+    }
+
     protected void setLeftImg(int id) {
         leftIv.setImageResource(id);
     }

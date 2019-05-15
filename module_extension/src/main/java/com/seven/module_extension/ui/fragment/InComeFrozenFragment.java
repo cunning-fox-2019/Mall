@@ -36,6 +36,10 @@ public class InComeFrozenFragment extends BaseFragment {
         return R.layout.me_fragment_income;
     }
 
+    public InComeFrozenFragment(){
+
+    }
+
     @Override
     public void init(Bundle savedInstanceState) {
         setRv();
@@ -52,10 +56,15 @@ public class InComeFrozenFragment extends BaseFragment {
     public void result(int code, Boolean hasNextPage, String response, Object object) {
         super.result(code, hasNextPage, response, object);
         if (code == 1) {
-            if (object == null) return;
-            inComeDetailsEntity = (InComeDetailsEntity) object;
-            inComeItemList = inComeDetailsEntity.getItems();
-            adapter.setNewData(inComeItemList);
+            if (object == null) {
+                adapter.setEmptyView(((IncomeActivity) getActivity()).setEmptyView());
+                adapter.setNewData(inComeItemList);
+            }else {
+                inComeDetailsEntity = (InComeDetailsEntity) object;
+                inComeItemList = inComeDetailsEntity.getItems();
+                adapter.setNewData(inComeItemList);
+            }
+
         }
     }
 

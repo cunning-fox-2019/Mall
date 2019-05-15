@@ -27,7 +27,7 @@
             android:id="@+id/me_item_master_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="账户：msk298300123"
+            android:text="账户：暂未设置，点击设置"
             android:textColor="#808080"
             android:textSize="12sp"
             app:SFontStyle="regular_s" />
@@ -37,6 +37,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="密码：2982002039"
+            android:visibility="gone"
             android:textColor="#808080"
             android:textSize="12sp"
             app:SFontStyle="regular_s" />

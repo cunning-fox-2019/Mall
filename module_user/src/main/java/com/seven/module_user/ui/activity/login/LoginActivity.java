@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.google.gson.Gson;
 import com.seven.lib_common.base.activity.BaseActivity;
 import com.seven.lib_common.stextview.TypeFaceEdit;
 import com.seven.lib_common.utils.ResourceUtils;
@@ -16,6 +17,7 @@ import com.seven.lib_common.utils.ToastUtils;
 import com.seven.lib_model.presenter.common.ActUserPresenter;
 import com.seven.lib_opensource.event.ObjectsEvent;
 import com.seven.lib_router.Constants;
+import com.seven.lib_router.db.shard.SharedData;
 import com.seven.lib_router.router.RouterPath;
 import com.seven.lib_router.router.RouterUtils;
 import com.seven.module_user.R;
@@ -73,8 +75,6 @@ public class LoginActivity extends BaseActivity {
             RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_PASSWORD);
         else if (view.getId() == R.id.register_btn)
             RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_REGISTER);
-
-
     }
 
     private void login() {

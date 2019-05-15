@@ -208,4 +208,20 @@ public class RequestHelper {
     public Observable<HttpResponse> inComeDetails(String json) {
         return appService.inComeDetails(requestBody(json));
     }
+    public Observable<HttpResponse> level(String json){return appService.getLevel(requestBody(json));}
+
+    public Observable<HttpResponse> binding(String json){return appService.binding(requestBody(json));}
+
+    public Observable<HttpResponse> getBindList(String json){return appService.getBindList(requestBody(json));}
+
+    public Observable<HttpResponse> getReceive(String json){return appService.getReceive(requestBody(json));}
+
+    public Observable<HttpResponse> rewardLsit(String json){return appService.rewardList(requestBody(json));}
+
+    public Observable<HttpResponse> rewardInfo(String json){return appService.rewardInfo(requestBody(json));}
+
+    public Observable<HttpResponse> getReward(String json){return appService.getReward(requestBody(json));}
+
+    public Observable<HttpResponse> getQuota(String json){return  appService.getQuota(requestBody(json));}
+
 }

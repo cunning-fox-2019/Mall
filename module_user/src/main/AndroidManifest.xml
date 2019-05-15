@@ -20,5 +20,6 @@
         <activity android:name=".ui.fragment.setting.UserSetPayAccountActivity" />
         <activity android:name=".ui.fragment.setting.UserModifyPassWordActivity" />
         <activity android:name=".ui.fragment.setting.UserSetPayPassWordActivity" />
+        <activity android:name=".ui.fragment.token.TokenDescActivity" />
     </application>
 </manifest>

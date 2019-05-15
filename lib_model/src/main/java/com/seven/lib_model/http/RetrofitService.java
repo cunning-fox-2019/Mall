@@ -156,5 +156,29 @@ public interface RetrofitService {
 
     @POST(inComeDetails)
     Observable<HttpResponse> inComeDetails(@Body RequestBody requestBody);
+
+    @POST("article/info")
+    Observable<HttpResponse> getLevel(@Body RequestBody requestBody);
+
+    @POST("promotion/quota/bind")
+    Observable<HttpResponse> binding(@Body RequestBody requestBody);
+
+    @POST("promotion/quota/list")
+    Observable<HttpResponse> getBindList(@Body RequestBody requestBody);
+
+    @POST("promotion/form/reward/receive")
+    Observable<HttpResponse> getReceive(@Body RequestBody requestBody);
+
+    @POST("promotion/form/reward/list")
+    Observable<HttpResponse> rewardList(@Body RequestBody requestBody);
+
+    @POST("promotion/reward/info/list")
+    Observable<HttpResponse> rewardInfo(@Body RequestBody requestBody);
+
+    @POST("promotion/reward/receive")
+    Observable<HttpResponse> getReward(@Body RequestBody requestBody);
+
+    @POST("promotion/quota/list")
+    Observable<HttpResponse> getQuota(@Body RequestBody requestBody);
 }
 

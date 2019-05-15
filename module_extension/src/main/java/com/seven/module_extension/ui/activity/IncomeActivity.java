@@ -4,13 +4,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.flyco.tablayout.SlidingTabLayout;
 import com.seven.lib_common.base.activity.BaseAppCompatActivity;
+import com.seven.lib_common.utils.ToastUtils;
 import com.seven.lib_model.ApiManager;
 import com.seven.lib_model.BaseResult;
 import com.seven.lib_model.CommonObserver;
@@ -18,6 +21,8 @@ import com.seven.lib_model.model.extension.InComeDetailsEntity;
 import com.seven.lib_model.model.extension.InComeItem;
 import com.seven.lib_model.presenter.extension.ExActivityPresenter;
 import com.seven.lib_model.presenter.extension.ExAppPresenter;
+import com.seven.lib_opensource.event.Event;
+import com.seven.lib_opensource.event.MessageEvent;
 import com.seven.lib_router.router.RouterPath;
 import com.seven.module_extension.R;
 import com.seven.module_extension.R2;
@@ -26,6 +31,10 @@ import com.seven.module_extension.ui.fragment.InComeAllFragment;
 import com.seven.module_extension.ui.fragment.InComeFrozenFragment;
 import com.seven.module_extension.ui.fragment.InComeInFragment;
 import com.seven.module_extension.ui.fragment.InComeOutFragment;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +52,8 @@ public class IncomeActivity extends BaseAppCompatActivity {
     ViewPager meViewpager;
     @BindView(R2.id.me_income_back)
     ImageView me_income_back;
+    @BindView(R2.id.me_refresh)
+    SwipeRefreshLayout me_refresh;
 
     private InComeAllFragment allFragment;
     private InComeInFragment inFragment;
@@ -82,13 +93,18 @@ public class IncomeActivity extends BaseAppCompatActivity {
         meTab.setViewPager(meViewpager,new String[]{"全部","收入","支出","冻结"});
         meTab.setCurrentTab(0);
         presenter = new ExAppPresenter(this,this);
-       request();
-//        ApiManager.inComeDetails(1,20).subscribe(new CommonObserver<BaseResult<InComeDetailsEntity>>(){
-//            @Override
-//            public void onNext(BaseResult<InComeDetailsEntity> inComeDetailsEntityBaseResult) {
-//
-//            }
-//        });
+
+        me_refresh.setColorSchemeResources(
+                R.color.primary,
+                R.color.primary,
+                R.color.primary,
+                R.color.primary);
+        me_refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                request();
+            }
+        });
     }
 
     public void request(){
@@ -130,7 +146,8 @@ public class IncomeActivity extends BaseAppCompatActivity {
 
     @Override
     public void closeLoading() {
-
+        if (me_refresh.isRefreshing())
+            me_refresh.setRefreshing(false);
     }
 
     @Override
@@ -144,4 +161,10 @@ public class IncomeActivity extends BaseAppCompatActivity {
             finish();
         }
     }
+
+    public View setEmptyView(){
+        View view = LayoutInflater.from(IncomeActivity.this).inflate(R.layout.me_emptyview,null);
+        return view;
+    }
+
 }

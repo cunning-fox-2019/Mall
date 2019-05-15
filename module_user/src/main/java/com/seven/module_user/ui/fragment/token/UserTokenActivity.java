@@ -2,8 +2,8 @@ package com.seven.module_user.ui.fragment.token;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -11,19 +11,21 @@ import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
-import com.chad.library.adapter.base.listener.OnItemClickListener;
-import com.gyf.barlibrary.ImmersionBar;
+import com.google.gson.Gson;
 import com.seven.lib_common.base.activity.BaseAppCompatActivity;
-import com.seven.lib_common.base.activity.BaseTitleActivity;
-import com.seven.lib_model.model.user.OrderEntity;
+import com.seven.lib_model.ApiManager;
+import com.seven.lib_model.BaseResult;
+import com.seven.lib_model.CommonObserver;
+import com.seven.lib_model.model.extension.InComeDetailsEntity;
+import com.seven.lib_model.model.extension.InComeItem;
+import com.seven.lib_model.model.user.UserEntity;
+import com.seven.lib_router.db.shard.SharedData;
+import com.seven.lib_router.router.RouterPath;
+import com.seven.lib_router.router.RouterUtils;
 import com.seven.module_user.R;
 import com.seven.module_user.R2;
-import com.seven.module_user.ui.fragment.order.UserOrderDetailActivity;
 import com.seven.module_user.ui.fragment.view.BaseRecyclerView;
 import com.seven.module_user.ui.fragment.view.DividerSpaceItemDecoration;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -38,6 +40,14 @@ public class UserTokenActivity extends BaseAppCompatActivity {
     BaseRecyclerView recyclerView;
     @BindView(R2.id.title)
     TextView textView;
+    @BindView(R2.id.token_number)
+    TextView tokenNumber;
+    @BindView(R2.id.token_total)
+    TextView tokenTotal;
+    @BindView(R2.id.freeze_token_number)
+    TextView freezeTokenNumber;
+
+    private int page = 1;
 
     @Override
     public void showLoading() {
@@ -66,28 +76,28 @@ public class UserTokenActivity extends BaseAppCompatActivity {
 
     @Override
     protected void initBundleData(Intent intent) {
-        List<OrderEntity> list = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            list.add(new OrderEntity());
-        }
-        LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
-        recyclerView.init(layoutManager, new BaseQuickAdapter<OrderEntity, BaseViewHolder>(R.layout.item_token_list_layout, list) {
-            @Override
-            protected void convert(BaseViewHolder helper, OrderEntity item) {
+        UserEntity userEntity = new Gson().fromJson(SharedData.getInstance().getUserInfo(), UserEntity.class);
+        tokenNumber.setText(String.valueOf(userEntity.getToken_number()));
+        freezeTokenNumber.setText(String.valueOf(userEntity.getFreeze_token_number()));
+        tokenTotal.setText(String.valueOf(userEntity.getToken_number_total()));
+        getData();
 
-            }
-        }, false).changeItemDecoration(new DividerSpaceItemDecoration(6))
-                .setEmptyView(getEmptyView());
     }
 
     @OnClick(R2.id.all)
     void checkAll() {
-        startActivity(new Intent(mContext, UserTokenListActivity.class));
+//        startActivity(new Intent(mContext, UserTokenListActivity.class));
+        RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_IN_COME);
     }
 
     @OnClick(R2.id.receive_token_btn)
     void receiveToken() {
         startActivity(new Intent(mContext, UserReceiveTokenActivity.class));
+    }
+
+    @OnClick(R2.id.token_desc_btn)
+    void tokenDesc() {
+        startActivity(new Intent(this, TokenDescActivity.class));
     }
 
     private View getEmptyView() {
@@ -106,4 +116,55 @@ public class UserTokenActivity extends BaseAppCompatActivity {
             finish();
         }
     }
+
+    private void getData() {
+
+        ApiManager.inComeDetails(page, 20, "")
+                .subscribe(new CommonObserver<BaseResult<InComeDetailsEntity>>() {
+                    @Override
+                    public void onNext(BaseResult<InComeDetailsEntity> inComeDetailsEntityBaseResult) {
+                        setData(inComeDetailsEntityBaseResult.getData());
+                    }
+                });
+    }
+
+    private void setData(InComeDetailsEntity data) {
+        if (recyclerView.getAdapter() == null) {
+            LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
+            recyclerView.init(layoutManager, new BaseQuickAdapter<InComeItem, BaseViewHolder>(R.layout.item_token_list_layout, null) {
+                @Override
+                protected void convert(BaseViewHolder helper, InComeItem item) {
+                    helper.setText(R.id.name, item.getTitle())
+                            .setText(R.id.comment, item.getComment())
+                            .setText(R.id.number, item.getNumber())
+                            .setText(R.id.time, item.getCreated_at());
+                }
+            }, true).changeItemDecoration(new DividerSpaceItemDecoration(6))
+                    .setEmptyView(getEmptyView())
+                    .setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                        @Override
+                        public void onRefresh() {
+                            page = 1;
+                            getData();
+                        }
+                    })
+                    .setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
+                        @Override
+                        public void onLoadMoreRequested() {
+                            page++;
+                            getData();
+                        }
+                    });
+        }
+        recyclerView.setRefreshing(false);
+        if (data.getPagination().getPage() == 1) {
+            recyclerView.setNewData(data.getItems());
+        } else {
+            recyclerView.addDataList(data.getItems());
+        }
+        if (data.getPagination().getTotal_page() == data.getPagination().getPage()) {
+            recyclerView.setEnableLoadMore(false);
+        }
+    }
+
 }

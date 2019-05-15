@@ -1,7 +1,9 @@
 package com.seven.module_user.ui.fragment;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -13,7 +15,12 @@ import com.seven.lib_common.utils.ToastUtils;
 import com.seven.lib_common.utils.glide.GlideUtils;
 import com.seven.lib_model.ApiManager;
 import com.seven.lib_model.BaseResult;
+import com.seven.lib_model.model.user.RegisterEntity;
 import com.seven.lib_model.model.user.UserEntity;
+import com.seven.lib_opensource.event.Event;
+import com.seven.lib_opensource.event.ObjectsEvent;
+import com.seven.lib_router.Constants;
+import com.seven.lib_router.Variable;
 import com.seven.lib_router.db.shard.SharedData;
 import com.seven.lib_router.router.RouterPath;
 import com.seven.lib_router.router.RouterUtils;
@@ -23,6 +30,10 @@ import com.seven.module_user.ui.activity.login.LoginActivity;
 import com.seven.module_user.ui.fragment.order.UserOrderListActivity;
 import com.seven.module_user.ui.fragment.setting.UserSettingActivity;
 import com.seven.module_user.ui.fragment.token.UserTokenActivity;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -50,6 +61,8 @@ public class UserFragment extends BaseFragment {
     ImageView userPhoto;
     @BindView(R2.id.shop_cart)
     TextView shop_cart;
+    @BindView(R2.id.vip_lv)
+    ImageView vipLv;
 
 
     @Override
@@ -59,8 +72,10 @@ public class UserFragment extends BaseFragment {
 
     @Override
     public void init(Bundle savedInstanceState) {
-       // getUserInfo();
+        // getUserInfo();
+        EventBus.getDefault().register(this);
     }
+
 
     private void getUserInfo() {
         ApiManager.getUserInfo()
@@ -76,9 +91,15 @@ public class UserFragment extends BaseFragment {
                     public void onNext(BaseResult<UserEntity> userEntityBaseResult) {
                         Gson gson = new Gson();
                         String userString = gson.toJson(userEntityBaseResult.getData());
-                        SharedData.getInstance().setUserInfo(userString);
-                        setData(userEntityBaseResult.getData());
-                        
+                        if (userString != null && !userString.equals("null")) {
+                            SharedData.getInstance().setUserInfo(userString);
+                            setData(userEntityBaseResult.getData());
+                            EventBus.getDefault().post(new ObjectsEvent(Constants.EventConfig.USER_DATA_CHANGE,"change"));
+                        } else {
+                            RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_LOGIN);
+                        }
+                        Log.e("userInfo", SharedData.getInstance().getUserInfo());
+                        Log.e("token", SharedData.getInstance().getToken());
                     }
 
                     @Override
@@ -94,7 +115,27 @@ public class UserFragment extends BaseFragment {
     }
 
     private void setData(UserEntity data) {
-        userName.setText(data.getPhone());
+        userName.setText(data.getUsername() != null && !data.getUsername().equals("") ? data.getUsername() : "昵称暂未设置");
+        Drawable drawable = getResources().getDrawable(R.drawable.lv_0);
+        switch (data.getRole()) {
+            case 0:
+                drawable = getResources().getDrawable(R.drawable.lv_0);
+                break;
+            case 1:
+                drawable = getResources().getDrawable(R.drawable.lv_1);
+                break;
+            case 2:
+                drawable = getResources().getDrawable(R.drawable.lv_2);
+                break;
+            case 3:
+                drawable = getResources().getDrawable(R.drawable.lv_3);
+                break;
+            case 4:
+                drawable = getResources().getDrawable(R.drawable.lv_4);
+                break;
+            default:
+        }
+        vipLv.setImageDrawable(drawable);
         GlideUtils.loadCircleImage(getActivity(), data.getAvatar(), userPhoto);
     }
 
@@ -146,6 +187,7 @@ public class UserFragment extends BaseFragment {
 
     @OnClick(R2.id.logout)
     void logout() {
+        EventBus.getDefault().post(new ObjectsEvent(Constants.EventConfig.LOGOUT));
         startActivity(new Intent(getActivity(), LoginActivity.class));
         //ToastUtils.showToast(getActivity(), "退出");
     }
@@ -182,5 +224,21 @@ public class UserFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         getUserInfo();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(Event event) {
+        switch (event.getWhat()) {
+
+            case Constants.EventConfig.LOGIN:
+            case Constants.EventConfig.REGISTER:
+                getUserInfo();
+                RegisterEntity registerEntity = (RegisterEntity) ((ObjectsEvent) event).getObjects()[0];
+
+                if (registerEntity == null) return;
+
+                break;
+
+        }
     }
 }

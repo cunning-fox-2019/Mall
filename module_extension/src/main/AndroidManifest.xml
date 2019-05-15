@@ -5,5 +5,10 @@
         <activity android:name=".ui.activity.BuyRoleActivity"/>
         <activity android:name=".ui.activity.BuyActivity"/>
         <activity android:name=".ui.activity.MyInterviewActivity" />
+        <activity android:name=".ui.activity.LevelRuleActivity" />
+        <activity android:name=".ui.activity.ReceivAwardsActivity" />
+        <activity android:name=".ui.activity.ReceiveBDActivity" />
+        <activity android:name=".ui.activity.QuotaActivity" />
+        <activity android:name=".ui.activity.BindActivity" />
     </application>
 </manifest>

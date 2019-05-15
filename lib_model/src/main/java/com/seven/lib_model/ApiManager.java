@@ -5,10 +5,13 @@ import android.content.Context;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.seven.lib_common.base.activity.BaseActivity;
+import com.seven.lib_http.retrofit.HttpResponse;
 import com.seven.lib_model.model.extension.BdGoodsEntity;
 import com.seven.lib_model.model.extension.BuyRoleEntity;
 import com.seven.lib_model.model.extension.InComeDetailsEntity;
+import com.seven.lib_model.model.extension.LevelEntity;
 import com.seven.lib_model.model.extension.MyInterViewEntity;
+import com.seven.lib_model.model.extension.QuotaEntity;
 import com.seven.lib_model.model.extension.ReceiveGoodsEntity;
 import com.seven.lib_model.model.extension.RewardListEntity;
 import com.seven.lib_model.model.extension.RewardRuleEntity;
@@ -25,7 +28,9 @@ import com.seven.lib_model.model.user.mine.OrderDetailEntity;
 import com.seven.lib_model.model.user.mine.OrderDetailRequestEntity;
 import com.seven.lib_model.model.user.mine.PayAccountEntity;
 import com.seven.lib_model.model.user.mine.ResetPasswordEntity;
+import com.seven.lib_model.model.user.mine.SB;
 import com.seven.lib_model.model.user.mine.ShopEntity;
+import com.seven.lib_model.model.user.mine.TokenDescEntity;
 import com.seven.lib_model.model.user.mine.UpLoadImageEntity;
 import com.seven.lib_opensource.application.SevenApplication;
 
@@ -41,6 +46,7 @@ import okhttp3.Interceptor;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -86,7 +92,7 @@ public class ApiManager {
             Gson gson = gsonBuilder.create();
             GsonConverterFactory gsonConverterFactory = GsonConverterFactory.create(gson);
             Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl("http://zhongfu.lerqin.com/")
+                    .baseUrl("http://api.zf.tianza.com.cn/")
                     .client(builder.build())
                     .addConverterFactory(gsonConverterFactory)
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
@@ -203,7 +209,20 @@ public class ApiManager {
         Observable<BaseResult<RewardListEntity>> rewardList();
 
         @POST("promotion/token/list")
-        Observable<BaseResult<InComeDetailsEntity>> inComeDetails(@Query("page") int page,@Query("page_size") int page_size);
+        Observable<BaseResult<InComeDetailsEntity>> inComeDetails(@Query("page") int page, @Query("page_size") int page_size,@Query("status") String status);
+
+        @POST("article/info")
+        Observable<HttpResponse> getLevel(@Body RequestBody requestBody);
+
+        @POST("promotion/reward/receive")
+        Observable<BaseResult> kfabf(@Query("reward_info_id") String id);
+
+
+        @POST("article/info")
+        Observable<BaseResult<TokenDescEntity>> getTokenDesc(@Body SB sb);
+
+        @POST("promotion/form/reward/receive")
+        Observable<BaseResult> getReceive(@Query("ids") String ids,@Query("contact_id") String contact_id);
 
     }
 
@@ -283,16 +302,33 @@ public class ApiManager {
     public static Observable<BaseResult> modifyPassword(ResetPasswordEntity entity) {
         return subScribe(apiManagerService.modifyPassword(entity));
     }
+
     public static Observable<BaseResult> modifyPayPassword(ResetPasswordEntity entity) {
         return subScribe(apiManagerService.modifyPayPassword(entity));
     }
 
-    public static Observable<BaseResult<DTEntity>> upLoad(MultipartBody part){
+    public static Observable<BaseResult<DTEntity>> upLoad(MultipartBody part) {
         return subScribe(apiManagerService.upLoad(part));
     }
 
-    public static Observable<BaseResult<RewardListEntity>> rewardList(){
-        return subScribe(apiManagerService.rewardList());}
+    public static Observable<BaseResult<RewardListEntity>> rewardList() {
+        return subScribe(apiManagerService.rewardList());
+    }
 
-        public static Observable<BaseResult<InComeDetailsEntity>> inComeDetails(int page,int page_size){return subScribe(apiManagerService.inComeDetails(page,page_size));}
+    public static Observable<BaseResult<InComeDetailsEntity>> inComeDetails(int page, int page_size,String status) {
+        return subScribe(apiManagerService.inComeDetails(page, page_size,status));
+    }
+    public static  Observable<BaseResult> getReceive(String ids,String contact_id){
+        return subScribe(apiManagerService.getReceive(ids,contact_id));
+    }
+
+
+    public static Observable<BaseResult> daskgja(String id){
+        return subScribe(apiManagerService.kfabf(id));
+    }
+
+    public static Observable<BaseResult<TokenDescEntity>> getTokenDesc(){
+        return subScribe(apiManagerService.getTokenDesc(new SB(2)));
+    }
+
 }

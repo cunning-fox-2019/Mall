@@ -15,23 +15,23 @@ import java.util.List;
 /**
  * Created by xxxxxxH on 2019/5/3.
  */
-public class MyInviteAdapter extends BaseQuickAdapter<ItemsBean,BaseViewHolder> {
+public class MyInviteAdapter extends BaseQuickAdapter<ItemsBean, BaseViewHolder> {
     public MyInviteAdapter(int layoutResId, @Nullable List<ItemsBean> data) {
         super(layoutResId, data);
     }
 
     @Override
     protected void convert(BaseViewHolder helper, ItemsBean item) {
-        GlideUtils.loadCircleImage(mContext,item.getAvatar(), (ImageView) helper.getView(R.id.me_item_myinterview_iv));
-        helper.setText(R.id.me_item_interview_name,item.getUsername());
+        GlideUtils.loadCircleImage(mContext, item.getAvatar(), (ImageView) helper.getView(R.id.me_item_myinterview_iv));
+        helper.setText(R.id.me_item_interview_name, item.getUsername());
         ImageView sex = helper.getView(R.id.me_item_interview_sex);
-        if (item.getSex().equals("male")){
-
-        }else {
-
+        if (item.getSex().equals("male")) {
+            sex.setBackgroundResource(R.drawable.me_male);
+        } else {
+            sex.setBackgroundResource(R.drawable.me_famale);
         }
         ImageView level = helper.getView(R.id.me_item_interview_level);
-        switch (item.getRole()){
+        switch (item.getRole()) {
             case 0:
                 level.setBackground(mContext.getResources().getDrawable(R.drawable.me_normaluser));
                 break;

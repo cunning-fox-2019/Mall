@@ -32,6 +32,11 @@ public class RouterPath {
     public static final String ACTIVITY_BUY_ROLE = "/extension/BuyRoleActivity";
     public static final String ACTIVITY_BUY_BD = "/extension/BuyActivity";
     public static final String ACTIVITY_MY_INTERVIEW = "/extension/MyInterviewActivity";
+    public static final String ACTIVITY_LEVEL = "/extension/LevelRuleActivity";
+    public static final String ACTIVITY_REWARD_LIST = "/extension/ReceivAwardsActivity";
+    public static final String ACTIVITY_BD_LIST = "/extension/ReceiveBDActivity";
+    public static final String ACTIVITY_QUOTA = "/extension/QuotaActivity";
+    public static final String ACTIVITY_BIND = "/extension/BindActivity";
 
     /* module model */
     public static final String FRAGMENT_MODEL = "/model/ModelFragment";
@@ -49,10 +54,10 @@ public class RouterPath {
     public static final String ACTIVITY_PASSWORD="/user/PasswordActivity";
     public static final String ACTIVITY_MOBILE="/user/MobileActivity";
 
-    public static final String ACTIVITY_SHOPPING_CART="/user/UserShoppingCartActivity";
+    public static final String ACTIVITY_SHOPPING_CART="/user/UserShoppingCartActivity";//购物车
     public static final String ACTIVITY_ADDRESS="/user/AddressList";
-    public static final String ACTIVITY_MINE_ORDER="/user/";
     public static final String ACTIVITY_PAY_PASSWORD="/user/";
+    public static final String ACTIVITY_MINE_ORDER="/user/UserOrderListActivity";//我的订单
     public static final String ACTIVITY_MINE_SHOP_CAR="/user/ShopCartActivity";
     public static final String ACTIVITY_MINE_SHOP_PAY="/user/PayActivity";
     public static final String ACTIVITY_MINE_ADD_ADDRESS="/user/CreateAddress";
