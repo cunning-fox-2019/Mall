@@ -1,6 +1,7 @@
 package com.seven.module_model.adapter;
 
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.widget.ImageView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -37,7 +38,13 @@ public class OrderAdapter extends BaseQuickAdapter<BusinessEntity, BaseViewHolde
                 .setText(R.id.volume_tv, ResourceUtils.getFormatText(R.string.volume, item.getBusiness_success()))
                 .setText(R.id.token_tv, String.valueOf(item.getToken_number()))
                 .setText(R.id.price_tv, String.valueOf(item.getPrice()))
-                .setText(R.id.status_tv, getStatus(item.getStatus()));
+                .setText(R.id.status_tv, getStatus(item.getStatus()))
+                .setGone(R.id.status_rl, item.getStatus() != 0)
+                .setGone(R.id.wechat_pay_iv, !TextUtils.isEmpty(item.getWx_account()))
+                .setGone(R.id.alipay_iv, !TextUtils.isEmpty(item.getAli_account()))
+                .setGone(R.id.business_layout, (!TextUtils.isEmpty(item.getWx_account()) ||
+                        !TextUtils.isEmpty(item.getAli_account())) &&
+                        item.getStatus() != Constants.InterfaceConfig.BUSINESS_STATUS_BUSINESS);
     }
 
     private String getStatus(int status) {

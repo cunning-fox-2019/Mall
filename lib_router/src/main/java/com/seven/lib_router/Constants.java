@@ -28,9 +28,14 @@ public class Constants {
         public static final String TYPE = "type";
         public static final int TYPE_SELL = 1;
         public static final int TYPE_BUY = 2;
-
         public static final String ID = "id";
-        public static final String EVENT_CODE = "eventCode";
+        public static final String DETAILS="details";
+        public static final String STATUS="status";
+        public static final String URL="url";
+        public static final String NORMAL="normal";
+
+        public static final String EVENT_CODE="eventCode";
+        public static final String BUY_BD= "buy_bd";
     }
 
     public static class TimeConfig {
@@ -58,6 +63,7 @@ public class Constants {
         /* common */
         public static final int SMS = 1001;
         public static final int PAY_PASSWORD = 1002;
+        public static final int UPLOAD = 1003;
 
         /*home*/
         public static final int BANNER = 3001;
@@ -82,6 +88,12 @@ public class Constants {
         public static final int BUSINESS_LIST = 5002;
         public static final int BUSINESS = 5003;
         public static final int BUSINESS_ORDER_LIST = 5004;
+        public static final int BUSINESS_INFO = 5005;
+        public static final int BUSINESS_ORDER_INFO = 5006;
+        public static final int BUSINESS_ACCEPT = 5007;
+        public static final int BUSINESS_PROOF = 5008;
+        public static final int BUSINESS_CONFIRM = 5009;
+        public static final int BUSINESS_CANCEL = 5010;
 
         /*user*/
         public static final int REGISTER = 6001;
@@ -95,6 +107,11 @@ public class Constants {
 
         public static final int REGISTER = 100;
         public static final int LOGIN = 101;
+        public static final int LOGOUT=102;
+
+        public static final int BUY_BD = 103;
+
+        public static final int BUSINESS_PROOF=200;
 
         /* router */
         public static final int SHOPPING_CART = 900;
@@ -166,6 +183,12 @@ public class Constants {
         public static final String PAY_PASSWORD = "pay_password";
     }
 
+    public static class JpushConfig {
+
+        public static final int ALIAS_CODE = 100;
+
+    }
+
     public static class InterfaceConfig {
 
         public static final String CART = "cart";//购物车购买
@@ -196,5 +219,7 @@ public class Constants {
         public static final int BUSINESS_STATUS_UPLOAD=2;//待上传凭证
         public static final int BUSINESS_STATUS_SURE=3;//待确认
         public static final int BUSINESS_STATUS_END=4;//已完成
+
+        public static final String UPLOAD_AVATAR="avatar";
     }
 }

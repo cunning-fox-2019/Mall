@@ -69,6 +69,7 @@ public class CommodityListActivity extends BaseActivity implements IKeyBoardVisi
     public int id;
     private boolean pauseAnim;
     private boolean isBack;
+    private boolean isSearch;
 
     @BindView(R2.id.left_btn)
     public RelativeLayout leftBtn;
@@ -200,16 +201,51 @@ public class CommodityListActivity extends BaseActivity implements IKeyBoardVisi
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    isRefresh = true;
-                    page = 1;
-                    sort = Constants.InterfaceConfig.SORT_COMPREHENSIVE;
-                    showLoadingDialog();
-                    request(page, sort, searchEt.getText().toString());
+                    search();
                     return true;
                 }
                 return false;
             }
         });
+    }
+
+    private void search() {
+
+        if (searchEt.getText().toString().trim().length() == 0) {
+            ToastUtils.showToast(mContext, ResourceUtils.getText(R.string.hint_not_search));
+            return;
+        }
+
+        SearchHistory history = new SearchHistory(System.currentTimeMillis(), searchEt.getText().toString());
+        if (historyList.size() == 0) {
+            historyList.add(history);
+        } else {
+
+            boolean isExist = false;
+            for (SearchHistory searchHistory : historyList) {
+                if (searchHistory.getRecord().equals(searchEt.getText().toString())) {
+                    historyList.remove(searchHistory);
+                    isExist = true;
+                    break;
+                }
+            }
+            historyList.add(0, history);
+            if (!isExist && historyList.size() > 10)
+                historyList.remove(historyList.size() - 1);
+        }
+        tagAdapter.notifyDataChanged();
+
+        historyDao.insert(history);
+
+        if (imm != null && searchEt != null)
+            imm.hideSoftInputFromWindow(searchEt.getWindowToken(), 0);
+        isRefresh = true;
+        isSearch = true;
+        page = 1;
+        sort = Constants.InterfaceConfig.SORT_COMPREHENSIVE;
+        showLoadingDialog();
+        request(page, sort, searchEt.getText().toString());
+
     }
 
     private void request(int page, int sort, String keyword) {
@@ -384,7 +420,10 @@ public class CommodityListActivity extends BaseActivity implements IKeyBoardVisi
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
 
-        RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_COMMODITY_DETAILS);
+
+        ARouter.getInstance().build(RouterPath.ACTIVITY_COMMODITY_DETAILS)
+                .withInt(Constants.BundleConfig.ID, this.adapter.getItem(position).getId())
+                .navigation();
 
     }
 
@@ -435,7 +474,7 @@ public class CommodityListActivity extends BaseActivity implements IKeyBoardVisi
     @Override
     public void onSoftKeyBoardVisible(boolean visible, int windowBottom) {
 
-        if (isBack)
+        if (isBack && !isSearch)
             onBackPressed();
 
         searchEt.setCursorVisible(visible);
@@ -507,7 +546,8 @@ public class CommodityListActivity extends BaseActivity implements IKeyBoardVisi
                     @Override
                     public void onClick(View v) {
 
-                        ToastUtils.showToast(mContext, position + "");
+                        searchEt.setText(item.getRecord());
+                        search();
 
                     }
                 });

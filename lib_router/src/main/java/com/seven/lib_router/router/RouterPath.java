@@ -12,6 +12,7 @@ public class RouterPath {
 
     /* module app */
     public static final String ACTIVITY_HOME = "/app/HomeActivity";
+    public static final String ACTIVITY_WEB = "/app/WebActivity";
 
 
     /* module common */
@@ -29,6 +30,8 @@ public class RouterPath {
     public static final String FRAGMENT_EXTENSION = "/extension/ExtensionFragment";
     public static final String ACTIVITY_IN_COME = "/extension/IncomeActivity";
     public static final String ACTIVITY_BUY_ROLE = "/extension/BuyRoleActivity";
+    public static final String ACTIVITY_BUY_BD = "/extension/BuyActivity";
+    public static final String ACTIVITY_MY_INTERVIEW = "/extension/MyInterviewActivity";
 
     /* module model */
     public static final String FRAGMENT_MODEL = "/model/ModelFragment";
@@ -49,7 +52,9 @@ public class RouterPath {
     public static final String ACTIVITY_SHOPPING_CART="/user/UserShoppingCartActivity";
     public static final String ACTIVITY_ADDRESS="/user/AddressList";
     public static final String ACTIVITY_MINE_ORDER="/user/";
+    public static final String ACTIVITY_PAY_PASSWORD="/user/";
     public static final String ACTIVITY_MINE_SHOP_CAR="/user/ShopCartActivity";
     public static final String ACTIVITY_MINE_SHOP_PAY="/user/PayActivity";
     public static final String ACTIVITY_MINE_ADD_ADDRESS="/user/CreateAddress";
+    public static final String ACTIVITY_ACCOUNT="/user/UserAccountActivity";
 }

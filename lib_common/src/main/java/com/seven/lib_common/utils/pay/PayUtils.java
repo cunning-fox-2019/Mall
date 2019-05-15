@@ -17,6 +17,7 @@ import com.seven.lib_common.utils.ToastUtils;
 import com.seven.lib_opensource.application.SSDK;
 import com.seven.lib_opensource.application.SevenApplication;
 import com.seven.lib_opensource.event.ObjectsEvent;
+import com.seven.lib_router.Constants;
 import com.seven.lib_router.Variable;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 
@@ -35,7 +36,6 @@ public class PayUtils {
     private static final String TAG = " PayUtils---> ";
 
     private static final int SDK_PAY_FLAG = 1;
-    public static final int PAY_RESULT = 10001;
 
     private static PayUtils payUtils;
 
@@ -69,11 +69,11 @@ public class PayUtils {
                     // 判断resultStatus 为9000则代表支付成功
                     if (TextUtils.equals(resultStatus, "9000")) {
                         // 该笔订单是否真实支付成功，需要依赖服务端的异步通知。
-                        EventBus.getDefault().post(new ObjectsEvent(PAY_RESULT, 1));
+                        EventBus.getDefault().post(new ObjectsEvent(Constants.EventConfig.PAY_RESULT, 1));
                         ToastUtils.showToast(SSDK.getInstance().getContext(), ResourceUtils.getText(R.string.hint_pay_success));
                     } else {
                         // 该笔订单真实的支付结果，需要依赖服务端的异步通知。
-                        EventBus.getDefault().post(new ObjectsEvent(PAY_RESULT, 0));
+                        EventBus.getDefault().post(new ObjectsEvent(Constants.EventConfig.PAY_RESULT, 0));
                         ToastUtils.showToast(SSDK.getInstance().getContext(), payResult.getMemo());
                     }
                     break;

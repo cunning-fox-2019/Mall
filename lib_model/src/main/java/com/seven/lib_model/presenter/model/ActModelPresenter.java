@@ -9,9 +9,13 @@ import com.seven.lib_http.observer.HttpRxObservable;
 import com.seven.lib_http.observer.HttpRxObserver;
 import com.seven.lib_model.builder.common.PayPasswordBuilder;
 import com.seven.lib_model.builder.model.BusinessBuilder;
+import com.seven.lib_model.builder.model.BusinessDetailsBuilder;
 import com.seven.lib_model.builder.model.BusinessOrderListBuilder;
+import com.seven.lib_model.builder.model.BusinessProofBuilder;
 import com.seven.lib_model.http.RequestHelper;
 import com.seven.lib_model.model.model.BusinessEntity;
+import com.seven.lib_model.model.model.BusinessInfoEntity;
+import com.seven.lib_model.model.model.UploadEntity;
 import com.trello.rxlifecycle2.android.ActivityEvent;
 
 /**
@@ -75,6 +79,105 @@ public class ActModelPresenter extends BasePresenter<IBaseView, BaseActivity> {
         if (rxObserver == null)
             return;
         HttpRxObservable.getObservable(RequestHelper.getInstance().businessOrderList(jsonStr), getActivity(), ActivityEvent.PAUSE).subscribe(rxObserver);
+    }
+
+    public void businessInfo(int requestCode, int id) {
+
+        BusinessDetailsBuilder.Builder builder = new BusinessDetailsBuilder.Builder();
+        BusinessDetailsBuilder json = builder
+                .business_id(id)
+                .build();
+        String jsonStr = new Gson().toJson(json);
+        Logger.i(jsonStr);
+
+        HttpRxObserver rxObserver = get(getView(), requestCode, BusinessInfoEntity.class, null, false);
+        if (rxObserver == null)
+            return;
+        HttpRxObservable.getObservable(RequestHelper.getInstance().businessInfo(jsonStr), getActivity(), ActivityEvent.PAUSE).subscribe(rxObserver);
+    }
+
+    public void businessCancel(int requestCode, int id) {
+
+        BusinessDetailsBuilder.Builder builder = new BusinessDetailsBuilder.Builder();
+        BusinessDetailsBuilder json = builder
+                .business_id(id)
+                .build();
+        String jsonStr = new Gson().toJson(json);
+        Logger.i(jsonStr);
+
+        HttpRxObserver rxObserver = get(getView(), requestCode);
+        if (rxObserver == null)
+            return;
+        HttpRxObservable.getObservable(RequestHelper.getInstance().businessCancel(jsonStr), getActivity(), ActivityEvent.PAUSE).subscribe(rxObserver);
+    }
+
+    public void businessOrderInfo(int requestCode, int id) {
+
+        BusinessDetailsBuilder.Builder builder = new BusinessDetailsBuilder.Builder();
+        BusinessDetailsBuilder json = builder
+                .business_id(id)
+                .build();
+        String jsonStr = new Gson().toJson(json);
+        Logger.i(jsonStr);
+
+        HttpRxObserver rxObserver = get(getView(), requestCode, BusinessInfoEntity.class, null, false);
+        if (rxObserver == null)
+            return;
+        HttpRxObservable.getObservable(RequestHelper.getInstance().businessOrderInfo(jsonStr), getActivity(), ActivityEvent.PAUSE).subscribe(rxObserver);
+    }
+
+    public void businessAccept(int requestCode, int id) {
+
+        BusinessDetailsBuilder.Builder builder = new BusinessDetailsBuilder.Builder();
+        BusinessDetailsBuilder json = builder
+                .business_id(id)
+                .build();
+        String jsonStr = new Gson().toJson(json);
+        Logger.i(jsonStr);
+
+        HttpRxObserver rxObserver = get(getView(), requestCode);
+        if (rxObserver == null)
+            return;
+        HttpRxObservable.getObservable(RequestHelper.getInstance().businessAccept(jsonStr), getActivity(), ActivityEvent.PAUSE).subscribe(rxObserver);
+    }
+
+    public void businessConfirm(int requestCode, int id) {
+
+        BusinessDetailsBuilder.Builder builder = new BusinessDetailsBuilder.Builder();
+        BusinessDetailsBuilder json = builder
+                .business_id(id)
+                .build();
+        String jsonStr = new Gson().toJson(json);
+        Logger.i(jsonStr);
+
+        HttpRxObserver rxObserver = get(getView(), requestCode);
+        if (rxObserver == null)
+            return;
+        HttpRxObservable.getObservable(RequestHelper.getInstance().businessConfirm(jsonStr), getActivity(), ActivityEvent.PAUSE).subscribe(rxObserver);
+    }
+
+    public void businessProof(int requestCode, int id,String url) {
+
+        BusinessProofBuilder.Builder builder = new BusinessProofBuilder.Builder();
+        BusinessProofBuilder json = builder
+                .business_id(id)
+                .proof_picture(url)
+                .build();
+        String jsonStr = new Gson().toJson(json);
+        Logger.i(jsonStr);
+
+        HttpRxObserver rxObserver = get(getView(), requestCode);
+        if (rxObserver == null)
+            return;
+        HttpRxObservable.getObservable(RequestHelper.getInstance().businessProof(jsonStr), getActivity(), ActivityEvent.PAUSE).subscribe(rxObserver);
+    }
+
+    public void upload(int requestCode, String path, String scene) {
+
+        HttpRxObserver rxObserver = get(getView(), requestCode, UploadEntity.class,null,false);
+        if (rxObserver == null)
+            return;
+        HttpRxObservable.getObservable(RequestHelper.getInstance().upload(path, scene), getActivity(), ActivityEvent.PAUSE).subscribe(rxObserver);
     }
 
 }

@@ -51,6 +51,8 @@
 
     <string name="hint_more_not">没有更多数据</string>
 
+    <string name="loading">加载中</string>
+
     <!-- app -->
     <string name="hint_auto_jump_error">设置失败,请手动开启权限</string>
     <string name="tab_home">首页</string>
@@ -123,6 +125,8 @@
     <string name="dialog_home">返回首页</string>
     <string name="dialog_details">查看订单</string>
 
+    <string name="hint_not_search">请输入搜索内容</string>
+
     <!-- model -->
     <string name="title_model">C2C交易</string>
 
@@ -175,15 +179,20 @@
     <string name="voucher">凭证</string>
     <string name="hint_token_number">购买令牌数量</string>
     <string name="hint_token_number_insufficient">令牌不足</string>
+    <string name="hint_token_number_min">令牌数量需大于0</string>
 
     <string name="button_launch_sell">发起售卖</string>
     <string name="button_launch_buy">发起购买</string>
     <string name="button_voucher">上传凭证</string>
     <string name="button_upload">确认上传</string>
+    <string name="button_cancel_business">取消交易</string>
 
     <string name="hint_voucher">请上传支付宝或微信交易凭证</string>
     <string name="hint_buy_info">您发起的购买信息\n已成功通知卖方\n请先支付宝或微信购买\n支付成功后请上传凭证</string>
     <string name="hint_sell_info">您发起的售卖信息\n已成功通知买方\n请等待买方回复</string>
+
+    <string name="hint_wait_business">该订单暂未交易</string>
+    <string name="hint_cancel_succeed">取消成功</string>
 
     <!-- user login -->
     <string name="login">登录</string>

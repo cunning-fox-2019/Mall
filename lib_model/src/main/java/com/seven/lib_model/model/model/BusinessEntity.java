@@ -33,7 +33,7 @@ public class BusinessEntity implements Serializable {
     private int id;
     private String status_name;
     private double ratio;
-    private int business_success;
+    private Integer business_success;
 
     public String getAvatar() {
         return avatar;
@@ -123,11 +123,11 @@ public class BusinessEntity implements Serializable {
         this.ratio = ratio;
     }
 
-    public int getBusiness_success() {
+    public Integer getBusiness_success() {
         return business_success;
     }
 
-    public void setBusiness_success(int business_success) {
+    public void setBusiness_success(Integer business_success) {
         this.business_success = business_success;
     }
 }

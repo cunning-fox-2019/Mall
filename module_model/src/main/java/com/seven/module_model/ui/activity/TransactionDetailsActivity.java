@@ -2,6 +2,8 @@ package com.seven.module_model.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.NestedScrollView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -14,14 +16,21 @@ import com.seven.lib_common.base.activity.BaseTitleActivity;
 import com.seven.lib_common.listener.OnClickListener;
 import com.seven.lib_common.stextview.TypeFaceView;
 import com.seven.lib_common.ui.dialog.MallDialog;
+import com.seven.lib_common.utils.FormatUtils;
 import com.seven.lib_common.utils.ResourceUtils;
 import com.seven.lib_common.utils.ScreenUtils;
 import com.seven.lib_common.utils.glide.GlideUtils;
+import com.seven.lib_model.model.model.BusinessInfoEntity;
+import com.seven.lib_model.presenter.model.ActModelPresenter;
+import com.seven.lib_opensource.event.ObjectsEvent;
 import com.seven.lib_router.Constants;
+import com.seven.lib_router.Variable;
 import com.seven.lib_router.router.RouterPath;
 import com.seven.lib_router.router.RouterUtils;
 import com.seven.module_model.R;
 import com.seven.module_model.R2;
+
+import org.greenrobot.eventbus.EventBus;
 
 import butterknife.BindView;
 
@@ -35,6 +44,17 @@ public class TransactionDetailsActivity extends BaseTitleActivity {
 
     @Autowired(name = Constants.BundleConfig.TYPE)
     public int type;
+    @Autowired(name = Constants.BundleConfig.ID)
+    public int id;
+    @Autowired(name = Constants.BundleConfig.DETAILS)
+    public boolean details;
+    @Autowired(name = Constants.BundleConfig.STATUS)
+    public int status;
+
+    @BindView(R2.id.scrollView)
+    public NestedScrollView scrollView;
+    @BindView(R2.id.status_business_tv)
+    public TypeFaceView statusBusinessTv;
 
     @BindView(R2.id.info_hint)
     public TypeFaceView infoHint;
@@ -70,6 +90,9 @@ public class TransactionDetailsActivity extends BaseTitleActivity {
 
     private MallDialog transactionDialog;
 
+    private ActModelPresenter presenter;
+    private BusinessInfoEntity infoEntity;
+
     @Override
     protected int getLayoutId() {
         return R.layout.mm_acitivity_transaction_details;
@@ -86,49 +109,123 @@ public class TransactionDetailsActivity extends BaseTitleActivity {
         params.width = (screenWidth - ScreenUtils.dip2px(mContext, 16 * 2)) / 3;
         params.height = (screenWidth - ScreenUtils.dip2px(mContext, 16 * 2)) / 3;
         voucherIv.setLayoutParams(params);
+
     }
 
     @Override
     protected void initBundleData(Intent intent) {
 
-        showInfo();
+        presenter = new ActModelPresenter(this, this);
 
+        if (status == Constants.InterfaceConfig.BUSINESS_STATUS_BUSINESS) {
+            scrollView.setVisibility(View.GONE);
+            statusBusinessTv.setVisibility(View.VISIBLE);
+            transactionBtn.setVisibility(View.VISIBLE);
+            transactionTv.setText(R.string.button_cancel_business);
+            return;
+        }
+
+        request();
     }
 
-    private void showInfo() {
+    private void request() {
+        showLoadingDialog();
+        if (details)
+            presenter.businessOrderInfo(Constants.RequestConfig.BUSINESS_ORDER_INFO, id);
+        else
+            presenter.businessInfo(Constants.RequestConfig.BUSINESS_INFO, id);
+    }
+
+    private void showInfo(BusinessInfoEntity entity) {
+
+        status = entity.getStatus();
 
         infoHint.setText(type == Constants.BundleConfig.TYPE_SELL ?
                 R.string.label_buy_info : R.string.label_sell_info);
         transactionTv.setText(type == Constants.BundleConfig.TYPE_SELL ?
                 R.string.button_launch_sell : R.string.button_launch_buy);
 
-        GlideUtils.loadCircleImage(mContext, "http://b-ssl.duitang.com/uploads/item/201201/08/20120108130517_Ra8f2.jpg", avatarIv);
-        GlideUtils.loadImage(mContext, "http://b-ssl.duitang.com/uploads/item/201201/08/20120108130517_Ra8f2.jpg", voucherIv);
+        GlideUtils.loadCircleImage(mContext, entity.getAvatar(), avatarIv);
 
-        nameTv.setText("张三");
-        radioTv.setText(ResourceUtils.getFormatText(R.string.radio, 92 + "%"));
-        volumeTv.setText(ResourceUtils.getFormatText(R.string.volume, 226));
-        alipayAccountTv.setText("：15528001078");
-        wechatAccountTv.setText("：15528001078");
+        if (entity.getStatus() >= Constants.InterfaceConfig.BUSINESS_STATUS_SURE) {
+            voucherLayout.setVisibility(View.VISIBLE);
+            GlideUtils.loadImage(mContext, entity.getProof_picture(), voucherIv);
+        }
+
+        nameTv.setText(entity.getUsername());
+        radioTv.setText(ResourceUtils.getFormatText(R.string.radio, entity.getRatio() + "%"));
+        volumeTv.setText(ResourceUtils.getFormatText(R.string.volume, entity.getBusiness_success()));
+
+        if (!details && type == Constants.BundleConfig.TYPE_SELL) {
+            alipayAccountTv.setText("：" + (Variable.getInstance().getAliAccount() == null ? "" : Variable.getInstance().getAliAccount()));
+            wechatAccountTv.setText("：" + (Variable.getInstance().getWxAccount() == null ? "" : Variable.getInstance().getWxAccount()));
+        } else {
+            alipayAccountTv.setText("：" + entity.getAli_account());
+            wechatAccountTv.setText("：" + entity.getWx_account());
+        }
         statusTv.setText("(交易状态)");
-        tokenTv.setText("889.0");
-        priceTv.setText("14040.01");
+        tokenTv.setText(FormatUtils.formatCurrencyD(entity.getToken_number()));
+        priceTv.setText(FormatUtils.formatCurrencyD(entity.getPrice()));
+
+        if (entity.getStatus() == Constants.InterfaceConfig.BUSINESS_STATUS_ALL)
+            transactionBtn.setVisibility(View.VISIBLE);
+
+        if (entity.getStatus() == Constants.InterfaceConfig.BUSINESS_STATUS_UPLOAD &&
+                type == Constants.BundleConfig.TYPE_BUY) {
+            transactionBtn.setVisibility(View.VISIBLE);
+            transactionTv.setText(R.string.button_voucher);
+        }
+
+        if (entity.getStatus() == Constants.InterfaceConfig.BUSINESS_STATUS_SURE &&
+                type == Constants.BundleConfig.TYPE_SELL) {
+            transactionBtn.setVisibility(View.VISIBLE);
+            transactionTv.setText(R.string.label_commodity_order);
+        }
+
     }
 
     public void btClick(View view) {
 
         if (view.getId() == R.id.transaction_btn) {
 
-            if (transactionTv.getText().toString().equals(ResourceUtils.getText(R.string.button_voucher)))
-                RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_UPLOAD_VOUCHER);
-            else{
-                if (type == Constants.BundleConfig.TYPE_BUY)
-                    transactionTv.setText(R.string.button_voucher);
-                else
-                    transactionBtn.setVisibility(View.GONE);
+            if (!isLogin()) return;
 
-                showBuyDialog();
+            if (status == Constants.InterfaceConfig.BUSINESS_STATUS_BUSINESS) {
+                showLoadingDialog();
+                presenter.businessCancel(Constants.RequestConfig.BUSINESS_CANCEL, id);
+                return;
             }
+
+            //待上传状态 买方
+            if (infoEntity.getStatus() == Constants.InterfaceConfig.BUSINESS_STATUS_UPLOAD &&
+                    type == Constants.BundleConfig.TYPE_BUY) {
+                ARouter.getInstance().build(RouterPath.ACTIVITY_UPLOAD_VOUCHER).
+                        withInt(Constants.BundleConfig.ID, id)
+                        .navigation();
+                return;
+            }
+
+            //待确认状态 卖方
+            if (infoEntity.getStatus() == Constants.InterfaceConfig.BUSINESS_STATUS_SURE &&
+                    type == Constants.BundleConfig.TYPE_SELL) {
+
+                showLoadingDialog();
+                presenter.businessConfirm(Constants.RequestConfig.BUSINESS_CONFIRM, id);
+                return;
+            }
+
+            //售卖 无收款账号
+            if (type == Constants.BundleConfig.TYPE_SELL &&
+                    TextUtils.isEmpty(Variable.getInstance().getAliAccount()) &&
+                    TextUtils.isEmpty(Variable.getInstance().getWxAccount())) {
+                ARouter.getInstance().build(RouterPath.ACTIVITY_ACCOUNT).navigation();
+                return;
+            }
+
+            //发起售卖、购买
+            showLoadingDialog();
+            presenter.businessAccept(Constants.RequestConfig.BUSINESS_ACCEPT, id);
+
         }
 
     }
@@ -136,6 +233,15 @@ public class TransactionDetailsActivity extends BaseTitleActivity {
     private void showBuyDialog() {
 
         if (transactionDialog == null) {
+
+            String content = "";
+
+            if (status == Constants.InterfaceConfig.BUSINESS_STATUS_BUSINESS)
+                content = ResourceUtils.getText(R.string.hint_cancel_succeed);
+            else
+                content = ResourceUtils.getText(type == Constants.BundleConfig.TYPE_SELL ?
+                        R.string.hint_sell_info : R.string.hint_buy_info);
+
             transactionDialog = new MallDialog(this, R.style.Dialog, new OnClickListener() {
                 @Override
                 public void onCancel(View v, Object... objects) {
@@ -146,12 +252,52 @@ public class TransactionDetailsActivity extends BaseTitleActivity {
                 public void onClick(View v, Object... objects) {
 
                 }
-            }, MallDialog.TRANSACTION, ResourceUtils.getText(type == Constants.BundleConfig.TYPE_SELL ?
-                    R.string.hint_sell_info : R.string.hint_buy_info));
+
+                @Override
+                public void dismiss() {
+                    onBackPressed();
+                }
+            }, MallDialog.TRANSACTION, content);
         }
 
         if (!transactionDialog.isShowing())
             transactionDialog.show();
+    }
+
+    @Override
+    public void result(int code, Boolean hasNextPage, String response, Object object) {
+        super.result(code, hasNextPage, response, object);
+
+        switch (code) {
+
+            case Constants.RequestConfig.BUSINESS_INFO:
+            case Constants.RequestConfig.BUSINESS_ORDER_INFO:
+
+                if (object == null) return;
+
+                infoEntity = (BusinessInfoEntity) object;
+
+                showInfo(infoEntity);
+
+                break;
+
+            case Constants.RequestConfig.BUSINESS_CANCEL:
+            case Constants.RequestConfig.BUSINESS_ACCEPT:
+
+                showBuyDialog();
+
+                break;
+
+            case Constants.RequestConfig.BUSINESS_CONFIRM:
+
+                EventBus.getDefault().post(new ObjectsEvent(Constants.EventConfig.BUSINESS_PROOF, id));
+
+                onBackPressed();
+
+                break;
+
+        }
+
     }
 
     @Override
@@ -172,10 +318,21 @@ public class TransactionDetailsActivity extends BaseTitleActivity {
     @Override
     public void closeLoading() {
 
+        dismissLoadingDialog();
+
     }
 
     @Override
     public void showToast(String msg) {
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (!details && type == Constants.BundleConfig.TYPE_SELL) {
+            alipayAccountTv.setText("：" + (Variable.getInstance().getAliAccount() == null ? "" : Variable.getInstance().getAliAccount()));
+            wechatAccountTv.setText("：" + (Variable.getInstance().getWxAccount() == null ? "" : Variable.getInstance().getWxAccount()));
+        }
     }
 }

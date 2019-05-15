@@ -5,6 +5,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -75,9 +76,6 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
     private RecyclerView bannerRecycler;
     private BannerEntranceListAdapter entranceAdapter;
     private List<List<BannerEntranceEntity>> entranceList;
-    private BannerEntranceEntity entranceEntity;
-    private int[] imgIds;
-    private String[] titles;
 
     private FgHomePresenter presenter;
 
@@ -164,7 +162,7 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
         searchLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                intentCommodity(Constants.BundleConfig.FLOW_SEARCH);
+                intentCommodity(Constants.BundleConfig.FLOW_SEARCH, 0);
             }
         });
 
@@ -195,6 +193,20 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
                 .setOnBannerListener(new OnBannerListener() {
                     @Override
                     public void OnBannerClick(int i) {
+
+                        String link = bannerList.get(i).getLink();
+                        if (TextUtils.isEmpty(link)) return;
+
+                        if (link.startsWith("category:")) {
+
+                            String[] array = link.split(":");
+                            if (array.length == 2)
+                                intentCommodity(Constants.BundleConfig.FLOW_ENTRANCE, Integer.parseInt(array[1]));
+
+                        } else
+                            ARouter.getInstance().build(RouterPath.ACTIVITY_WEB)
+                                    .withString(Constants.BundleConfig.URL, link)
+                                    .navigation();
 
                     }
                 })
@@ -227,7 +239,7 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
 
                 entranceList = new ArrayList<>();
                 for (BannerEntranceEntity entity : list) {
-                    if (newList.size() < 3)
+                    if (newList.size() < 2)
                         newList.add(entity);
                     else {
                         entranceList.add(newList);
@@ -303,20 +315,23 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
 
         if (adapter instanceof BannerEntranceAdapter)
-            ARouter.getInstance().build(RouterPath.ACTIVITY_COMMODITY)
-                    .withInt(Constants.BundleConfig.FLOW, Constants.BundleConfig.FLOW_ENTRANCE)
-                    .withInt(Constants.BundleConfig.ID, ((BannerEntranceAdapter) adapter).getItem(position).getId())
-                    .navigation();
+            intentCommodity(Constants.BundleConfig.FLOW_ENTRANCE, ((BannerEntranceAdapter) adapter).getItem(position).getId());
         else
             ARouter.getInstance().build(RouterPath.ACTIVITY_COMMODITY_DETAILS)
                     .withInt(Constants.BundleConfig.ID, this.adapter.getItem(position).getId())
                     .navigation();
     }
 
-    private void intentCommodity(int flow) {
+    private void intentCommodity(int flow, int id) {
 
-        ARouter.getInstance().build(RouterPath.ACTIVITY_COMMODITY)
-                .withInt(Constants.BundleConfig.FLOW, flow)
-                .navigation();
+        if (id > 0)
+            ARouter.getInstance().build(RouterPath.ACTIVITY_COMMODITY)
+                    .withInt(Constants.BundleConfig.FLOW, flow)
+                    .withInt(Constants.BundleConfig.ID, id)
+                    .navigation();
+        else
+            ARouter.getInstance().build(RouterPath.ACTIVITY_COMMODITY)
+                    .withInt(Constants.BundleConfig.FLOW, flow)
+                    .navigation();
     }
 }

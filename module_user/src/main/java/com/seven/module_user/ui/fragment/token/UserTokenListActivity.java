@@ -9,6 +9,8 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.flyco.tablayout.SlidingTabLayout;
 import com.gyf.barlibrary.ImmersionBar;
@@ -19,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * Created by xxxxxxH on 2019/4/10.
@@ -26,26 +29,20 @@ import butterknife.BindView;
  */
 
 public class UserTokenListActivity extends BaseAppCompatActivity {
-    @BindView(R2.id.toolbar)
-    Toolbar mToolBar;
+
     @BindView(R2.id.tabLayout)
     SlidingTabLayout tabLayout;
     @BindView(R2.id.viewPager)
     ViewPager viewPager;
+    @BindView(R2.id.title_tv)
+    TextView titleTv;
+    @BindView(R2.id.left_btn)
+    RelativeLayout backView;
     private final String[] mTitles = {
             "全部", "收入", "支出", "冻结"};
     private List<Fragment> mFragments = new ArrayList<>();
     private final String[] mType = {"all", "income", "expend", "frozen"};
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
     @Override
     public void showLoading() {
 
@@ -74,12 +71,7 @@ public class UserTokenListActivity extends BaseAppCompatActivity {
 
     @Override
     protected void initBundleData(Intent intent) {
-        setSupportActionBar(mToolBar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setTitle("令牌明细");
-        ImmersionBar.with(this).init();
-        ImmersionBar.setTitleBar(this, mToolBar);
+        titleTv.setText("令牌明细");
         for (String type : mType) {
             mFragments.add(TokenListFragment.getInstance(type));
         }
@@ -90,6 +82,13 @@ public class UserTokenListActivity extends BaseAppCompatActivity {
     @Override
     public void onClick(View view) {
 
+    }
+
+    @OnClick(R2.id.left_btn)
+    public void onClose(View view) {
+        if (view==backView) {
+            finish();
+        }
     }
     private class MyPagerAdapter extends FragmentPagerAdapter {
         public MyPagerAdapter(FragmentManager fm) {

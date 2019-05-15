@@ -2,6 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:layout_marginBottom="@dimen/toolbar_shade"
     android:layout_height="match_parent">
 
     <LinearLayout
@@ -29,25 +30,29 @@
                     android:id="@+id/user_photo"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/margin_16"
                     android:src="@drawable/default_photo_icon" />
 
                 <TextView
                     android:id="@+id/user_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/user_photo"
+                    android:layout_alignParentTop="true"
+                    android:layout_toEndOf="@+id/user_photo"
+                    android:paddingBottom="@dimen/margin_6"
                     android:paddingLeft="@dimen/padding_16"
-
                     android:text="user_name"
-                    android:textSize="14sp" />
+                    android:textSize="20sp" />
 
                 <ImageView
                     android:id="@+id/vip_lv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignBottom="@+id/user_photo"
+                    android:layout_below="@+id/user_name"
                     android:layout_toRightOf="@+id/user_photo"
-                    android:paddingLeft="@dimen/padding_16"
+
                     android:src="@drawable/vip_lv_icon" />
 
                 <ImageView
@@ -109,7 +114,6 @@
                     android:layout_weight="1">
 
 
-
                     <TextView
                         android:id="@+id/shop_cart"
                         android:layout_width="wrap_content"
@@ -121,6 +125,7 @@
                         android:text="购物车"
                         android:textColor="#5f6166"
                         android:textSize="12sp" />
+
                     <TextView
                         android:id="@+id/shop_cart_unread"
                         android:layout_width="20dp"
@@ -129,6 +134,7 @@
                         android:background="@drawable/test"
                         android:gravity="center"
                         android:textColor="#fff"
+                        android:visibility="gone"
                         tools:text="2" />
                 </RelativeLayout>
 
@@ -145,6 +151,7 @@
                         android:background="@drawable/test"
                         android:gravity="center"
                         android:textColor="#fff"
+                        android:visibility="gone"
                         tools:text="2" />
 
                     <TextView
@@ -173,6 +180,7 @@
                         android:background="@drawable/test"
                         android:gravity="center"
                         android:textColor="#fff"
+                        android:visibility="gone"
                         tools:text="2" />
 
                     <TextView
@@ -201,6 +209,7 @@
                         android:background="@drawable/test"
                         android:gravity="center"
                         android:textColor="#fff"
+                        android:visibility="gone"
                         tools:text="2" />
 
                     <TextView

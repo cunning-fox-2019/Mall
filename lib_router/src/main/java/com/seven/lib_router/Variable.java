@@ -65,8 +65,43 @@ public class Variable {
     }
 
     private String token;
+    private int userId;
     private boolean payPassword;
     private double tokenCount;
+    private String aliAccount;
+    private String wxAccount;
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public static String getWechatAppId() {
+        return WECHAT_APP_ID;
+    }
+
+    public static String getWechatSecret() {
+        return WECHAT_SECRET;
+    }
+
+    public String getAliAccount() {
+        return aliAccount;
+    }
+
+    public void setAliAccount(String aliAccount) {
+        this.aliAccount = aliAccount;
+    }
+
+    public String getWxAccount() {
+        return wxAccount;
+    }
+
+    public void setWxAccount(String wxAccount) {
+        this.wxAccount = wxAccount;
+    }
 
     public String getToken() {
         return token;

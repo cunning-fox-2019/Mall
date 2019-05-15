@@ -33,6 +33,7 @@ import com.seven.lib_router.router.RouterPath;
 import com.seven.module_home.R;
 import com.seven.module_home.R2;
 import com.seven.module_home.adapter.CommodityDetailsAdapter;
+import com.seven.module_home.ui.sheet.ShareSheet;
 import com.seven.module_home.ui.sheet.SpecificationSheet;
 import com.seven.module_home.widget.decoration.CommodityDetailsDecoration;
 import com.youth.banner.Banner;
@@ -82,6 +83,8 @@ public class CommodityDetailsActivity extends BaseTitleActivity implements BaseQ
 
     private ActHomePresenter presenter;
     private CommodityDetailsEntity detailsEntity;
+
+    private ShareSheet shareSheet;
 
     @Override
     protected int getLayoutId() {
@@ -176,11 +179,13 @@ public class CommodityDetailsActivity extends BaseTitleActivity implements BaseQ
 
     public void btClick(View view) {
 
-        if (view.getId() == R.id.share_rl) {
-
-        }
+        if (view.getId() == R.id.share_rl)
+            shareSheet();
 
         if (view.getId() == R.id.shopping_rl) {
+
+            if (!isLogin()) return;
+
             ARouter.getInstance().build(RouterPath.ACTIVITY_SHOPPING_CART)
                     .withInt(Constants.BundleConfig.EVENT_CODE, Constants.EventConfig.SHOPPING_CART)
                     .navigation();
@@ -188,6 +193,9 @@ public class CommodityDetailsActivity extends BaseTitleActivity implements BaseQ
         }
 
         if (view.getId() == R.id.collection_rl) {
+
+            if (!isLogin()) return;
+
             showLoadingDialog();
             presenter.collect(Constants.RequestConfig.COLLECT, id);
         }
@@ -195,6 +203,14 @@ public class CommodityDetailsActivity extends BaseTitleActivity implements BaseQ
         if (view.getId() == R.id.buy_rl || view.getId() == R.id.shopping_add_rl)
             showSpecifications(detailsEntity);
 
+    }
+
+    private void shareSheet() {
+        if (shareSheet == null)
+            shareSheet = new ShareSheet(this, R.style.Dialog, null,detailsEntity);
+
+        if (!shareSheet.isShowing())
+            shareSheet.showDialog(0, -screenHeight);
     }
 
     @Override
@@ -240,6 +256,9 @@ public class CommodityDetailsActivity extends BaseTitleActivity implements BaseQ
 
             case Constants.RequestConfig.COLLECT:
 
+                detailsEntity.setIs_collect(detailsEntity.getIs_collect() == 1 ? 0 : 1);
+                collectionRl.setSelected(detailsEntity.getIs_collect() == 1);
+
                 break;
 
         }
@@ -253,6 +272,8 @@ public class CommodityDetailsActivity extends BaseTitleActivity implements BaseQ
                 @Override
                 public void onCancel(View v, Object... objects) {
 
+                    if (!isLogin()) return;
+
                     int skuId = (int) objects[0];
                     int number = (int) objects[1];
 
@@ -263,6 +284,8 @@ public class CommodityDetailsActivity extends BaseTitleActivity implements BaseQ
 
                 @Override
                 public void onClick(View v, Object... objects) {
+
+                    if (!isLogin()) return;
 
                     CommodityDetailsEntity.SkuListBean skuBean = (CommodityDetailsEntity.SkuListBean) objects[0];
                     int number = (int) objects[1];
@@ -284,6 +307,11 @@ public class CommodityDetailsActivity extends BaseTitleActivity implements BaseQ
                             .withSerializable(Constants.BundleConfig.ENTITY, (Serializable) cartList)
                             .navigation();
                 }
+
+                @Override
+                public void dismiss() {
+
+                }
             }, entity);
         }
 
@@ -297,12 +325,13 @@ public class CommodityDetailsActivity extends BaseTitleActivity implements BaseQ
 
             case Constants.EventConfig.SHOPPING_CART:
 
-                String ids= (String) ((ObjectsEvent)event).getObjects()[0];
+                String ids = (String) ((ObjectsEvent) event).getObjects()[0];
 
                 List<CartEntity> cartList = new ArrayList<>();
                 CartEntity cartEntity = new CartEntity();
                 cartEntity.setFrom(Constants.InterfaceConfig.CART);
                 cartEntity.setCart_ids(ids);
+                cartList.add(cartEntity);
 
                 ARouter.getInstance().build(RouterPath.ACTIVITY_COMMODITY_ORDER)
                         .withSerializable(Constants.BundleConfig.ENTITY, (Serializable) cartList)

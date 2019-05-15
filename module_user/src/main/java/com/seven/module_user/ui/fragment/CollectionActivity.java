@@ -7,9 +7,11 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.ColorUtils;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -38,7 +40,6 @@ import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-
 
 
 public class CollectionActivity extends BaseTitleActivity {
@@ -123,6 +124,16 @@ public class CollectionActivity extends BaseTitleActivity {
                 ImageView imageView = helper.getView(R.id.goods_img);
                 GlideUtils.loadImage(mContext, item.getThumb(), imageView);
             }
-        }).changeItemDecoration(new DividerSpaceItemDecoration(4));
+        }).changeItemDecoration(new DividerSpaceItemDecoration(4))
+                .setEmptyView(getEmptyView());
+    }
+
+    private View getEmptyView() {
+        TextView textView = new TextView(this);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        textView.setLayoutParams(params);
+        textView.setGravity(Gravity.CENTER);
+        textView.setText("暂无收藏");
+        return textView;
     }
 }

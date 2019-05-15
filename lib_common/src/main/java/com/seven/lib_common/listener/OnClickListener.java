@@ -14,4 +14,5 @@ public interface OnClickListener {
 
     void onClick(View v, Object... objects);
 
+    void dismiss();
 }

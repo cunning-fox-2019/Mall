@@ -2,8 +2,10 @@ package com.seven.module_home.ui.sheet;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SimpleItemAnimator;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -14,15 +16,17 @@ import com.seven.lib_common.utils.FormatUtils;
 import com.seven.lib_common.utils.ResourceUtils;
 import com.seven.lib_common.utils.ToastUtils;
 import com.seven.lib_common.utils.glide.GlideUtils;
-import com.seven.lib_common.widget.flowlayout.FlowLayout;
-import com.seven.lib_common.widget.flowlayout.TagAdapter;
-import com.seven.lib_common.widget.flowlayout.TagFlowLayout;
 import com.seven.lib_model.model.home.CommodityDetailsEntity;
 import com.seven.module_home.R;
+import com.seven.module_home.adapter.SpecificationAdapter;
+import com.seven.module_home.callback.FlowCallback;
+import com.seven.module_home.model.SpecificationEntity;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 
 /**
@@ -31,7 +35,7 @@ import java.util.Set;
  * 2019/4/18
  */
 
-public class SpecificationSheet extends IBaseSheet {
+public class SpecificationSheet extends IBaseSheet implements FlowCallback {
 
     private CommodityDetailsEntity entity;
 
@@ -45,19 +49,14 @@ public class SpecificationSheet extends IBaseSheet {
     private TypeFaceView priceTv;
     private TypeFaceView stockTv;
 
-    private TagFlowLayout colorFlowLayout;
-    private TagAdapter colorAdapter;
-    private List<CommodityDetailsEntity.SkuAttrListBean.AttrValuesBean> colorList;
-
-    private TagFlowLayout sizeFlowLayout;
-    private TagAdapter sizeAdapter;
-    private List<CommodityDetailsEntity.SkuAttrListBean.AttrValuesBean> sizeList;
-
     private TypeFaceView numberTv;
 
-    private String colorSku;
-    private String sizeSku;
     private CommodityDetailsEntity.SkuListBean skuBean;
+
+    private RecyclerView recyclerView;
+    private SpecificationAdapter adapter;
+    private List<SpecificationEntity> keyList;
+    private SpecificationEntity specificationEntity;
 
     public SpecificationSheet(Activity activity, int theme, com.seven.lib_common.listener.OnClickListener listener) {
         super(activity, theme, listener);
@@ -94,10 +93,9 @@ public class SpecificationSheet extends IBaseSheet {
         priceTv = getView(priceTv, R.id.price_tv);
         stockTv = getView(stockTv, R.id.stock_tv);
 
-        colorFlowLayout = getView(colorFlowLayout, R.id.color_flow);
-        sizeFlowLayout = getView(sizeFlowLayout, R.id.size_flow);
-
         numberTv = getView(numberTv, R.id.number_tv);
+
+        recyclerView = getView(recyclerView, R.id.recycler_view);
     }
 
     @Override
@@ -109,98 +107,42 @@ public class SpecificationSheet extends IBaseSheet {
         shoppingRl.setOnClickListener(this);
         buyRl.setOnClickListener(this);
 
+        keyList = new ArrayList<>();
+
         priceTv.setText(FormatUtils.formatCurrencyD(entity.getPrice()));
         stockTv.setText(ResourceUtils.getText(R.string.hint_sheet_stock));
 
         GlideUtils.loadImage(activity, entity.getThumb(), coverIv);
 
-        setColorFlowLayout();
-        setSizeFlowLayout();
-
         numberTv.setText("0");
+
+        setRecyclerView();
+
     }
 
-    private void setColorFlowLayout() {
+    private void setRecyclerView() {
 
-        colorList = entity.getSku_attr_list().get(0).getAttr_values();
-
-        colorAdapter = new TagAdapter<CommodityDetailsEntity.SkuAttrListBean.AttrValuesBean>(colorList) {
-            @Override
-            public View getView(FlowLayout parent, final int position, final CommodityDetailsEntity.SkuAttrListBean.AttrValuesBean item) {
-                View view = LayoutInflater.from(activity).inflate(R.layout.mh_specification_tv, colorFlowLayout, false);
-                final TypeFaceView tv = view.findViewById(R.id.flow_tv);
-                tv.setText(item.getAttr_value_title());
-                tv.setSelected(item.isSelect());
-                tv.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                        if (item.isSelect()) return;
-
-                        for (CommodityDetailsEntity.SkuAttrListBean.AttrValuesBean bean : colorList)
-                            if (bean.isSelect())
-                                bean.setSelect(false);
-
-                        item.setSelect(true);
-                        colorSku = entity.getSku_attr_list().get(0).getAttr_id() + ":" + item.getAttr_value_id();
-                        colorAdapter.notifyDataChanged();
-
-                        if (TextUtils.isEmpty(sizeSku)) return;
-                        changeStock();
-                    }
-                });
-                return view;
-            }
-        };
-        colorFlowLayout.setAdapter(colorAdapter);
-    }
-
-    private void setSizeFlowLayout() {
-
-        sizeList = entity.getSku_attr_list().get(1).getAttr_values();
-
-        sizeAdapter = new TagAdapter<CommodityDetailsEntity.SkuAttrListBean.AttrValuesBean>(sizeList) {
-            @Override
-            public View getView(FlowLayout parent, final int position, final CommodityDetailsEntity.SkuAttrListBean.AttrValuesBean item) {
-                View view = LayoutInflater.from(activity).inflate(R.layout.mh_specification_tv, sizeFlowLayout, false);
-                final TypeFaceView tv = view.findViewById(R.id.flow_tv);
-                tv.setText(item.getAttr_value_title());
-                tv.setSelected(item.isSelect());
-                tv.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                        if (item.isSelect()) return;
-
-                        for (CommodityDetailsEntity.SkuAttrListBean.AttrValuesBean bean : sizeList)
-                            if (bean.isSelect())
-                                bean.setSelect(false);
-
-                        item.setSelect(true);
-                        sizeSku = entity.getSku_attr_list().get(1).getAttr_id() + ":" + item.getAttr_value_id();
-                        sizeAdapter.notifyDataChanged();
-
-                        if (TextUtils.isEmpty(colorSku)) return;
-                        changeStock();
-                    }
-                });
-                return view;
-            }
-        };
-        sizeFlowLayout.setAdapter(sizeAdapter);
+        adapter = new SpecificationAdapter(R.layout.mh_item_specification, entity.getSku_attr_list(), this);
+        recyclerView.setLayoutManager(new LinearLayoutManager(activity));
+        recyclerView.setAdapter(adapter);
+        recyclerView.setNestedScrollingEnabled(false);
+        ((SimpleItemAnimator) recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
     }
 
     private void changeStock() {
 
-       String key = colorSku + "," + sizeSku;
+        StringBuffer buffer = new StringBuffer();
+
+        for (SpecificationEntity entity : keyList)
+            buffer.append(TextUtils.isEmpty(buffer.toString()) ? entity.getKey() : "," + entity.getKey());
 
         for (CommodityDetailsEntity.SkuListBean bean : entity.getSku_list())
-            if (bean.getSku().equals(key)) {
+            if (bean.getSku().equals(buffer.toString())) {
 
                 numberTv.setText(bean.getStock() > 0 ? "1" : "0");
                 stockTv.setText(ResourceUtils.getFormatText(R.string.hint_stock, bean.getStock()));
                 GlideUtils.loadImage(activity, bean.getShow_thumb(), coverIv);
-                skuBean=bean;
+                skuBean = bean;
 
                 break;
             }
@@ -221,6 +163,9 @@ public class SpecificationSheet extends IBaseSheet {
 
         if (v.getId() == R.id.add_iv) {
             int number = Integer.parseInt(numberTv.getText().toString());
+
+            if (skuBean == null) return;
+
             if (number == skuBean.getStock()) {
                 ToastUtils.showToast(activity, ResourceUtils.getText(R.string.hint_stock_null));
                 return;
@@ -230,7 +175,7 @@ public class SpecificationSheet extends IBaseSheet {
 
         if (v.getId() == R.id.shopping_add_rl) {
 
-            if (skuBean==null) {
+            if (skuBean == null) {
                 ToastUtils.showToast(activity, ResourceUtils.getText(R.string.hint_sheet_stock));
                 return;
             }
@@ -245,7 +190,7 @@ public class SpecificationSheet extends IBaseSheet {
 
         if (v.getId() == R.id.buy_rl) {
 
-            if (skuBean==null) {
+            if (skuBean == null) {
                 ToastUtils.showToast(activity, ResourceUtils.getText(R.string.hint_sheet_stock));
                 return;
             }
@@ -258,4 +203,75 @@ public class SpecificationSheet extends IBaseSheet {
             listener.onClick(v, skuBean, Integer.parseInt(numberTv.getText().toString()));
         }
     }
+
+    @Override
+    public void click(int parentPosition, int position) {
+
+        boolean update = false;
+
+        CommodityDetailsEntity.SkuAttrListBean item = adapter.getItem(parentPosition);
+        CommodityDetailsEntity.SkuAttrListBean.AttrValuesBean value = item.getAttr_values().get(position);
+
+        if (value.isSelect()) return;
+
+        for (CommodityDetailsEntity.SkuAttrListBean.AttrValuesBean bean : item.getAttr_values())
+            if (bean.isSelect())
+                bean.setSelect(false);
+
+        value.setSelect(true);
+        adapter.notifyItemChanged(parentPosition);
+
+        String skuKey = item.getAttr_id() + ":" + value.getAttr_value_id();
+
+        if (keyList.size() == 0) {
+
+            specificationEntity = new SpecificationEntity();
+            specificationEntity.setPosition(parentPosition);
+            specificationEntity.setId(item.getAttr_id());
+            specificationEntity.setKey(skuKey);
+            keyList.add(specificationEntity);
+
+        } else {
+
+            for (SpecificationEntity entity : keyList) {
+                if (entity.getId() == item.getAttr_id()) {
+                    entity.setKey(skuKey);
+                    update = true;
+                    break;
+                }
+            }
+
+            if (!update) {
+                specificationEntity = new SpecificationEntity();
+                specificationEntity.setPosition(parentPosition);
+                specificationEntity.setId(item.getAttr_id());
+                specificationEntity.setKey(skuKey);
+                keyList.add(specificationEntity);
+            }
+        }
+
+        if (keyList.size() != adapter.getData().size()) return;
+
+        sortData((ArrayList<SpecificationEntity>) keyList);
+
+        changeStock();
+
+    }
+
+    private void sortData(ArrayList<SpecificationEntity> mList) {
+        try {
+            Collections.sort(mList, new Comparator<SpecificationEntity>() {
+                @Override
+                public int compare(SpecificationEntity lhs, SpecificationEntity rhs) {
+                    if (lhs.getPosition() > rhs.getPosition()) {
+                        return 1;
+                    }
+                    return -1;
+                }
+            });
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

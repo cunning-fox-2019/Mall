@@ -126,6 +126,24 @@ public class ModelFragment extends BaseFragment implements BaseQuickAdapter.OnIt
         request(page, type, sort);
     }
 
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden) {
+            isRefresh = true;
+            page = 1;
+            request(page, type, sort);
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        isRefresh = true;
+        page = 1;
+        request(page, type, sort);
+    }
+
     private void request(int page, int type, int sort) {
         presenter.businessList(Constants.RequestConfig.BUSINESS_LIST, type, sort, page, pageSize);
     }
@@ -139,13 +157,13 @@ public class ModelFragment extends BaseFragment implements BaseQuickAdapter.OnIt
             buyIv.setVisibility(buyBtn.isSelected() ? View.VISIBLE : View.GONE);
             sellIv.setVisibility(sellBtn.isSelected() ? View.VISIBLE : View.GONE);
 
-            if(presenter==null)return;
+            if (presenter == null) return;
             type = buyBtn.isSelected() ? Constants.InterfaceConfig.BUSINESS_TYPE_BUY :
                     Constants.InterfaceConfig.BUSINESS_TYPE_SALE;
             isRefresh = true;
-            page=1;
+            page = 1;
             showLoadingDialog();
-            request(page,type,sort);
+            request(page, type, sort);
         }
     }
 
@@ -154,13 +172,13 @@ public class ModelFragment extends BaseFragment implements BaseQuickAdapter.OnIt
             sortTime.setSelected(sortTime == view);
             sortPrice.setSelected(sortPrice == view);
 
-            if(presenter==null)return;
+            if (presenter == null) return;
             sort = sortTime.isSelected() ? Constants.InterfaceConfig.BUSINESS_SORT_TIME :
                     Constants.InterfaceConfig.BUSINESS_SORT_PRICE;
             isRefresh = true;
-            page=1;
+            page = 1;
             showLoadingDialog();
-            request(page,type,sort);
+            request(page, type, sort);
         }
     }
 
@@ -236,15 +254,25 @@ public class ModelFragment extends BaseFragment implements BaseQuickAdapter.OnIt
         if (v.getId() == R.id.sell_btn)
             selectTab(sellBtn);
 
-        if (v.getId() == R.id.demand_btn)
+        if (v.getId() == R.id.demand_btn) {
+
+            if (!isLogin()) return;
+
             RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_RELEASE_DEMAND);
+        }
 
-        if (v.getId() == R.id.message_btn)
+        if (v.getId() == R.id.message_btn) {
+
+            if (!isLogin()) return;
+
             RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_MESSAGE);
+        }
+        if (v.getId() == R.id.voucher_btn) {
 
-        if (v.getId() == R.id.voucher_btn)
+            if (!isLogin()) return;
+
             RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_VOUCHER);
-
+        }
         if (v.getId() == R.id.sort_time_rl)
             selectSort(sortTime);
 
@@ -329,6 +357,7 @@ public class ModelFragment extends BaseFragment implements BaseQuickAdapter.OnIt
         ARouter.getInstance().build(RouterPath.ACTIVITY_TRANSACTION_DETAILS)
                 .withInt(Constants.BundleConfig.TYPE, buyBtn.isSelected() ?
                         Constants.BundleConfig.TYPE_BUY : Constants.BundleConfig.TYPE_SELL)
+                .withInt(Constants.BundleConfig.ID, this.adapter.getItem(position).getId())
                 .navigation();
 
     }

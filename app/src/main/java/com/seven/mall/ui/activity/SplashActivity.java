@@ -84,6 +84,11 @@ public class SplashActivity extends BaseAppCompatActivity {
                                 ToastUtils.showToast(mContext, getString(R.string.hint_auto_jump_error));
                             }
                         }
+
+                        @Override
+                        public void dismiss() {
+
+                        }
                     }, ResourceUtils.getText(R.string.permission));
         }
 

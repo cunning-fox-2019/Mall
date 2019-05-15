@@ -7,7 +7,8 @@
     <RelativeLayout
         android:id="@+id/item_layout"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/order_item"
+        android:layout_height="wrap_content"
+        android:minHeight="@dimen/order_item"
         android:paddingLeft="@dimen/padding_16"
         android:paddingRight="@dimen/padding_16">
 
@@ -112,49 +113,56 @@
 
             </RelativeLayout>
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:background="@color/line_between" />
-
-
-            <RelativeLayout
+            <LinearLayout
+                android:id="@+id/business_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_12">
+                android:orientation="vertical">
 
-                <com.seven.lib_common.stextview.TypeFaceView
-                    android:layout_width="wrap_content"
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/line_between" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:text="@string/pay_method"
-                    android:textColor="@color/grey_light"
-                    android:textSize="@dimen/sp_12" />
+                    android:layout_marginTop="@dimen/margin_12">
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:gravity="center_vertical">
-
-                    <ImageView
-                        android:id="@+id/wechat_pay_iv"
+                    <com.seven.lib_common.stextview.TypeFaceView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/margin_12"
-                        android:src="@drawable/wechat_pay" />
+                        android:layout_centerVertical="true"
+                        android:text="@string/pay_method"
+                        android:textColor="@color/grey_light"
+                        android:textSize="@dimen/sp_12" />
 
-                    <ImageView
-                        android:id="@+id/alipay_iv"
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/margin_12"
-                        android:src="@drawable/alipay" />
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:gravity="center_vertical">
 
-                </LinearLayout>
+                        <ImageView
+                            android:id="@+id/wechat_pay_iv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/margin_12"
+                            android:src="@drawable/wechat_pay" />
 
-            </RelativeLayout>
+                        <ImageView
+                            android:id="@+id/alipay_iv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/margin_12"
+                            android:src="@drawable/alipay" />
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -163,17 +171,17 @@
             android:layout_width="@dimen/avatar"
             android:layout_height="@dimen/avatar"
             android:layout_marginLeft="@dimen/margin_16"
-            android:scaleType="centerCrop"/>
+            android:scaleType="centerCrop" />
 
         <RelativeLayout
             android:id="@+id/status_rl"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/cir_currency_bg"
             android:layout_alignParentRight="true"
+            android:layout_marginTop="@dimen/margin_12"
+            android:background="@drawable/cir_currency_bg"
             android:paddingLeft="@dimen/padding_6"
-            android:paddingRight="@dimen/padding_6"
-            android:layout_marginTop="@dimen/margin_12">
+            android:paddingRight="@dimen/padding_6">
 
             <com.seven.lib_common.stextview.TypeFaceView
                 android:id="@+id/status_tv"

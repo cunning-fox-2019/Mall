@@ -28,6 +28,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
+import cn.jpush.android.api.JPushInterface;
 
 /**
  * @auhtor seven
@@ -130,9 +131,6 @@ public class HomeActivity extends BaseAppCompatActivity {
 
             case R.id.tab_user_ll:
 
-                if (!isLogin())
-                    return;
-
                 if (userFg == null)
                     userFg = (Fragment) ARouter.getInstance().build(RouterPath.FRAGMENT_USER).navigation();
 
@@ -169,9 +167,19 @@ public class HomeActivity extends BaseAppCompatActivity {
 
                 if (registerEntity == null) return;
 
+//                MallApplication.getInstance().setAlias("seven");
+
                 MallApplication.getInstance().setToken(registerEntity.getToken());
                 Variable.getInstance().setToken(registerEntity.getToken());
                 SharedData.getInstance().setToken(registerEntity.getToken());
+
+                JPushInterface.getRegistrationID(this);
+
+                break;
+
+            case Constants.EventConfig.LOGOUT:
+
+//                MallApplication.getInstance().clearAlias();
 
                 break;
 

@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.seven.lib_common.base.activity.BaseTitleActivity;
 import com.seven.lib_common.listener.IKeyBoardVisibleListener;
 import com.seven.lib_common.stextview.TypeFaceEdit;
@@ -21,6 +22,7 @@ import com.seven.lib_model.presenter.model.ActModelPresenter;
 import com.seven.lib_router.Constants;
 import com.seven.lib_router.Variable;
 import com.seven.lib_router.router.RouterPath;
+import com.seven.lib_router.router.RouterUtils;
 import com.seven.module_model.R;
 import com.seven.module_model.R2;
 
@@ -101,6 +103,10 @@ public class ReleaseDemandActivity extends BaseTitleActivity implements IKeyBoar
         listener();
 
         presenter = new ActModelPresenter(this, this);
+
+        alipayEt.setText(Variable.getInstance().getAliAccount());
+        wechatEt.setText(Variable.getInstance().getWxAccount());
+
     }
 
     private void listener() {
@@ -138,7 +144,7 @@ public class ReleaseDemandActivity extends BaseTitleActivity implements IKeyBoar
             priceEt.setVisibility(buyBtn.isSelected() ? View.VISIBLE : View.GONE);
             buyPriceEt.setVisibility(buyBtn.isSelected() ? View.GONE : View.VISIBLE);
 
-//            sellLayout.setVisibility(buyBtn.isSelected() ? View.VISIBLE : View.GONE);
+            sellLayout.setVisibility(buyBtn.isSelected() ? View.VISIBLE : View.GONE);
             demandTv.setText(buyBtn.isSelected() ? R.string.button_release_sale : R.string.button_release_buy);
 
             type = buyBtn.isSelected() ? Constants.InterfaceConfig.BUSINESS_BUY :
@@ -176,21 +182,31 @@ public class ReleaseDemandActivity extends BaseTitleActivity implements IKeyBoar
                 return;
             }
 
-            if (TextUtils.isEmpty(alipayEt.getText().toString()) && TextUtils.isEmpty(wechatEt.getText().toString())) {
-                ToastUtils.showToast(mContext, ResourceUtils.getText(R.string.label_receiving_account) +
-                        ResourceUtils.getText(R.string.hint_receiving_account));
-                return;
-            }
+            if (buyBtn.isSelected()) {
 
-            if(buyBtn.isSelected()) {
+                if (TextUtils.isEmpty(alipayEt.getText().toString()) && TextUtils.isEmpty(wechatEt.getText().toString())) {
+                    ToastUtils.showToast(mContext, ResourceUtils.getText(R.string.label_receiving_account) +
+                            ResourceUtils.getText(R.string.hint_receiving_account));
+                    return;
+                }
 
                 token = buyBtn.isSelected() ? tokenEt.getText().toString() :
                         buyTokenEt.getText().toString();
+
+                if(Double.parseDouble(token)==0){
+                    ToastUtils.showToast(mContext, ResourceUtils.getText(R.string.hint_token_number_min));
+                    return;
+                }
 
                 if (Double.parseDouble(token) > Variable.getInstance().getTokenCount()) {
                     ToastUtils.showToast(mContext, ResourceUtils.getText(R.string.hint_token_number_insufficient));
                     return;
                 }
+            }
+
+            if(!Variable.getInstance().isPayPassword()){
+                RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_PAY_PASSWORD);
+                return;
             }
 
             keyBoard = true;
@@ -219,7 +235,6 @@ public class ReleaseDemandActivity extends BaseTitleActivity implements IKeyBoar
                 wx = TextUtils.isEmpty(wechatEt.getText().toString()) ? "" :
                         wechatEt.getText().toString();
 
-                showLoadingDialog();
                 presenter.business(Constants.RequestConfig.BUSINESS, type,
                         Double.parseDouble(token), Double.parseDouble(price), ali, wx);
 
@@ -228,8 +243,12 @@ public class ReleaseDemandActivity extends BaseTitleActivity implements IKeyBoar
             case Constants.RequestConfig.BUSINESS:
 
                 ToastUtils.showToast(mContext, ResourceUtils.getText(R.string.hint_release_succeed));
-                onBackPressed();
 
+                if (!buyBtn.isSelected() && TextUtils.isEmpty(Variable.getInstance().getAliAccount()) &&
+                        TextUtils.isEmpty(Variable.getInstance().getWxAccount()))
+                    ARouter.getInstance().build(RouterPath.ACTIVITY_ACCOUNT).navigation();
+
+                onBackPressed();
                 break;
         }
 

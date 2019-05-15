@@ -128,4 +128,9 @@ public class MallDialog extends BaseDialog {
         dismiss();
     }
 
+    @Override
+    public void dismiss() {
+        super.dismiss();
+        listener.dismiss();
+    }
 }

@@ -4,10 +4,13 @@ import com.seven.lib_http.retrofit.HttpResponse;
 import com.seven.lib_model.HttpSDK;
 import com.seven.lib_model.model.user.LoginEntity;
 
+import java.io.File;
+
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
 /**
@@ -62,6 +65,32 @@ public class RequestHelper {
 
     public Observable<HttpResponse> payPassword(String json) {
         return appService.payPassword(requestBody(json));
+    }
+
+    public Observable<HttpResponse> upload(String path, String scene) {
+
+        File file = new File(path);
+
+//        RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
+//                .addFormDataPart("scene", scene)
+//                .addFormDataPart("image", file.getName(), RequestBody.create(MediaType.parse("image/jpeg"), file))
+//                .build();
+
+        // 创建 RequestBody，用于封装构建RequestBody
+        RequestBody requestFile =
+                RequestBody.create(MediaType.parse("image/jpeg"), file);
+
+        // MultipartBody.Part  和后端约定好Key，这里的partName是用image
+        MultipartBody.Part body =
+                MultipartBody.Part.createFormData("file", file.getName(), requestFile);
+
+        // 添加描述
+        String descriptionString = scene;
+        RequestBody description =
+                RequestBody.create(
+                        MediaType.parse("imageData"), descriptionString);
+
+        return appService.upload(body, description);
     }
 
     /* module user */
@@ -143,8 +172,40 @@ public class RequestHelper {
         return appService.businessOrderList(requestBody(json));
     }
 
+    public Observable<HttpResponse> businessInfo(String json) {
+        return appService.businessInfo(requestBody(json));
+    }
+
+    public Observable<HttpResponse> businessOrderInfo(String json) {
+        return appService.businessOrderInfo(requestBody(json));
+    }
+
+    public Observable<HttpResponse> businessAccept(String json) {
+        return appService.businessAccept(requestBody(json));
+    }
+
+    public Observable<HttpResponse> businessProof(String json) {
+        return appService.businessProof(requestBody(json));
+    }
+
+    public Observable<HttpResponse> businessConfirm(String json) {
+        return appService.businessConfirm(requestBody(json));
+    }
+
+    public Observable<HttpResponse> businessCancel(String json) {
+        return appService.businessCancel(requestBody(json));
+    }
+
     //extension
     public Observable<HttpResponse> rewardrule(String json) {
         return appService.rewardrule(requestBody(json));
+    }
+
+    public Observable<HttpResponse> inviteList(String json) {
+        return appService.inviteList(requestBody(json));
+    }
+
+    public Observable<HttpResponse> inComeDetails(String json) {
+        return appService.inComeDetails(requestBody(json));
     }
 }

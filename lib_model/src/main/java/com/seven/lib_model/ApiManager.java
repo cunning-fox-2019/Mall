@@ -4,16 +4,29 @@ import android.content.Context;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.seven.lib_common.base.activity.BaseActivity;
+import com.seven.lib_model.model.extension.BdGoodsEntity;
+import com.seven.lib_model.model.extension.BuyRoleEntity;
+import com.seven.lib_model.model.extension.InComeDetailsEntity;
+import com.seven.lib_model.model.extension.MyInterViewEntity;
 import com.seven.lib_model.model.extension.ReceiveGoodsEntity;
+import com.seven.lib_model.model.extension.RewardListEntity;
 import com.seven.lib_model.model.extension.RewardRuleEntity;
-import com.seven.lib_model.model.extension.RewardRuleParam;
 import com.seven.lib_model.model.user.LoginEntity;
+import com.seven.lib_model.model.user.OrderEntity;
+import com.seven.lib_model.model.user.OrderListRequestEntity;
 import com.seven.lib_model.model.user.TokenEntity;
 import com.seven.lib_model.model.user.UserEntity;
 import com.seven.lib_model.model.user.mine.AddAddressEntity;
 import com.seven.lib_model.model.user.mine.AddressEntity;
+import com.seven.lib_model.model.user.mine.CommonListPageEntity;
 import com.seven.lib_model.model.user.mine.DTEntity;
+import com.seven.lib_model.model.user.mine.OrderDetailEntity;
+import com.seven.lib_model.model.user.mine.OrderDetailRequestEntity;
+import com.seven.lib_model.model.user.mine.PayAccountEntity;
+import com.seven.lib_model.model.user.mine.ResetPasswordEntity;
 import com.seven.lib_model.model.user.mine.ShopEntity;
+import com.seven.lib_model.model.user.mine.UpLoadImageEntity;
 import com.seven.lib_opensource.application.SevenApplication;
 
 import java.io.IOException;
@@ -21,7 +34,11 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
+import io.reactivex.Scheduler;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import okhttp3.Interceptor;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -30,8 +47,9 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Body;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
-import retrofit2.http.Path;
+import retrofit2.http.Part;
 import retrofit2.http.Query;
 
 
@@ -102,6 +120,10 @@ public class ApiManager {
         }
     }
 
+    public static Observable subScribe(Observable observable) {
+        return observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
+    }
+
     /**
      * 服务接口集合
      */
@@ -136,6 +158,53 @@ public class ApiManager {
 
         @POST("user/info")
         Observable<BaseResult<UserEntity>> getUserInfo();
+
+        @POST("order/list")
+        Observable<BaseResult<CommonListPageEntity<OrderEntity>>> getOrderList(@Body OrderListRequestEntity entity);
+
+        @POST("promotion/role/price")
+        Observable<BaseResult<BuyRoleEntity>> getRolePrice();
+
+        @POST("promotion/form/goods/list")
+        Observable<BaseResult<BdGoodsEntity>> getBdGoods();
+
+        @POST("promote/invite/list")
+        Observable<BaseResult<MyInterViewEntity>> getMyInterView(@Query("user_id") String user_id);
+
+
+        @POST("order/info")
+        Observable<BaseResult<OrderDetailEntity>> getOrderDetailInfo(@Body OrderDetailRequestEntity entity);
+
+        @POST("user/info/edit")
+        Observable<BaseResult> editUserInfo(@Body UserEntity entity);
+
+        @POST("user/contact/set_default")
+        Observable<BaseResult> setDefaultAddress(@Body DTEntity entity);
+
+        @POST("user/contact/delete")
+        Observable<BaseResult> deleteAddress(@Body DTEntity entity);
+
+        @POST("user/contact/update")
+        Observable<BaseResult> editAddress(@Body AddressEntity entity);
+
+        @POST("user/pay/account")
+        Observable<BaseResult> setPayAccount(@Body PayAccountEntity entity);
+
+        @POST("password/reset")
+        Observable<BaseResult> modifyPassword(@Body ResetPasswordEntity entity);
+
+        @POST("user/pay_password/reset")
+        Observable<BaseResult> modifyPayPassword(@Body ResetPasswordEntity entity);
+
+        @POST("image/upload")
+        Observable<BaseResult<DTEntity>> upLoad(@Body MultipartBody part);
+
+        @POST("promotion/reward/list")
+        Observable<BaseResult<RewardListEntity>> rewardList();
+
+        @POST("promotion/token/list")
+        Observable<BaseResult<InComeDetailsEntity>> inComeDetails(@Query("page") int page,@Query("page_size") int page_size);
+
     }
 
     public static Observable<BaseResult<TokenEntity>> login(LoginEntity entity) {
@@ -154,12 +223,9 @@ public class ApiManager {
         return apiManagerService.getCollectList();
     }
 
-    public static Observable<BaseResult> getOrderList(int page, int status) {
-        return apiManagerService.getOrderList(page, status);
-    }
 
     public static Observable<BaseResult<List<AddressEntity>>> getAddressList() {
-        return apiManagerService.getAddressList();
+        return subScribe(apiManagerService.getAddressList());
     }
 
     public static Observable<BaseResult> addAddress(AddAddressEntity entity) {
@@ -173,4 +239,60 @@ public class ApiManager {
     public static Observable<BaseResult<UserEntity>> getUserInfo() {
         return apiManagerService.getUserInfo();
     }
+
+    public static Observable<BaseResult<CommonListPageEntity<OrderEntity>>> getOrderList(OrderListRequestEntity entity) {
+        return apiManagerService.getOrderList(entity);
+    }
+
+    public static Observable<BaseResult<BuyRoleEntity>> getRolePrice() {
+        return apiManagerService.getRolePrice();
+    }
+
+    public static Observable<BaseResult<BdGoodsEntity>> getBdGoods() {
+        return apiManagerService.getBdGoods();
+    }
+
+    public static Observable<BaseResult<MyInterViewEntity>> getMyInterView(String id) {
+        return apiManagerService.getMyInterView(id);
+    }
+
+    public static Observable<BaseResult<OrderDetailEntity>> getOrderDetailInfo(OrderDetailRequestEntity entity) {
+        return apiManagerService.getOrderDetailInfo(entity);
+    }
+
+    public static Observable<BaseResult> editUserInfo(UserEntity entity) {
+        return subScribe(apiManagerService.editUserInfo(entity));
+    }
+
+    public static Observable<BaseResult> setDefaultAddress(DTEntity entity) {
+        return apiManagerService.setDefaultAddress(entity);
+    }
+
+    public static Observable<BaseResult> deleteAddress(DTEntity entity) {
+        return apiManagerService.deleteAddress(entity);
+    }
+
+    public static Observable<BaseResult> editAddress(AddressEntity entity) {
+        return apiManagerService.editAddress(entity);
+    }
+
+    public static Observable<BaseResult> setPayAccount(PayAccountEntity entity) {
+        return subScribe(apiManagerService.setPayAccount(entity));
+    }
+
+    public static Observable<BaseResult> modifyPassword(ResetPasswordEntity entity) {
+        return subScribe(apiManagerService.modifyPassword(entity));
+    }
+    public static Observable<BaseResult> modifyPayPassword(ResetPasswordEntity entity) {
+        return subScribe(apiManagerService.modifyPayPassword(entity));
+    }
+
+    public static Observable<BaseResult<DTEntity>> upLoad(MultipartBody part){
+        return subScribe(apiManagerService.upLoad(part));
+    }
+
+    public static Observable<BaseResult<RewardListEntity>> rewardList(){
+        return subScribe(apiManagerService.rewardList());}
+
+        public static Observable<BaseResult<InComeDetailsEntity>> inComeDetails(int page,int page_size){return subScribe(apiManagerService.inComeDetails(page,page_size));}
 }

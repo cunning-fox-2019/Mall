@@ -62,6 +62,7 @@ public abstract class BaseAppCompatActivity extends RxAppCompatActivity implemen
 
     protected StatusBar statusBar;
     protected boolean independent;
+    protected boolean knife;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +81,7 @@ public abstract class BaseAppCompatActivity extends RxAppCompatActivity implemen
         notificationHeight = ScreenUtils.getStatusBarHeight(mContext);
         navigationBarHeight = ScreenUtils.getNavigationBarHeight(mContext);
 
+        if (!knife)
         unBinder = ButterKnife.bind(this);
 
         initLoadingDialog();

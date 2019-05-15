@@ -149,6 +149,11 @@ public class RegisterActivity extends BaseTitleActivity {
                 return;
             }
 
+            if (TextUtils.isEmpty(inviteEt.getText().toString())) {
+                ToastUtils.showToast(mContext, ResourceUtils.getText(R.string.hint_invite_code));
+                return;
+            }
+
             if (TextUtils.isEmpty(passwordEt.getText().toString())) {
                 ToastUtils.showToast(mContext, ResourceUtils.getText(R.string.hint_password));
                 return;

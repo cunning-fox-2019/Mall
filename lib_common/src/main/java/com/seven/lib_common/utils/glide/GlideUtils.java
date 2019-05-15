@@ -10,6 +10,9 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.seven.lib_common.R;
+import com.seven.lib_common.utils.ScreenUtils;
+
+import java.util.concurrent.ExecutionException;
 
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
 
@@ -52,8 +55,8 @@ public class GlideUtils {
                 .load(url)
                 .transition(withCrossFade())
                 .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-                .placeholder(isWhite ? R.drawable.glide_default : R.drawable.common_shade)
-                .error(isWhite ? R.drawable.glide_default : R.drawable.common_shade)
+                .placeholder(isWhite ? R.drawable.image_default : R.drawable.common_shade)
+                .error(isWhite ? R.drawable.image_default : R.drawable.common_shade)
                 .override(width, height)
                 .transform(new CenterCrop(), new RoundedCorners(round))
                 .into(imageView);
@@ -98,5 +101,15 @@ public class GlideUtils {
                 .error(isWhite ? R.drawable.image_default_max : R.drawable.common_shade)
                 .into(imageView);
 
+    }
+
+    public static void loadImageWhite(Context context, String url, ImageView imageView) {
+        Glide.with(context)
+                .load(url)
+                .transition(withCrossFade())
+                .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                .placeholder(R.drawable.image_default_white)
+                .error(R.drawable.image_default_white)
+                .into(imageView);
     }
 }

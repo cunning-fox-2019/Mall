@@ -15,6 +15,10 @@ public class BusinessBuilder {
 
     public BusinessBuilder(Builder builder) {
         this.type = builder.type;
+        this.token_number=builder.token_number;
+        this.price=builder.price;
+        this.wx_account=builder.wx_account;
+        this.ali_account=builder.ali_account;
     }
 
     public static class Builder {

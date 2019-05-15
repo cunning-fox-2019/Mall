@@ -21,6 +21,6 @@
         android:layout_gravity="center_vertical"
         android:textColor="#1e1d1d"
         android:layout_marginLeft="10dp"
-        android:textSize="12sp"
+        android:textSize="15sp"
         android:text="我的上级"/>
 </LinearLayout>

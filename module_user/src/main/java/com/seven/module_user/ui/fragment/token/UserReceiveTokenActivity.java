@@ -8,6 +8,7 @@ import android.view.View;
 
 import com.gyf.barlibrary.ImmersionBar;
 import com.seven.lib_common.base.activity.BaseAppCompatActivity;
+import com.seven.lib_common.base.activity.BaseTitleActivity;
 import com.seven.module_user.R;
 import com.seven.module_user.R2;
 
@@ -18,18 +19,8 @@ import butterknife.BindView;
  * 领取令牌
  */
 
-public class UserReceiveTokenActivity extends BaseAppCompatActivity {
-    @BindView(R2.id.toolbar)
-    Toolbar mToolBar;
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
+public class UserReceiveTokenActivity extends BaseTitleActivity {
+
     @Override
     public void showLoading() {
 
@@ -46,28 +37,27 @@ public class UserReceiveTokenActivity extends BaseAppCompatActivity {
     }
 
     @Override
-    protected int getContentViewId() {
-        statusBar = StatusBar.LIGHT;
+    protected int getLayoutId() {
         return R.layout.mu_activity_receive_token_layout;
     }
 
     @Override
-    protected void init(Bundle savedInstanceState) {
+    protected void initView(Bundle savedInstanceState) {
+        setTitleText(R.string.user_receive_token);
+    }
+
+    @Override
+    protected void rightTextBtnClick(View v) {
+
+    }
+
+    @Override
+    protected void rightBtnClick(View v) {
 
     }
 
     @Override
     protected void initBundleData(Intent intent) {
-        setSupportActionBar(mToolBar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setTitle("领取令牌");
-        ImmersionBar.with(this).init();
-        ImmersionBar.setTitleBar(this, mToolBar);
-    }
-
-    @Override
-    public void onClick(View view) {
 
     }
 }

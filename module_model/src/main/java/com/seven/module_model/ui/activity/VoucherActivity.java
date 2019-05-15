@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.seven.lib_common.base.activity.BaseTitleActivity;
 import com.seven.lib_common.utils.NetWorkUtils;
@@ -18,12 +19,18 @@ import com.seven.lib_common.utils.ToastUtils;
 import com.seven.lib_model.model.model.BusinessEntity;
 import com.seven.lib_model.presenter.model.ActModelPresenter;
 import com.seven.lib_opensource.application.SSDK;
+import com.seven.lib_opensource.event.Event;
+import com.seven.lib_opensource.event.ObjectsEvent;
 import com.seven.lib_router.Constants;
 import com.seven.lib_router.router.RouterPath;
 import com.seven.module_model.R;
 import com.seven.module_model.R2;
 import com.seven.module_model.adapter.OrderAdapter;
 import com.seven.module_model.widget.decoration.VoucherDecoration;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
@@ -91,6 +98,8 @@ public class VoucherActivity extends BaseTitleActivity implements BaseQuickAdapt
     @Override
     protected void initView(Bundle savedInstanceState) {
 
+        EventBus.getDefault().register(this);
+
         setTitleText(R.string.label_voucher);
 
     }
@@ -104,8 +113,9 @@ public class VoucherActivity extends BaseTitleActivity implements BaseQuickAdapt
         setRecyclerView();
 
         presenter = new ActModelPresenter(this, this);
-        type = Constants.InterfaceConfig.BUSINESS_TYPE_SALE;
+        type = Constants.InterfaceConfig.BUSINESS_TYPE_BUY;
         status = Constants.InterfaceConfig.BUSINESS_STATUS_ALL;
+        showLoadingDialog();
         request(page, type, status);
     }
 
@@ -122,13 +132,13 @@ public class VoucherActivity extends BaseTitleActivity implements BaseQuickAdapt
             buyIv.setVisibility(buyBtn.isSelected() ? View.VISIBLE : View.GONE);
             sellIv.setVisibility(sellBtn.isSelected() ? View.VISIBLE : View.GONE);
 
-            if(presenter==null)return;
+            if (presenter == null) return;
             type = buyBtn.isSelected() ? Constants.InterfaceConfig.BUSINESS_TYPE_SALE :
                     Constants.InterfaceConfig.BUSINESS_TYPE_BUY;
             isRefresh = true;
-            page=1;
+            page = 1;
             showLoadingDialog();
-            request(page,type,status);
+            request(page, type, status);
         }
     }
 
@@ -136,7 +146,7 @@ public class VoucherActivity extends BaseTitleActivity implements BaseQuickAdapt
 
         if (!view.isSelected()) {
             allBtn.setSelected(allBtn == view);
-            businessBtn.setSelected(businessBtn==view);
+            businessBtn.setSelected(businessBtn == view);
             uploadBtn.setSelected(uploadBtn == view);
             sureBtn.setSelected(sureBtn == view);
             endBtn.setSelected(endBtn == view);
@@ -147,7 +157,7 @@ public class VoucherActivity extends BaseTitleActivity implements BaseQuickAdapt
             sureIv.setVisibility(sureBtn.isSelected() ? View.VISIBLE : View.GONE);
             endIv.setVisibility(endBtn.isSelected() ? View.VISIBLE : View.GONE);
 
-            if(presenter==null)return;
+            if (presenter == null) return;
 
             if (allBtn.isSelected())
                 status = Constants.InterfaceConfig.BUSINESS_STATUS_ALL;
@@ -165,9 +175,9 @@ public class VoucherActivity extends BaseTitleActivity implements BaseQuickAdapt
                 status = Constants.InterfaceConfig.BUSINESS_STATUS_END;
 
             isRefresh = true;
-            page=1;
+            page = 1;
             showLoadingDialog();
-            request(page,type,status);
+            request(page, type, status);
         }
     }
 
@@ -200,7 +210,7 @@ public class VoucherActivity extends BaseTitleActivity implements BaseQuickAdapt
                 }
                 isRefresh = true;
                 page = 1;
-                request(page,type,status);
+                request(page, type, status);
             }
         });
     }
@@ -212,7 +222,7 @@ public class VoucherActivity extends BaseTitleActivity implements BaseQuickAdapt
             return;
         }
         page++;
-        request(page,type,status);
+        request(page, type, status);
     }
 
     public void btClick(View view) {
@@ -243,14 +253,14 @@ public class VoucherActivity extends BaseTitleActivity implements BaseQuickAdapt
     public void result(int code, Boolean hasNextPage, String response, Object object) {
         super.result(code, hasNextPage, response, object);
 
-        switch (code){
+        switch (code) {
             case Constants.RequestConfig.BUSINESS_ORDER_LIST:
 
                 if (object == null || ((List<BusinessEntity>) object).size() == 0) {
                     adapter.loadMoreEnd();
                     isMoreEnd = true;
 
-                    if(page==1)
+                    if (page == 1)
                         adapter.setNewData(null);
 
                 } else {
@@ -296,6 +306,8 @@ public class VoucherActivity extends BaseTitleActivity implements BaseQuickAdapt
     public void closeLoading() {
 
         dismissLoadingDialog();
+        if (swipeRefreshLayout.isRefreshing())
+            swipeRefreshLayout.setRefreshing(false);
 
     }
 
@@ -307,5 +319,45 @@ public class VoucherActivity extends BaseTitleActivity implements BaseQuickAdapt
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
 
+        BusinessEntity entity = this.adapter.getItem(position);
+
+//        if (entity.getStatus() == Constants.InterfaceConfig.BUSINESS_STATUS_BUSINESS) {
+//            ToastUtils.showToast(mContext, ResourceUtils.getText(R.string.hint_wait_business));
+//        } else {
+
+        ARouter.getInstance().build(RouterPath.ACTIVITY_TRANSACTION_DETAILS)
+                .withInt(Constants.BundleConfig.TYPE, buyBtn.isSelected() ?
+                        Constants.BundleConfig.TYPE_BUY : Constants.BundleConfig.TYPE_SELL)
+                .withInt(Constants.BundleConfig.ID, entity.getId())
+                .withBoolean(Constants.BundleConfig.DETAILS, true)
+                .withInt(Constants.BundleConfig.STATUS, entity.getStatus())
+                .navigation();
+
+//        }
+
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(Event event) {
+        switch (event.getWhat()) {
+
+            case Constants.EventConfig.BUSINESS_PROOF:
+
+                int id = (int) ((ObjectsEvent) event).getObjects()[0];
+
+                for (int i = 0; i < adapter.getData().size(); i++)
+                    if (adapter.getItem(i).getId() == id)
+                        adapter.remove(i);
+
+                adapter.notifyDataSetChanged();
+
+                break;
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }

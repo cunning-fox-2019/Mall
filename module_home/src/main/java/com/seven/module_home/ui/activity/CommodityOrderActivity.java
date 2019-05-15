@@ -77,6 +77,8 @@ public class CommodityOrderActivity extends BaseTitleActivity {
     @Override
     protected void initView(Bundle savedInstanceState) {
 
+        EventBus.getDefault().register(this);
+
         setTitleText(R.string.label_commodity_order);
 
     }
@@ -132,9 +134,9 @@ public class CommodityOrderActivity extends BaseTitleActivity {
 
             case Constants.RequestConfig.CONTACT_DEFAULT:
 
-                if(object==null)return;
+                if (object == null) return;
 
-                contactEntity= (ContactDefaultEntity) object;
+                contactEntity = (ContactDefaultEntity) object;
 
                 nameTv.setText(contactEntity.getContact_name());
                 mobileTv.setText(contactEntity.getContact_phone());
@@ -147,10 +149,11 @@ public class CommodityOrderActivity extends BaseTitleActivity {
 
                 if (object == null) return;
 
-                OrderEntity orderEntity= (OrderEntity) object;
+                OrderEntity orderEntity = (OrderEntity) object;
 
                 ARouter.getInstance().build(RouterPath.ACTIVITY_PAY)
-                        .withSerializable(Constants.BundleConfig.ENTITY,orderEntity)
+                        .withBoolean(Constants.BundleConfig.NORMAL, true)
+                        .withSerializable(Constants.BundleConfig.ENTITY, orderEntity)
                         .navigation();
 
                 break;
@@ -159,6 +162,15 @@ public class CommodityOrderActivity extends BaseTitleActivity {
     }
 
     public void btClick(View view) {
+
+        if (view.getId() == R.id.address_layout) {
+
+            ARouter.getInstance().build(RouterPath.ACTIVITY_ADDRESS)
+                    .withInt(Constants.BundleConfig.EVENT_CODE, Constants.EventConfig.ADDRESS)
+                    .navigation();
+
+        }
+
         if (view.getId() == R.id.payment_rl) {
 
             List<OrderAddBuilder.GoodsListBean> list = new ArrayList<>();
@@ -175,6 +187,24 @@ public class CommodityOrderActivity extends BaseTitleActivity {
             showLoadingDialog();
             presenter.orderAdd(Constants.RequestConfig.ORDER_ADD, contactEntity.getId(), listEntity.getFrom(),
                     listEntity.getFrom_ext(), list);
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(Event event) {
+        switch (event.getWhat()) {
+
+            case Constants.EventConfig.ADDRESS:
+
+                ContactDefaultEntity entity = (ContactDefaultEntity) ((ObjectsEvent) event).getObjects()[0];
+
+                nameTv.setText(entity.getContact_name());
+                mobileTv.setText(entity.getContact_phone());
+                addressTv.setText(entity.getAddress());
+                defaultRl.setVisibility(entity.getId() == contactEntity.getId() ?
+                        View.VISIBLE : View.GONE);
+
+                break;
         }
     }
 
@@ -203,6 +233,12 @@ public class CommodityOrderActivity extends BaseTitleActivity {
     @Override
     public void showToast(String msg) {
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
 }

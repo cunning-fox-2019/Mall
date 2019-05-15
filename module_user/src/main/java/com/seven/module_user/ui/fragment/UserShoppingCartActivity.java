@@ -51,7 +51,7 @@ import io.reactivex.schedulers.Schedulers;
 public class UserShoppingCartActivity extends BaseTitleActivity {
 
     @Autowired(name = Constants.BundleConfig.EVENT_CODE)
-    public int code;
+    int code = 0;
 
     @BindView(R2.id.list_view)
     BaseRecyclerView recyclerView;
@@ -186,10 +186,8 @@ public class UserShoppingCartActivity extends BaseTitleActivity {
             return;
         }
 
-        RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_COMMODITY_ORDER);
-        //todo shopIds.toString()是拼接好的id字符串可以直接用
-        EventBus.getDefault().post(new ObjectsEvent(code, shopIds));
-
+        EventBus.getDefault().post(new ObjectsEvent(code, shopIds.toString()));
+        onBackPressed();
 
     }
 
