@@ -10,20 +10,28 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.seven.lib_common.base.activity.BaseTitleActivity;
 import com.seven.lib_common.utils.NetWorkUtils;
 import com.seven.lib_common.utils.ResourceUtils;
 import com.seven.lib_common.utils.ToastUtils;
-import com.seven.lib_model.model.model.OrderEntity;
+import com.seven.lib_model.model.model.BusinessEntity;
+import com.seven.lib_model.presenter.model.ActModelPresenter;
 import com.seven.lib_opensource.application.SSDK;
+import com.seven.lib_opensource.event.Event;
+import com.seven.lib_opensource.event.ObjectsEvent;
+import com.seven.lib_router.Constants;
 import com.seven.lib_router.router.RouterPath;
 import com.seven.module_model.R;
 import com.seven.module_model.R2;
 import com.seven.module_model.adapter.OrderAdapter;
 import com.seven.module_model.widget.decoration.VoucherDecoration;
 
-import java.util.ArrayList;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.List;
 
 import butterknife.BindView;
@@ -49,6 +57,10 @@ public class VoucherActivity extends BaseTitleActivity implements BaseQuickAdapt
     public RelativeLayout allBtn;
     @BindView(R2.id.all_iv)
     public ImageView allIv;
+    @BindView(R2.id.business_btn)
+    public RelativeLayout businessBtn;
+    @BindView(R2.id.business_iv)
+    public ImageView businessIv;
     @BindView(R2.id.upload_btn)
     public RelativeLayout uploadBtn;
     @BindView(R2.id.upload_iv)
@@ -71,7 +83,12 @@ public class VoucherActivity extends BaseTitleActivity implements BaseQuickAdapt
     @BindView(R2.id.recycler_view)
     public RecyclerView recyclerView;
     private OrderAdapter adapter;
-    private List<OrderEntity> orderList;
+    private List<BusinessEntity> orderList;
+
+    private ActModelPresenter presenter;
+
+    private int type;
+    private int status;
 
     @Override
     protected int getLayoutId() {
@@ -80,6 +97,8 @@ public class VoucherActivity extends BaseTitleActivity implements BaseQuickAdapt
 
     @Override
     protected void initView(Bundle savedInstanceState) {
+
+        EventBus.getDefault().register(this);
 
         setTitleText(R.string.label_voucher);
 
@@ -92,6 +111,16 @@ public class VoucherActivity extends BaseTitleActivity implements BaseQuickAdapt
         selectTabSecond(allBtn);
 
         setRecyclerView();
+
+        presenter = new ActModelPresenter(this, this);
+        type = Constants.InterfaceConfig.BUSINESS_TYPE_BUY;
+        status = Constants.InterfaceConfig.BUSINESS_STATUS_ALL;
+        showLoadingDialog();
+        request(page, type, status);
+    }
+
+    private void request(int page, int type, int status) {
+        presenter.businessOrderList(Constants.RequestConfig.BUSINESS_ORDER_LIST, type, status, page, pageSize);
     }
 
     private void selectTab(View view) {
@@ -102,6 +131,14 @@ public class VoucherActivity extends BaseTitleActivity implements BaseQuickAdapt
 
             buyIv.setVisibility(buyBtn.isSelected() ? View.VISIBLE : View.GONE);
             sellIv.setVisibility(sellBtn.isSelected() ? View.VISIBLE : View.GONE);
+
+            if (presenter == null) return;
+            type = buyBtn.isSelected() ? Constants.InterfaceConfig.BUSINESS_TYPE_SALE :
+                    Constants.InterfaceConfig.BUSINESS_TYPE_BUY;
+            isRefresh = true;
+            page = 1;
+            showLoadingDialog();
+            request(page, type, status);
         }
     }
 
@@ -109,38 +146,42 @@ public class VoucherActivity extends BaseTitleActivity implements BaseQuickAdapt
 
         if (!view.isSelected()) {
             allBtn.setSelected(allBtn == view);
+            businessBtn.setSelected(businessBtn == view);
             uploadBtn.setSelected(uploadBtn == view);
             sureBtn.setSelected(sureBtn == view);
             endBtn.setSelected(endBtn == view);
 
             allIv.setVisibility(allBtn.isSelected() ? View.VISIBLE : View.GONE);
+            businessIv.setVisibility(businessBtn.isSelected() ? View.VISIBLE : View.GONE);
             uploadIv.setVisibility(uploadBtn.isSelected() ? View.VISIBLE : View.GONE);
             sureIv.setVisibility(sureBtn.isSelected() ? View.VISIBLE : View.GONE);
             endIv.setVisibility(endBtn.isSelected() ? View.VISIBLE : View.GONE);
+
+            if (presenter == null) return;
+
+            if (allBtn.isSelected())
+                status = Constants.InterfaceConfig.BUSINESS_STATUS_ALL;
+
+            if (businessBtn.isSelected())
+                status = Constants.InterfaceConfig.BUSINESS_STATUS_BUSINESS;
+
+            if (uploadBtn.isSelected())
+                status = Constants.InterfaceConfig.BUSINESS_STATUS_UPLOAD;
+
+            if (sureBtn.isSelected())
+                status = Constants.InterfaceConfig.BUSINESS_STATUS_SURE;
+
+            if (endBtn.isSelected())
+                status = Constants.InterfaceConfig.BUSINESS_STATUS_END;
+
+            isRefresh = true;
+            page = 1;
+            showLoadingDialog();
+            request(page, type, status);
         }
-    }
-
-    private void request(int page) {
-
     }
 
     private void setRecyclerView() {
-
-        orderList = new ArrayList<>();
-        OrderEntity orderEntity = null;
-
-        for (int i = 0; i < 10; i++) {
-            orderEntity = new OrderEntity();
-            orderEntity.setAvatar("http://b-ssl.duitang.com/uploads/item/201201/08/20120108130517_Ra8f2.jpg");
-            orderEntity.setName("张三" + i);
-            orderEntity.setPayType(1);
-            orderEntity.setPrice(10400.00);
-            orderEntity.setRatio(92);
-            orderEntity.setStatus(1);
-            orderEntity.setVolume(10);
-            orderEntity.setToken(90.00);
-            orderList.add(orderEntity);
-        }
 
         adapter = new OrderAdapter(R.layout.mm_item_order, orderList);
         adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
@@ -169,7 +210,7 @@ public class VoucherActivity extends BaseTitleActivity implements BaseQuickAdapt
                 }
                 isRefresh = true;
                 page = 1;
-                request(page);
+                request(page, type, status);
             }
         });
     }
@@ -181,7 +222,7 @@ public class VoucherActivity extends BaseTitleActivity implements BaseQuickAdapt
             return;
         }
         page++;
-        request(page);
+        request(page, type, status);
     }
 
     public void btClick(View view) {
@@ -195,6 +236,9 @@ public class VoucherActivity extends BaseTitleActivity implements BaseQuickAdapt
         if (view.getId() == R.id.all_btn)
             selectTabSecond(allBtn);
 
+        if (view.getId() == R.id.business_btn)
+            selectTabSecond(businessBtn);
+
         if (view.getId() == R.id.upload_btn)
             selectTabSecond(uploadBtn);
 
@@ -203,6 +247,44 @@ public class VoucherActivity extends BaseTitleActivity implements BaseQuickAdapt
 
         if (view.getId() == R.id.end_btn)
             selectTabSecond(endBtn);
+    }
+
+    @Override
+    public void result(int code, Boolean hasNextPage, String response, Object object) {
+        super.result(code, hasNextPage, response, object);
+
+        switch (code) {
+            case Constants.RequestConfig.BUSINESS_ORDER_LIST:
+
+                if (object == null || ((List<BusinessEntity>) object).size() == 0) {
+                    adapter.loadMoreEnd();
+                    isMoreEnd = true;
+
+                    if (page == 1)
+                        adapter.setNewData(null);
+
+                } else {
+                    orderList = (List<BusinessEntity>) object;
+
+                    if (isRefresh) {
+                        adapter.setNewData(orderList);
+
+                        isRefresh = false;
+                        isMoreEnd = false;
+                    } else {
+                        adapter.addData(orderList);
+                    }
+                    adapter.loadMoreComplete();
+
+                    if (orderList.size() < pageSize) {
+                        adapter.loadMoreEnd();
+                        isMoreEnd = true;
+                    }
+                }
+
+                break;
+        }
+
     }
 
     @Override
@@ -223,6 +305,10 @@ public class VoucherActivity extends BaseTitleActivity implements BaseQuickAdapt
     @Override
     public void closeLoading() {
 
+        dismissLoadingDialog();
+        if (swipeRefreshLayout.isRefreshing())
+            swipeRefreshLayout.setRefreshing(false);
+
     }
 
     @Override
@@ -233,5 +319,45 @@ public class VoucherActivity extends BaseTitleActivity implements BaseQuickAdapt
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
 
+        BusinessEntity entity = this.adapter.getItem(position);
+
+//        if (entity.getStatus() == Constants.InterfaceConfig.BUSINESS_STATUS_BUSINESS) {
+//            ToastUtils.showToast(mContext, ResourceUtils.getText(R.string.hint_wait_business));
+//        } else {
+
+        ARouter.getInstance().build(RouterPath.ACTIVITY_TRANSACTION_DETAILS)
+                .withInt(Constants.BundleConfig.TYPE, buyBtn.isSelected() ?
+                        Constants.BundleConfig.TYPE_BUY : Constants.BundleConfig.TYPE_SELL)
+                .withInt(Constants.BundleConfig.ID, entity.getId())
+                .withBoolean(Constants.BundleConfig.DETAILS, true)
+                .withInt(Constants.BundleConfig.STATUS, entity.getStatus())
+                .navigation();
+
+//        }
+
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(Event event) {
+        switch (event.getWhat()) {
+
+            case Constants.EventConfig.BUSINESS_PROOF:
+
+                int id = (int) ((ObjectsEvent) event).getObjects()[0];
+
+                for (int i = 0; i < adapter.getData().size(); i++)
+                    if (adapter.getItem(i).getId() == id)
+                        adapter.remove(i);
+
+                adapter.notifyDataSetChanged();
+
+                break;
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }

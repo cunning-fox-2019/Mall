@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.chad.library.adapter.base.listener.OnItemChildClickListener;
@@ -98,6 +99,9 @@ public class UserShoppingCartActivity extends BaseTitleActivity {
 
     @Override
     protected void initView(Bundle savedInstanceState) {
+
+        ARouter.getInstance().inject(this);
+
         setTitleText(R.string.user_shop_cart);
 
         setRightImg(R.drawable.shopping_cart_manager_icon);
@@ -208,10 +212,8 @@ public class UserShoppingCartActivity extends BaseTitleActivity {
             return;
         }
 
-        RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_COMMODITY_ORDER);
-        //todo shopIds.toString()是拼接好的id字符串可以直接用
-        EventBus.getDefault().post(new ObjectsEvent(code, shopIds));
-
+        EventBus.getDefault().post(new ObjectsEvent(code, shopIds.toString()));
+        onBackPressed();
 
     }
 

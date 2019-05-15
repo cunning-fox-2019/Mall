@@ -272,7 +272,6 @@ public abstract class BaseActivity extends RxActivity implements IBaseView, Easy
         transaction.commit();
     }
 
-
     public interface CheckPermListener {
         //The method of callback after permission is passed
         void agreeAllPermission();

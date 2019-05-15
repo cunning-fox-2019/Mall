@@ -11,8 +11,11 @@ import com.seven.lib_model.HttpSDK;
 import com.seven.lib_opensource.application.SConfig;
 import com.seven.lib_opensource.application.SSDK;
 import com.seven.lib_opensource.application.SevenApplication;
+import com.seven.lib_router.Constants;
 import com.seven.lib_router.RouterSDK;
 import com.seven.lib_router.Variable;
+
+import cn.jpush.android.api.JPushInterface;
 
 /**
  * @auhtor seven
@@ -26,12 +29,18 @@ public class MallApplication extends SevenApplication {
     public static final int MAX_CODE = 0;
     public static final int EVENT_CODE = 10001;
 
+    //    public static final String BASE_URL = "http://zhongfu.lerqin.com/";
+//    public static final String STORE_URL = "http://zhongfu.lerqin.com/";
     public static final String BASE_URL = "http://api.zf.tianza.com.cn/";
     public static final String STORE_URL = "http://api.zf.tianza.com.cn/";
     public static final String APP_KEY = "";
     public static final String STORE_KEY = "";
 
-    private boolean release = false;
+    private boolean release = true;
+
+    public static MallApplication getInstance() {
+        return (MallApplication) application;
+    }
 
     @Override
     public void initApp() {
@@ -56,6 +65,9 @@ public class MallApplication extends SevenApplication {
         } else {
 
         }
+
+        JPushInterface.setDebugMode(false);
+        JPushInterface.init(this);
 
     }
 
@@ -82,4 +94,12 @@ public class MallApplication extends SevenApplication {
         MultiDex.install(this);
     }
 
+    public void setAlias(String userId) {
+        JPushInterface.setAlias(this, Constants.JpushConfig.ALIAS_CODE, userId);
+    }
+
+    public void clearAlias() {
+        JPushInterface.clearAllNotifications(this);
+        JPushInterface.deleteAlias(this, Constants.JpushConfig.ALIAS_CODE);
+    }
 }

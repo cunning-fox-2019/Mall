@@ -16,6 +16,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.google.gson.Gson;
 import com.seven.lib_common.base.activity.BaseTitleActivity;
 import com.seven.lib_common.stextview.TypeFaceView;
+import com.seven.lib_common.utils.ToastUtils;
 import com.seven.lib_model.ApiManager;
 import com.seven.lib_model.BaseResult;
 import com.seven.lib_model.model.extension.BdGoodsEntity;
@@ -27,6 +28,7 @@ import com.seven.lib_model.presenter.extension.ExActivityPresenter;
 import com.seven.lib_opensource.event.Event;
 import com.seven.lib_opensource.event.ObjectsEvent;
 import com.seven.lib_router.Constants;
+import com.seven.lib_router.Variable;
 import com.seven.lib_router.db.shard.SharedData;
 import com.seven.lib_router.router.RouterPath;
 import com.seven.lib_router.router.RouterUtils;
@@ -69,6 +71,7 @@ public class BuyActivity extends BaseTitleActivity {
     ExActivityPresenter presenter;
     UserEntity entity;
     private OrderEntity orderEntity;
+    AddressEntity addressEntity;
 
     @Override
     protected int getLayoutId() {
@@ -85,10 +88,12 @@ public class BuyActivity extends BaseTitleActivity {
                     .navigation();
         }
         if (view.getId() == R.id.me_buy_bd_btn) {
-            if (!TextUtils.isEmpty(meBuyBdAddress1.getText().toString()) && !TextUtils.isEmpty(meBuyBdAddress2.getText().toString())){
+            if (addressEntity != null){
                 //EventBus.getDefault().post(new ObjectsEvent(code, shopIds));
                 presenter.getOrder(1,entity.getId());
                 //RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_PAY);
+            }else {
+                ToastUtils.showToast(mContext,"请选择地址");
             }
         }
     }
@@ -104,7 +109,11 @@ public class BuyActivity extends BaseTitleActivity {
                 newOrder.setOrder_sn(orderEntity.getOrder_sn());
                 newOrder.setTotal(orderEntity.getTotal());
                 newOrder.setSubject(orderEntity.getSubject());
-                RouterUtils.getInstance().routerWithSerializable(RouterPath.ACTIVITY_PAY,Constants.BundleConfig.ENTITY,newOrder);
+                newOrder.setToken_price(orderEntity.getToken_price());
+                ARouter.getInstance().build(RouterPath.ACTIVITY_PAY)
+                        .withBoolean(Constants.BundleConfig.NORMAL, false)
+                        .withSerializable(Constants.BundleConfig.ENTITY,newOrder)
+                        .navigation();
             }
         }
     }
@@ -187,9 +196,9 @@ public class BuyActivity extends BaseTitleActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(Event event) {
         if (event.getWhat() == Constants.EventConfig.BUY_BD) {
-            AddressEntity entity = (AddressEntity) ((ObjectsEvent) event).getObjects()[0];
-            meBuyBdAddress1.setText(entity.getContact_name() + " " + entity.getContact_phone());
-            meBuyBdAddress2.setText(entity.getProvince_name() + entity.getCity_name() + entity.getDistrict_name() + entity.getAddress());
+            addressEntity = (AddressEntity) ((ObjectsEvent) event).getObjects()[0];
+            meBuyBdAddress1.setText(addressEntity.getContact_name() + " " + addressEntity.getContact_phone());
+            meBuyBdAddress2.setText(addressEntity.getProvince_name() + addressEntity.getCity_name() + addressEntity.getDistrict_name() + addressEntity.getAddress());
         }
     }
 

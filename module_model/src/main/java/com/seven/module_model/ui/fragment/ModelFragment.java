@@ -1,5 +1,6 @@
 package com.seven.module_model.ui.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,10 +14,17 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.seven.lib_common.base.fragment.BaseFragment;
+import com.seven.lib_common.stextview.TypeFaceView;
 import com.seven.lib_common.utils.NetWorkUtils;
 import com.seven.lib_common.utils.ResourceUtils;
 import com.seven.lib_common.utils.ToastUtils;
+import com.seven.lib_common.widget.rollingview.RollTextItem;
+import com.seven.lib_common.widget.rollingview.RollingTextAdapter;
+import com.seven.lib_common.widget.rollingview.TextViewSwitcher;
+import com.seven.lib_model.model.model.BusinessEntity;
+import com.seven.lib_model.model.model.LooperMessageEntity;
 import com.seven.lib_model.model.model.OrderEntity;
+import com.seven.lib_model.presenter.model.FgModelPresenter;
 import com.seven.lib_opensource.application.SSDK;
 import com.seven.lib_router.Constants;
 import com.seven.lib_router.router.RouterPath;
@@ -41,6 +49,9 @@ public class ModelFragment extends BaseFragment implements BaseQuickAdapter.OnIt
 
     @BindView(R2.id.title_rl)
     public RelativeLayout titleRl;
+
+    @BindView(R2.id.switcher_layout)
+    public TextViewSwitcher switcherLayout;
 
     @BindView(R2.id.buy_btn)
     public RelativeLayout buyBtn;
@@ -72,7 +83,15 @@ public class ModelFragment extends BaseFragment implements BaseQuickAdapter.OnIt
     @BindView(R2.id.recycler_view)
     public RecyclerView recyclerView;
     private OrderAdapter adapter;
-    private List<OrderEntity> orderList;
+    private List<BusinessEntity> orderList;
+
+    private FgModelPresenter presenter;
+
+    private List<LooperMessageEntity> tempList;
+    private List<RollTextItem> looperList;
+
+    private int type;
+    private int sort;
 
     @Override
     public int getContentViewId() {
@@ -98,6 +117,35 @@ public class ModelFragment extends BaseFragment implements BaseQuickAdapter.OnIt
         selectSort(sortTime);
 
         setRecyclerView();
+
+        presenter = new FgModelPresenter(this, this);
+        showLoadingDialog();
+        presenter.looperMessage(Constants.RequestConfig.LOOPER_MESSAGE);
+        type = Constants.InterfaceConfig.BUSINESS_TYPE_BUY;
+        sort = Constants.InterfaceConfig.BUSINESS_SORT_TIME;
+        request(page, type, sort);
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden) {
+            isRefresh = true;
+            page = 1;
+            request(page, type, sort);
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        isRefresh = true;
+        page = 1;
+        request(page, type, sort);
+    }
+
+    private void request(int page, int type, int sort) {
+        presenter.businessList(Constants.RequestConfig.BUSINESS_LIST, type, sort, page, pageSize);
     }
 
     private void selectTab(View view) {
@@ -108,6 +156,14 @@ public class ModelFragment extends BaseFragment implements BaseQuickAdapter.OnIt
 
             buyIv.setVisibility(buyBtn.isSelected() ? View.VISIBLE : View.GONE);
             sellIv.setVisibility(sellBtn.isSelected() ? View.VISIBLE : View.GONE);
+
+            if (presenter == null) return;
+            type = buyBtn.isSelected() ? Constants.InterfaceConfig.BUSINESS_TYPE_BUY :
+                    Constants.InterfaceConfig.BUSINESS_TYPE_SALE;
+            isRefresh = true;
+            page = 1;
+            showLoadingDialog();
+            request(page, type, sort);
         }
     }
 
@@ -115,30 +171,18 @@ public class ModelFragment extends BaseFragment implements BaseQuickAdapter.OnIt
         if (!view.isSelected()) {
             sortTime.setSelected(sortTime == view);
             sortPrice.setSelected(sortPrice == view);
+
+            if (presenter == null) return;
+            sort = sortTime.isSelected() ? Constants.InterfaceConfig.BUSINESS_SORT_TIME :
+                    Constants.InterfaceConfig.BUSINESS_SORT_PRICE;
+            isRefresh = true;
+            page = 1;
+            showLoadingDialog();
+            request(page, type, sort);
         }
-    }
-
-    private void request(int page) {
-
     }
 
     private void setRecyclerView() {
-
-        orderList = new ArrayList<>();
-        OrderEntity orderEntity = null;
-
-        for (int i = 0; i < 10; i++) {
-            orderEntity = new OrderEntity();
-            orderEntity.setAvatar("http://b-ssl.duitang.com/uploads/item/201201/08/20120108130517_Ra8f2.jpg");
-            orderEntity.setName("张三" + i);
-            orderEntity.setPayType(1);
-            orderEntity.setPrice(10400.00);
-            orderEntity.setRatio(92);
-            orderEntity.setStatus(1);
-            orderEntity.setVolume(10);
-            orderEntity.setToken(90.00);
-            orderList.add(orderEntity);
-        }
 
         adapter = new OrderAdapter(R.layout.mm_item_order, orderList);
         adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
@@ -167,7 +211,7 @@ public class ModelFragment extends BaseFragment implements BaseQuickAdapter.OnIt
                 }
                 isRefresh = true;
                 page = 1;
-                request(page);
+                request(page, type, sort);
             }
         });
     }
@@ -179,7 +223,26 @@ public class ModelFragment extends BaseFragment implements BaseQuickAdapter.OnIt
             return;
         }
         page++;
-        request(page);
+        request(page, type, sort);
+    }
+
+    private void setLooperMessage() {
+        switcherLayout.setAdapter(new RollingTextAdapter() {
+            @Override
+            public int getCount() {
+                return looperList.size();
+            }
+
+            @Override
+            public View getView(Context context, View contentView, int position) {
+                View view = View.inflate(context, R.layout.mm_item_looper_message, null);
+
+                TypeFaceView title = view.findViewById(R.id.title_tv);
+                title.setText(looperList.get(position).getMsg());
+
+                return view;
+            }
+        });
     }
 
     @Override
@@ -191,20 +254,79 @@ public class ModelFragment extends BaseFragment implements BaseQuickAdapter.OnIt
         if (v.getId() == R.id.sell_btn)
             selectTab(sellBtn);
 
-        if (v.getId() == R.id.demand_btn)
+        if (v.getId() == R.id.demand_btn) {
+
+            if (!isLogin()) return;
+
             RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_RELEASE_DEMAND);
+        }
 
-        if (v.getId() == R.id.message_btn)
+        if (v.getId() == R.id.message_btn) {
+
+            if (!isLogin()) return;
+
             RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_MESSAGE);
+        }
+        if (v.getId() == R.id.voucher_btn) {
 
-        if (v.getId() == R.id.voucher_btn)
+            if (!isLogin()) return;
+
             RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_VOUCHER);
-
+        }
         if (v.getId() == R.id.sort_time_rl)
             selectSort(sortTime);
 
         if (v.getId() == R.id.sort_price_rl)
             selectSort(sortPrice);
+
+    }
+
+    @Override
+    public void result(int code, Boolean hasNextPage, String response, Object object) {
+        super.result(code, hasNextPage, response, object);
+
+        switch (code) {
+
+            case Constants.RequestConfig.LOOPER_MESSAGE:
+
+                if (object == null) return;
+
+                tempList = (List<LooperMessageEntity>) object;
+                looperList = new ArrayList<>();
+
+                for (LooperMessageEntity messageEntity : tempList)
+                    looperList.add(new RollTextItem(messageEntity.getContent()));
+
+                setLooperMessage();
+
+                break;
+
+            case Constants.RequestConfig.BUSINESS_LIST:
+
+                if (object == null || ((List<BusinessEntity>) object).size() == 0) {
+                    adapter.loadMoreEnd();
+                    isMoreEnd = true;
+                } else {
+                    orderList = (List<BusinessEntity>) object;
+
+                    if (isRefresh) {
+                        adapter.setNewData(orderList);
+
+                        isRefresh = false;
+                        isMoreEnd = false;
+                    } else {
+                        adapter.addData(orderList);
+                    }
+                    adapter.loadMoreComplete();
+
+                    if (orderList.size() < pageSize) {
+                        adapter.loadMoreEnd();
+                        isMoreEnd = true;
+                    }
+                }
+
+                break;
+        }
 
     }
 
@@ -215,6 +337,11 @@ public class ModelFragment extends BaseFragment implements BaseQuickAdapter.OnIt
 
     @Override
     public void closeLoading() {
+
+        dismissLoadingDialog();
+
+        if (swipeRefreshLayout.isRefreshing())
+            swipeRefreshLayout.setRefreshing(false);
 
     }
 
@@ -230,6 +357,7 @@ public class ModelFragment extends BaseFragment implements BaseQuickAdapter.OnIt
         ARouter.getInstance().build(RouterPath.ACTIVITY_TRANSACTION_DETAILS)
                 .withInt(Constants.BundleConfig.TYPE, buyBtn.isSelected() ?
                         Constants.BundleConfig.TYPE_BUY : Constants.BundleConfig.TYPE_SELL)
+                .withInt(Constants.BundleConfig.ID, this.adapter.getItem(position).getId())
                 .navigation();
 
     }

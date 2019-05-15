@@ -4,10 +4,13 @@ import com.seven.lib_http.retrofit.HttpResponse;
 import com.seven.lib_model.HttpSDK;
 import com.seven.lib_model.model.user.LoginEntity;
 
+import java.io.File;
+
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
 /**
@@ -60,6 +63,37 @@ public class RequestHelper {
         return appService.sms(requestBody(json));
     }
 
+    public Observable<HttpResponse> payPassword(String json) {
+        return appService.payPassword(requestBody(json));
+    }
+
+    public Observable<HttpResponse> upload(String path, String scene) {
+
+        File file = new File(path);
+
+//        RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
+//                .addFormDataPart("scene", scene)
+//                .addFormDataPart("image", file.getName(), RequestBody.create(MediaType.parse("image/jpeg"), file))
+//                .build();
+
+        // 创建 RequestBody，用于封装构建RequestBody
+        RequestBody requestFile =
+                RequestBody.create(MediaType.parse("image/jpeg"), file);
+
+        // MultipartBody.Part  和后端约定好Key，这里的partName是用image
+        MultipartBody.Part body =
+                MultipartBody.Part.createFormData("file", file.getName(), requestFile);
+
+        // 添加描述
+        String descriptionString = scene;
+        RequestBody description =
+                RequestBody.create(
+                        MediaType.parse("imageData"), descriptionString);
+
+        return appService.upload(body, description);
+    }
+
+    /* module user */
     public Observable<HttpResponse> register(String json) {
         return appService.register(requestBody(json));
     }
@@ -72,6 +106,7 @@ public class RequestHelper {
         return appService.password(requestBody(json));
     }
 
+    /* module home */
     public Observable<HttpResponse> banner() {
         return appService.banner();
     }
@@ -80,8 +115,8 @@ public class RequestHelper {
         return appService.entrance();
     }
 
-    public Observable<HttpResponse> commodityList(String json) {
-        return appService.commodityList(requestBody(json));
+    public Observable<HttpResponse> commodityRecommendList(String json) {
+        return appService.commodityRecommendList(requestBody(json));
     }
 
     public Observable<HttpResponse> commodityDetails(String json) {
@@ -112,6 +147,55 @@ public class RequestHelper {
         return appService.orderPay(requestBody(json));
     }
 
+    public Observable<HttpResponse> collect(String json) {
+        return appService.collect(requestBody(json));
+    }
+
+    public Observable<HttpResponse> commodityList(String json) {
+        return appService.commodityList(requestBody(json));
+    }
+
+    /* module model */
+    public Observable<HttpResponse> looperMessage() {
+        return appService.looperMessage();
+    }
+
+    public Observable<HttpResponse> businessList(String json) {
+        return appService.businessList(requestBody(json));
+    }
+
+    public Observable<HttpResponse> business(String json) {
+        return appService.business(requestBody(json));
+    }
+
+    public Observable<HttpResponse> businessOrderList(String json) {
+        return appService.businessOrderList(requestBody(json));
+    }
+
+    public Observable<HttpResponse> businessInfo(String json) {
+        return appService.businessInfo(requestBody(json));
+    }
+
+    public Observable<HttpResponse> businessOrderInfo(String json) {
+        return appService.businessOrderInfo(requestBody(json));
+    }
+
+    public Observable<HttpResponse> businessAccept(String json) {
+        return appService.businessAccept(requestBody(json));
+    }
+
+    public Observable<HttpResponse> businessProof(String json) {
+        return appService.businessProof(requestBody(json));
+    }
+
+    public Observable<HttpResponse> businessConfirm(String json) {
+        return appService.businessConfirm(requestBody(json));
+    }
+
+    public Observable<HttpResponse> businessCancel(String json) {
+        return appService.businessCancel(requestBody(json));
+    }
+
     //extension
     public Observable<HttpResponse> rewardrule(String json) {
         return appService.rewardrule(requestBody(json));
@@ -121,8 +205,9 @@ public class RequestHelper {
         return appService.inviteList(requestBody(json));
     }
 
-    public Observable<HttpResponse> inComeDetails(String json){return  appService.inComeDetails(requestBody(json));}
-
+    public Observable<HttpResponse> inComeDetails(String json) {
+        return appService.inComeDetails(requestBody(json));
+    }
     public Observable<HttpResponse> level(String json){return appService.getLevel(requestBody(json));}
 
     public Observable<HttpResponse> binding(String json){return appService.binding(requestBody(json));}

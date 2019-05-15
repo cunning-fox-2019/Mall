@@ -231,6 +231,11 @@ public class ExtensionFragment extends BaseFragment {
                         RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_BUY_BD);
                     }
                 }
+
+                @Override
+                public void dismiss() {
+
+                }
             });
             if (!notVipDialog.isShowing())
                 notVipDialog.show();
@@ -312,6 +317,11 @@ public class ExtensionFragment extends BaseFragment {
                 }
                 getData(type);
             }
+
+            @Override
+            public void dismiss() {
+
+            }
         });
         if (!dialog.isShowing())
             dialog.showDialog(0, -(ScreenUtils.getScreenHeight(getActivity())));
@@ -340,7 +350,7 @@ public class ExtensionFragment extends BaseFragment {
                 getRewardList();
                 setUserData();
                 break;
-            case Constants.EventConfig.LOGIN_OUT:
+            case Constants.EventConfig.LOGOUT:
 
                 break;
             default:

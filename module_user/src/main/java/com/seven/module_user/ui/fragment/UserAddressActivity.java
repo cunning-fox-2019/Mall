@@ -144,6 +144,7 @@ public class UserAddressActivity extends BaseTitleActivity {
                 entity1.setContact_phone(entity.getContact_phone());
                 entity1.setAddress(entity.getAddress());
                 EventBus.getDefault().post(new ObjectsEvent(code, entity1));
+                onBackPressed();
             }
             if (code == 159357) {
                 EventBus.getDefault().post(new ObjectsEvent(Constants.EventConfig.BUY_BD, entity));

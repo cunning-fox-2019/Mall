@@ -72,7 +72,7 @@ public abstract class IBaseSheet extends BaseDialog {
         wl.x = x; //x小于0左移，大于0右移
         wl.y = y; //y小于0上移，大于0下移
         //wl.alpha = 0.6f; //设置透明度
-        wl.gravity = Gravity.START; //设置重力
+        wl.gravity = Gravity.BOTTOM; //设置重力
         wl.width = WindowManager.LayoutParams.MATCH_PARENT;
         window.setAttributes(wl);
         show();

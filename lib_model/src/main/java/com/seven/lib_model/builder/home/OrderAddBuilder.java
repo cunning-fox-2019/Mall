@@ -1,6 +1,5 @@
-package com.seven.lib_model.builder.common;
+package com.seven.lib_model.builder.home;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

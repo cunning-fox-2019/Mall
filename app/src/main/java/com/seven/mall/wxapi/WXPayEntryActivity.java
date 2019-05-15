@@ -9,6 +9,7 @@ import android.view.View;
 
 import com.orhanobut.logger.Logger;
 import com.seven.lib_common.utils.ResourceUtils;
+import com.seven.lib_common.utils.ScreenUtils;
 import com.seven.lib_common.utils.ToastUtils;
 import com.seven.lib_opensource.event.ObjectsEvent;
 import com.seven.lib_router.Constants;
@@ -26,16 +27,8 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            View decorView = this.getWindow().getDecorView();
-            int option = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                    | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                    | View.SYSTEM_UI_FLAG_FULLSCREEN
-                    | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
-            option = option | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
-            decorView.setSystemUiVisibility(option);
-        }
+
+        ScreenUtils.hideBar(this);
 
         Variable.getInstance().getWxApi().handleIntent(getIntent(), this);
     }

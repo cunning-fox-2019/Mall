@@ -7,15 +7,17 @@ import com.seven.lib_common.mvp.presenter.BasePresenter;
 import com.seven.lib_common.mvp.view.IBaseView;
 import com.seven.lib_http.observer.HttpRxObservable;
 import com.seven.lib_http.observer.HttpRxObserver;
-import com.seven.lib_model.builder.common.CartAddBuilder;
-import com.seven.lib_model.builder.common.CommodityDetailsBuilder;
-import com.seven.lib_model.builder.common.OrderAddBuilder;
-import com.seven.lib_model.builder.common.OrderPayBuilder;
-import com.seven.lib_model.builder.common.OrderPaymentBuilder;
+import com.seven.lib_model.builder.home.CommodityListBuilder;
+import com.seven.lib_model.builder.home.CartAddBuilder;
+import com.seven.lib_model.builder.home.CommodityDetailsBuilder;
+import com.seven.lib_model.builder.home.OrderAddBuilder;
+import com.seven.lib_model.builder.home.OrderPayBuilder;
+import com.seven.lib_model.builder.home.OrderPaymentBuilder;
 import com.seven.lib_model.http.RequestHelper;
 import com.seven.lib_model.model.home.AliPayEntity;
 import com.seven.lib_model.model.home.CartTotalEntity;
 import com.seven.lib_model.model.home.CommodityDetailsEntity;
+import com.seven.lib_model.model.home.CommodityEntity;
 import com.seven.lib_model.model.home.ContactDefaultEntity;
 import com.seven.lib_model.model.home.OrderEntity;
 import com.seven.lib_model.model.home.OrderListEntity;
@@ -146,4 +148,39 @@ public class ActHomePresenter extends BasePresenter<IBaseView, BaseActivity> {
             return;
         HttpRxObservable.getObservable(RequestHelper.getInstance().orderPay(jsonStr), getActivity(), ActivityEvent.PAUSE).subscribe(rxObserver);
     }
+
+    public void collect(int requestCode, int goods_id) {
+
+        CommodityDetailsBuilder.Builder builder = new CommodityDetailsBuilder.Builder();
+        CommodityDetailsBuilder json = builder
+                .goods_id(goods_id)
+                .build();
+        String jsonStr = new Gson().toJson(json);
+        Logger.i(jsonStr);
+
+        HttpRxObserver rxObserver = get(getView(), requestCode);
+        if (rxObserver == null)
+            return;
+        HttpRxObservable.getObservable(RequestHelper.getInstance().collect(jsonStr), getActivity(), ActivityEvent.PAUSE).subscribe(rxObserver);
+    }
+
+    public void commodityList(int requestCode,int page,int sort,String keyword,int category) {
+
+        CommodityListBuilder.Builder builder = new CommodityListBuilder.Builder();
+        CommodityListBuilder json = (CommodityListBuilder) builder
+                .sort(sort)
+                .keyword(keyword)
+                .category(category)
+                .page(page)
+                .page_size(pageSize)
+                .build();
+        String jsonStr = new Gson().toJson(json);
+        Logger.i(jsonStr);
+
+        HttpRxObserver rxObserver = get(getView(), requestCode, CommodityEntity.class, "items", true);
+        if (rxObserver == null)
+            return;
+        HttpRxObservable.getObservable(RequestHelper.getInstance().commodityList(jsonStr), getActivity(), ActivityEvent.PAUSE).subscribe(rxObserver);
+    }
+
 }

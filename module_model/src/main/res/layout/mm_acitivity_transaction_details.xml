@@ -6,6 +6,7 @@
     android:background="@color/impression">
 
     <android.support.v4.widget.NestedScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -103,21 +104,30 @@
                 android:layout_height="10dp"
                 android:background="@color/impression" />
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/transaction_item_2"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
                 android:paddingLeft="@dimen/padding_16">
 
                 <com.seven.lib_common.stextview.TypeFaceView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
                     android:text="@string/label_receiving_account"
-                    android:textColor="@color/cube"
+                    android:textColor="@color/demand_tab"
                     android:textSize="@dimen/sp_14"
                     app:SFontStyle="regular_s" />
 
-            </RelativeLayout>
+                <com.seven.lib_common.stextview.TypeFaceView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/hint_receiving_account"
+                    android:textColor="@color/grey_light"
+                    android:textSize="@dimen/sp_12"
+                    app:SFontStyle="regular_s" />
+
+            </LinearLayout>
 
             <ImageView
                 android:layout_width="match_parent"
@@ -315,7 +325,8 @@
                 android:id="@+id/voucher_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone">
 
                 <ImageView
                     android:layout_width="match_parent"
@@ -346,7 +357,8 @@
                 <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/padding_16">
+                    android:padding="@dimen/padding_16"
+                    android:layout_marginBottom="@dimen/margin_100">
 
                     <ImageView
                         android:id="@+id/voucher_iv"
@@ -361,6 +373,17 @@
 
     </android.support.v4.widget.NestedScrollView>
 
+    <com.seven.lib_common.stextview.TypeFaceView
+        android:id="@+id/status_business_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/hint_wait_business"
+        android:textColor="@color/grey_medium"
+        android:textSize="@dimen/sp_12"
+        android:layout_centerInParent="true"
+        app:SFontStyle="regular_s"
+        android:visibility="gone"/>
+
     <RelativeLayout
         android:id="@+id/transaction_btn"
         style="@style/Button_Long"
@@ -368,7 +391,8 @@
         android:layout_marginBottom="@dimen/margin_40"
         android:layout_marginLeft="@dimen/margin_16"
         android:layout_marginRight="@dimen/margin_16"
-        android:onClick="btClick">
+        android:onClick="btClick"
+        android:visibility="gone">
 
         <com.seven.lib_common.stextview.TypeFaceView
             android:id="@+id/transaction_tv"

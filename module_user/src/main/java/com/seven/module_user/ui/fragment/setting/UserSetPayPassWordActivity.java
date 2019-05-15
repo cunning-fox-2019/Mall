@@ -19,6 +19,7 @@ import com.seven.lib_model.model.user.UserEntity;
 import com.seven.lib_model.model.user.mine.ResetPasswordEntity;
 import com.seven.lib_model.presenter.common.ActUserPresenter;
 import com.seven.lib_router.Constants;
+import com.seven.lib_router.Variable;
 import com.seven.lib_router.db.shard.SharedData;
 import com.seven.module_user.R;
 import com.seven.module_user.R2;
@@ -182,6 +183,7 @@ public class UserSetPayPassWordActivity extends BaseTitleActivity {
                     public void onNext(BaseResult baseResult) {
                         if (baseResult.getCode() == 1) {
                             ToastUtils.showToast(mContext, "修改成功");
+                            Variable.getInstance().setPayPassword(true);
                             finish();
                         }
                     }

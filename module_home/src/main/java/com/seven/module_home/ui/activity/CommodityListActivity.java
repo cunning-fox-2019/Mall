@@ -8,18 +8,22 @@ import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.seven.lib_common.base.activity.BaseAppCompatActivity;
+import com.seven.greendao.gen.SearchHistoryDao;
+import com.seven.lib_common.base.activity.BaseActivity;
 import com.seven.lib_common.listener.IKeyBoardVisibleListener;
 import com.seven.lib_common.stextview.TypeFaceEdit;
 import com.seven.lib_common.stextview.TypeFaceView;
@@ -32,16 +36,17 @@ import com.seven.lib_common.widget.flowlayout.FlowLayout;
 import com.seven.lib_common.widget.flowlayout.TagAdapter;
 import com.seven.lib_common.widget.flowlayout.TagFlowLayout;
 import com.seven.lib_model.model.home.CommodityEntity;
-import com.seven.lib_model.model.home.SearchHistoryEntity;
+import com.seven.lib_model.presenter.home.ActHomePresenter;
 import com.seven.lib_opensource.application.SSDK;
 import com.seven.lib_router.Constants;
+import com.seven.lib_router.RouterSDK;
+import com.seven.lib_router.db.dao.SearchHistory;
 import com.seven.lib_router.router.RouterPath;
 import com.seven.lib_router.router.RouterUtils;
 import com.seven.module_home.R;
 import com.seven.module_home.R2;
 import com.seven.module_home.adapter.HomeAdapter;
 import com.seven.module_home.widget.decoration.CommodityDecoration;
-import com.seven.module_home.widget.decoration.HomeDecoration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,12 +60,16 @@ import butterknife.BindView;
  */
 
 @Route(path = RouterPath.ACTIVITY_COMMODITY)
-public class CommodityListActivity extends BaseAppCompatActivity implements IKeyBoardVisibleListener,
+public class CommodityListActivity extends BaseActivity implements IKeyBoardVisibleListener,
         BaseQuickAdapter.OnItemClickListener {
 
     @Autowired(name = Constants.BundleConfig.FLOW)
     public int flow;
+    @Autowired(name = Constants.BundleConfig.ID)
+    public int id;
     private boolean pauseAnim;
+    private boolean isBack;
+    private boolean isSearch;
 
     @BindView(R2.id.left_btn)
     public RelativeLayout leftBtn;
@@ -106,7 +115,15 @@ public class CommodityListActivity extends BaseAppCompatActivity implements IKey
     @BindView(R2.id.tag_flow)
     public TagFlowLayout flowLayout;
     private TagAdapter tagAdapter;
-    private List<SearchHistoryEntity> historyList;
+
+    private ActHomePresenter presenter;
+
+    private int sort;
+    private String keyword;
+
+    private SearchHistoryDao historyDao;
+    private List<SearchHistory> allList;
+    private List<SearchHistory> historyList;
 
     @Override
     protected int getContentViewId() {
@@ -125,10 +142,13 @@ public class CommodityListActivity extends BaseAppCompatActivity implements IKey
         handler = new Handler();
         thread = new AnimRunnable();
 
-        setScreenSelected(globalBtn);
+        historyDao = RouterSDK.getInstance().getDaoSession().getSearchHistoryDao();
+        allList = historyDao.loadAll();
+        historyList = new ArrayList<>();
 
         setRecyclerView();
 
+        resetHistory();
         setFlowLayout();
 
         if (flow == Constants.BundleConfig.FLOW_SEARCH) {
@@ -144,34 +164,116 @@ public class CommodityListActivity extends BaseAppCompatActivity implements IKey
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    imm.showSoftInput(searchEt,InputMethodManager.SHOW_FORCED);
+                    imm.showSoftInput(searchEt, InputMethodManager.SHOW_FORCED);
                 }
-            },100);
+            }, 100);
         }
+
+        presenter = new ActHomePresenter(this, this);
+        sort = Constants.InterfaceConfig.SORT_COMPREHENSIVE;
+        setScreenSelected(globalBtn);
+
+        setTextWatcher();
+    }
+
+    private void resetHistory() {
+        historyList.clear();
+        SearchHistory searchHistory;
+        for (int i = allList.size() - 1; i >= 0; i--) {
+            searchHistory = allList.get(i);
+            boolean isAdd = true;
+            if (historyList.size() < 10) {
+                for (SearchHistory searchHistoryX : historyList) {
+                    if (searchHistory.getRecord().equals(searchHistoryX.getRecord())) {
+                        isAdd = false;
+                        break;
+                    }
+                }
+                if (isAdd)
+                    historyList.add(searchHistory);
+            }
+        }
+    }
+
+    private void setTextWatcher() {
+
+        searchEt.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    search();
+                    return true;
+                }
+                return false;
+            }
+        });
+    }
+
+    private void search() {
+
+        if (searchEt.getText().toString().trim().length() == 0) {
+            ToastUtils.showToast(mContext, ResourceUtils.getText(R.string.hint_not_search));
+            return;
+        }
+
+        SearchHistory history = new SearchHistory(System.currentTimeMillis(), searchEt.getText().toString());
+        if (historyList.size() == 0) {
+            historyList.add(history);
+        } else {
+
+            boolean isExist = false;
+            for (SearchHistory searchHistory : historyList) {
+                if (searchHistory.getRecord().equals(searchEt.getText().toString())) {
+                    historyList.remove(searchHistory);
+                    isExist = true;
+                    break;
+                }
+            }
+            historyList.add(0, history);
+            if (!isExist && historyList.size() > 10)
+                historyList.remove(historyList.size() - 1);
+        }
+        tagAdapter.notifyDataChanged();
+
+        historyDao.insert(history);
+
+        if (imm != null && searchEt != null)
+            imm.hideSoftInputFromWindow(searchEt.getWindowToken(), 0);
+        isRefresh = true;
+        isSearch = true;
+        page = 1;
+        sort = Constants.InterfaceConfig.SORT_COMPREHENSIVE;
+        showLoadingDialog();
+        request(page, sort, searchEt.getText().toString());
 
     }
 
-    private void request(int page) {
-
-        closeLoading();
-
+    private void request(int page, int sort, String keyword) {
+        presenter.commodityList(Constants.RequestConfig.COMMODITY_LIST, page, sort, keyword, id);
     }
 
     private void setScreenSelected(View view) {
 
         if (view.isSelected()) {
+            if (view == globalBtn) return;
             if (isDown) {
 
-                if (view == salesVolumeBtn)
+                if (view == salesVolumeBtn) {
                     salesVolumeIv.setImageResource(R.drawable.label_screen_3);
-                else
+                    sort = Constants.InterfaceConfig.SORT_SALES_RISE;
+                } else {
                     priceIv.setImageResource(R.drawable.label_screen_3);
+                    sort = Constants.InterfaceConfig.SORT_PRICE_RISE;
+                }
                 isDown = false;
             } else {
-                if (view == salesVolumeBtn)
+                if (view == salesVolumeBtn) {
                     salesVolumeIv.setImageResource(R.drawable.label_screen_2);
-                else
+                    sort = Constants.InterfaceConfig.SORT_SALES_DROP;
+                } else {
                     priceIv.setImageResource(R.drawable.label_screen_2);
+                    sort = Constants.InterfaceConfig.SORT_PRICE_DROP;
+                }
                 isDown = true;
             }
         } else {
@@ -183,30 +285,28 @@ public class CommodityListActivity extends BaseAppCompatActivity implements IKey
             if (globalBtn.isSelected()) {
                 salesVolumeIv.setImageResource(R.drawable.label_screen_1);
                 priceIv.setImageResource(R.drawable.label_screen_1);
+                sort = Constants.InterfaceConfig.SORT_COMPREHENSIVE;
             }
             if (salesVolumeBtn.isSelected()) {
                 salesVolumeIv.setImageResource(R.drawable.label_screen_2);
                 priceIv.setImageResource(R.drawable.label_screen_1);
+                sort = Constants.InterfaceConfig.SORT_SALES_DROP;
             }
             if (priceBtn.isSelected()) {
                 salesVolumeIv.setImageResource(R.drawable.label_screen_1);
                 priceIv.setImageResource(R.drawable.label_screen_2);
+                sort = Constants.InterfaceConfig.SORT_PRICE_DROP;
             }
         }
+
+        if (pauseAnim) return;
+        isRefresh = true;
+        page = 1;
+        showLoadingDialog();
+        request(page, sort, searchEt.getText().toString());
     }
 
     private void setRecyclerView() {
-
-        commodityList = new ArrayList<>();
-        CommodityEntity entity = null;
-        for (int i = 0; i < 20; i++) {
-            entity = new CommodityEntity();
-            entity.setGoods_name("全新上市祖马龙茉莉与金盏香水 祖马龙500ml哥弟反黑" + i);
-            entity.setThumb("http://b-ssl.duitang.com/uploads/item/201201/08/20120108130517_Ra8f2.jpg");
-            entity.setPrice(1000D);
-            entity.setSales(i);
-            commodityList.add(entity);
-        }
 
         adapter = new HomeAdapter(R.layout.mh_item_home, commodityList, screenWidth);
         adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
@@ -235,7 +335,7 @@ public class CommodityListActivity extends BaseAppCompatActivity implements IKey
                 }
                 isRefresh = true;
                 page = 1;
-                request(page);
+                request(page, sort, searchEt.getText().toString());
             }
         });
 
@@ -248,7 +348,42 @@ public class CommodityListActivity extends BaseAppCompatActivity implements IKey
             return;
         }
         page++;
-        request(page);
+        request(page, sort, searchEt.getText().toString());
+    }
+
+    @Override
+    public void result(int code, Boolean hasNextPage, String response, Object object) {
+        super.result(code, hasNextPage, response, object);
+
+        switch (code) {
+
+            case Constants.RequestConfig.COMMODITY_LIST:
+
+                if (object == null || ((List<CommodityEntity>) object).size() == 0) {
+                    adapter.loadMoreEnd();
+                    isMoreEnd = true;
+                } else {
+                    commodityList = (List<CommodityEntity>) object;
+
+                    if (isRefresh) {
+                        adapter.setNewData(commodityList);
+
+                        isRefresh = false;
+                        isMoreEnd = false;
+                    } else {
+                        adapter.addData(commodityList);
+                    }
+                    adapter.loadMoreComplete();
+
+                    if (commodityList.size() < pageSize) {
+                        adapter.loadMoreEnd();
+                        isMoreEnd = true;
+                    }
+                }
+
+                break;
+
+        }
     }
 
     public void btClick(View view) {
@@ -257,8 +392,14 @@ public class CommodityListActivity extends BaseAppCompatActivity implements IKey
             onBackPressed();
 
         if (view.getId() == R.id.right_text_btn)
-            if (imm != null && searchEt != null)
-                imm.hideSoftInputFromWindow(searchEt.getWindowToken(), 0);
+            if (flow == Constants.BundleConfig.FLOW_SEARCH) {
+                if (imm != null && searchEt != null)
+                    imm.hideSoftInputFromWindow(searchEt.getWindowToken(), 0);
+                isBack = true;
+            } else {
+                if (imm != null && searchEt != null)
+                    imm.hideSoftInputFromWindow(searchEt.getWindowToken(), 0);
+            }
 
         if (view.getId() == R.id.global_btn)
             setScreenSelected(globalBtn);
@@ -279,7 +420,10 @@ public class CommodityListActivity extends BaseAppCompatActivity implements IKey
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
 
-        RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_COMMODITY_DETAILS);
+
+        ARouter.getInstance().build(RouterPath.ACTIVITY_COMMODITY_DETAILS)
+                .withInt(Constants.BundleConfig.ID, this.adapter.getItem(position).getId())
+                .navigation();
 
     }
 
@@ -313,7 +457,6 @@ public class CommodityListActivity extends BaseAppCompatActivity implements IKey
     protected void onPause() {
         super.onPause();
         ScreenUtils.removeOnSoftKeyBoardVisibleListener();
-
         if (imm != null && searchEt != null)
             imm.hideSoftInputFromWindow(searchEt.getWindowToken(), 0);
     }
@@ -331,6 +474,9 @@ public class CommodityListActivity extends BaseAppCompatActivity implements IKey
     @Override
     public void onSoftKeyBoardVisible(boolean visible, int windowBottom) {
 
+        if (isBack && !isSearch)
+            onBackPressed();
+
         searchEt.setCursorVisible(visible);
 
         if (pauseAnim) {
@@ -339,6 +485,7 @@ public class CommodityListActivity extends BaseAppCompatActivity implements IKey
         }
         resetSearchLayout(visible);
         setHistoryLayout(visible);
+
     }
 
     private void resetSearchLayout(boolean visible) {
@@ -372,6 +519,7 @@ public class CommodityListActivity extends BaseAppCompatActivity implements IKey
                     public void onAnimationEnd(Animator animation) {
                         if (!visible)
                             historyLayout.setVisibility(View.GONE);
+
                     }
 
                     @Override
@@ -388,30 +536,22 @@ public class CommodityListActivity extends BaseAppCompatActivity implements IKey
 
     private void setFlowLayout() {
 
-        historyList = new ArrayList<>();
-
-        SearchHistoryEntity historyEntity = null;
-        for (int i = 0; i < 10; i++) {
-            historyEntity = new SearchHistoryEntity();
-            historyEntity.setTitle(" 记录 " + i);
-            historyList.add(historyEntity);
-        }
-
-        tagAdapter = new TagAdapter<SearchHistoryEntity>(historyList) {
+        tagAdapter = new TagAdapter<SearchHistory>(historyList) {
             @Override
-            public View getView(FlowLayout parent, final int position, final SearchHistoryEntity entity) {
-                View item = LayoutInflater.from(mContext).inflate(R.layout.mh_history_tv, flowLayout, false);
-                TypeFaceView tv = item.findViewById(R.id.flow_tv);
-                tv.setText(entity.getTitle());
+            public View getView(FlowLayout parent, final int position, final SearchHistory item) {
+                View view = LayoutInflater.from(mContext).inflate(R.layout.mh_history_tv, flowLayout, false);
+                TypeFaceView tv = view.findViewById(R.id.flow_tv);
+                tv.setText(item.getRecord());
                 tv.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
 
-                        ToastUtils.showToast(mContext, position + "");
+                        searchEt.setText(item.getRecord());
+                        search();
 
                     }
                 });
-                return item;
+                return view;
             }
         };
         flowLayout.setAdapter(tagAdapter);

@@ -99,6 +99,32 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/business_btn"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:onClick="btClick">
+
+            <com.seven.lib_common.stextview.TypeFaceView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="@string/status_wait_business"
+                android:textColor="@color/demand_tab"
+                android:textSize="@dimen/sp_14"
+                app:SFontStyle="regular_s" />
+
+            <ImageView
+                android:id="@+id/business_iv"
+                android:layout_width="35dp"
+                android:layout_height="2dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:background="@color/primary" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
             android:id="@+id/upload_btn"
             android:layout_width="0dp"
             android:layout_height="match_parent"

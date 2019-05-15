@@ -68,20 +68,12 @@
 
         </RelativeLayout>
 
-
-        <android.support.v4.widget.NestedScrollView
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recycler_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/margin_4"
-                android:layout_marginRight="@dimen/margin_4" />
-
-        </android.support.v4.widget.NestedScrollView>
-
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_4"
+            android:layout_marginRight="@dimen/margin_4"/>
 
         <ImageView
             android:layout_width="match_parent"

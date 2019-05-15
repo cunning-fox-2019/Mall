@@ -40,7 +40,7 @@ public class BannerEntranceAdapter extends BaseQuickAdapter<BannerEntranceEntity
         params.width = radius;
         layout.setLayoutParams(params);
 
-        GlideUtils.loadImage(mContext, item.getIcon(), (ImageView) helper.getView(R.id.cover_iv));
+        GlideUtils.loadImageWhite(mContext, item.getIcon(), (ImageView) helper.getView(R.id.cover_iv));
 
         helper.setText(R.id.title_tv, item.getCat_name());
 

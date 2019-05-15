@@ -3,6 +3,7 @@ package com.seven.module_user.ui.fragment;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -94,7 +95,8 @@ public class UserFragment extends BaseFragment {
                         if (userString != null && !userString.equals("null")) {
                             SharedData.getInstance().setUserInfo(userString);
                             setData(userEntityBaseResult.getData());
-                            EventBus.getDefault().post(new ObjectsEvent(Constants.EventConfig.USER_DATA_CHANGE,"change"));
+                            Variable.getInstance().setTokenCount(TextUtils.isEmpty(String.valueOf(userEntityBaseResult.getData().getToken_number_total())) ? 0 : userEntityBaseResult.getData().getToken_number_total());
+                            EventBus.getDefault().post(new ObjectsEvent(Constants.EventConfig.USER_DATA_CHANGE, "change"));
                         } else {
                             RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_LOGIN);
                         }
@@ -187,7 +189,7 @@ public class UserFragment extends BaseFragment {
 
     @OnClick(R2.id.logout)
     void logout() {
-        EventBus.getDefault().post(new ObjectsEvent(Constants.EventConfig.LOGIN_OUT,"loginout"));
+        EventBus.getDefault().post(new ObjectsEvent(Constants.EventConfig.LOGOUT));
         startActivity(new Intent(getActivity(), LoginActivity.class));
         //ToastUtils.showToast(getActivity(), "退出");
     }

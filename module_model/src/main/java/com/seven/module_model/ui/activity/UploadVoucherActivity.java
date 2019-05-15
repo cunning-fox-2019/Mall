@@ -14,14 +14,24 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.orhanobut.logger.Logger;
 import com.seven.lib_common.base.activity.BaseTitleActivity;
+import com.seven.lib_common.task.ActivityStack;
 import com.seven.lib_common.utils.ScreenUtils;
 import com.seven.lib_common.utils.glide.GlideUtils;
+import com.seven.lib_model.model.model.UploadEntity;
+import com.seven.lib_model.presenter.model.ActModelPresenter;
+import com.seven.lib_opensource.event.ObjectsEvent;
+import com.seven.lib_router.Constants;
 import com.seven.lib_router.router.RouterPath;
 import com.seven.module_model.R;
 import com.seven.module_model.R2;
+
+import org.greenrobot.eventbus.EventBus;
+
 
 import butterknife.BindView;
 
@@ -35,9 +45,15 @@ public class UploadVoucherActivity extends BaseTitleActivity {
 
     private static final int SELECT_PHOTO = 1;
 
+    @Autowired(name = Constants.BundleConfig.ID)
+    public int id;
+
     @BindView(R2.id.voucher_iv)
     public ImageView voucherIv;
     private String imagePath;
+
+    private ActModelPresenter presenter;
+    private UploadEntity uploadEntity;
 
     @Override
     protected int getLayoutId() {
@@ -46,6 +62,8 @@ public class UploadVoucherActivity extends BaseTitleActivity {
 
     @Override
     protected void initView(Bundle savedInstanceState) {
+
+        ARouter.getInstance().inject(this);
 
         setTitleText(R.string.button_voucher);
 
@@ -59,6 +77,8 @@ public class UploadVoucherActivity extends BaseTitleActivity {
     @Override
     protected void initBundleData(Intent intent) {
 
+        presenter = new ActModelPresenter(this, this);
+
     }
 
     public void btClick(View view) {
@@ -67,6 +87,9 @@ public class UploadVoucherActivity extends BaseTitleActivity {
             selectPhoto();
 
         if (view.getId() == R.id.upload_btn) {
+
+            showLoadingDialog();
+            presenter.upload(Constants.RequestConfig.UPLOAD, imagePath, Constants.InterfaceConfig.UPLOAD_AVATAR);
 
         }
 
@@ -125,6 +148,32 @@ public class UploadVoucherActivity extends BaseTitleActivity {
     }
 
     @Override
+    public void result(int code, Boolean hasNextPage, String response, Object object) {
+        super.result(code, hasNextPage, response, object);
+        switch (code) {
+            case Constants.RequestConfig.UPLOAD:
+
+                if (object == null) return;
+
+                uploadEntity= (UploadEntity) object;
+
+                presenter.businessProof(Constants.RequestConfig.BUSINESS_PROOF,id,uploadEntity.getUrl());
+
+                break;
+
+            case Constants.RequestConfig.BUSINESS_PROOF:
+
+                ActivityStack.getInstance().finishActivity(TransactionDetailsActivity.class);
+
+                EventBus.getDefault().post(new ObjectsEvent(Constants.EventConfig.BUSINESS_PROOF,id));
+
+                onBackPressed();
+
+                break;
+        }
+    }
+
+    @Override
     protected void rightTextBtnClick(View v) {
 
     }
@@ -141,6 +190,8 @@ public class UploadVoucherActivity extends BaseTitleActivity {
 
     @Override
     public void closeLoading() {
+
+        dismissLoadingDialog();
 
     }
 

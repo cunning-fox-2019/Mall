@@ -9,13 +9,17 @@ import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.google.gson.Gson;
 import com.seven.lib_common.base.activity.BaseTitleActivity;
 import com.seven.lib_common.utils.ToastUtils;
 import com.seven.lib_model.ApiManager;
 import com.seven.lib_model.BaseResult;
 import com.seven.lib_model.model.extension.BuyRoleEntity;
+import com.seven.lib_model.model.home.OrderEntity;
 import com.seven.lib_model.model.user.UserEntity;
+import com.seven.lib_model.presenter.extension.ExActivityPresenter;
+import com.seven.lib_router.Constants;
 import com.seven.lib_router.db.shard.SharedData;
 import com.seven.lib_router.router.RouterPath;
 import com.seven.lib_router.router.RouterUtils;
@@ -56,6 +60,9 @@ public class BuyRoleActivity extends BaseTitleActivity {
 
     private String role = "";
     private String pay = "";
+    ExActivityPresenter presenter;
+    UserEntity entity;
+    OrderEntity orderEntity;
 
     @Override
     protected int getLayoutId() {
@@ -66,6 +73,9 @@ public class BuyRoleActivity extends BaseTitleActivity {
     protected void initView(Bundle savedInstanceState) {
         statusBar = StatusBar.LIGHT;
         setTitleText(R.string.me_buyrole_title);
+        presenter = new ExActivityPresenter(this, this);
+        String userInfo = SharedData.getInstance().getUserInfo();
+        entity = new Gson().fromJson(userInfo, UserEntity.class);
         ApiManager.getRolePrice()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
@@ -177,7 +187,29 @@ public class BuyRoleActivity extends BaseTitleActivity {
                 ToastUtils.showToast(mContext, "请选择支付方式");
                 return;
             }
-            RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_PAY);
+            if (!isLogin()) return;
+            presenter.getOrder(1, entity.getId());
+            //RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_PAY);
+        }
+    }
+
+    @Override
+    public void result(int code, Boolean hasNextPage, String response, Object object) {
+        super.result(code, hasNextPage, response, object);
+        if (code == 1) {
+            if (object == null) return;
+            orderEntity = (OrderEntity) object;
+            if (orderEntity != null) {
+                OrderEntity newOrder = new OrderEntity();
+                newOrder.setToken_price(orderEntity.getToken_price());
+                newOrder.setSubject(orderEntity.getSubject());
+                newOrder.setOrder_sn(orderEntity.getOrder_sn());
+                newOrder.setTotal(orderEntity.getTotal());
+                ARouter.getInstance().build(RouterPath.ACTIVITY_PAY)
+                        .withBoolean(Constants.BundleConfig.NORMAL, false)
+                        .withSerializable(Constants.BundleConfig.ENTITY, newOrder)
+                        .navigation();
+            }
         }
     }
 }

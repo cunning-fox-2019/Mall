@@ -11,8 +11,8 @@ import android.widget.RelativeLayout;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.seven.lib_common.base.activity.BaseAppCompatActivity;
+import com.seven.lib_common.task.ActivityStack;
 import com.seven.lib_model.model.user.RegisterEntity;
-import com.seven.lib_opensource.application.SSDK;
 import com.seven.lib_opensource.event.Event;
 import com.seven.lib_opensource.event.ObjectsEvent;
 import com.seven.lib_router.Constants;
@@ -28,6 +28,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
+import cn.jpush.android.api.JPushInterface;
 
 /**
  * @auhtor seven
@@ -59,6 +60,11 @@ public class HomeActivity extends BaseAppCompatActivity {
     private Fragment fromFg;
 
     @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
     protected int getContentViewId() {
         return R.layout.activity_home;
     }
@@ -68,6 +74,7 @@ public class HomeActivity extends BaseAppCompatActivity {
 
         EventBus.getDefault().register(this);
 
+        ActivityStack.getInstance().finishActivity(SplashActivity.class);
     }
 
     @Override
@@ -124,9 +131,6 @@ public class HomeActivity extends BaseAppCompatActivity {
 
             case R.id.tab_user_ll:
 
-                if (!isLogin())
-                    return;
-
                 if (userFg == null)
                     userFg = (Fragment) ARouter.getInstance().build(RouterPath.FRAGMENT_USER).navigation();
 
@@ -163,9 +167,19 @@ public class HomeActivity extends BaseAppCompatActivity {
 
                 if (registerEntity == null) return;
 
+//                MallApplication.getInstance().setAlias("seven");
+
                 MallApplication.getInstance().setToken(registerEntity.getToken());
                 Variable.getInstance().setToken(registerEntity.getToken());
                 SharedData.getInstance().setToken(registerEntity.getToken());
+
+                JPushInterface.getRegistrationID(this);
+
+                break;
+
+            case Constants.EventConfig.LOGOUT:
+
+//                MallApplication.getInstance().clearAlias();
 
                 break;
 

@@ -136,6 +136,11 @@ public class ReceivAwardsActivity extends BaseTitleActivity {
                 public void onClick(View v, Object... objects) {
 
                 }
+
+                @Override
+                public void dismiss() {
+
+                }
             });
         }
         if (!dialog.isShowing())

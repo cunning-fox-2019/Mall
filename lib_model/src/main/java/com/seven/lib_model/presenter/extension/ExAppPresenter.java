@@ -22,7 +22,7 @@ public class ExAppPresenter extends BasePresenter<IBaseView,BaseAppCompatActivit
 
     public void inComeDetails(int code,int page,int page_size){
         PageBuilder.Builder builder = new PageBuilder.Builder();
-        PageBuilder json = builder.page(String.valueOf(page)).page_size(String.valueOf(page_size)).build();
+        PageBuilder json = builder.page(page).page_size(page_size).build();
         String jsonStr = new Gson().toJson(json);
         HttpRxObserver rxObserver = get(getView(),code,InComeDetailsEntity.class,null,false);
         if (rxObserver == null)return;

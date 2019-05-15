@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.seven.lib_common.base.activity.BaseTitleActivity;
 import com.seven.lib_common.listener.OnClickListener;
 import com.seven.lib_common.stextview.TypeFaceView;
@@ -25,6 +27,7 @@ import com.seven.lib_opensource.event.ObjectsEvent;
 import com.seven.lib_router.Constants;
 import com.seven.lib_router.Variable;
 import com.seven.lib_router.router.RouterPath;
+import com.seven.lib_router.router.RouterUtils;
 import com.seven.module_home.R;
 import com.seven.module_home.R2;
 
@@ -41,6 +44,9 @@ import butterknife.BindView;
  */
 @Route(path = RouterPath.ACTIVITY_PAY)
 public class PayActivity extends BaseTitleActivity {
+
+    @Autowired(name = Constants.BundleConfig.NORMAL)
+    public boolean normal;
 
     public OrderEntity orderEntity;
 
@@ -69,6 +75,8 @@ public class PayActivity extends BaseTitleActivity {
     @Override
     protected void initView(Bundle savedInstanceState) {
 
+        ARouter.getInstance().inject(this);
+
         EventBus.getDefault().register(this);
 
         setTitleText(R.string.label_pay);
@@ -83,13 +91,16 @@ public class PayActivity extends BaseTitleActivity {
 
         orderEntity = (OrderEntity) intent.getSerializableExtra(Constants.BundleConfig.ENTITY);
 
+        if (normal)
+            appPayRl.setVisibility(View.VISIBLE);
+
         presenter = new ActHomePresenter(this, this);
 
         selectTab(alipayRl);
 
-        type = Constants.OrderConfig.PAY_ALI;
+        type = Constants.InterfaceConfig.PAY_ALI;
         payCountTv.setText(ResourceUtils.getFormatText(R.string.label_app_pay_count, Variable.getInstance().getTokenCount()));
-        payTv.setText(ResourceUtils.getFormatText(R.string.button_sdk_pay, FormatUtils.formatCurrencyD(orderEntity.getToken_price())));
+        payTv.setText(ResourceUtils.getFormatText(R.string.button_sdk_pay, FormatUtils.formatCurrencyD(orderEntity.getTotal())));
     }
 
     private void selectTab(View view) {
@@ -105,7 +116,7 @@ public class PayActivity extends BaseTitleActivity {
 
         if (view.getId() == R.id.alipay_rl) {
             selectTab(alipayRl);
-            type = Constants.OrderConfig.PAY_ALI;
+            type = Constants.InterfaceConfig.PAY_ALI;
         }
 
         if (view.getId() == R.id.wechat_pay_rl) {
@@ -116,15 +127,21 @@ public class PayActivity extends BaseTitleActivity {
             }
 
             selectTab(wxPayRl);
-            type = Constants.OrderConfig.PAY_WX;
+            type = Constants.InterfaceConfig.PAY_WX;
         }
 
         if (view.getId() == R.id.app_pay_rl) {
             selectTab(appPayRl);
-            type = Constants.OrderConfig.PAY_APP;
+            type = Constants.InterfaceConfig.PAY_APP;
+            payTv.setText(ResourceUtils.getFormatText(R.string.button_app_pay, FormatUtils.formatCurrencyD(orderEntity.getToken_price())));
         }
 
         if (view.getId() == R.id.pay_btn) {
+
+            if (type == Constants.InterfaceConfig.PAY_APP && !Variable.getInstance().isPayPassword()) {
+                RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_PAY_PASSWORD);
+                return;
+            }
 
             showLoadingDialog();
             presenter.orderPay(Constants.RequestConfig.ORDER_PAY, type, orderEntity.getOrder_sn(), orderEntity.getSubject());
@@ -149,6 +166,18 @@ public class PayActivity extends BaseTitleActivity {
                 @Override
                 public void onClick(View v, Object... objects) {
 
+                    RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_MINE_ORDER);
+
+                    ActivityStack.getInstance().finishActivity(CommodityListActivity.class);
+                    ActivityStack.getInstance().finishActivity(CommodityDetailsActivity.class);
+                    ActivityStack.getInstance().finishActivity(CommodityOrderActivity.class);
+                    onBackPressed();
+
+                }
+
+                @Override
+                public void dismiss() {
+
                 }
             }, type);
             resultDialog.setCancelable(false);
@@ -165,12 +194,12 @@ public class PayActivity extends BaseTitleActivity {
 
             case Constants.RequestConfig.ORDER_PAY:
 
-                if (type.equals(Constants.OrderConfig.PAY_ALI)) {
+                if (type.equals(Constants.InterfaceConfig.PAY_ALI)) {
                     AliPayEntity entity = (AliPayEntity) object;
                     PayUtils.getInstance().aliPay(entity.getPay_info());
                 }
 
-                if (type.equals(Constants.OrderConfig.PAY_WX)) {
+                if (type.equals(Constants.InterfaceConfig.PAY_WX)) {
 
                     WxPayEntity entity = (WxPayEntity) object;
 
@@ -179,7 +208,7 @@ public class PayActivity extends BaseTitleActivity {
 
                 }
 
-                if (type == Constants.OrderConfig.PAY_APP) {
+                if (type == Constants.InterfaceConfig.PAY_APP) {
                     dismissLoadingDialog();
                     ToastUtils.showToast(mContext, ResourceUtils.getText(R.string.hint_pay_success));
                     resultDialog(MallDialog.PAY_SUCCEED);
@@ -193,6 +222,7 @@ public class PayActivity extends BaseTitleActivity {
     public void onEvent(Event event) {
         switch (event.getWhat()) {
             case Constants.EventConfig.PAY_RESULT:
+
                 dismissLoadingDialog();
 
                 int status = (int) ((ObjectsEvent) event).getObjects()[0];

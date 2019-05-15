@@ -5,18 +5,14 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.seven.lib_common.base.activity.BaseTitleActivity;
 import com.seven.lib_common.stextview.TypeFaceView;
 import com.seven.lib_common.utils.FormatUtils;
-import com.seven.lib_common.utils.ResourceUtils;
-import com.seven.lib_common.utils.glide.GlideUtils;
-import com.seven.lib_model.builder.common.OrderAddBuilder;
+import com.seven.lib_model.builder.home.OrderAddBuilder;
 import com.seven.lib_model.model.home.CartEntity;
 import com.seven.lib_model.model.home.ContactDefaultEntity;
 import com.seven.lib_model.model.home.OrderEntity;
@@ -29,7 +25,6 @@ import com.seven.lib_opensource.event.MessageEvent;
 import com.seven.lib_opensource.event.ObjectsEvent;
 import com.seven.lib_router.Constants;
 import com.seven.lib_router.router.RouterPath;
-import com.seven.lib_router.router.RouterUtils;
 import com.seven.module_home.R;
 import com.seven.module_home.R2;
 import com.seven.module_home.adapter.OrderAdapter;
@@ -81,6 +76,8 @@ public class CommodityOrderActivity extends BaseTitleActivity {
 
     @Override
     protected void initView(Bundle savedInstanceState) {
+
+        EventBus.getDefault().register(this);
 
         setTitleText(R.string.label_commodity_order);
 
@@ -137,9 +134,9 @@ public class CommodityOrderActivity extends BaseTitleActivity {
 
             case Constants.RequestConfig.CONTACT_DEFAULT:
 
-                if(object==null)return;
+                if (object == null) return;
 
-                contactEntity= (ContactDefaultEntity) object;
+                contactEntity = (ContactDefaultEntity) object;
 
                 nameTv.setText(contactEntity.getContact_name());
                 mobileTv.setText(contactEntity.getContact_phone());
@@ -152,10 +149,11 @@ public class CommodityOrderActivity extends BaseTitleActivity {
 
                 if (object == null) return;
 
-                OrderEntity orderEntity= (OrderEntity) object;
+                OrderEntity orderEntity = (OrderEntity) object;
 
                 ARouter.getInstance().build(RouterPath.ACTIVITY_PAY)
-                        .withSerializable(Constants.BundleConfig.ENTITY,orderEntity)
+                        .withBoolean(Constants.BundleConfig.NORMAL, true)
+                        .withSerializable(Constants.BundleConfig.ENTITY, orderEntity)
                         .navigation();
 
                 break;
@@ -164,6 +162,15 @@ public class CommodityOrderActivity extends BaseTitleActivity {
     }
 
     public void btClick(View view) {
+
+        if (view.getId() == R.id.address_layout) {
+
+            ARouter.getInstance().build(RouterPath.ACTIVITY_ADDRESS)
+                    .withInt(Constants.BundleConfig.EVENT_CODE, Constants.EventConfig.ADDRESS)
+                    .navigation();
+
+        }
+
         if (view.getId() == R.id.payment_rl) {
 
             List<OrderAddBuilder.GoodsListBean> list = new ArrayList<>();
@@ -180,6 +187,24 @@ public class CommodityOrderActivity extends BaseTitleActivity {
             showLoadingDialog();
             presenter.orderAdd(Constants.RequestConfig.ORDER_ADD, contactEntity.getId(), listEntity.getFrom(),
                     listEntity.getFrom_ext(), list);
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(Event event) {
+        switch (event.getWhat()) {
+
+            case Constants.EventConfig.ADDRESS:
+
+                ContactDefaultEntity entity = (ContactDefaultEntity) ((ObjectsEvent) event).getObjects()[0];
+
+                nameTv.setText(entity.getContact_name());
+                mobileTv.setText(entity.getContact_phone());
+                addressTv.setText(entity.getAddress());
+                defaultRl.setVisibility(entity.getId() == contactEntity.getId() ?
+                        View.VISIBLE : View.GONE);
+
+                break;
         }
     }
 
@@ -208,6 +233,12 @@ public class CommodityOrderActivity extends BaseTitleActivity {
     @Override
     public void showToast(String msg) {
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
 }

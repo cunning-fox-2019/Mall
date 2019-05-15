@@ -11,6 +11,7 @@ import com.seven.lib_model.ApiManager;
 import com.seven.lib_model.BaseResult;
 import com.seven.lib_model.CommonObserver;
 import com.seven.lib_model.model.user.mine.PayAccountEntity;
+import com.seven.lib_router.Variable;
 import com.seven.module_user.R;
 import com.seven.module_user.R2;
 
@@ -83,6 +84,8 @@ public class UserSetPayAccountActivity extends BaseTitleActivity {
                     public void onNext(BaseResult baseResult) {
                         if (baseResult.getCode() == 1) {
                             ToastUtils.showToast(mContext, "设置成功");
+                            Variable.getInstance().setAliAccount(alipay.getText().toString());
+                            Variable.getInstance().setWxAccount(wechatPay.getText().toString());
                             finish();
                         } else {
                             ToastUtils.showToast(mContext, baseResult.getMessage());
