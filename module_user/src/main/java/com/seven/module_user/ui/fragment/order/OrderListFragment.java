@@ -169,7 +169,7 @@ public class OrderListFragment extends BaseFragment {
             LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
             recyclerView.init(layoutManager, new BaseQuickAdapter<OrderEntity, BaseViewHolder>(R.layout.item_order_list_layout, null) {
                 @Override
-                protected void convert(BaseViewHolder helper, OrderEntity item) {
+                protected void convert(BaseViewHolder helper, final OrderEntity item) {
                     GoodsListBean goods = item.getGoods_list().get(0);
                     helper.addOnClickListener(R.id.button_1)
                             .addOnClickListener(R.id.pay_btn)
@@ -204,6 +204,10 @@ public class OrderListFragment extends BaseFragment {
                     if (currentListType == 2 || currentListType == 3 || currentListType ==4){
                         helper.setGone(R.id.pay_btn,false);
                     }
+                    if (currentListType == 3){
+                        helper.setGone(R.id.check_wl,true);
+                    }
+                    helper.addOnClickListener(R.id.check_wl);
                 }
             }).setEmptyView(getEmptyView())
                     .setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -251,6 +255,12 @@ public class OrderListFragment extends BaseFragment {
                                             .withSerializable(Constants.BundleConfig.ENTITY,newOrder)
                                             .navigation();
                                 }
+                                if (view.getId() == R.id.check_wl){
+                                    ARouter.getInstance().build(RouterPath.ACTIVITY_LOGISTICS)
+                                            .withInt("orderId",entity.getId())
+                                            .navigation();
+                                }
+
                         }
                     });
         }
@@ -291,6 +301,6 @@ public class OrderListFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        getData();
+       // getData();
     }
 }
