@@ -8,6 +8,7 @@ import com.seven.lib_http.observer.HttpRxObservable;
 import com.seven.lib_http.observer.HttpRxObserver;
 import com.seven.lib_model.builder.common.PageBuilder;
 import com.seven.lib_model.builder.extension.BindingBuilder;
+import com.seven.lib_model.builder.extension.BuyBuilder;
 import com.seven.lib_model.builder.extension.InviteBuilder;
 import com.seven.lib_model.builder.extension.LevelBuilder;
 import com.seven.lib_model.builder.extension.ReceiveBuilder;
@@ -25,6 +26,7 @@ import com.seven.lib_model.model.extension.QuotaItem;
 import com.seven.lib_model.model.extension.RewardInfoLlistEntity;
 import com.seven.lib_model.model.extension.RewardListEntity;
 import com.seven.lib_model.model.extension.RewardLsitItemEntity;
+import com.seven.lib_model.model.model.OrderEntity;
 import com.trello.rxlifecycle2.android.ActivityEvent;
 
 import java.security.PublicKey;
@@ -127,5 +129,14 @@ public class ExActivityPresenter extends BasePresenter<IBaseView, BaseActivity> 
         if (rxObserver == null)return;
         HttpRxObservable.getObservable(RequestHelper.getInstance().getQuota(jsonStr),getActivity(),ActivityEvent.PAUSE).subscribe(rxObserver);
 
+    }
+
+    //生成报单订单
+    public void getOrder(int code,int contact_id){
+        BuyBuilder.Builder builder = new BuyBuilder.Builder();
+        BuyBuilder json = builder.contact_id(contact_id).build();
+        HttpRxObserver rxObserver = get(getView(),code, OrderEntity.class,null,false);
+        if (rxObserver ==null)return;
+        HttpRxObservable.getObservable(RequestHelper.getInstance().getOrder(new Gson().toJson(json)),getActivity(),ActivityEvent.PAUSE).subscribe(rxObserver);
     }
 }

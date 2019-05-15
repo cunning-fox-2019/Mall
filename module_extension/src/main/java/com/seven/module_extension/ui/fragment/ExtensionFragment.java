@@ -143,7 +143,8 @@ public class ExtensionFragment extends BaseFragment {
         String userInfo = SharedData.getInstance().getUserInfo();
         if (userInfo != null && !userInfo.equals("null")) {
             user = new Gson().fromJson(userInfo, UserEntity.class);
-            meProfitNum.setText(user.getPromotion_token_number() + "");
+            if (user == null)return;
+            meProfitNum.setText(user.getPromotion_token_number() != 0 &&String.valueOf(user.getPromotion_token_number())!=null?user.getPromotion_token_number()+"":"0");
             switch (user.getRole()) {
                 case 0:
                     meUserlevel.setBackgroundResource(R.drawable.me_normaluser);

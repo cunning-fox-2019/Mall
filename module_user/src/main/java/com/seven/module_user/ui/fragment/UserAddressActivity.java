@@ -153,7 +153,6 @@ public class UserAddressActivity extends BaseTitleActivity {
                 EventBus.getDefault().post(new ObjectsEvent(250, entity));
                 UserAddressActivity.this.finish();
             }
-            ToastUtils.showToast(mContext, entity.toString() + isChoose);
         }
     };
 

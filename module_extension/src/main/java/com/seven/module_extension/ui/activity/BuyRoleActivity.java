@@ -18,6 +18,7 @@ import com.seven.lib_model.model.extension.BuyRoleEntity;
 import com.seven.lib_model.model.user.UserEntity;
 import com.seven.lib_router.db.shard.SharedData;
 import com.seven.lib_router.router.RouterPath;
+import com.seven.lib_router.router.RouterUtils;
 import com.seven.module_extension.R;
 import com.seven.module_extension.R2;
 
@@ -176,7 +177,7 @@ public class BuyRoleActivity extends BaseTitleActivity {
                 ToastUtils.showToast(mContext, "请选择支付方式");
                 return;
             }
-
+            RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_PAY);
         }
     }
 }
