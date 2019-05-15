@@ -102,12 +102,6 @@ public class ReceiveBDActivity extends BaseTitleActivity {
             }else {
 
                 presenter.getReceive(2,String.valueOf(id),String.valueOf(contactId));
-//                ApiManager.getReceive(String.valueOf(id),String.valueOf(contactId)).subscribe(new CommonObserver<BaseResult>(){
-//                    @Override
-//                    public void onNext(BaseResult voidBaseResult) {
-//                        Log.e("xxxxxxH",voidBaseResult.getMessage());
-//                    }
-//                });
 
             }
         }

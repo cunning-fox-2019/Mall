@@ -4,11 +4,14 @@ package com.seven.lib_model.http;
 import com.seven.lib_http.retrofit.HttpResponse;
 
 import io.reactivex.Observable;
+import okhttp3.Request;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.http.Body;
 import retrofit2.http.Multipart;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 import retrofit2.http.Part;
 
 /**
@@ -180,5 +183,11 @@ public interface RetrofitService {
 
     @POST("promotion/quota/list")
     Observable<HttpResponse> getQuota(@Body RequestBody requestBody);
+
+    @POST("promotion/form/order/add")
+    Observable<HttpResponse> getOrder(@Body RequestBody requestBody);
+
+    @POST("promotion/role/order/add")
+    Observable<HttpResponse> buyRole(@Body RequestBody requestBody);
 }
 

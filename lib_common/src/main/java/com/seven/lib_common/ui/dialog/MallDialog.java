@@ -124,6 +124,9 @@ public class MallDialog extends BaseDialog {
 
         if (v.getId() == R.id.cancel_btn)
             listener.onCancel(v);
+        if (v.getId() == R.id.sure_btn){
+            listener.onClick(v);
+        }
 
         dismiss();
     }

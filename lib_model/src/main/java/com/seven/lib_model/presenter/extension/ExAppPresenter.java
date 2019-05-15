@@ -28,4 +28,6 @@ public class ExAppPresenter extends BasePresenter<IBaseView,BaseAppCompatActivit
         if (rxObserver == null)return;
         HttpRxObservable.getObservable(RequestHelper.getInstance().inComeDetails(jsonStr),getActivity(),ActivityEvent.PAUSE).subscribe(rxObserver);
     }
+
+
 }

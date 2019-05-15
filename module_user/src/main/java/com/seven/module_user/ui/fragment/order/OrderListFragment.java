@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
 import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
 import com.bigkoo.pickerview.view.OptionsPickerView;
@@ -19,13 +20,17 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.seven.lib_common.base.fragment.BaseFragment;
+import com.seven.lib_common.utils.ToastUtils;
 import com.seven.lib_common.utils.glide.GlideUtils;
 import com.seven.lib_model.ApiManager;
 import com.seven.lib_model.BaseResult;
+import com.seven.lib_model.CommonObserver;
+import com.seven.lib_model.model.user.CancelOrderEntity;
 import com.seven.lib_model.model.user.OrderEntity;
 import com.seven.lib_model.model.user.OrderListRequestEntity;
 import com.seven.lib_model.model.user.mine.CommonListPageEntity;
 import com.seven.lib_model.model.user.mine.GoodsListBean;
+import com.seven.lib_router.Constants;
 import com.seven.lib_router.router.RouterPath;
 import com.seven.lib_router.router.RouterUtils;
 import com.seven.module_user.R;
@@ -90,16 +95,29 @@ public class OrderListFragment extends BaseFragment {
 
     }
 
-    private void initWaitPay() {
-        List<String> cancelReasons = new ArrayList<>();
-        cancelReasons.add("原因1");
-        cancelReasons.add("原因2");
-        cancelReasons.add("原因3");
-        cancelReasons.add("原因4");
+    private void cancelOrder(int id,String comment){
+        CancelOrderEntity entity = new CancelOrderEntity();
+        entity.setComment(comment);
+        entity.setOrder_id(id);
+        ApiManager.cancelOrder(entity)
+                .subscribe(new CommonObserver<BaseResult>(){
+                    @Override
+                    public void onNext(BaseResult baseResult) {
+                        getData();
+                    }
+                });
+    }
+
+    private void initWaitPay(final int id) {
+        final List<String> cancelReasons = new ArrayList<>();
+        cancelReasons.add("不想买了");
+        cancelReasons.add("信息填写有误，重新拍");
+        cancelReasons.add("卖家缺货");
+        cancelReasons.add("其他原因");
         OptionsPickerView cancelReasonPickerView = new OptionsPickerBuilder(getActivity(), new OnOptionsSelectListener() {
             @Override
             public void onOptionsSelect(int options1, int options2, int options3, View v) {
-
+                    cancelOrder(id,cancelReasons.get(options1));
             }
         }).setContentTextSize(20)//设置滚轮文字大小
                 .setDividerColor(Color.LTGRAY)//设置分割线的颜色
@@ -161,8 +179,31 @@ public class OrderListFragment extends BaseFragment {
                             .setText(R.id.goods_number, "X" + goods.getNumber())
                             .setText(R.id.order_number_total, "共" + item.getGoods_list().size() + "件商品")
                             .setText(R.id.order_money_total, "合计：￥" + item.getTotal());
+                    String status = "";
+                    switch (item.getStatus()) {
+                        case 1:
+                            status = "待付款";
+                            break;
+                        case 2:
+                            status = "待发货";
+                            break;
+                        case 3:
+                            status = "待收货";
+                            break;
+                        case 4:
+                            status = "已完成";
+                            break;
+                        case 5:
+                            status = "已取消";
+                            break;
+                        default:
+                    }
+                    helper.setText(R.id.state, status);
                     ImageView imageView = helper.getView(R.id.goods_img);
                     GlideUtils.loadImage(mContext, goods.getGoods_thumb(), imageView);
+                    if (currentListType == 2 || currentListType == 3 || currentListType ==4){
+                        helper.setGone(R.id.pay_btn,false);
+                    }
                 }
             }).setEmptyView(getEmptyView())
                     .setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -188,17 +229,28 @@ public class OrderListFragment extends BaseFragment {
 //                            Intent intent = new Intent(getActivity(), UserOrderDetailActivity.class);
 //                            intent.putExtra("order_id",entity.getId());
 //                            startActivity(intent);
-                           RouterUtils.getInstance().routerWithString(RouterPath.ACTIVITY_MINE_SHOP_PAY, "order_id", String.valueOf(entity.getId()));
+                            RouterUtils.getInstance().routerWithString(RouterPath.ACTIVITY_MINE_SHOP_PAY, "order_id", String.valueOf(entity.getId()));
                         }
                     })
                     .addOnItemChildClickListener(new OnItemChildClickListener() {
                         @Override
                         public void onSimpleItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                            if (currentListType == 1) {
+                                OrderEntity entity = (OrderEntity)adapter.getData().get(position);
+                                GoodsListBean goods = entity.getGoods_list().get(0);
                                 if (view.getId() == R.id.button_1) {
-                                    initWaitPay();
+                                    initWaitPay(entity.getId());
                                 }
-                            }
+                                if (view.getId() == R.id.pay_btn){
+                                    com.seven.lib_model.model.home.OrderEntity newOrder = new com.seven.lib_model.model.home.OrderEntity();
+                                    newOrder.setOrder_sn(entity.getOrder_sn());
+                                    newOrder.setSubject(goods.getGoods_name());
+                                    newOrder.setToken_price(Double.parseDouble(entity.getTotal()));
+                                    newOrder.setTotal(Double.parseDouble(entity.getTotal()));
+                                    ARouter.getInstance().build(RouterPath.ACTIVITY_PAY)
+                                            .withBoolean(Constants.BundleConfig.NORMAL, false)
+                                            .withSerializable(Constants.BundleConfig.ENTITY,newOrder)
+                                            .navigation();
+                                }
                         }
                     });
         }
@@ -233,6 +285,12 @@ public class OrderListFragment extends BaseFragment {
 
     private void onLoadMore() {
         currentPage++;
+        getData();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         getData();
     }
 }

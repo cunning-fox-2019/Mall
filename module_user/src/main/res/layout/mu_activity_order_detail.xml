@@ -63,6 +63,7 @@
                 android:layout_marginTop="8dp"
                 android:background="@android:color/white"
                 android:orientation="horizontal"
+                android:gravity="center_vertical"
                 android:paddingLeft="@dimen/margin_16"
                 android:paddingRight="@dimen/margin_16">
 
@@ -71,6 +72,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="运费"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
                     android:textColor="#1e1d1d"
                     android:textSize="14sp" />
 
@@ -78,7 +81,7 @@
                     android:id="@+id/express_fee"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="$10.00"
+                    android:text="包邮"
                     android:textColor="#1e1d1d"
                     android:textSize="14sp" />
             </LinearLayout>
@@ -114,6 +117,7 @@
                 android:layout_marginTop="1dp"
                 android:background="@android:color/white"
                 android:orientation="horizontal"
+                android:gravity="center_vertical"
                 android:paddingLeft="@dimen/margin_16"
                 android:paddingRight="@dimen/margin_16">
 
@@ -129,7 +133,9 @@
                     android:id="@+id/pay_money"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="$10.00"
+                    android:text="包邮"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
                     android:textColor="#136ee8"
                     android:textSize="14sp" />
             </LinearLayout>

@@ -5,22 +5,31 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.google.gson.Gson;
 import com.seven.lib_common.base.activity.BaseTitleActivity;
 import com.seven.lib_common.stextview.TypeFaceView;
+import com.seven.lib_common.utils.ToastUtils;
 import com.seven.lib_model.ApiManager;
 import com.seven.lib_model.BaseResult;
 import com.seven.lib_model.model.extension.BdGoodsEntity;
 import com.seven.lib_model.model.extension.GoodsItemEntity;
+import com.seven.lib_model.model.home.OrderEntity;
+import com.seven.lib_model.model.user.UserEntity;
 import com.seven.lib_model.model.user.mine.AddressEntity;
+import com.seven.lib_model.presenter.extension.ExActivityPresenter;
 import com.seven.lib_opensource.event.Event;
 import com.seven.lib_opensource.event.ObjectsEvent;
 import com.seven.lib_router.Constants;
+import com.seven.lib_router.Variable;
+import com.seven.lib_router.db.shard.SharedData;
 import com.seven.lib_router.router.RouterPath;
 import com.seven.lib_router.router.RouterUtils;
 import com.seven.module_extension.R;
@@ -42,7 +51,8 @@ import io.reactivex.schedulers.Schedulers;
 
 @Route(path = RouterPath.ACTIVITY_BUY_BD)
 public class BuyActivity extends BaseTitleActivity {
-
+    @Autowired(name = Constants.BundleConfig.EVENT_CODE)
+    int code = 0;
 
     @BindView(R2.id.me_buy_bd_rv)
     RecyclerView meBuyBdRv;
@@ -57,6 +67,11 @@ public class BuyActivity extends BaseTitleActivity {
     @BindView(R2.id.me_buy_bd_btn)
     TypeFaceView meBuyBdBtn;
     private BuyBdAdapter adapter;
+    private String shopIds = "";
+    ExActivityPresenter presenter;
+    UserEntity entity;
+    private OrderEntity orderEntity;
+    AddressEntity addressEntity;
 
     @Override
     protected int getLayoutId() {
@@ -73,7 +88,26 @@ public class BuyActivity extends BaseTitleActivity {
                     .navigation();
         }
         if (view.getId() == R.id.me_buy_bd_btn) {
+            if (addressEntity != null){
+                presenter.getOrder(1,addressEntity.getId());
+            }else {
+                ToastUtils.showToast(mContext,"请选择地址");
+            }
+        }
+    }
 
+    @Override
+    public void result(int code, Boolean hasNextPage, String response, Object object) {
+        super.result(code, hasNextPage, response, object);
+        if (code == 1){
+            if (object == null)return;
+            orderEntity = (OrderEntity) object;
+            if (orderEntity != null){
+                ARouter.getInstance().build(RouterPath.ACTIVITY_PAY)
+                        .withBoolean(Constants.BundleConfig.NORMAL, false)
+                        .withSerializable(Constants.BundleConfig.ENTITY,orderEntity)
+                        .navigation();
+            }
         }
     }
 
@@ -82,6 +116,9 @@ public class BuyActivity extends BaseTitleActivity {
         statusBar = StatusBar.LIGHT;
         EventBus.getDefault().register(this);
         setTitleText(R.string.me_buy_bd_title);
+        presenter = new ExActivityPresenter(this,this);
+        String userInfo = SharedData.getInstance().getUserInfo();
+        entity = new Gson().fromJson(userInfo,UserEntity.class);
         meBuyBdLl.setOnClickListener(this);
         meBuyBdBtn.setOnClickListener(this);
         ApiManager.getBdGoods()
@@ -148,20 +185,13 @@ public class BuyActivity extends BaseTitleActivity {
 
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
-
     @SuppressLint("SetTextI18n")
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(Event event) {
         if (event.getWhat() == Constants.EventConfig.BUY_BD) {
-            AddressEntity entity = (AddressEntity) ((ObjectsEvent) event).getObjects()[0];
-            meBuyBdAddress1.setText(entity.getContact_name() + " " + entity.getContact_phone());
-            meBuyBdAddress2.setText(entity.getProvince_name() + entity.getCity_name() + entity.getDistrict_name() + entity.getAddress());
+            addressEntity = (AddressEntity) ((ObjectsEvent) event).getObjects()[0];
+            meBuyBdAddress1.setText(addressEntity.getContact_name() + " " + addressEntity.getContact_phone());
+            meBuyBdAddress2.setText(addressEntity.getProvince_name() + addressEntity.getCity_name() + addressEntity.getDistrict_name() + addressEntity.getAddress());
         }
     }
 
