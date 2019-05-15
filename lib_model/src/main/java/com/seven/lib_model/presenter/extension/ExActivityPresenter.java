@@ -142,7 +142,7 @@ public class ExActivityPresenter extends BasePresenter<IBaseView, BaseActivity> 
         if (type.equals("alipay")){
             rxObserver = get(getView(),code, AliPayEntity.class,null,false);
         }else {
-            rxObserver =  get(getView(),code, WxPayEntity.class,null,false);
+            rxObserver =  get(getView(),code, WxPayEntity.class,"pay_info",false);
         }
         if (rxObserver == null)return;
         HttpRxObservable.getObservable(RequestHelper.getInstance().buyRole(new Gson().toJson(json)),getActivity(),ActivityEvent.PAUSE).subscribe(rxObserver);

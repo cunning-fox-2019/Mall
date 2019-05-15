@@ -15,6 +15,7 @@ import com.seven.lib_model.model.extension.QuotaEntity;
 import com.seven.lib_model.model.extension.ReceiveGoodsEntity;
 import com.seven.lib_model.model.extension.RewardListEntity;
 import com.seven.lib_model.model.extension.RewardRuleEntity;
+import com.seven.lib_model.model.user.CancelOrderEntity;
 import com.seven.lib_model.model.user.LoginEntity;
 import com.seven.lib_model.model.user.OrderEntity;
 import com.seven.lib_model.model.user.OrderListRequestEntity;
@@ -224,6 +225,9 @@ public class ApiManager {
         @POST("promotion/form/reward/receive")
         Observable<BaseResult> getReceive(@Query("ids") String ids, @Query("contact_id") String contact_id);
 
+        @POST("order/cancel")
+        Observable<BaseResult> cancelOrder(@Body CancelOrderEntity entity);
+
     }
 
     public static Observable<BaseResult<TokenEntity>> login(LoginEntity entity) {
@@ -330,6 +334,10 @@ public class ApiManager {
 
     public static Observable<BaseResult<TokenDescEntity>> getTokenDesc() {
         return subScribe(apiManagerService.getTokenDesc(new SB(2)));
+    }
+
+    public static Observable<BaseResult> cancelOrder(CancelOrderEntity entity){
+        return subScribe(apiManagerService.cancelOrder(entity));
     }
 
 }
