@@ -89,9 +89,7 @@ public class BuyActivity extends BaseTitleActivity {
         }
         if (view.getId() == R.id.me_buy_bd_btn) {
             if (addressEntity != null){
-                //EventBus.getDefault().post(new ObjectsEvent(code, shopIds));
-                presenter.getOrder(1,entity.getId());
-                //RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_PAY);
+                presenter.getOrder(1,addressEntity.getId());
             }else {
                 ToastUtils.showToast(mContext,"请选择地址");
             }
@@ -105,14 +103,9 @@ public class BuyActivity extends BaseTitleActivity {
             if (object == null)return;
             orderEntity = (OrderEntity) object;
             if (orderEntity != null){
-                OrderEntity newOrder = new OrderEntity();
-                newOrder.setOrder_sn(orderEntity.getOrder_sn());
-                newOrder.setTotal(orderEntity.getTotal());
-                newOrder.setSubject(orderEntity.getSubject());
-                newOrder.setToken_price(orderEntity.getToken_price());
                 ARouter.getInstance().build(RouterPath.ACTIVITY_PAY)
                         .withBoolean(Constants.BundleConfig.NORMAL, false)
-                        .withSerializable(Constants.BundleConfig.ENTITY,newOrder)
+                        .withSerializable(Constants.BundleConfig.ENTITY,orderEntity)
                         .navigation();
             }
         }
@@ -122,10 +115,10 @@ public class BuyActivity extends BaseTitleActivity {
     protected void initView(Bundle savedInstanceState) {
         statusBar = StatusBar.LIGHT;
         EventBus.getDefault().register(this);
+        setTitleText(R.string.me_buy_bd_title);
         presenter = new ExActivityPresenter(this,this);
         String userInfo = SharedData.getInstance().getUserInfo();
         entity = new Gson().fromJson(userInfo,UserEntity.class);
-        setTitleText(R.string.me_buy_bd_title);
         meBuyBdLl.setOnClickListener(this);
         meBuyBdBtn.setOnClickListener(this);
         ApiManager.getBdGoods()

@@ -282,7 +282,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_toLeftOf="@+id/me_inyerview_arrow"
-                    android:text="已成功邀请28人"
+                    android:text="已成功邀请0人"
                     android:textColor="#a4a4a4"
                     android:textSize="11sp" />
 

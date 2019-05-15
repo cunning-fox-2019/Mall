@@ -6,30 +6,24 @@ import com.seven.lib_common.mvp.presenter.BasePresenter;
 import com.seven.lib_common.mvp.view.IBaseView;
 import com.seven.lib_http.observer.HttpRxObservable;
 import com.seven.lib_http.observer.HttpRxObserver;
-import com.seven.lib_model.builder.common.PageBuilder;
 import com.seven.lib_model.builder.extension.BindingBuilder;
 import com.seven.lib_model.builder.extension.BuyBuilder;
+import com.seven.lib_model.builder.extension.BuyRoleBuilder;
 import com.seven.lib_model.builder.extension.InviteBuilder;
 import com.seven.lib_model.builder.extension.LevelBuilder;
 import com.seven.lib_model.builder.extension.ReceiveBuilder;
 import com.seven.lib_model.builder.extension.RewardBilder;
 import com.seven.lib_model.builder.extension.RewardListBuilder;
 import com.seven.lib_model.http.RequestHelper;
-import com.seven.lib_model.model.extension.BindEntity;
 import com.seven.lib_model.model.extension.BindItemEntity;
 import com.seven.lib_model.model.extension.GoodsItemEntity;
-import com.seven.lib_model.model.extension.InComeDetailsEntity;
 import com.seven.lib_model.model.extension.LevelEntity;
 import com.seven.lib_model.model.extension.MyInterViewEntity;
-import com.seven.lib_model.model.extension.QuotaEntity;
 import com.seven.lib_model.model.extension.QuotaItem;
 import com.seven.lib_model.model.extension.RewardInfoLlistEntity;
-import com.seven.lib_model.model.extension.RewardListEntity;
-import com.seven.lib_model.model.extension.RewardLsitItemEntity;
-import com.seven.lib_model.model.model.OrderEntity;
+import com.seven.lib_model.model.home.AliPayEntity;
+import com.seven.lib_model.model.home.WxPayEntity;
 import com.trello.rxlifecycle2.android.ActivityEvent;
-
-import java.security.PublicKey;
 
 /**
  * Created by xxxxxxH on 2019/5/3.
@@ -135,8 +129,22 @@ public class ExActivityPresenter extends BasePresenter<IBaseView, BaseActivity> 
     public void getOrder(int code,int contact_id){
         BuyBuilder.Builder builder = new BuyBuilder.Builder();
         BuyBuilder json = builder.contact_id(contact_id).build();
-        HttpRxObserver rxObserver = get(getView(),code, OrderEntity.class,null,false);
+        HttpRxObserver rxObserver = get(getView(),code, com.seven.lib_model.model.home.OrderEntity.class,null,false);
         if (rxObserver ==null)return;
         HttpRxObservable.getObservable(RequestHelper.getInstance().getOrder(new Gson().toJson(json)),getActivity(),ActivityEvent.PAUSE).subscribe(rxObserver);
+    }
+
+    //生成角色订单
+    public void buyRole(int code,int role,String type){
+        BuyRoleBuilder.Builder builder = new BuyRoleBuilder.Builder();
+        BuyRoleBuilder json = builder.role(role).type(type).build();
+        HttpRxObserver rxObserver = null;
+        if (type.equals("alipay")){
+            rxObserver = get(getView(),code, AliPayEntity.class,null,false);
+        }else {
+            rxObserver =  get(getView(),code, WxPayEntity.class,null,false);
+        }
+        if (rxObserver == null)return;
+        HttpRxObservable.getObservable(RequestHelper.getInstance().buyRole(new Gson().toJson(json)),getActivity(),ActivityEvent.PAUSE).subscribe(rxObserver);
     }
 }

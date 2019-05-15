@@ -65,8 +65,6 @@ import io.reactivex.schedulers.Schedulers;
 
 @Route(path = RouterPath.FRAGMENT_EXTENSION)
 public class ExtensionFragment extends BaseFragment {
-
-
     @BindView(R2.id.me_userlevel)
     ImageView meUserlevel;
     @BindView(R2.id.me_profit_details)
@@ -126,7 +124,12 @@ public class ExtensionFragment extends BaseFragment {
     public void init(Bundle savedInstanceState) {
         EventBus.getDefault().register(this);
         presenter = new ExFragmentPresenter(this, this);
-        getData(0);
+        UserEntity userEntity = new Gson().fromJson(SharedData.getInstance().getUserInfo(),UserEntity.class);
+        if (userEntity == null) {
+            RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_LOGIN);
+        }else {
+            getData(0);
+        }
         meProfitDetails.setOnClickListener(this);
         me_buy_up_rl.setOnClickListener(this);
         me_ext_up_rl.setOnClickListener(this);
@@ -143,8 +146,8 @@ public class ExtensionFragment extends BaseFragment {
         String userInfo = SharedData.getInstance().getUserInfo();
         if (userInfo != null && !userInfo.equals("null")) {
             user = new Gson().fromJson(userInfo, UserEntity.class);
-            if (user == null)return;
-            meProfitNum.setText(user.getPromotion_token_number() != 0 &&String.valueOf(user.getPromotion_token_number())!=null?user.getPromotion_token_number()+"":"0");
+            if (user == null) return;
+            meProfitNum.setText(user.getPromotion_token_number() != 0 && String.valueOf(user.getPromotion_token_number()) != null ? user.getPromotion_token_number() + "" : "0");
             switch (user.getRole()) {
                 case 0:
                     meUserlevel.setBackgroundResource(R.drawable.me_normaluser);
@@ -194,17 +197,17 @@ public class ExtensionFragment extends BaseFragment {
                                         .withInt("id", id)
                                         .navigation();
                             } else if (list.get(position).getReward_type() == 1 ||
-                                    list.get(position).getReward_type() == 2||
-                                    list.get(position).getReward_type() == 7||
-                                    list.get(position).getReward_type() == 8){
+                                    list.get(position).getReward_type() == 2 ||
+                                    list.get(position).getReward_type() == 7 ||
+                                    list.get(position).getReward_type() == 8) {
                                 ARouter.getInstance().build(RouterPath.ACTIVITY_REWARD_LIST)
                                         .withInt("id", id)
                                         .navigation();
-                            }else if (list.get(position).getReward_type() == 4||
-                                    list.get(position).getReward_type() == 5){
+                            } else if (list.get(position).getReward_type() == 4 ||
+                                    list.get(position).getReward_type() == 5) {
                                 ARouter.getInstance().build(RouterPath.ACTIVITY_QUOTA)
                                         .withInt("id", id)
-                                        .withInt("type",list.get(position).getReward_type())
+                                        .withInt("type", list.get(position).getReward_type())
                                         .navigation();
                             }
                         }

@@ -209,7 +209,7 @@ public class ApiManager {
         Observable<BaseResult<RewardListEntity>> rewardList();
 
         @POST("promotion/token/list")
-        Observable<BaseResult<InComeDetailsEntity>> inComeDetails(@Query("page") int page, @Query("page_size") int page_size,@Query("status") String status);
+        Observable<BaseResult<InComeDetailsEntity>> inComeDetails(@Query("page") int page, @Query("page_size") int page_size, @Query("status") String status);
 
         @POST("article/info")
         Observable<HttpResponse> getLevel(@Body RequestBody requestBody);
@@ -222,7 +222,7 @@ public class ApiManager {
         Observable<BaseResult<TokenDescEntity>> getTokenDesc(@Body SB sb);
 
         @POST("promotion/form/reward/receive")
-        Observable<BaseResult> getReceive(@Query("ids") String ids,@Query("contact_id") String contact_id);
+        Observable<BaseResult> getReceive(@Query("ids") String ids, @Query("contact_id") String contact_id);
 
     }
 
@@ -315,19 +315,20 @@ public class ApiManager {
         return subScribe(apiManagerService.rewardList());
     }
 
-    public static Observable<BaseResult<InComeDetailsEntity>> inComeDetails(int page, int page_size,String status) {
-        return subScribe(apiManagerService.inComeDetails(page, page_size,status));
+    public static Observable<BaseResult<InComeDetailsEntity>> inComeDetails(int page, int page_size, String status) {
+        return subScribe(apiManagerService.inComeDetails(page, page_size, status));
     }
-    public static  Observable<BaseResult> getReceive(String ids,String contact_id){
-        return subScribe(apiManagerService.getReceive(ids,contact_id));
+
+    public static Observable<BaseResult> getReceive(String ids, String contact_id) {
+        return subScribe(apiManagerService.getReceive(ids, contact_id));
     }
 
 
-    public static Observable<BaseResult> daskgja(String id){
+    public static Observable<BaseResult> daskgja(String id) {
         return subScribe(apiManagerService.kfabf(id));
     }
 
-    public static Observable<BaseResult<TokenDescEntity>> getTokenDesc(){
+    public static Observable<BaseResult<TokenDescEntity>> getTokenDesc() {
         return subScribe(apiManagerService.getTokenDesc(new SB(2)));
     }
 

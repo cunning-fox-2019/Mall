@@ -186,5 +186,8 @@ public interface RetrofitService {
 
     @POST("promotion/form/order/add")
     Observable<HttpResponse> getOrder(@Body RequestBody requestBody);
+
+    @POST("promotion/role/order/add")
+    Observable<HttpResponse> buyRole(@Body RequestBody requestBody);
 }
 

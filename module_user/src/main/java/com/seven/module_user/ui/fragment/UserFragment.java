@@ -100,8 +100,6 @@ public class UserFragment extends BaseFragment {
                         } else {
                             RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_LOGIN);
                         }
-                        Log.e("userInfo", SharedData.getInstance().getUserInfo());
-                        Log.e("token", SharedData.getInstance().getToken());
                     }
 
                     @Override
