@@ -129,6 +129,8 @@ public class ExtensionFragment extends BaseFragment {
             RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_LOGIN);
         }else {
             getData(0);
+            setUserData();
+            getRewardList();
         }
         meProfitDetails.setOnClickListener(this);
         me_buy_up_rl.setOnClickListener(this);
@@ -137,8 +139,7 @@ public class ExtensionFragment extends BaseFragment {
         meBuyBd.setOnClickListener(this);
         meBuyInterview.setOnClickListener(this);
         meTitleRight.setOnClickListener(this);
-        setUserData();
-        getRewardList();
+
 
     }
 
@@ -147,6 +148,7 @@ public class ExtensionFragment extends BaseFragment {
         if (userInfo != null && !userInfo.equals("null")) {
             user = new Gson().fromJson(userInfo, UserEntity.class);
             if (user == null) return;
+            meInterviewpeo.setText(user.getInvite_number()+"");
             meProfitNum.setText(user.getPromotion_token_number() != 0 && String.valueOf(user.getPromotion_token_number()) != null ? user.getPromotion_token_number() + "" : "0");
             switch (user.getRole()) {
                 case 0:
