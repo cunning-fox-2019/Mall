@@ -119,7 +119,7 @@ public class UserTokenActivity extends BaseAppCompatActivity {
 
     private void getData() {
 
-        ApiManager.inComeDetails(page, 20, "")
+        ApiManager.inComeDetails(page, 200, "")
                 .subscribe(new CommonObserver<BaseResult<InComeDetailsEntity>>() {
                     @Override
                     public void onNext(BaseResult<InComeDetailsEntity> inComeDetailsEntityBaseResult) {
@@ -145,13 +145,6 @@ public class UserTokenActivity extends BaseAppCompatActivity {
                         @Override
                         public void onRefresh() {
                             page = 1;
-                            getData();
-                        }
-                    })
-                    .setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
-                        @Override
-                        public void onLoadMoreRequested() {
-                            page++;
                             getData();
                         }
                     });

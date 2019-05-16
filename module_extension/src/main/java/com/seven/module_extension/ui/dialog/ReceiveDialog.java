@@ -50,7 +50,7 @@ public class ReceiveDialog extends BaseDialog {
 
         }
         if (view.getId() == R.id.me_not_vip_ok){
-
+            listener.onClick(view);
         }
         dismiss();
     }
