@@ -203,8 +203,9 @@ public class ApiManager {
         @POST("user/pay_password/reset")
         Observable<BaseResult> modifyPayPassword(@Body ResetPasswordEntity entity);
 
+        @Multipart
         @POST("image/upload")
-        Observable<BaseResult<DTEntity>> upLoad(@Body MultipartBody part);
+        Observable<BaseResult<DTEntity>> upLoad(@Part MultipartBody.Part part, @Part("scene") RequestBody scene);
 
         @POST("promotion/reward/list")
         Observable<BaseResult<RewardListEntity>> rewardList();
@@ -311,8 +312,8 @@ public class ApiManager {
         return subScribe(apiManagerService.modifyPayPassword(entity));
     }
 
-    public static Observable<BaseResult<DTEntity>> upLoad(MultipartBody part) {
-        return subScribe(apiManagerService.upLoad(part));
+    public static Observable<BaseResult<DTEntity>> upLoad(MultipartBody.Part part,RequestBody body) {
+        return subScribe(apiManagerService.upLoad(part,body));
     }
 
     public static Observable<BaseResult<RewardListEntity>> rewardList() {
