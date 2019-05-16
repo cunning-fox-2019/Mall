@@ -411,7 +411,7 @@ public class EditUserInfoActivity extends BaseTitleActivity implements
 //        builder.setType(MultipartBody.FORM);
 //        builder.addFormDataPart("scene", "test");
 //        MultipartBody body = builder.build();
-        //
+        //111
 
         RequestBody requestFile = RequestBody.create(MediaType.parse("image/jpeg"), file);
         MultipartBody.Part part = MultipartBody.Part.createFormData("file", file.getName(), requestFile);
