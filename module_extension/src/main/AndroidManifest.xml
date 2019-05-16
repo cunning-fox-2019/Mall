@@ -10,5 +10,6 @@
         <activity android:name=".ui.activity.ReceiveBDActivity" />
         <activity android:name=".ui.activity.QuotaActivity" />
         <activity android:name=".ui.activity.BindActivity" />
+        <activity android:name=".ui.activity.UpActivity" />
     </application>
 </manifest>

@@ -66,6 +66,7 @@ public class UserFragment extends BaseFragment {
     ImageView vipLv;
 
 
+
     @Override
     public int getContentViewId() {
         return R.layout.mu_fragment_user;

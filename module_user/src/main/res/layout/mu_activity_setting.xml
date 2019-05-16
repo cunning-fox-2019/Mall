@@ -17,6 +17,10 @@
         android:text="更改登陆密码"
         android:textColor="#000" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></LinearLayout>
+
     <TextView
         android:id="@+id/lp_payment_password"
         android:layout_width="match_parent"
@@ -34,12 +38,42 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_4"
+        android:background="@drawable/selector_white_btn"
         android:drawableRight="@drawable/more"
         android:gravity="center_vertical"
         android:padding="@dimen/padding_16"
         android:text="设置收款账号"
-        android:background="@drawable/selector_white_btn"
         android:textColor="#000" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_4"
+        android:background="@drawable/selector_white_btn"
+        android:padding="@dimen/padding_16">
+
+        <TextView
+            android:id="@+id/invite_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:gravity="center_vertical"
+            android:text="邀请码"
+            android:textColor="#000" />
+
+        <TextView
+            android:id="@+id/invite_code"
+            android:layout_toRightOf="@+id/invite_txt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:drawableRight="@drawable/more"
+            android:gravity="center_vertical|right"
+            android:text="邀请码"
+            android:textColor="#000" />
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/cancel_account"

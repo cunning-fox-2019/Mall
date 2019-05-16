@@ -37,6 +37,7 @@ public class RouterPath {
     public static final String ACTIVITY_BD_LIST = "/extension/ReceiveBDActivity";
     public static final String ACTIVITY_QUOTA = "/extension/QuotaActivity";
     public static final String ACTIVITY_BIND = "/extension/BindActivity";
+    public static final String ACTIVITY_UP = "/extension/UpActivity";
 
     /* module model */
     public static final String FRAGMENT_MODEL = "/model/ModelFragment";
