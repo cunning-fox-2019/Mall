@@ -124,10 +124,10 @@ public class ExtensionFragment extends BaseFragment {
     public void init(Bundle savedInstanceState) {
         EventBus.getDefault().register(this);
         presenter = new ExFragmentPresenter(this, this);
-        UserEntity userEntity = new Gson().fromJson(SharedData.getInstance().getUserInfo(),UserEntity.class);
+        UserEntity userEntity = new Gson().fromJson(SharedData.getInstance().getUserInfo(), UserEntity.class);
         if (userEntity == null) {
             RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_LOGIN);
-        }else {
+        } else {
             getData(0);
             setUserData();
             getRewardList();
@@ -148,7 +148,7 @@ public class ExtensionFragment extends BaseFragment {
         if (userInfo != null && !userInfo.equals("null")) {
             user = new Gson().fromJson(userInfo, UserEntity.class);
             if (user == null) return;
-            meInterviewpeo.setText(user.getInvite_number()+"");
+            meInterviewpeo.setText("已成功邀请" + user.getInvite_number() + "人");
             meProfitNum.setText(user.getPromotion_token_number() != 0 && String.valueOf(user.getPromotion_token_number()) != null ? user.getPromotion_token_number() + "" : "0");
             switch (user.getRole()) {
                 case 0:
