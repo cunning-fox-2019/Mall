@@ -273,7 +273,7 @@ public class EditUserInfoActivity extends BaseTitleActivity {
 //                }
 //                cursor.close();
 //                GlideUtils.loadCircleImage(mContext, path, user_photo_img);
-                presenter.upload(Constants.RequestConfig.UPLOAD, file.getPath(), Constants.InterfaceConfig.UPLOAD_AVATAR);
+                presenter.upload(Constants.RequestConfig.UPLOAD, PicCropUri.getEncodedPath(), Constants.InterfaceConfig.UPLOAD_AVATAR);
                 break;
             case 10010:
                 //拍照
@@ -384,10 +384,10 @@ public class EditUserInfoActivity extends BaseTitleActivity {
 
     private void upLoad(File file) {
         MultipartBody.Builder builder = new MultipartBody.Builder();
-        RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), file);
+        RequestBody requestBody = RequestBody.create(MediaType.parse("image/jpeg"), file);
         builder.addFormDataPart("image", file.getName(), requestBody);
         builder.setType(MultipartBody.FORM);
-        builder.addFormDataPart("scene", "");
+        builder.addFormDataPart("scene", Constants.InterfaceConfig.UPLOAD_AVATAR);
         MultipartBody body = builder.build();
         ApiManager.upLoad(body)
                 .subscribe(new CommonObserver<BaseResult<DTEntity>>() {
