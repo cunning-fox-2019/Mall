@@ -77,8 +77,6 @@ public class EditUserInfoActivity extends BaseTitleActivity {
     private Uri PicCropUri;
     private String currentUrl = "";
 
-    ActModelPresenter presenter;
-
     @Override
     public void showLoading() {
         showLoadingDialog();
@@ -106,7 +104,6 @@ public class EditUserInfoActivity extends BaseTitleActivity {
         userNickName.setText(entity.getUsername());
         chooseSex.setText(entity.getSex().equals("male") ? "男" : "女");
         GlideUtils.loadCircleImage(mContext, entity.getAvatar(), user_photo_img);
-        presenter = new ActModelPresenter(this,this);
     }
 
     @Override
@@ -253,7 +250,7 @@ public class EditUserInfoActivity extends BaseTitleActivity {
         switch (requestCode) {
             case 10086:
                 //选择照片
-                if (data == null)return;
+                if (data == null) return;
                 Uri uri = data.getData();
                 String realUri = uri2filePath(uri, mContext);
                 File file = new File(realUri);
@@ -261,19 +258,7 @@ public class EditUserInfoActivity extends BaseTitleActivity {
                 PicCropUri = getTargetImageUri(false);
                 //cropImg(PicUri, PicCropUri);
                 GlideUtils.loadCircleImage(mContext, PicUri.getPath(), user_photo_img);
-//                upLoad(file);
-//                Uri originalUri = data.getData();        //获得图片的uri
-//                String[] proj = {MediaStore.Images.Media.DATA};
-//
-//                Cursor cursor = getContentResolver().query(originalUri, proj, null, null, null);
-//                String path = "";
-//                if (cursor.moveToFirst()) {
-//                    int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-//                    path = cursor.getString(column_index);
-//                }
-//                cursor.close();
-//                GlideUtils.loadCircleImage(mContext, path, user_photo_img);
-                presenter.upload(Constants.RequestConfig.UPLOAD, PicCropUri.getEncodedPath(), Constants.InterfaceConfig.UPLOAD_AVATAR);
+                upLoad(file);
                 break;
             case 10010:
                 //拍照
@@ -284,22 +269,13 @@ public class EditUserInfoActivity extends BaseTitleActivity {
                 currentUrl = PicCropUri.getPath();
                 GlideUtils.loadCircleImage(mContext, currentUrl, user_photo_img);
                 File file1 = new File(currentUrl);
-//                upLoad(file1);
-                presenter.upload(Constants.RequestConfig.UPLOAD, file1.getPath(), Constants.InterfaceConfig.UPLOAD_AVATAR);
+                upLoad(file1);
                 break;
 
         }
 
     }
 
-    @Override
-    public void result(int code, Boolean hasNextPage, String response, Object object) {
-        super.result(code, hasNextPage, response, object);
-        if (code == Constants.RequestConfig.UPLOAD){
-            if (object == null) return;
-            UploadEntity  uploadEntity= (UploadEntity) object;
-        }
-    }
 
     public void cropImg(Uri sourceUri, Uri targetUri) {
         int width = getResources().getDisplayMetrics().widthPixels;
@@ -383,13 +359,11 @@ public class EditUserInfoActivity extends BaseTitleActivity {
     }
 
     private void upLoad(File file) {
-        MultipartBody.Builder builder = new MultipartBody.Builder();
-        RequestBody requestBody = RequestBody.create(MediaType.parse("image/jpeg"), file);
-        builder.addFormDataPart("image", file.getName(), requestBody);
-        builder.setType(MultipartBody.FORM);
-        builder.addFormDataPart("scene", Constants.InterfaceConfig.UPLOAD_AVATAR);
-        MultipartBody body = builder.build();
-        ApiManager.upLoad(body)
+
+        RequestBody requestFile = RequestBody.create(MediaType.parse("image/jpeg"), file);
+        MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName(), requestFile);
+        RequestBody scene = RequestBody.create(MediaType.parse("imageData"), "");
+        ApiManager.upLoad(body, scene)
                 .subscribe(new CommonObserver<BaseResult<DTEntity>>() {
                     @Override
                     public void onNext(BaseResult<DTEntity> baseResult) {
