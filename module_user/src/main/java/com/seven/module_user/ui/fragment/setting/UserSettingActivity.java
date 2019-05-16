@@ -76,6 +76,7 @@ public class UserSettingActivity extends BaseTitleActivity {
         } else if (view == paymentAccount) {
             startActivity(new Intent(mContext, UserSetPayAccountActivity.class));
         } else if (view == cancelAccount) {
+            //
             ToastUtils.showToast(mContext, "注销成功");
         }
     }
