@@ -26,7 +26,7 @@
         android:drawableRight="@drawable/more"
         android:gravity="center_vertical"
         android:padding="@dimen/padding_16"
-        android:text="设置令牌支付密码"
+        android:text="设置交易密码"
         android:textColor="#000" />
 
     <TextView
