@@ -29,9 +29,9 @@ public class MallApplication extends SevenApplication {
     public static final int MAX_CODE = 0;
     public static final int EVENT_CODE = 10001;
 
-        public static final String BASE_URL = "http://zhongfu.lerqin.com/";
+       // public static final String BASE_URL = "http://zhongfu.lerqin.com/";
     public static final String STORE_URL = "http://zhongfu.lerqin.com/";
-//    public static final String BASE_URL = "http://api.zf.tianza.com.cn/";
+   public static final String BASE_URL = "http://api.zf.tianza.com.cn/";
 //    public static final String STORE_URL = "http://api.zf.tianza.com.cn/";
     public static final String APP_KEY = "";
     public static final String STORE_KEY = "";
