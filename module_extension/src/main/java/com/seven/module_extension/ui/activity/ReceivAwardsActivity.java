@@ -20,6 +20,7 @@ import com.seven.lib_model.presenter.extension.ExActivityPresenter;
 import com.seven.lib_router.Variable;
 import com.seven.lib_router.db.shard.SharedData;
 import com.seven.lib_router.router.RouterPath;
+import com.seven.lib_router.router.RouterUtils;
 import com.seven.module_extension.R;
 import com.seven.module_extension.R2;
 import com.seven.module_extension.ui.adapter.RewardInfoAdapter;
@@ -134,7 +135,7 @@ public class ReceivAwardsActivity extends BaseTitleActivity {
 
                 @Override
                 public void onClick(View v, Object... objects) {
-
+                    RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_MINE_ORDER);
                 }
 
                 @Override

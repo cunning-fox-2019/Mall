@@ -6,6 +6,7 @@ import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import com.alibaba.android.arouter.facade.annotation.Route;
 import com.google.gson.Gson;
 import com.seven.lib_common.base.activity.BaseTitleActivity;
 import com.seven.lib_common.stextview.TypeFaceEdit;
@@ -21,6 +22,7 @@ import com.seven.lib_model.presenter.common.ActUserPresenter;
 import com.seven.lib_router.Constants;
 import com.seven.lib_router.Variable;
 import com.seven.lib_router.db.shard.SharedData;
+import com.seven.lib_router.router.RouterPath;
 import com.seven.module_user.R;
 import com.seven.module_user.R2;
 
@@ -30,7 +32,7 @@ import butterknife.OnClick;
 /**
  * Created by xxxxxxH on 2019/4/26.
  */
-
+@Route(path = RouterPath.ACTIVITY_PAY_PASSWORD)
 public class UserSetPayPassWordActivity extends BaseTitleActivity {
     @BindView(R2.id.mobile_et)
     TypeFaceEdit mobileEt;
@@ -103,7 +105,7 @@ public class UserSetPayPassWordActivity extends BaseTitleActivity {
     @OnClick(R2.id.sms_send_btn)
     void smsSend() {
         showLoadingDialog();
-        presenter.sms(Constants.RequestConfig.SMS, mobileEt.getText().toString(), Constants.SMSConfig.REGISTER);
+        presenter.sms(Constants.RequestConfig.SMS, mobileEt.getText().toString(), Constants.SMSConfig.PAY_PASSWORD);
     }
 
     private void smsSendCode() {
@@ -185,6 +187,8 @@ public class UserSetPayPassWordActivity extends BaseTitleActivity {
                             ToastUtils.showToast(mContext, "修改成功");
                             Variable.getInstance().setPayPassword(true);
                             finish();
+                        }else {
+                            ToastUtils.showToast(mContext, baseResult.getMessage());
                         }
                     }
                 });

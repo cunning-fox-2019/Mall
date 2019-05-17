@@ -33,6 +33,7 @@ import com.seven.lib_router.router.RouterUtils;
 import com.seven.module_extension.R;
 import com.seven.module_extension.R2;
 
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -84,6 +85,7 @@ public class BuyRoleActivity extends BaseTitleActivity {
     protected void initView(Bundle savedInstanceState) {
         statusBar = StatusBar.LIGHT;
         setTitleText(R.string.me_buyrole_title);
+        EventBus.getDefault().register(this);
         presenter = new ExActivityPresenter(this, this);
         String userInfo = SharedData.getInstance().getUserInfo();
         entity = new Gson().fromJson(userInfo, UserEntity.class);
@@ -231,7 +233,7 @@ public class BuyRoleActivity extends BaseTitleActivity {
 
                 @Override
                 public void onClick(View v, Object... objects) {
-                    onBackPressed();
+                    RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_MINE_ORDER);
                 }
 
                 @Override
@@ -251,7 +253,7 @@ public class BuyRoleActivity extends BaseTitleActivity {
         switch (event.getWhat()) {
             case Constants.EventConfig.PAY_RESULT:
 
-                //dismissLoadingDialog();
+                dismissLoadingDialog();
 
                 int status = (int) ((ObjectsEvent) event).getObjects()[0];
 
@@ -259,5 +261,11 @@ public class BuyRoleActivity extends BaseTitleActivity {
 
                 break;
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }

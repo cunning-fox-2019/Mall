@@ -6,12 +6,14 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.google.gson.Gson;
 import com.seven.lib_common.base.activity.BaseTitleActivity;
+import com.seven.lib_common.listener.OnClickListener;
 import com.seven.lib_common.stextview.TypeFaceView;
 import com.seven.lib_common.utils.glide.GlideUtils;
 import com.seven.lib_model.model.extension.MyInterViewEntity;
@@ -23,12 +25,14 @@ import com.seven.lib_router.router.RouterPath;
 import com.seven.module_extension.R;
 import com.seven.module_extension.R2;
 import com.seven.module_extension.ui.adapter.MyInviteAdapter;
+import com.seven.module_extension.ui.dialog.ShareDialog;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.http.Body;
 
 @Route(path = RouterPath.ACTIVITY_MY_INTERVIEW)
 public class MyInterviewActivity extends BaseTitleActivity {
@@ -38,9 +42,12 @@ public class MyInterviewActivity extends BaseTitleActivity {
     RecyclerView meRvMyinterview;
     @BindView(R2.id.me_empty)
     TextView me_empty;
+    @BindView(R2.id.me_invite_btn)
+    Button me_invite_btn;
     private ExActivityPresenter presenter;
     private List<MyInterViewEntity> interViewList;
     private MyInviteAdapter adapter;
+    ShareDialog dialog;
 
     @Override
     protected int getLayoutId() {
@@ -51,6 +58,16 @@ public class MyInterviewActivity extends BaseTitleActivity {
     protected void initView(Bundle savedInstanceState) {
         statusBar = StatusBar.LIGHT;
         setTitleText(R.string.me_my_interview_title);
+        me_invite_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (dialog == null){
+                    dialog = new ShareDialog(MyInterviewActivity.this, R.style.Dialog, null);
+                }
+                if (!dialog.isShowing())
+                    dialog.showDialog(0, -screenHeight);
+            }
+        });
     }
 
     @Override

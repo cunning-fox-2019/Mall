@@ -4,9 +4,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.seven.module_user.ui.fragment.view.BaseRecyclerView
-        android:id="@+id/list_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#f2f2f2" />
+
+        <com.seven.module_user.ui.fragment.view.BaseRecyclerView
+            android:id="@+id/list_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#f2f2f2" />
 </LinearLayout>

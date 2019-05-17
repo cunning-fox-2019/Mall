@@ -36,6 +36,16 @@ public class OrderDetailEntity {
     private String address;
     private String contact_phone;
     private String contact_name;
+    private String created_at;
+
+    public String getCreated_at() {
+        return created_at;
+    }
+
+    public void setCreated_at(String created_at) {
+        this.created_at = created_at;
+    }
+
     private List<GoodsListBean> goods_list;
 
     public int getId() {

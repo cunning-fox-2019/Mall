@@ -15,6 +15,7 @@ import com.seven.lib_model.model.extension.QuotaEntity;
 import com.seven.lib_model.model.extension.ReceiveGoodsEntity;
 import com.seven.lib_model.model.extension.RewardListEntity;
 import com.seven.lib_model.model.extension.RewardRuleEntity;
+import com.seven.lib_model.model.user.CancelOrderEntity;
 import com.seven.lib_model.model.user.LoginEntity;
 import com.seven.lib_model.model.user.OrderEntity;
 import com.seven.lib_model.model.user.OrderListRequestEntity;
@@ -93,6 +94,7 @@ public class ApiManager {
             GsonConverterFactory gsonConverterFactory = GsonConverterFactory.create(gson);
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl("http://api.zf.tianza.com.cn/")
+                   // .baseUrl("http://zhongfu.lerqin.com/")
                     .client(builder.build())
                     .addConverterFactory(gsonConverterFactory)
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
@@ -202,8 +204,9 @@ public class ApiManager {
         @POST("user/pay_password/reset")
         Observable<BaseResult> modifyPayPassword(@Body ResetPasswordEntity entity);
 
+        @Multipart
         @POST("image/upload")
-        Observable<BaseResult<DTEntity>> upLoad(@Body MultipartBody part);
+        Observable<BaseResult<DTEntity>> upLoad(@Part MultipartBody.Part part, @Part("scene") RequestBody scene);
 
         @POST("promotion/reward/list")
         Observable<BaseResult<RewardListEntity>> rewardList();
@@ -223,6 +226,9 @@ public class ApiManager {
 
         @POST("promotion/form/reward/receive")
         Observable<BaseResult> getReceive(@Query("ids") String ids, @Query("contact_id") String contact_id);
+
+        @POST("order/cancel")
+        Observable<BaseResult> cancelOrder(@Body CancelOrderEntity entity);
 
     }
 
@@ -307,8 +313,8 @@ public class ApiManager {
         return subScribe(apiManagerService.modifyPayPassword(entity));
     }
 
-    public static Observable<BaseResult<DTEntity>> upLoad(MultipartBody part) {
-        return subScribe(apiManagerService.upLoad(part));
+    public static Observable<BaseResult<DTEntity>> upLoad(MultipartBody.Part part,RequestBody body) {
+        return subScribe(apiManagerService.upLoad(part,body));
     }
 
     public static Observable<BaseResult<RewardListEntity>> rewardList() {
@@ -330,6 +336,10 @@ public class ApiManager {
 
     public static Observable<BaseResult<TokenDescEntity>> getTokenDesc() {
         return subScribe(apiManagerService.getTokenDesc(new SB(2)));
+    }
+
+    public static Observable<BaseResult> cancelOrder(CancelOrderEntity entity){
+        return subScribe(apiManagerService.cancelOrder(entity));
     }
 
 }

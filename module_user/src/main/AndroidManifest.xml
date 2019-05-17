@@ -9,6 +9,7 @@
         <activity android:name=".ui.fragment.UserCreateAddressActivity" />
         <activity android:name=".ui.fragment.order.UserOrderListActivity" />
         <activity android:name=".ui.fragment.order.UserOrderDetailActivity" />
+        <activity android:name=".ui.fragment.order.LogisticsActivity" />
         <activity android:name=".ui.fragment.token.UserTokenActivity" />
         <activity android:name=".ui.fragment.token.UserReceiveTokenActivity" />
         <activity android:name=".ui.fragment.token.UserTokenListActivity" />
@@ -21,5 +22,6 @@
         <activity android:name=".ui.fragment.setting.UserModifyPassWordActivity" />
         <activity android:name=".ui.fragment.setting.UserSetPayPassWordActivity" />
         <activity android:name=".ui.fragment.token.TokenDescActivity" />
+
     </application>
 </manifest>

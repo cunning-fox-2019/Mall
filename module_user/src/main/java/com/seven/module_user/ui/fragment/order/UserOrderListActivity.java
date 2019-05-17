@@ -41,11 +41,10 @@ public class UserOrderListActivity extends BaseAppCompatActivity {
     @BindView(R2.id.left_btn)
     RelativeLayout backView;
     private final String[] mTitles = {
-            "全部", "待付款", "待发货", "待收货"};
+            "全部", "待付款", "待发货", "待收货","已完成"};
     private List<Fragment> mFragments = new ArrayList<>();
     //  private final String[] mType = {"all", "wait_pay", "wait_send", ""};
-    private final int[] mType = {1, 2, 3, 4};
-
+    private final int[] mType = {0, 1, 2, 3,4};
 
     @Override
     public void showLoading() {
