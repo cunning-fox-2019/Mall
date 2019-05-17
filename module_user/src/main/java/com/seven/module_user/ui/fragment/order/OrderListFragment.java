@@ -104,6 +104,9 @@ public class OrderListFragment extends BaseFragment {
                 .subscribe(new CommonObserver<BaseResult>() {
                     @Override
                     public void onNext(BaseResult baseResult) {
+                        if (baseResult.getCode() == 0){
+                            ToastUtils.showToast(getActivity(),baseResult.getMessage());
+                        }
                         getData();
                     }
                 });
