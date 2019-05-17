@@ -7,6 +7,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -191,6 +192,7 @@ public class UserCreateAddressActivity extends BaseTitleActivity {
 
     @OnClick(R2.id.address_tx)
     void chooseCity() {
+        closeInput();
         OptionsPickerView cityReasonPickerView = new OptionsPickerBuilder(this, new OnOptionsSelectListener() {
             @Override
             public void onOptionsSelect(int options1, int options2, int options3, View v) {
@@ -325,5 +327,13 @@ public class UserCreateAddressActivity extends BaseTitleActivity {
 
                     }
                 });
+    }
+
+    protected void closeInput() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        View v = getWindow().peekDecorView();
+        if (null != v) {
+            imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+        }
     }
 }
