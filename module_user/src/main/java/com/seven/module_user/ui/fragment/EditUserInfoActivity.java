@@ -459,6 +459,7 @@ public class EditUserInfoActivity extends BaseTitleActivity implements
     @Override
     public void takeSuccess(TResult result) {
         String originalPath = result.getImage().getOriginalPath();
+        Log.e("originalPath",originalPath);
         if (!TextUtils.isEmpty(originalPath)) {
             GlideUtils.loadCircleImage(mContext, originalPath, user_photo_img);
             File file = new File(originalPath);

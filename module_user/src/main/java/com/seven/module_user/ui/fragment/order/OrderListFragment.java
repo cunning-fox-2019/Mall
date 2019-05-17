@@ -78,7 +78,7 @@ public class OrderListFragment extends BaseFragment {
 
     @Override
     public void showToast(String msg) {
-
+//hei 孙子
     }
 
     @Override
@@ -88,7 +88,7 @@ public class OrderListFragment extends BaseFragment {
 
     @Override
     public void init(Bundle savedInstanceState) {
-        getData();
+        //getData();
     }
 
     @Override
@@ -299,5 +299,13 @@ public class OrderListFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         // getData();
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser){
+            getData();
+        }
     }
 }
