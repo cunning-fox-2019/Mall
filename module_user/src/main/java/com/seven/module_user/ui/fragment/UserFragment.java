@@ -96,7 +96,7 @@ public class UserFragment extends BaseFragment {
                             SharedData.getInstance().setUserInfo(userString);
                             setData(userEntityBaseResult.getData());
                             Variable.getInstance().setUserId(userEntityBaseResult.getData().getId());
-                            Variable.getInstance().setTokenCount(TextUtils.isEmpty(String.valueOf(userEntityBaseResult.getData().getToken_number_total())) ? 0 : userEntityBaseResult.getData().getToken_number_total());
+                            Variable.getInstance().setTokenCount(TextUtils.isEmpty(userEntityBaseResult.getData().getToken_number_total()) ? 0 : Double.parseDouble(userEntityBaseResult.getData().getToken_number_total()));
                             EventBus.getDefault().post(new ObjectsEvent(Constants.EventConfig.USER_DATA_CHANGE, "change"));
                         } else {
                             RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_LOGIN);
@@ -105,7 +105,7 @@ public class UserFragment extends BaseFragment {
 
                     @Override
                     public void onError(Throwable e) {
-
+                        Log.e("xxxxxxH",e.toString());
                     }
 
                     @Override
