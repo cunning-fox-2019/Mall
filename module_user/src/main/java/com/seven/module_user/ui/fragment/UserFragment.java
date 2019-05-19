@@ -274,4 +274,6 @@ public class UserFragment extends BaseFragment {
 
         }
     }
+
+    private void git(){}
 }
