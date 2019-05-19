@@ -178,7 +178,9 @@ public class HomeActivity extends BaseAppCompatActivity {
                 break;
 
             case Constants.EventConfig.LOGOUT:
-
+//                if (homeFg == null)
+//                    homeFg = (Fragment) ARouter.getInstance().build(RouterPath.FRAGMENT_HOME).navigation();
+//                changeTabSelected(tabHome, fromFg, homeFg);
 //                MallApplication.getInstance().clearAlias();
 
                 break;
@@ -186,6 +188,9 @@ public class HomeActivity extends BaseAppCompatActivity {
             case MallApplication.EVENT_CODE:
 
                 RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_LOGIN);
+
+                break;
+            case Constants.EventConfig.ADDRESS:
 
                 break;
 
