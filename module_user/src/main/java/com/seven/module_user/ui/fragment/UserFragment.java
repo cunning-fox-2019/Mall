@@ -66,7 +66,6 @@ public class UserFragment extends BaseFragment {
     ImageView vipLv;
 
 
-
     @Override
     public int getContentViewId() {
         return R.layout.mu_fragment_user;
@@ -138,6 +137,7 @@ public class UserFragment extends BaseFragment {
             default:
         }
         vipLv.setImageDrawable(drawable);
+        vipLv.setVisibility(View.VISIBLE);
         GlideUtils.loadCircleImage(getActivity(), data.getAvatar(), userPhoto);
     }
 
@@ -162,39 +162,53 @@ public class UserFragment extends BaseFragment {
 
     @OnClick(R2.id.shop_cart)
     void goShopCar() {
-        RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_SHOPPING_CART);
+        if (!SharedData.getInstance().getToken().isEmpty())
+            RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_SHOPPING_CART);
+        else startActivity(new Intent(getActivity(), LoginActivity.class));
     }
 
     @OnClick(R2.id.user_info_layout)
     void setUserInfo() {
-        startActivity(new Intent(getActivity(), EditUserInfoActivity.class));
+        if (!SharedData.getInstance().getToken().isEmpty())
+            startActivity(new Intent(getActivity(), EditUserInfoActivity.class));
+        else startActivity(new Intent(getActivity(), LoginActivity.class));
         //RouterUtils.getInstance().routerWithFade(RouterPath.FRAGMENT_USER_EDIT_UESR_INFO, SSDK.getInstance().getContext());
     }
 
     @OnClick(R2.id.my_setting)
     void setting() {
-        startActivity(new Intent(getActivity(), UserSettingActivity.class));
+        if (!SharedData.getInstance().getToken().isEmpty())
+            startActivity(new Intent(getActivity(), UserSettingActivity.class));
+        else startActivity(new Intent(getActivity(), LoginActivity.class));
         //RouterUtils.getInstance().routerWithFade(RouterPath.FRAGMENT_USER_EDIT_UESR_INFO, SSDK.getInstance().getContext());
     }
 
     @OnClick(R2.id.my_shoucang)
     void storeUp() {
-        startActivity(new Intent(getActivity(), CollectionActivity.class));
+        if (!SharedData.getInstance().getToken().isEmpty())
+            startActivity(new Intent(getActivity(), CollectionActivity.class));
+        else startActivity(new Intent(getActivity(), LoginActivity.class));
     }
 
     @OnClick(R2.id.my_address)
     void address() {
-        startActivity(new Intent(getActivity(), UserAddressActivity.class));
+        if (!SharedData.getInstance().getToken().isEmpty())
+            startActivity(new Intent(getActivity(), UserAddressActivity.class));
+        else startActivity(new Intent(getActivity(), LoginActivity.class));
     }
 
     @OnClick(R2.id.logout)
     void logout() {
         EventBus.getDefault().post(new ObjectsEvent(Constants.EventConfig.LOGOUT));
         SharedData.getInstance().setUserInfo("");
+        SharedData.getInstance().setToken("");
         Variable.getInstance().setUserId(0);
         Variable.getInstance().setTokenCount(0);
         Variable.getInstance().setToken("");
         startActivity(new Intent(getActivity(), LoginActivity.class));
+        userName.setText("请登录");
+        vipLv.setVisibility(View.GONE);
+        GlideUtils.loadCircleImage(getActivity(), "", userPhoto);
         //ToastUtils.showToast(getActivity(), "退出");
     }
 
@@ -205,37 +219,45 @@ public class UserFragment extends BaseFragment {
 
     @OnClick(R2.id.all_order)
     void allOrder() {
-        startActivity(new Intent(getActivity(), UserOrderListActivity.class));
+        if (!SharedData.getInstance().getToken().isEmpty())
+            startActivity(new Intent(getActivity(), UserOrderListActivity.class));
+        else startActivity(new Intent(getActivity(), LoginActivity.class));
     }
 
     @OnClick(R2.id.my_token)
     void token() {
-        startActivity(new Intent(getActivity(), UserTokenActivity.class));
+        if (!SharedData.getInstance().getToken().isEmpty())
+            startActivity(new Intent(getActivity(), UserTokenActivity.class));
+        else startActivity(new Intent(getActivity(), LoginActivity.class));
     }
 
     @OnClick({R2.id.wait_pay, R2.id.wait_send, R2.id.shop_received})
     void shop(View view) {
-        Intent intent = new Intent(getActivity(), UserOrderListActivity.class);
-        if (view == waitPay) {
-            intent.putExtra("type", 1);
-        } else if (view == waitSend) {
-            intent.putExtra("type", 2);
-        } else if (view == shopReceived) {
-            intent.putExtra("type", 3);
-        }
-        startActivity(intent);
+        if (!SharedData.getInstance().getToken().isEmpty()) {
+            Intent intent = new Intent(getActivity(), UserOrderListActivity.class);
+            if (view == waitPay) {
+                intent.putExtra("type", 1);
+            } else if (view == waitSend) {
+                intent.putExtra("type", 2);
+            } else if (view == shopReceived) {
+                intent.putExtra("type", 3);
+            }
+            startActivity(intent);
+        } else startActivity(new Intent(getActivity(), LoginActivity.class));
+
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        getUserInfo();
+        if (!SharedData.getInstance().getToken().isEmpty())
+            getUserInfo();
     }
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser){
+        if (isVisibleToUser && !SharedData.getInstance().getToken().isEmpty()) {
             getUserInfo();
         }
     }
