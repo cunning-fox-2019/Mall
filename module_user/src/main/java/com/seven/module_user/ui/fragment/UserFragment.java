@@ -228,6 +228,14 @@ public class UserFragment extends BaseFragment {
         getUserInfo();
     }
 
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser){
+            getUserInfo();
+        }
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(Event event) {
         switch (event.getWhat()) {
