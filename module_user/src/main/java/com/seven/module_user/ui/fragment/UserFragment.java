@@ -191,6 +191,9 @@ public class UserFragment extends BaseFragment {
     void logout() {
         EventBus.getDefault().post(new ObjectsEvent(Constants.EventConfig.LOGOUT));
         SharedData.getInstance().setUserInfo("");
+        Variable.getInstance().setUserId(0);
+        Variable.getInstance().setTokenCount(0);
+        Variable.getInstance().setToken("");
         startActivity(new Intent(getActivity(), LoginActivity.class));
         //ToastUtils.showToast(getActivity(), "退出");
     }
