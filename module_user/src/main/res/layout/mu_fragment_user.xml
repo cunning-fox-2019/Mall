@@ -42,7 +42,6 @@
                     android:layout_toEndOf="@+id/user_photo"
                     android:paddingBottom="@dimen/margin_6"
                     android:paddingLeft="@dimen/padding_16"
-                    android:text="user_name"
                     android:textSize="20sp" />
 
                 <ImageView
@@ -51,8 +50,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignBottom="@+id/user_photo"
                     android:layout_below="@+id/user_name"
-                    android:layout_toRightOf="@+id/user_photo"
-                    android:src="@drawable/vip_lv_icon" />
+                    android:layout_toRightOf="@+id/user_photo" />
 
                 <ImageView
                     android:layout_width="wrap_content"
