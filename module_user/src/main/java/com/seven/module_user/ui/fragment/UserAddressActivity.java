@@ -100,7 +100,7 @@ public class UserAddressActivity extends BaseTitleActivity {
             LinearLayoutManager layoutManager = new LinearLayoutManager(this);
             recyclerView.init(layoutManager, new BaseQuickAdapter<AddressEntity, BaseViewHolder>(R.layout.item_address_layout, list) {
                 @Override
-                protected void convert(BaseViewHolder helper, AddressEntity item) {
+                protected void convert(BaseViewHolder helper, final AddressEntity item) {
                     helper.setText(R.id.address_name, item.getContact_name())
                             .setText(R.id.address_phone_number, item.getContact_phone())
                             .setText(R.id.address, item.getProvince_name() + " " + item.getCity_name() + " " + item.getDistrict_name() + " " + item.getAddress())
@@ -109,10 +109,10 @@ public class UserAddressActivity extends BaseTitleActivity {
                             .addOnClickListener(R.id.delete_address);
                     TextView isDefault = helper.getView(R.id.is_default_address);
                     if (item.getIs_default() == 0) {
-                        isDefault.setCompoundDrawables(getResources().getDrawable(R.drawable.item_shopping_cart_default), null, null, null);
+                        isDefault.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.item_shopping_cart_default), null, null, null);
                         isDefault.setTextColor(getResources().getColor(R.color.color_abaeb3));
                     } else {
-                        isDefault.setCompoundDrawables(getResources().getDrawable(R.drawable.item_shopping_cart_selector), null, null, null);
+                        isDefault.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.item_shopping_cart_selector), null, null, null);
                         isDefault.setTextColor(getResources().getColor(R.color.add_address_default_c));
                     }
                 }
@@ -151,7 +151,7 @@ public class UserAddressActivity extends BaseTitleActivity {
                 EventBus.getDefault().post(new ObjectsEvent(Constants.EventConfig.BUY_BD, entity));
                 UserAddressActivity.this.finish();
             }
-            if (code == 110110){
+            if (code == 110110) {
                 EventBus.getDefault().post(new ObjectsEvent(250, entity));
                 UserAddressActivity.this.finish();
             }
@@ -163,7 +163,7 @@ public class UserAddressActivity extends BaseTitleActivity {
         public void onSimpleItemChildClick(BaseQuickAdapter adapter, View view, int position) {
             AddressEntity entity = (AddressEntity) adapter.getData().get(position);
             if (view.getId() == R.id.is_default_address) {
-                setDefaultAddress(entity);
+                setDefaultAddress(entity, position);
             } else if (view.getId() == R.id.delete_address) {
                 deleteAddress(entity, position);
             } else if (view.getId() == R.id.edit_address) {
@@ -215,7 +215,7 @@ public class UserAddressActivity extends BaseTitleActivity {
         getData();
     }
 
-    private void setDefaultAddress(AddressEntity entity) {
+    private void setDefaultAddress(AddressEntity entity, final int position) {
         DTEntity dtEntity = new DTEntity();
         dtEntity.setContact_id(entity.getId());
         ApiManager.setDefaultAddress(dtEntity)
@@ -229,7 +229,7 @@ public class UserAddressActivity extends BaseTitleActivity {
 
                     @Override
                     public void onNext(BaseResult baseResult) {
-                        if (baseResult.getCode() == 0) {
+                        if (baseResult.getCode() == 1) {
                             getData();
                         }
                     }
