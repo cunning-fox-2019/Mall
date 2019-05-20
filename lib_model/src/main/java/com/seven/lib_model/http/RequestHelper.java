@@ -227,4 +227,6 @@ public class RequestHelper {
     public Observable<HttpResponse> getOrder(String json){return appService.getOrder(requestBody(json));}
 
     public Observable<HttpResponse> buyRole(String json){return appService.buyRole(requestBody(json));}
+
+    public Observable<HttpResponse> editAddress(String json){return appService.editAddress(requestBody(json));}
 }

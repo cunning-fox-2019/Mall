@@ -112,7 +112,7 @@ public class ReceiveBDActivity extends BaseTitleActivity {
     public void onEvent(Event event) {
         if (event.getWhat() == 250) {
             AddressEntity entity = (AddressEntity) ((ObjectsEvent) event).getObjects()[0];
-            contactId = entity.getId();
+            contactId = entity.getContact_id();
             meBuyBdAddress1.setText(entity.getContact_name() + " " + entity.getContact_phone());
             meBuyBdAddress2.setText(entity.getProvince_name() + entity.getCity_name() + entity.getDistrict_name() + entity.getAddress());
         }

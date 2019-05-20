@@ -89,7 +89,7 @@ public class BuyActivity extends BaseTitleActivity {
         }
         if (view.getId() == R.id.me_buy_bd_btn) {
             if (addressEntity != null){
-                presenter.getOrder(1,addressEntity.getId());
+                presenter.getOrder(1,addressEntity.getContact_id());
             }else {
                 ToastUtils.showToast(mContext,"请选择地址");
             }
