@@ -137,7 +137,7 @@ public class UserAddressActivity extends BaseTitleActivity {
         public void onSimpleItemClick(BaseQuickAdapter adapter, View view, int position) {
             AddressEntity entity = (AddressEntity) adapter.getData().get(position);
             //todo 选择地址才进来if 查看时不进入
-            if (code != 0 && code != 159357 && code != 110110) {
+            if (code != -1 && code != 0 && code != 159357 && code != 110110) {
                 ContactDefaultEntity entity1 = new ContactDefaultEntity();
                 entity1.setId(entity.getId());
                 entity1.setContact_name(entity.getContact_name());
