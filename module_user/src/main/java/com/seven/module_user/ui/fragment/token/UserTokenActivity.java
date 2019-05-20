@@ -18,6 +18,7 @@ import com.seven.lib_model.BaseResult;
 import com.seven.lib_model.CommonObserver;
 import com.seven.lib_model.model.extension.InComeDetailsEntity;
 import com.seven.lib_model.model.extension.InComeItem;
+import com.seven.lib_model.model.user.TokenPageEntity;
 import com.seven.lib_model.model.user.UserEntity;
 import com.seven.lib_router.db.shard.SharedData;
 import com.seven.lib_router.router.RouterPath;
@@ -86,8 +87,8 @@ public class UserTokenActivity extends BaseAppCompatActivity {
 
     @OnClick(R2.id.all)
     void checkAll() {
-//        startActivity(new Intent(mContext, UserTokenListActivity.class));
-        RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_IN_COME);
+      startActivity(new Intent(mContext, UserTokenListActivity.class));
+       // RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_IN_COME);
     }
 
     @OnClick(R2.id.receive_token_btn)
@@ -118,8 +119,11 @@ public class UserTokenActivity extends BaseAppCompatActivity {
     }
 
     private void getData() {
-
-        ApiManager.inComeDetails(page, 200, "")
+        TokenPageEntity entity = new TokenPageEntity();
+        entity.setStatus("");
+        entity.setPage_size(200);
+        entity.setPage(1);
+        ApiManager.inComeDetails(entity)
                 .subscribe(new CommonObserver<BaseResult<InComeDetailsEntity>>() {
                     @Override
                     public void onNext(BaseResult<InComeDetailsEntity> inComeDetailsEntityBaseResult) {
@@ -155,7 +159,7 @@ public class UserTokenActivity extends BaseAppCompatActivity {
         } else {
             recyclerView.addDataList(data.getItems());
         }
-        if (data.getPagination().getTotal_page() == data.getPagination().getPage()) {
+        if (data.getPagination().getTotal_page() == 0) {
             recyclerView.setEnableLoadMore(false);
         }
     }

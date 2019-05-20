@@ -242,6 +242,7 @@ public class BaseRecyclerView<T> extends FrameLayout {
 
     public void addDataList(List list) {
         mQuickAdapter.addData(list);
+        mQuickAdapter.loadMoreComplete();
 
     }
 
