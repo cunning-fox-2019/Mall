@@ -94,8 +94,8 @@ public class ApiManager {
             Gson gson = gsonBuilder.create();
             GsonConverterFactory gsonConverterFactory = GsonConverterFactory.create(gson);
             Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl("http://api.zf.tianza.com.cn/")
-                    //.baseUrl("http://zhongfu.lerqin.com/")
+//                    .baseUrl("http://api.zf.tianza.com.cn/")
+                    .baseUrl("http://zhongfu.lerqin.com/")
                     .client(builder.build())
                     .addConverterFactory(gsonConverterFactory)
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
@@ -231,6 +231,9 @@ public class ApiManager {
         @POST("order/cancel")
         Observable<BaseResult> cancelOrder(@Body CancelOrderEntity entity);
 
+        @POST("promotion/79form/goods/list")
+        Observable<BaseResult<BdGoodsEntity>> get79();
+
     }
 
     public static Observable<BaseResult<TokenEntity>> login(LoginEntity entity) {
@@ -275,7 +278,7 @@ public class ApiManager {
     }
 
     public static Observable<BaseResult<BdGoodsEntity>> getBdGoods() {
-        return apiManagerService.getBdGoods();
+        return subScribe(apiManagerService.getBdGoods());
     }
 
     public static Observable<BaseResult<MyInterViewEntity>> getMyInterView(String id) {
@@ -343,4 +346,7 @@ public class ApiManager {
         return subScribe(apiManagerService.cancelOrder(entity));
     }
 
+    public static Observable<BaseResult<BdGoodsEntity>> get79(){
+        return subScribe(apiManagerService.get79());
+    }
 }

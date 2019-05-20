@@ -279,7 +279,7 @@ public class ExtensionFragment extends BaseFragment {
             if (user == null)
                 RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_LOGIN);
             else
-                RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_IN_COME);
+                RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_TOKEN);
         } else if (v.getId() == R.id.me_buy_up_rl) {
             if (user != null && user.getRole() == 4) {
                 ToastUtils.showToast(getActivity(), "你已经是最高等级");
