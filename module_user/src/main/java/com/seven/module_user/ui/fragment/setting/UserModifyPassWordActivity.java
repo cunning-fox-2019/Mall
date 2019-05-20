@@ -175,7 +175,7 @@ public class UserModifyPassWordActivity extends BaseTitleActivity {
         showLoadingDialog();
         ResetPasswordEntity entity = new ResetPasswordEntity();
         entity.setPhone(userEntity.getPhone());
-        entity.setCode(smsCodeEt.getText().toString());
+        entity.setCode(Integer.valueOf(smsCodeEt.getText().toString()));
         entity.setPassword(passwordEt.getText().toString());
         ApiManager.modifyPassword(entity)
                 .subscribe(new CommonObserver<BaseResult>() {
@@ -185,6 +185,8 @@ public class UserModifyPassWordActivity extends BaseTitleActivity {
                         if (baseResult.getCode() == 1) {
 
                             finish();
+                        }else {
+                            ToastUtils.showToast(mContext, baseResult.getMessage());
                         }
                         ToastUtils.showToast(mContext, baseResult.getMessage());
                     }
