@@ -22,24 +22,25 @@ public class AddressEntity implements Serializable {
      * district_name : 双流县
      */
 
-    private int contact_id;
+
+    private int id;
     private String contact_name;
     private String contact_phone;
-    private String province_id;
-    private String city_id;
-    private String district_id;
+    private int province_id;
+    private int city_id;
+    private int district_id;
     private String address;
-    private String is_default;
+    private int is_default;
     private String province_name;
     private String city_name;
     private String district_name;
 
-    public int getContact_id() {
-        return contact_id;
+    public int getId() {
+        return id;
     }
 
-    public void setContact_id(int contact_id) {
-        this.contact_id = contact_id;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getContact_name() {
@@ -58,27 +59,27 @@ public class AddressEntity implements Serializable {
         this.contact_phone = contact_phone;
     }
 
-    public String getProvince_id() {
+    public int getProvince_id() {
         return province_id;
     }
 
-    public void setProvince_id(String province_id) {
+    public void setProvince_id(int province_id) {
         this.province_id = province_id;
     }
 
-    public String getCity_id() {
+    public int getCity_id() {
         return city_id;
     }
 
-    public void setCity_id(String city_id) {
+    public void setCity_id(int city_id) {
         this.city_id = city_id;
     }
 
-    public String getDistrict_id() {
+    public int getDistrict_id() {
         return district_id;
     }
 
-    public void setDistrict_id(String district_id) {
+    public void setDistrict_id(int district_id) {
         this.district_id = district_id;
     }
 
@@ -90,11 +91,11 @@ public class AddressEntity implements Serializable {
         this.address = address;
     }
 
-    public String getIs_default() {
+    public int getIs_default() {
         return is_default;
     }
 
-    public void setIs_default(String is_default) {
+    public void setIs_default(int is_default) {
         this.is_default = is_default;
     }
 
@@ -125,7 +126,7 @@ public class AddressEntity implements Serializable {
     @Override
     public String toString() {
 
-        return "id>" + contact_id +
+        return "id>" + id +
                 "-----address>" + address +
                 "-----contact_name>" + contact_name +
                 "-----contact_phone>" + contact_phone +

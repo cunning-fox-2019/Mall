@@ -38,6 +38,7 @@
                     android:src="@drawable/me_miners" />
 
                 <TextView
+                    android:id="@+id/me_buyrole_level"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
@@ -76,7 +77,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/me_miners" />
+                    android:src="@drawable/me_changz01" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -117,7 +118,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/me_miners" />
+                    android:src="@drawable/me_chengz01" />
 
                 <TextView
                     android:layout_width="wrap_content"

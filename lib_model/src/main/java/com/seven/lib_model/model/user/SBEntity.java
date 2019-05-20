@@ -10,7 +10,7 @@ public class SBEntity {
     private String city_id;
     private String district_id;
     private String address;
-    private int is_default;
+    private String is_default;
     private String contact_name;
 
     //名字 什么名字
@@ -71,11 +71,11 @@ public class SBEntity {
         this.address = address;
     }
 
-    public int getIs_default() {
+    public String getIs_default() {
         return is_default;
     }
 
-    public void setIs_default(int is_default) {
+    public void setIs_default(String is_default) {
         this.is_default = is_default;
     }
 }

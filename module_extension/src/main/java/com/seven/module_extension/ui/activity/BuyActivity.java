@@ -94,7 +94,7 @@ public class BuyActivity extends BaseTitleActivity {
         }
         if (view.getId() == R.id.me_buy_bd_btn) {
             if (addressEntity != null) {
-                presenter.getOrder(1, addressEntity.getContact_id());
+                presenter.getOrder(1, addressEntity.getId());
             } else {
                 ToastUtils.showToast(mContext, "请选择地址");
             }
