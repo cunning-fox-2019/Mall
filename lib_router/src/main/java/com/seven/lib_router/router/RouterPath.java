@@ -62,6 +62,6 @@ public class RouterPath {
     public static final String ACTIVITY_MINE_SHOP_CAR="/user/ShopCartActivity";
     public static final String ACTIVITY_MINE_SHOP_PAY="/user/PayActivity";
     public static final String ACTIVITY_MINE_ADD_ADDRESS="/user/CreateAddress";
-    public static final String ACTIVITY_ACCOUNT="/user/UserAccountActivity";
+    public static final String ACTIVITY_ACCOUNT="/user/UserSetPayAccountActivity";
     public static final String ACTIVITY_LOGISTICS="/user/LogisticsActivity";
 }

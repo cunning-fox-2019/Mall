@@ -2,9 +2,11 @@ package com.seven.lib_router;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.text.TextUtils;
 
 import com.seven.greendao.gen.DaoMaster;
 import com.seven.greendao.gen.DaoSession;
+import com.seven.lib_router.db.shard.SharedData;
 
 /**
  * @auhtor seven
@@ -56,6 +58,13 @@ public class RouterSDK {
         // 注意：该数据库连接属于 DaoMaster，所以多个 Session 指的是相同的数据库连接。
         mDaoMaster = new DaoMaster(db);
         mDaoSession = mDaoMaster.newSession();
+    }
+
+    public void getShareData(){
+        if (TextUtils.isEmpty(SharedData.getInstance().getUserInfo())){
+            return;
+        }
+        //Variable.getInstance().setTokenCount();
     }
 
     public DaoSession getDaoSession() {
