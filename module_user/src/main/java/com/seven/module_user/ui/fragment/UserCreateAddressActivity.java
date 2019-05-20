@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,10 +30,13 @@ import com.seven.lib_common.base.activity.BaseTitleActivity;
 import com.seven.lib_common.utils.ToastUtils;
 import com.seven.lib_model.ApiManager;
 import com.seven.lib_model.BaseResult;
+import com.seven.lib_model.model.user.SBEntity;
 import com.seven.lib_model.model.user.mine.AddAddressEntity;
 import com.seven.lib_model.model.user.mine.AddressEntity;
 import com.seven.lib_model.model.user.mine.DTEntity;
 import com.seven.lib_model.model.user.mine.RegionEntity;
+import com.seven.lib_model.user.UserActivityPresenterNew;
+import com.seven.lib_router.Variable;
 import com.seven.lib_router.router.RouterPath;
 import com.seven.module_user.R;
 import com.seven.module_user.R2;
@@ -115,6 +119,7 @@ public class UserCreateAddressActivity extends BaseTitleActivity {
 
                     @Override
                     public void onNext(BaseResult<DTEntity> data) {
+                        Log.e("xxxxxxH",data.getMessage());
                         provinceList.addAll(data.getData().getItems());
                         cityList.addAll(provinceList.get(0).getSub());
                         areaList.addAll(cityList.get(0).getSub());
@@ -123,7 +128,7 @@ public class UserCreateAddressActivity extends BaseTitleActivity {
 
                     @Override
                     public void onError(Throwable e) {
-
+                        Log.e("xxxxxxH",e.toString());
                     }
 
                     @Override
@@ -154,9 +159,9 @@ public class UserCreateAddressActivity extends BaseTitleActivity {
                 phoneEdit.setText(addressEntity.getContact_phone());
                 addressTx.setText(addressEntity.getProvince_name() + " " + addressEntity.getCity_name() + " " + addressEntity.getDistrict_name());
                 addressDetail.setText(addressEntity.getAddress());
-                isDefaultAddressImg.setImageDrawable(addressEntity.getIs_default() == 0 ? getDrawable(R.drawable.item_shopping_cart_default) : getDrawable(R.drawable.item_shopping_cart_selector));
-                isDefaultAddressTx.setTextColor(addressEntity.getIs_default() == 0 ? getResources().getColor(R.color.add_address_default_n) : getResources().getColor(R.color.add_address_default_c));
-                isDefault = addressEntity.getIs_default() == 1;
+                isDefaultAddressImg.setImageDrawable(!TextUtils.isEmpty(addressEntity.getIs_default()) && addressEntity.getIs_default().equals("0") ? getDrawable(R.drawable.item_shopping_cart_default) : getDrawable(R.drawable.item_shopping_cart_selector));
+                isDefaultAddressTx.setTextColor(!TextUtils.isEmpty(addressEntity.getIs_default()) &&  addressEntity.getIs_default().equals("0") ? getResources().getColor(R.color.add_address_default_n) : getResources().getColor(R.color.add_address_default_c));
+                isDefault = addressEntity.getIs_default() == "1";
             }
         }
     }
@@ -245,25 +250,45 @@ public class UserCreateAddressActivity extends BaseTitleActivity {
             return;
         }
         if (addressEntity != null) {
-            addressEntity.setAddress(addressDetail.getText().toString());
-            addressEntity.setContact_name(nameEdit.getText().toString());
-            addressEntity.setContact_phone(phoneEdit.getText().toString());
-            addressEntity.setIs_default(isDefault ? 1 : 0);
-            addressEntity.setProvince_id(provinceList.get(provincePosition).getId());
-            addressEntity.setCity_id(provinceList.get(provincePosition).getSub().get(cityPosition).getId());
-            addressEntity.setDistrict_id(provinceList.get(provincePosition).getSub().get(cityPosition).getSub().get(areaPosition).getId());
-            upData();
+//            SBEntity sb =new SBEntity();
+//            sb.setContact_id(Variable.getInstance().getUserId());
+//            sb.setAddress(addressDetail.getText().toString());
+//            sb.setContact_name(nameEdit.getText().toString());
+//            sb.setContact_phone(phoneEdit.getText().toString());
+//            sb.setIs_default(isDefault ? 1 : 0);
+//            sb.setProvince_id(String.valueOf(provinceList.get(provincePosition).getId()));
+//            sb.setCity_id(String.valueOf(provinceList.get(provincePosition).getSub().get(cityPosition).getId()));
+//            sb.setDistrict_id(String.valueOf(provinceList.get(provincePosition).getSub().get(cityPosition).getSub().get(areaPosition).getId()));
+//            upData(sb);
+
+            UserActivityPresenterNew presenterNew = new UserActivityPresenterNew(this,this);
+            presenterNew.editAddress(1,Variable.getInstance().getUserId(),
+                    String.valueOf(provinceList.get(provincePosition).getId()),
+                    String.valueOf(provinceList.get(provincePosition).getSub().get(cityPosition).getId()),
+                    String.valueOf(provinceList.get(provincePosition).getSub().get(cityPosition).getSub().get(areaPosition).getId()),
+                    addressDetail.getText().toString(),
+                    isDefault ? "1" : "0",
+                    nameEdit.getText().toString(),
+                    phoneEdit.getText().toString());
             return;
         }
         AddAddressEntity entity = new AddAddressEntity();
         entity.setAddress(addressDetail.getText().toString());
         entity.setContact_name(nameEdit.getText().toString());
         entity.setContact_phone(phoneEdit.getText().toString());
-        entity.setIs_default(isDefault ? 1 : 0);
+        entity.setIs_default(isDefault ? "1" : "0");
         entity.setProvince_id(provinceList.get(provincePosition).getId());
         entity.setCity_id(provinceList.get(provincePosition).getSub().get(cityPosition).getId());
         entity.setDistrict_id(provinceList.get(provincePosition).getSub().get(cityPosition).getSub().get(areaPosition).getId());
         commit(entity);
+    }
+
+    @Override
+    public void result(int code, Boolean hasNextPage, String response, Object object) {
+        super.result(code, hasNextPage, response, object);
+        if (code == 1){
+
+        }
     }
 
     private void commit(AddAddressEntity entity) {
@@ -299,8 +324,8 @@ public class UserCreateAddressActivity extends BaseTitleActivity {
                 });
     }
 
-    private void upData() {
-        ApiManager.editAddress(addressEntity)
+    private void upData(SBEntity sb) {
+        ApiManager.editAddress(sb)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(new Observer<BaseResult>() {

@@ -19,6 +19,7 @@ import com.seven.lib_model.model.user.CancelOrderEntity;
 import com.seven.lib_model.model.user.LoginEntity;
 import com.seven.lib_model.model.user.OrderEntity;
 import com.seven.lib_model.model.user.OrderListRequestEntity;
+import com.seven.lib_model.model.user.SBEntity;
 import com.seven.lib_model.model.user.TokenEntity;
 import com.seven.lib_model.model.user.UserEntity;
 import com.seven.lib_model.model.user.mine.AddAddressEntity;
@@ -193,7 +194,7 @@ public class ApiManager {
         Observable<BaseResult> deleteAddress(@Body DTEntity entity);
 
         @POST("user/contact/update")
-        Observable<BaseResult> editAddress(@Body AddressEntity entity);
+        Observable<BaseResult> editAddress(@Body SBEntity sb);
 
         @POST("user/pay/account")
         Observable<BaseResult> setPayAccount(@Body PayAccountEntity entity);
@@ -297,8 +298,8 @@ public class ApiManager {
         return apiManagerService.deleteAddress(entity);
     }
 
-    public static Observable<BaseResult> editAddress(AddressEntity entity) {
-        return apiManagerService.editAddress(entity);
+    public static Observable<BaseResult> editAddress(SBEntity sb) {
+        return apiManagerService.editAddress(sb);
     }
 
     public static Observable<BaseResult> setPayAccount(PayAccountEntity entity) {

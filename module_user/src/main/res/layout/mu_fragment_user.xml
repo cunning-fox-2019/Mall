@@ -40,6 +40,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
                     android:layout_toEndOf="@+id/user_photo"
+                    android:maxLines="1"
+                    android:ellipsize="end"
                     android:paddingBottom="@dimen/margin_6"
                     android:paddingLeft="@dimen/padding_16"
                     android:textSize="20sp" />
