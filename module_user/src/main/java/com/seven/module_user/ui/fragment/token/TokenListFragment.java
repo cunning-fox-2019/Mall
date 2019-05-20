@@ -20,6 +20,7 @@ import com.seven.lib_model.CommonObserver;
 import com.seven.lib_model.model.extension.InComeDetailsEntity;
 import com.seven.lib_model.model.extension.InComeItem;
 import com.seven.lib_model.model.user.OrderEntity;
+import com.seven.lib_model.model.user.TokenPageEntity;
 import com.seven.module_user.R;
 import com.seven.module_user.R2;
 import com.seven.module_user.ui.fragment.order.OrderListFragment;
@@ -46,7 +47,9 @@ public class TokenListFragment extends BaseFragment {
 
     public static TokenListFragment getInstance(String type) {
         TokenListFragment fragment = new TokenListFragment();
-        fragment.currentListType = type;
+        Bundle bundle = new Bundle();
+        bundle.putString("type",type);
+        fragment.setArguments(bundle);
         return fragment;
     }
     @Override
@@ -77,12 +80,16 @@ public class TokenListFragment extends BaseFragment {
 
     @Override
     public void init(Bundle savedInstanceState) {
+        currentListType = getArguments().getString("type");
        getData();
     }
 
     private void getData() {
-
-        ApiManager.inComeDetails(page, 20, currentListType)
+        TokenPageEntity entity = new TokenPageEntity();
+        entity.setPage(page);
+        entity.setPage_size(20);
+        entity.setStatus(currentListType);
+        ApiManager.inComeDetails(entity)
                 .subscribe(new CommonObserver<BaseResult<InComeDetailsEntity>>() {
                     @Override
                     public void onNext(BaseResult<InComeDetailsEntity> inComeDetailsEntityBaseResult) {
@@ -125,9 +132,11 @@ public class TokenListFragment extends BaseFragment {
         } else {
             recyclerView.addDataList(data.getItems());
         }
-        if (data.getPagination().getTotal_page() == data.getPagination().getPage()) {
+        if (data.getPagination().getTotal_page() == 0) {
             recyclerView.setEnableLoadMore(false);
         }
+        //todo 你妈教你total的值是这么返回的吗？
+        //todo 。。
     }
 
     private View getEmptyView() {

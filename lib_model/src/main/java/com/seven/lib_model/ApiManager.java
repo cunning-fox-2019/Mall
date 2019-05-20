@@ -21,6 +21,7 @@ import com.seven.lib_model.model.user.OrderEntity;
 import com.seven.lib_model.model.user.OrderListRequestEntity;
 import com.seven.lib_model.model.user.SBEntity;
 import com.seven.lib_model.model.user.TokenEntity;
+import com.seven.lib_model.model.user.TokenPageEntity;
 import com.seven.lib_model.model.user.UserEntity;
 import com.seven.lib_model.model.user.mine.AddAddressEntity;
 import com.seven.lib_model.model.user.mine.AddressEntity;
@@ -213,7 +214,7 @@ public class ApiManager {
         Observable<BaseResult<RewardListEntity>> rewardList();
 
         @POST("promotion/token/list")
-        Observable<BaseResult<InComeDetailsEntity>> inComeDetails(@Query("page") int page, @Query("page_size") int page_size, @Query("status") String status);
+        Observable<BaseResult<InComeDetailsEntity>> inComeDetails(@Body TokenPageEntity entity);
 
         @POST("article/info")
         Observable<HttpResponse> getLevel(@Body RequestBody requestBody);
@@ -325,8 +326,8 @@ public class ApiManager {
         return subScribe(apiManagerService.rewardList());
     }
 
-    public static Observable<BaseResult<InComeDetailsEntity>> inComeDetails(int page, int page_size, String status) {
-        return subScribe(apiManagerService.inComeDetails(page, page_size, status));
+    public static Observable<BaseResult<InComeDetailsEntity>> inComeDetails(TokenPageEntity page) {
+        return subScribe(apiManagerService.inComeDetails(page));
     }
 
     public static Observable<BaseResult> getReceive(String ids, String contact_id) {
