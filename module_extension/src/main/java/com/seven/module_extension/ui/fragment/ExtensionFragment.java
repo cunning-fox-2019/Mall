@@ -121,8 +121,8 @@ public class ExtensionFragment extends BaseFragment {
     }
 
     @Override
-    public void init(Bundle savedInstanceState) {
-        EventBus.getDefault().register(this);
+    public void onResume() {
+        super.onResume();
         presenter = new ExFragmentPresenter(this, this);
         UserEntity userEntity = new Gson().fromJson(SharedData.getInstance().getUserInfo(), UserEntity.class);
         getData(0);
@@ -133,6 +133,12 @@ public class ExtensionFragment extends BaseFragment {
             setUserData();
             getRewardList();
         }
+    }
+
+    @Override
+    public void init(Bundle savedInstanceState) {
+        EventBus.getDefault().register(this);
+
         meProfitDetails.setOnClickListener(this);
         me_buy_up_rl.setOnClickListener(this);
         me_ext_up_rl.setOnClickListener(this);

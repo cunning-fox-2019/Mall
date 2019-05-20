@@ -251,7 +251,7 @@ public class UserCreateAddressActivity extends BaseTitleActivity {
         }
         if (addressEntity != null) {
             SBEntity sb =new SBEntity();
-            sb.setContact_id(Variable.getInstance().getUserId());
+            sb.setContact_id(addressEntity.getId());
             sb.setAddress(addressDetail.getText().toString());
             sb.setContact_name(nameEdit.getText().toString());
             sb.setContact_phone(phoneEdit.getText().toString());
@@ -325,6 +325,7 @@ public class UserCreateAddressActivity extends BaseTitleActivity {
     }
 
     private void upData(SBEntity sb) {
+        showLoadingDialog();
         ApiManager.editAddress(sb)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
@@ -336,6 +337,7 @@ public class UserCreateAddressActivity extends BaseTitleActivity {
 
                     @Override
                     public void onNext(BaseResult baseResult) {
+                        dismissLoadingDialog();
                         if (baseResult.getCode() == 1) {
                             finish();
                         }
@@ -344,7 +346,8 @@ public class UserCreateAddressActivity extends BaseTitleActivity {
 
                     @Override
                     public void onError(Throwable e) {
-
+                        dismissLoadingDialog();
+                        Log.e("xxxxxxH",e.toString());
                     }
 
                     @Override
