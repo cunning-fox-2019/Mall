@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Mall.iml" filepath="$PROJECT_DIR$/Mall.iml" />
       <module fileurl="file://$PROJECT_DIR$/aaa.iml" filepath="$PROJECT_DIR$/aaa.iml" />
       <module fileurl="file://E:/outsource/mall_t/Mall/aaa.iml" filepath="E:/outsource/mall_t/Mall/aaa.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
@@ -11,6 +10,7 @@
       <module fileurl="file://$PROJECT_DIR$/lib_model/lib_model.iml" filepath="$PROJECT_DIR$/lib_model/lib_model.iml" />
       <module fileurl="file://$PROJECT_DIR$/lib_opensource/lib_opensource.iml" filepath="$PROJECT_DIR$/lib_opensource/lib_opensource.iml" />
       <module fileurl="file://$PROJECT_DIR$/lib_router/lib_router.iml" filepath="$PROJECT_DIR$/lib_router/lib_router.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Mall.iml" filepath="$PROJECT_DIR$/Mall.iml" />
       <module fileurl="file://$PROJECT_DIR$/module_extension/module_extension.iml" filepath="$PROJECT_DIR$/module_extension/module_extension.iml" />
       <module fileurl="file://$PROJECT_DIR$/module_home/module_home.iml" filepath="$PROJECT_DIR$/module_home/module_home.iml" />
       <module fileurl="file://$PROJECT_DIR$/module_model/module_model.iml" filepath="$PROJECT_DIR$/module_model/module_model.iml" />
