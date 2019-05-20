@@ -159,7 +159,7 @@ public class BuyActivity extends BaseTitleActivity {
                 for (BdGoodsEntity item : list1) {
                     if (entity.getPrice()==item.getPrice()) {
                         item.setSelected(true);
-                        me_buy_price.setText("总价："+ new DecimalFormat("#.00").format(entity.getPrice()));
+                        me_buy_price.setText("总价：￥"+ new DecimalFormat("#.00").format(entity.getPrice()));
                     } else {
                         item.setSelected(false);
                     }
