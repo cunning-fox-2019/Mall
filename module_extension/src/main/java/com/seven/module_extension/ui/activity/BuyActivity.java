@@ -13,12 +13,14 @@ import android.widget.LinearLayout;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.gson.Gson;
 import com.seven.lib_common.base.activity.BaseTitleActivity;
 import com.seven.lib_common.stextview.TypeFaceView;
 import com.seven.lib_common.utils.ToastUtils;
 import com.seven.lib_model.ApiManager;
 import com.seven.lib_model.BaseResult;
+import com.seven.lib_model.CommonObserver;
 import com.seven.lib_model.model.extension.BdGoodsEntity;
 import com.seven.lib_model.model.extension.GoodsItemEntity;
 import com.seven.lib_model.model.home.OrderEntity;
@@ -40,6 +42,8 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -72,6 +76,7 @@ public class BuyActivity extends BaseTitleActivity {
     UserEntity entity;
     private OrderEntity orderEntity;
     AddressEntity addressEntity;
+    List<BdGoodsEntity> list = new ArrayList<>();
 
     @Override
     protected int getLayoutId() {
@@ -88,10 +93,10 @@ public class BuyActivity extends BaseTitleActivity {
                     .navigation();
         }
         if (view.getId() == R.id.me_buy_bd_btn) {
-            if (addressEntity != null){
-                presenter.getOrder(1,addressEntity.getContact_id());
-            }else {
-                ToastUtils.showToast(mContext,"请选择地址");
+            if (addressEntity != null) {
+                presenter.getOrder(1, addressEntity.getId());
+            } else {
+                ToastUtils.showToast(mContext, "请选择地址");
             }
         }
     }
@@ -99,13 +104,13 @@ public class BuyActivity extends BaseTitleActivity {
     @Override
     public void result(int code, Boolean hasNextPage, String response, Object object) {
         super.result(code, hasNextPage, response, object);
-        if (code == 1){
-            if (object == null)return;
+        if (code == 1) {
+            if (object == null) return;
             orderEntity = (OrderEntity) object;
-            if (orderEntity != null){
+            if (orderEntity != null) {
                 ARouter.getInstance().build(RouterPath.ACTIVITY_PAY)
                         .withBoolean(Constants.BundleConfig.NORMAL, false)
-                        .withSerializable(Constants.BundleConfig.ENTITY,orderEntity)
+                        .withSerializable(Constants.BundleConfig.ENTITY, orderEntity)
                         .navigation();
             }
         }
@@ -116,43 +121,52 @@ public class BuyActivity extends BaseTitleActivity {
         statusBar = StatusBar.LIGHT;
         EventBus.getDefault().register(this);
         setTitleText(R.string.me_buy_bd_title);
-        presenter = new ExActivityPresenter(this,this);
+        presenter = new ExActivityPresenter(this, this);
         String userInfo = SharedData.getInstance().getUserInfo();
-        entity = new Gson().fromJson(userInfo,UserEntity.class);
+        entity = new Gson().fromJson(userInfo, UserEntity.class);
         meBuyBdLl.setOnClickListener(this);
         meBuyBdBtn.setOnClickListener(this);
-        ApiManager.getBdGoods()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(new Observer<BaseResult<BdGoodsEntity>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-
-                    }
-
+        ApiManager.getBdGoods().subscribe(new CommonObserver<BaseResult<BdGoodsEntity>>() {
+            @Override
+            public void onNext(BaseResult<BdGoodsEntity> bdGoodsEntityBaseResult) {
+                BdGoodsEntity entity = new BdGoodsEntity();
+                entity = bdGoodsEntityBaseResult.getData();
+                list.add(entity);
+//                list.addAll(bdGoodsEntityBaseResult.getData().getGoods_list());
+                ApiManager.get79().subscribe(new CommonObserver<BaseResult<BdGoodsEntity>>() {
                     @Override
                     public void onNext(BaseResult<BdGoodsEntity> bdGoodsEntityBaseResult) {
-                        Log.e("xxxxxxH", bdGoodsEntityBaseResult.getData().getGoods_list() + "");
-                        me_buy_price.setText("总价：" + bdGoodsEntityBaseResult.getData().getPrice());
-                        initRv(bdGoodsEntityBaseResult.getData().getGoods_list());
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onComplete() {
-
+                        BdGoodsEntity entity1 = new BdGoodsEntity();
+                        entity1 = bdGoodsEntityBaseResult.getData();
+                        list.add(entity1);
+//                        list.addAll(bdGoodsEntityBaseResult.getData().getGoods_list());
+                        initRv(list);
                     }
                 });
+            }
+        });
     }
 
-    private void initRv(List<GoodsItemEntity> list) {
+    private void initRv(final List<BdGoodsEntity> list) {
         adapter = new BuyBdAdapter(R.layout.me_item_buybd, list);
         meBuyBdRv.setLayoutManager(new LinearLayoutManager(mContext));
         meBuyBdRv.setAdapter(adapter);
+        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                List<BdGoodsEntity> list1 = adapter.getData();
+                BdGoodsEntity entity = list1.get(position);
+                for (BdGoodsEntity item : list1) {
+                    if (entity.getPrice()==item.getPrice()) {
+                        item.setSelected(true);
+                        me_buy_price.setText("总价："+ new DecimalFormat("#.00").format(entity.getPrice()));
+                    } else {
+                        item.setSelected(false);
+                    }
+                }
+                adapter.notifyDataSetChanged();
+            }
+        });
     }
 
     @Override

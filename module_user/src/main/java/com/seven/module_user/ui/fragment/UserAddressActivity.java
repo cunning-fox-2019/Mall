@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -108,7 +109,7 @@ public class UserAddressActivity extends BaseTitleActivity {
                             .addOnClickListener(R.id.edit_address)
                             .addOnClickListener(R.id.delete_address);
                     TextView isDefault = helper.getView(R.id.is_default_address);
-                    if (item.getIs_default().equals("0")) {
+                    if (!TextUtils.isEmpty(String.valueOf(item.getIs_default())) && item.getIs_default()==0) {
                         isDefault.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.item_shopping_cart_default), null, null, null);
                         isDefault.setTextColor(getResources().getColor(R.color.color_abaeb3));
                     } else {
@@ -137,9 +138,10 @@ public class UserAddressActivity extends BaseTitleActivity {
         public void onSimpleItemClick(BaseQuickAdapter adapter, View view, int position) {
             AddressEntity entity = (AddressEntity) adapter.getData().get(position);
             //todo 选择地址才进来if 查看时不进入
-            if (code != 0 && code != 159357 && code != 110110) {
+//            if (code != 0 && code != 159357 && code != 110110 && code !=-1) {
+            if (code == 901){
                 ContactDefaultEntity entity1 = new ContactDefaultEntity();
-                entity1.setId(entity.getContact_id());
+                entity1.setId(entity.getId());
                 entity1.setContact_name(entity.getContact_name());
                 entity1.setContact_phone(entity.getContact_phone());
                 entity1.setAddress(entity.getAddress());
@@ -216,7 +218,7 @@ public class UserAddressActivity extends BaseTitleActivity {
 
     private void setDefaultAddress(AddressEntity entity, final int position) {
         DTEntity dtEntity = new DTEntity();
-        dtEntity.setContact_id(entity.getContact_id());
+        dtEntity.setContact_id(entity.getId());
         ApiManager.setDefaultAddress(dtEntity)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -247,7 +249,7 @@ public class UserAddressActivity extends BaseTitleActivity {
 
     private void deleteAddress(AddressEntity entity, final int position) {
         DTEntity dtEntity = new DTEntity();
-        dtEntity.setContact_id(entity.getContact_id());
+        dtEntity.setContact_id(entity.getId());
         ApiManager.deleteAddress(dtEntity)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
