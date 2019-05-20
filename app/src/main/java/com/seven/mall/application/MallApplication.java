@@ -13,7 +13,6 @@ import com.seven.lib_opensource.application.SSDK;
 import com.seven.lib_opensource.application.SevenApplication;
 import com.seven.lib_router.Constants;
 import com.seven.lib_router.RouterSDK;
-import com.seven.lib_router.Variable;
 
 import cn.jpush.android.api.JPushInterface;
 
@@ -68,7 +67,7 @@ public class MallApplication extends SevenApplication {
 
         JPushInterface.setDebugMode(false);
         JPushInterface.init(this);
-
+//        UMConfigure.init(this, "5ce11b240cafb2dd74000ae3", "Umeng", UMConfigure.DEVICE_TYPE_PHONE, "");
     }
 
     private static HttpConfig initHttpConfig() {

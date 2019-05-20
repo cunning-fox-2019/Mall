@@ -44,6 +44,8 @@ dependencies {
     implementation "com.android.support:appcompat-v7:${rootProject.ext.dependencies.googleSupportVersion}"
     implementation 'com.github.zackratos.ultimatebar:ultimatebar3:3.1.1'
     implementation 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
+    api  'com.umeng.umsdk:analytics:8.0.0'
+    api  'com.umeng.umsdk:common:2.0.0'
     implementation project(':lib_opensource')
     implementation project(':lib_router')
     implementation project(':lib_http')

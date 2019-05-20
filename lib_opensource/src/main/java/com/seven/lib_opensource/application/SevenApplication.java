@@ -40,6 +40,7 @@ public class SevenApplication extends Application {
         application = this;
         init();
         initApp();
+
     }
 
     private void init() {
