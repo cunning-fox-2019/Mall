@@ -109,7 +109,6 @@ public class Constants {
         public static final int REGISTER = 100;
         public static final int LOGIN = 101;
         public static final int LOGOUT=102;
-
         public static final int BUY_BD = 103;
 
         public static final int BUSINESS_PROOF=200;
@@ -121,6 +120,7 @@ public class Constants {
 
         /* 第三方sdk */
         public static final int PAY_RESULT = 1000;
+
 
     }
 

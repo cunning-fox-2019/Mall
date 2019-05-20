@@ -7,11 +7,14 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
 import com.seven.lib_common.base.sheet.IBaseSheet;
 import com.seven.lib_common.utils.ImageUtils;
 import com.seven.lib_common.utils.ResourceUtils;
 import com.seven.lib_common.utils.ScreenUtils;
+import com.seven.lib_model.model.user.UserEntity;
 import com.seven.lib_router.Variable;
+import com.seven.lib_router.db.shard.SharedData;
 import com.seven.module_extension.R;
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
 import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
@@ -30,6 +33,9 @@ public class ShareDialog extends IBaseSheet {
 
     Bitmap thumbBmp = null;
     SendMessageToWX.Req req;
+
+    UserEntity userEntity;
+    private int userId=0;
 
     public ShareDialog(Activity activity, int theme, com.seven.lib_common.listener.OnClickListener listener) {
         super(activity, theme, listener);
@@ -59,7 +65,10 @@ public class ShareDialog extends IBaseSheet {
 
     @Override
     public void initData() {
-
+        userEntity = new Gson().fromJson(SharedData.getInstance().getUserInfo(),UserEntity.class);
+        if (userEntity != null){
+            userId = userEntity.getId();
+        }
     }
 
     @Override
@@ -79,7 +88,7 @@ public class ShareDialog extends IBaseSheet {
 
     private void wechatShareWebpage() {
         WXWebpageObject webpage = new WXWebpageObject();
-        webpage.webpageUrl = getUrl(Variable.getInstance().getUserId());
+        webpage.webpageUrl = getUrl(userId);
         WXMediaMessage msg = new WXMediaMessage(webpage);
         msg.title = ResourceUtils.getText(R.string.app_name);
 

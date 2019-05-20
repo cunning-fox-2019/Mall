@@ -17,6 +17,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -83,6 +84,8 @@ public class EditUserInfoActivity extends BaseTitleActivity implements
     TextView chooseSex;
     @BindView(R2.id.user_photo_img)
     ImageView user_photo_img;
+    @BindView(R2.id.mu_save)
+    Button mu_save;
 
     private Uri PicUri;
     private Uri PicCropUri;
@@ -109,15 +112,16 @@ public class EditUserInfoActivity extends BaseTitleActivity implements
     protected int getLayoutId() {
         return R.layout.mu_activity_edit_user_info;
     }
-
+    UserEntity entity;
     @Override
     protected void initView(Bundle savedInstanceState) {
         setTitleText(R.string.user_edit_info);
-        UserEntity entity = new Gson().fromJson(SharedData.getInstance().getUserInfo(), UserEntity.class);
+        entity = new Gson().fromJson(SharedData.getInstance().getUserInfo(), UserEntity.class);
         userNickName.setText(entity.getUsername());
         chooseSex.setText(entity.getSex().equals("male") ? "男" : "女");
         GlideUtils.loadCircleImage(mContext, entity.getAvatar(), user_photo_img);
         presenter = new ActModelPresenter(this, this);
+        mu_save.setOnClickListener(this);
     }
 
     @Override
@@ -191,6 +195,8 @@ public class EditUserInfoActivity extends BaseTitleActivity implements
             selectCapture();
             mBottomSheetDialog.dismiss();
         } else if (view.getId() == R.id.left_btn) {
+            finish();
+        }else if (view.getId() == R.id.mu_save){
             modifyUserInfo();
         }
     }
@@ -430,7 +436,7 @@ public class EditUserInfoActivity extends BaseTitleActivity implements
 
     private void modifyUserInfo() {
         showLoading();
-        UserEntity userEntity = new UserEntity();
+        UserEntity userEntity = entity;
         userEntity.setUsername(userNickName.getText().toString());
         userEntity.setAvatar(currentUrl);
         userEntity.setSex(chooseSex.getText().toString().equals("男") ? "male" : "female");
