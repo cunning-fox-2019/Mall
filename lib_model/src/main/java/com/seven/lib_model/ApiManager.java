@@ -230,6 +230,9 @@ public class ApiManager {
         @POST("order/cancel")
         Observable<BaseResult> cancelOrder(@Body CancelOrderEntity entity);
 
+        @POST("promotion/79form/goods/list")
+        Observable<BaseResult<BdGoodsEntity>> get79();
+
     }
 
     public static Observable<BaseResult<TokenEntity>> login(LoginEntity entity) {
@@ -274,7 +277,7 @@ public class ApiManager {
     }
 
     public static Observable<BaseResult<BdGoodsEntity>> getBdGoods() {
-        return apiManagerService.getBdGoods();
+        return subScribe(apiManagerService.getBdGoods());
     }
 
     public static Observable<BaseResult<MyInterViewEntity>> getMyInterView(String id) {
@@ -342,4 +345,7 @@ public class ApiManager {
         return subScribe(apiManagerService.cancelOrder(entity));
     }
 
+    public static Observable<BaseResult<BdGoodsEntity>> get79(){
+        return subScribe(apiManagerService.get79());
+    }
 }

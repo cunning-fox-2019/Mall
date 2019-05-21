@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    xmlns:tool="http://schemas.android.com/tools"
     android:background="@color/white"
     android:layout_marginTop="1dp"
     android:paddingRight="15dp"
@@ -21,19 +22,39 @@
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/mt_item_buybd_iv"
             android:layout_alignTop="@+id/mt_item_buybd_iv"
+            android:layout_toLeftOf="@+id/me_item_buybd_ck"
             android:layout_marginTop="2dp"
-            android:layout_marginRight="21dp"
+            android:layout_marginRight="10dp"
             android:textColor="#1e1d1d"
             android:maxLines="2"
             android:ellipsize="end"
             android:textSize="@dimen/sp_14"
             android:text="无线充电器无线充电器无线充电器无线充电器无线充电器 ..."/>
 
+    <CheckBox
+        android:id="@+id/me_item_buybd_ck"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="12dp"
+        android:layout_alignTop="@+id/me_item_buybd_name"
+        android:button="@null"
+        android:background="@drawable/me_unselect"/>
+
+    <TextView
+        android:id="@+id/me_item_buybd_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/mt_item_buybd_iv"
+        android:layout_toRightOf="@+id/mt_item_buybd_iv"
+        tool:text="￥268"
+        android:textColor="@color/primary"/>
+
     <com.seven.lib_common.stextview.TypeFaceView
         android:id="@+id/me_item_buybd_num"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/mt_item_buybd_iv"
+        android:layout_alignParentRight="true"
         android:layout_marginTop="2dp"
         android:layout_marginRight="12dp"
         android:layout_alignBottom="@+id/mt_item_buybd_iv"

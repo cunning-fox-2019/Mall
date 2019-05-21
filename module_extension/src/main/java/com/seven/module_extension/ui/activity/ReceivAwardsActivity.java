@@ -13,6 +13,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.gson.Gson;
 import com.seven.lib_common.base.activity.BaseTitleActivity;
 import com.seven.lib_common.listener.OnClickListener;
+import com.seven.lib_common.utils.ToastUtils;
 import com.seven.lib_model.model.extension.RewardInfoLlistEntity;
 import com.seven.lib_model.model.extension.RewardListEntity;
 import com.seven.lib_model.model.user.UserEntity;
@@ -122,7 +123,8 @@ public class ReceivAwardsActivity extends BaseTitleActivity {
             }
         }
         if (code == 2){
-            showDialog();
+            ToastUtils.showToast(mContext,"领取成功");
+            request(id);
         }
     }
     private void showDialog(){

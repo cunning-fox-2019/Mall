@@ -19,6 +19,7 @@ import com.seven.lib_common.utils.ToastUtils;
 import com.seven.lib_model.ApiManager;
 import com.seven.lib_model.BaseResult;
 import com.seven.lib_model.CommonObserver;
+import com.seven.lib_model.model.extension.BdGoodsEntity;
 import com.seven.lib_model.model.extension.BindEntity;
 import com.seven.lib_model.model.extension.GoodsItemEntity;
 import com.seven.lib_model.model.extension.RewardLsitItemEntity;
@@ -66,7 +67,7 @@ public class ReceiveBDActivity extends BaseTitleActivity {
 
     private BuyBdAdapter adapter;
     private ExActivityPresenter presenter;
-    private List<GoodsItemEntity> rewardLsit;
+    private List<BdGoodsEntity> rewardLsit;
     private int contactId=0;
     private String ids = "";
     private BindEntity entity;
@@ -142,7 +143,7 @@ public class ReceiveBDActivity extends BaseTitleActivity {
         if (code == 1){
             if (object == null)return;
             rewardLsit = new ArrayList<>();
-            rewardLsit = (List<GoodsItemEntity>) object;
+            rewardLsit = (List<BdGoodsEntity>) object;
             adapter.setNewData(rewardLsit);
         }
         if (code == 2){

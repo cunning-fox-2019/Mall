@@ -15,6 +15,7 @@ import com.seven.lib_model.builder.extension.ReceiveBuilder;
 import com.seven.lib_model.builder.extension.RewardBilder;
 import com.seven.lib_model.builder.extension.RewardListBuilder;
 import com.seven.lib_model.http.RequestHelper;
+import com.seven.lib_model.model.extension.BdGoodsEntity;
 import com.seven.lib_model.model.extension.BindItemEntity;
 import com.seven.lib_model.model.extension.GoodsItemEntity;
 import com.seven.lib_model.model.extension.LevelEntity;
@@ -89,7 +90,7 @@ public class ExActivityPresenter extends BasePresenter<IBaseView, BaseActivity> 
         BindingBuilder.Builder builder = new BindingBuilder.Builder();
         BindingBuilder json = builder.id(id).build();
         String jsonStr = new Gson().toJson(json);
-        HttpRxObserver rxObserver = getList(getView(),code,GoodsItemEntity.class,"items",true);
+        HttpRxObserver rxObserver = getList(getView(),code,BdGoodsEntity.class,"items",true);
         if (rxObserver == null)return;
         HttpRxObservable.getObservable(RequestHelper.getInstance().rewardLsit(jsonStr),getActivity(),ActivityEvent.PAUSE).subscribe(rxObserver);
     }

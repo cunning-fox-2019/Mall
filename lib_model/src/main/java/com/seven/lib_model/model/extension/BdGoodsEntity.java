@@ -7,7 +7,16 @@ import java.util.List;
  */
 public class BdGoodsEntity {
     private double price;
+    private boolean isSelected;
     private List<GoodsItemEntity> goods_list;
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
+    }
 
     public double getPrice() {
         return price;
