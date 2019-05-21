@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -108,7 +109,7 @@ public class UserAddressActivity extends BaseTitleActivity {
                             .addOnClickListener(R.id.edit_address)
                             .addOnClickListener(R.id.delete_address);
                     TextView isDefault = helper.getView(R.id.is_default_address);
-                    if (item.getIs_default() == 0) {
+                    if (!TextUtils.isEmpty(String.valueOf(item.getIs_default())) && item.getIs_default()==0) {
                         isDefault.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.item_shopping_cart_default), null, null, null);
                         isDefault.setTextColor(getResources().getColor(R.color.color_abaeb3));
                     } else {

@@ -19,7 +19,9 @@ import com.seven.lib_model.model.user.CancelOrderEntity;
 import com.seven.lib_model.model.user.LoginEntity;
 import com.seven.lib_model.model.user.OrderEntity;
 import com.seven.lib_model.model.user.OrderListRequestEntity;
+import com.seven.lib_model.model.user.SBEntity;
 import com.seven.lib_model.model.user.TokenEntity;
+import com.seven.lib_model.model.user.TokenPageEntity;
 import com.seven.lib_model.model.user.UserEntity;
 import com.seven.lib_model.model.user.mine.AddAddressEntity;
 import com.seven.lib_model.model.user.mine.AddressEntity;
@@ -93,8 +95,8 @@ public class ApiManager {
             Gson gson = gsonBuilder.create();
             GsonConverterFactory gsonConverterFactory = GsonConverterFactory.create(gson);
             Retrofit retrofit = new Retrofit.Builder()
-//                    .baseUrl("http://api.zf.tianza.com.cn/")
-                    .baseUrl("http://zhongfu.lerqin.com/")
+                    .baseUrl("http://api.zf.tianza.com.cn/")
+                    //.baseUrl("http://zhongfu.lerqin.com/")
                     .client(builder.build())
                     .addConverterFactory(gsonConverterFactory)
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
@@ -193,7 +195,7 @@ public class ApiManager {
         Observable<BaseResult> deleteAddress(@Body DTEntity entity);
 
         @POST("user/contact/update")
-        Observable<BaseResult> editAddress(@Body AddressEntity entity);
+        Observable<BaseResult> editAddress(@Body SBEntity sb);
 
         @POST("user/pay/account")
         Observable<BaseResult> setPayAccount(@Body PayAccountEntity entity);
@@ -212,7 +214,7 @@ public class ApiManager {
         Observable<BaseResult<RewardListEntity>> rewardList();
 
         @POST("promotion/token/list")
-        Observable<BaseResult<InComeDetailsEntity>> inComeDetails(@Query("page") int page, @Query("page_size") int page_size, @Query("status") String status);
+        Observable<BaseResult<InComeDetailsEntity>> inComeDetails(@Body TokenPageEntity entity);
 
         @POST("article/info")
         Observable<HttpResponse> getLevel(@Body RequestBody requestBody);
@@ -300,8 +302,8 @@ public class ApiManager {
         return apiManagerService.deleteAddress(entity);
     }
 
-    public static Observable<BaseResult> editAddress(AddressEntity entity) {
-        return apiManagerService.editAddress(entity);
+    public static Observable<BaseResult> editAddress(SBEntity sb) {
+        return apiManagerService.editAddress(sb);
     }
 
     public static Observable<BaseResult> setPayAccount(PayAccountEntity entity) {
@@ -324,8 +326,8 @@ public class ApiManager {
         return subScribe(apiManagerService.rewardList());
     }
 
-    public static Observable<BaseResult<InComeDetailsEntity>> inComeDetails(int page, int page_size, String status) {
-        return subScribe(apiManagerService.inComeDetails(page, page_size, status));
+    public static Observable<BaseResult<InComeDetailsEntity>> inComeDetails(TokenPageEntity page) {
+        return subScribe(apiManagerService.inComeDetails(page));
     }
 
     public static Observable<BaseResult> getReceive(String ids, String contact_id) {
@@ -344,7 +346,6 @@ public class ApiManager {
     public static Observable<BaseResult> cancelOrder(CancelOrderEntity entity){
         return subScribe(apiManagerService.cancelOrder(entity));
     }
-
     public static Observable<BaseResult<BdGoodsEntity>> get79(){
         return subScribe(apiManagerService.get79());
     }

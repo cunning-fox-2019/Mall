@@ -141,7 +141,7 @@ public class SpecificationSheet extends IBaseSheet implements FlowCallback {
 
                 numberTv.setText(bean.getStock() > 0 ? "1" : "0");
                 stockTv.setText(ResourceUtils.getFormatText(R.string.hint_stock, bean.getStock()));
-                GlideUtils.loadImage(activity, bean.getShow_thumb(), coverIv);
+                GlideUtils.loadImage(activity, bean.getThumb(), coverIv);
                 skuBean = bean;
 
                 break;

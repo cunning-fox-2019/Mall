@@ -33,8 +33,7 @@ public class UpActivity extends BaseTitleActivity {
     TypeFaceView meUpgradeTv;
 
     ExActivityPresenter presenter;
-
-    ShareDialog dialog;
+    private ShareDialog dialog;
 
     @Override
     protected int getLayoutId() {
@@ -46,6 +45,7 @@ public class UpActivity extends BaseTitleActivity {
     @Override
     protected void initView(Bundle savedInstanceState) {
         setTitleText("推广升级");
+
         presenter = new ExActivityPresenter(this,this);
         presenter.level(1,3);
     }

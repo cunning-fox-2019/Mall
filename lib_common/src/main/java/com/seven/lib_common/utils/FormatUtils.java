@@ -10,9 +10,6 @@ import java.text.DecimalFormat;
 
 public class FormatUtils {
 
-    public static String formatCurrency(double price){
-       return new DecimalFormat("0.0").format(price);
-    }
     public static String formatCurrencyD(double price){
         return new DecimalFormat("0.00").format(price);
     }

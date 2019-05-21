@@ -47,10 +47,10 @@ public class ReceiveDialog extends BaseDialog {
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.me_not_vip_cancel){
-
+            listener.onClick(me_not_vip_cancel,"cancel");
         }
         if (view.getId() == R.id.me_not_vip_ok){
-            listener.onClick(view);
+            listener.onClick(me_not_vip_ok,"go");
         }
         dismiss();
     }

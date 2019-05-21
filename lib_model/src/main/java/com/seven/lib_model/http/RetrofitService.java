@@ -25,6 +25,10 @@ public interface RetrofitService {
     String sms = "sms/send";
     String payPassword = "user/pay_password/is_correct";
     String upload = "image/upload";
+    String pushId="user/jpush/set_id";
+    String deletePushId="user/jpush/delete_id";
+    String messageRead="notice/count/not_read";
+    String messageList="notice/list";
 
     String register = "register";
     String login = "login";
@@ -66,6 +70,18 @@ public interface RetrofitService {
 
     @POST(payPassword)
     Observable<HttpResponse> payPassword(@Body RequestBody requestBody);
+
+    @POST(pushId)
+    Observable<HttpResponse> pushId(@Body RequestBody requestBody);
+
+    @POST(deletePushId)
+    Observable<HttpResponse> deletePushId();
+
+    @POST(messageRead)
+    Observable<HttpResponse> messageRead();
+
+    @POST(messageList)
+    Observable<HttpResponse> messageList();
 
     @Multipart
     @POST(upload)
@@ -189,5 +205,8 @@ public interface RetrofitService {
 
     @POST("promotion/role/order/add")
     Observable<HttpResponse> buyRole(@Body RequestBody requestBody);
+
+    @POST("user/contact/update")
+    Observable<HttpResponse> editAddress(@Body RequestBody requestBody);
 }
 

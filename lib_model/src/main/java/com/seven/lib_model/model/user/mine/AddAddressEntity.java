@@ -9,7 +9,7 @@ public class AddAddressEntity {
     private int province_id;
     private int city_id;
     private int district_id;
-    private int is_default;//是否默认(1.是,0.否,默认为0)
+    private String is_default;//是否默认(1.是,0.否,默认为0)
     private String contact_name;
     private String contact_phone;
     private String address;
@@ -38,11 +38,11 @@ public class AddAddressEntity {
         this.district_id = district_id;
     }
 
-    public int getIs_default() {
+    public String getIs_default() {
         return is_default;
     }
 
-    public void setIs_default(int is_default) {
+    public void setIs_default(String is_default) {
         this.is_default = is_default;
     }
 

@@ -33,6 +33,7 @@ import com.seven.lib_router.router.RouterUtils;
 import com.seven.module_extension.R;
 import com.seven.module_extension.R2;
 import com.seven.module_extension.ui.adapter.BuyBdAdapter;
+import com.seven.module_extension.ui.adapter.ReciveBdAdapter;
 import com.seven.module_extension.ui.dialog.ReceiveDialog;
 
 import org.greenrobot.eventbus.EventBus;
@@ -65,10 +66,10 @@ public class ReceiveBDActivity extends BaseTitleActivity {
     @BindView(R2.id.me_buy_bd_btn)
     TypeFaceView meBuyBdBtn;
 
-    private BuyBdAdapter adapter;
+    private ReciveBdAdapter adapter;
     private ExActivityPresenter presenter;
-    private List<BdGoodsEntity> rewardLsit;
-    private int contactId=0;
+    private List<GoodsItemEntity> rewardLsit;
+    private int contactId = 0;
     private String ids = "";
     private BindEntity entity;
     private ReceiveDialog dialog;
@@ -143,7 +144,7 @@ public class ReceiveBDActivity extends BaseTitleActivity {
         if (code == 1){
             if (object == null)return;
             rewardLsit = new ArrayList<>();
-            rewardLsit = (List<BdGoodsEntity>) object;
+            rewardLsit = (List<GoodsItemEntity>) object;
             adapter.setNewData(rewardLsit);
         }
         if (code == 2){
@@ -161,7 +162,13 @@ public class ReceiveBDActivity extends BaseTitleActivity {
 
                 @Override
                 public void onClick(View v, Object... objects) {
-                    RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_MINE_ORDER);
+                    String str = (String) objects[0];
+                    if (str.equals("go")) {
+                        RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_MINE_ORDER);
+                        ReceiveBDActivity.this.finish();
+                    }else {
+                        ReceiveBDActivity.this.finish();
+                    }
                 }
 
                 @Override
@@ -174,8 +181,8 @@ public class ReceiveBDActivity extends BaseTitleActivity {
             dialog.show();
     }
 
-    private void setRv(){
-        adapter = new BuyBdAdapter(R.layout.me_item_buybd, rewardLsit);
+    private void setRv() {
+        adapter = new ReciveBdAdapter(R.layout.me_item_buybd, rewardLsit);
         meReceiveBdRv.setLayoutManager(new LinearLayoutManager(mContext));
         meReceiveBdRv.setAdapter(adapter);
     }

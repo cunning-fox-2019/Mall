@@ -15,6 +15,7 @@ import com.seven.lib_model.builder.model.BusinessProofBuilder;
 import com.seven.lib_model.http.RequestHelper;
 import com.seven.lib_model.model.model.BusinessEntity;
 import com.seven.lib_model.model.model.BusinessInfoEntity;
+import com.seven.lib_model.model.model.MessageEntity;
 import com.seven.lib_model.model.model.UploadEntity;
 import com.trello.rxlifecycle2.android.ActivityEvent;
 
@@ -178,6 +179,14 @@ public class ActModelPresenter extends BasePresenter<IBaseView, BaseActivity> {
         if (rxObserver == null)
             return;
         HttpRxObservable.getObservable(RequestHelper.getInstance().upload(path, scene), getActivity(), ActivityEvent.PAUSE).subscribe(rxObserver);
+    }
+
+    public void messageList(int requestCode) {
+
+        HttpRxObserver rxObserver = get(getView(), requestCode, MessageEntity.class, "items", true);
+        if (rxObserver == null)
+            return;
+        HttpRxObservable.getObservable(RequestHelper.getInstance().messageList(), getActivity(), ActivityEvent.PAUSE).subscribe(rxObserver);
     }
 
 }

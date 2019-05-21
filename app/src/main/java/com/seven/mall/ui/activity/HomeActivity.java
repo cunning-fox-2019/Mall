@@ -3,6 +3,7 @@ package com.seven.mall.ui.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -10,10 +11,17 @@ import android.widget.RelativeLayout;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.google.gson.Gson;
+import com.orhanobut.logger.Logger;
 import com.seven.lib_common.base.activity.BaseAppCompatActivity;
+import com.seven.lib_common.stextview.TypeFaceView;
 import com.seven.lib_common.task.ActivityStack;
+import com.seven.lib_model.model.app.MessageReadEntity;
 import com.seven.lib_model.model.user.RegisterEntity;
+import com.seven.lib_model.model.user.UserEntity;
+import com.seven.lib_model.presenter.app.ActAppPresenter;
 import com.seven.lib_opensource.event.Event;
+import com.seven.lib_opensource.event.MessageEvent;
 import com.seven.lib_opensource.event.ObjectsEvent;
 import com.seven.lib_router.Constants;
 import com.seven.lib_router.Variable;
@@ -50,14 +58,21 @@ public class HomeActivity extends BaseAppCompatActivity {
     public LinearLayout tabExtension;
     @BindView(R.id.tab_model_ll)
     public LinearLayout tabModel;
-    @BindView(R.id.tab_user_ll)
-    public LinearLayout tabUser;
+    @BindView(R.id.tab_user_rl)
+    public RelativeLayout tabUser;
 
     private Fragment homeFg;
     private Fragment extensionFg;
     private Fragment modelFg;
     private Fragment userFg;
     private Fragment fromFg;
+
+    private ActAppPresenter presenter;
+
+    @BindView(R.id.message_count_rl)
+    public RelativeLayout messageReadRl;
+    @BindView(R.id.message_count)
+    public TypeFaceView messageReadTv;
 
     @Override
     protected void onResume() {
@@ -83,6 +98,8 @@ public class HomeActivity extends BaseAppCompatActivity {
         homeFg = (Fragment) ARouter.getInstance().build(RouterPath.FRAGMENT_HOME).navigation();
         changeTabSelected(tabHome, null, homeFg);
 
+        presenter = new ActAppPresenter(this, this);
+
         initAppValue();
     }
 
@@ -90,11 +107,20 @@ public class HomeActivity extends BaseAppCompatActivity {
 
         MallApplication.getInstance().setToken(SharedData.getInstance().getToken());
         Variable.getInstance().setToken(SharedData.getInstance().getToken());
+
+        if (TextUtils.isEmpty(SharedData.getInstance().getUserInfo())) return;
+        UserEntity userEntity = new Gson().fromJson(SharedData.getInstance().getUserInfo(), UserEntity.class);
+        Variable.getInstance().setUserId(userEntity.getId());
+        Variable.getInstance().setAliAccount(userEntity.getAli_account());
+        Variable.getInstance().setWxAccount(userEntity.getWx_account());
+        Variable.getInstance().setPayPassword(userEntity.getIs_set_pay_password() == 1);
+        Variable.getInstance().setTokenCount(TextUtils.isEmpty(userEntity.getToken_number()) ? 0 :
+                Double.parseDouble(userEntity.getToken_number()));
     }
 
     public void btClick(View view) {
 
-        LinearLayout tabLayout = null;
+        View tabLayout = null;
         Fragment fragment = null;
 
         switch (view.getId()) {
@@ -129,7 +155,7 @@ public class HomeActivity extends BaseAppCompatActivity {
 
                 break;
 
-            case R.id.tab_user_ll:
+            case R.id.tab_user_rl:
 
                 if (userFg == null)
                     userFg = (Fragment) ARouter.getInstance().build(RouterPath.FRAGMENT_USER).navigation();
@@ -145,12 +171,12 @@ public class HomeActivity extends BaseAppCompatActivity {
 
     }
 
-    private void changeTabSelected(LinearLayout layout, Fragment from, Fragment to) {
-        if (!layout.isSelected()) {
-            tabHome.setSelected(layout == tabHome);
-            tabExtension.setSelected(layout == tabExtension);
-            tabModel.setSelected(layout == tabModel);
-            tabUser.setSelected(layout == tabUser);
+    private void changeTabSelected(View view, Fragment from, Fragment to) {
+        if (!view.isSelected()) {
+            tabHome.setSelected(view == tabHome);
+            tabExtension.setSelected(view == tabExtension);
+            tabModel.setSelected(view == tabModel);
+            tabUser.setSelected(view == tabUser);
             switchFragment(R.id.home_container_fl, from, to);
             fromFg = to;
         }
@@ -173,7 +199,7 @@ public class HomeActivity extends BaseAppCompatActivity {
                 Variable.getInstance().setToken(registerEntity.getToken());
                 SharedData.getInstance().setToken(registerEntity.getToken());
 
-                JPushInterface.getRegistrationID(this);
+                presenter.pushId(Constants.RequestConfig.PUSH_ID, Integer.parseInt(JPushInterface.getRegistrationID(this)));
 
                 break;
 
@@ -182,6 +208,8 @@ public class HomeActivity extends BaseAppCompatActivity {
 //                    homeFg = (Fragment) ARouter.getInstance().build(RouterPath.FRAGMENT_HOME).navigation();
 //                changeTabSelected(tabHome, fromFg, homeFg);
 //                MallApplication.getInstance().clearAlias();
+
+                presenter.deletePushId(Constants.RequestConfig.DELETE_PUSH_ID);
 
                 break;
 
@@ -194,7 +222,51 @@ public class HomeActivity extends BaseAppCompatActivity {
 
                 break;
 
+            case Constants.EventConfig.MESSAGE_READ:
+
+                presenter.messageRead(Constants.RequestConfig.MESSAGE_READ);
+
+                break;
+
         }
+    }
+
+    @Override
+    public void result(int code, Boolean hasNextPage, String response, Object object) {
+        super.result(code, hasNextPage, response, object);
+
+        switch (code) {
+
+            case Constants.RequestConfig.PUSH_ID:
+
+                Logger.i(" push----> id setting succeed ");
+
+                break;
+
+            case Constants.RequestConfig.DELETE_PUSH_ID:
+
+                Logger.i(" push----> id delete succeed ");
+
+                break;
+
+            case Constants.RequestConfig.MESSAGE_READ:
+
+                if (object == null) return;
+
+                MessageReadEntity readEntity = (MessageReadEntity) object;
+
+                messageReadRl.setVisibility(readEntity.getCount() > 0 ?
+                        View.VISIBLE : View.GONE);
+                messageReadTv.setText(String.valueOf(readEntity.getCount()));
+
+                Variable.getInstance().setRead(readEntity.getCount() > 0 ? true : false);
+
+                EventBus.getDefault().post(new MessageEvent(Constants.EventConfig.MESSAGE_READ_POINT, ""));
+
+                break;
+
+        }
+
     }
 
     @Override

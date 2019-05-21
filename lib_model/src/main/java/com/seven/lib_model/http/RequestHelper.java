@@ -67,6 +67,22 @@ public class RequestHelper {
         return appService.payPassword(requestBody(json));
     }
 
+    public Observable<HttpResponse> pushId(String json) {
+        return appService.pushId(requestBody(json));
+    }
+
+    public Observable<HttpResponse> deletePushId() {
+        return appService.deletePushId();
+    }
+
+    public Observable<HttpResponse> messageRead() {
+        return appService.messageRead();
+    }
+
+    public Observable<HttpResponse> messageList() {
+        return appService.messageList();
+    }
+
     public Observable<HttpResponse> upload(String path, String scene) {
 
         File file = new File(path);
@@ -227,4 +243,6 @@ public class RequestHelper {
     public Observable<HttpResponse> getOrder(String json){return appService.getOrder(requestBody(json));}
 
     public Observable<HttpResponse> buyRole(String json){return appService.buyRole(requestBody(json));}
+
+    public Observable<HttpResponse> editAddress(String json){return appService.editAddress(requestBody(json));}
 }

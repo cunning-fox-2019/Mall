@@ -104,13 +104,13 @@ public class BuyActivity extends BaseTitleActivity {
     @Override
     public void result(int code, Boolean hasNextPage, String response, Object object) {
         super.result(code, hasNextPage, response, object);
-        if (code == 1) {
-            if (object == null) return;
+        if (code == 1){
+            if (object == null)return;
             orderEntity = (OrderEntity) object;
-            if (orderEntity != null) {
+            if (orderEntity != null){
                 ARouter.getInstance().build(RouterPath.ACTIVITY_PAY)
                         .withBoolean(Constants.BundleConfig.NORMAL, false)
-                        .withSerializable(Constants.BundleConfig.ENTITY, orderEntity)
+                        .withSerializable(Constants.BundleConfig.ENTITY,orderEntity)
                         .navigation();
             }
         }
@@ -121,9 +121,9 @@ public class BuyActivity extends BaseTitleActivity {
         statusBar = StatusBar.LIGHT;
         EventBus.getDefault().register(this);
         setTitleText(R.string.me_buy_bd_title);
-        presenter = new ExActivityPresenter(this, this);
+        presenter = new ExActivityPresenter(this,this);
         String userInfo = SharedData.getInstance().getUserInfo();
-        entity = new Gson().fromJson(userInfo, UserEntity.class);
+        entity = new Gson().fromJson(userInfo,UserEntity.class);
         meBuyBdLl.setOnClickListener(this);
         meBuyBdBtn.setOnClickListener(this);
         ApiManager.getBdGoods().subscribe(new CommonObserver<BaseResult<BdGoodsEntity>>() {
