@@ -8,14 +8,18 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.seven.lib_common.base.activity.BaseTitleActivity;
 import com.seven.lib_common.utils.NetWorkUtils;
 import com.seven.lib_common.utils.ResourceUtils;
 import com.seven.lib_common.utils.ToastUtils;
 import com.seven.lib_model.model.model.MessageEntity;
+import com.seven.lib_model.presenter.model.ActModelPresenter;
 import com.seven.lib_opensource.application.SSDK;
+import com.seven.lib_router.Constants;
 import com.seven.lib_router.router.RouterPath;
+import com.seven.lib_router.router.RouterUtils;
 import com.seven.module_model.R;
 import com.seven.module_model.R2;
 import com.seven.module_model.adapter.MessageAdapter;
@@ -45,6 +49,8 @@ public class MessageActivity extends BaseTitleActivity implements BaseQuickAdapt
     public MessageAdapter adapter;
     private List<MessageEntity> messageList;
 
+    private ActModelPresenter presenter;
+
     @Override
     protected int getLayoutId() {
         return R.layout.mm_activity_message;
@@ -62,24 +68,18 @@ public class MessageActivity extends BaseTitleActivity implements BaseQuickAdapt
 
         setRecyclerView();
 
+        presenter = new ActModelPresenter(this, this);
+        showLoadingDialog();
+        request(page);
     }
 
     private void request(int page) {
 
+        presenter.messageList(Constants.RequestConfig.MESSAGE_LIST);
+
     }
 
     private void setRecyclerView() {
-
-        messageList = new ArrayList<>();
-        MessageEntity messageEntity = null;
-
-        for (int i = 0; i < 20; i++) {
-            messageEntity = new MessageEntity();
-            messageEntity.setRead(i % 2 == 0);
-            messageEntity.setContent("内容"+i);
-            messageEntity.setTime(System.currentTimeMillis());
-            messageList.add(messageEntity);
-        }
 
         adapter = new MessageAdapter(R.layout.mh_item_message, messageList);
         adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
@@ -124,6 +124,39 @@ public class MessageActivity extends BaseTitleActivity implements BaseQuickAdapt
     }
 
     @Override
+    public void result(int code, Boolean hasNextPage, String response, Object object) {
+        super.result(code, hasNextPage, response, object);
+
+        switch (code) {
+
+            case Constants.RequestConfig.MESSAGE_LIST:
+
+                if (object == null || ((List<MessageEntity>) object).size() == 0) return;
+
+                messageList = (List<MessageEntity>) object;
+
+                if (isRefresh) {
+                    adapter.setNewData(messageList);
+
+                    isRefresh = false;
+                    isMoreEnd = false;
+                } else {
+                    adapter.addData(messageList);
+                }
+                adapter.loadMoreComplete();
+
+                if (messageList.size() < pageSize) {
+                    adapter.loadMoreEnd();
+                    isMoreEnd = true;
+                }
+
+                break;
+
+        }
+
+    }
+
+    @Override
     protected void rightTextBtnClick(View v) {
 
     }
@@ -141,6 +174,8 @@ public class MessageActivity extends BaseTitleActivity implements BaseQuickAdapt
     @Override
     public void closeLoading() {
 
+        dismissLoadingDialog();
+
     }
 
     @Override
@@ -150,6 +185,17 @@ public class MessageActivity extends BaseTitleActivity implements BaseQuickAdapt
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+
+        if(this.adapter.getItem(position).getType()==1){
+            RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_MINE_ORDER);
+        }else {
+//            ARouter.getInstance().build(RouterPath.ACTIVITY_TRANSACTION_DETAILS)
+//                    .withInt(Constants.BundleConfig.TYPE, this.adapter.getItem(position).getType())
+//                    .withInt(Constants.BundleConfig.ID, this.adapter.getItem(position).getTrigger_id())
+//                    .withBoolean(Constants.BundleConfig.DETAILS, true)
+//                    .withInt(Constants.BundleConfig.STATUS, 0)
+//                    .navigation();
+        }
 
     }
 }

@@ -140,7 +140,8 @@ public class CommodityOrderActivity extends BaseTitleActivity {
 
                 nameTv.setText(contactEntity.getContact_name());
                 mobileTv.setText(contactEntity.getContact_phone());
-                addressTv.setText(contactEntity.getAddress());
+                addressTv.setText(contactEntity.getProvince_name() + contactEntity.getCity_name() +
+                        contactEntity.getDistrict_name() + contactEntity.getAddress());
                 defaultRl.setVisibility(View.VISIBLE);
 
                 break;

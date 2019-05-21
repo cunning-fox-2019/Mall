@@ -112,7 +112,7 @@ public class LoginActivity extends BaseActivity {
 
                 EventBus.getDefault().post(new ObjectsEvent(Constants.EventConfig.LOGIN, object));
 
-                onBackPressed();
+                finish();
 
                 break;
 

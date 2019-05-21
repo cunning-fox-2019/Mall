@@ -147,8 +147,8 @@ public class ReleaseDemandActivity extends BaseTitleActivity implements IKeyBoar
             sellLayout.setVisibility(buyBtn.isSelected() ? View.VISIBLE : View.GONE);
             demandTv.setText(buyBtn.isSelected() ? R.string.button_release_sale : R.string.button_release_buy);
 
-            type = buyBtn.isSelected() ? Constants.InterfaceConfig.BUSINESS_BUY :
-                    Constants.InterfaceConfig.BUSINESS_SALE;
+            type = buyBtn.isSelected() ? Constants.InterfaceConfig.BUSINESS_SALE :
+                    Constants.InterfaceConfig.BUSINESS_BUY;
         }
     }
 
@@ -198,10 +198,10 @@ public class ReleaseDemandActivity extends BaseTitleActivity implements IKeyBoar
                     return;
                 }
 
-                if (Double.parseDouble(token) > Variable.getInstance().getTokenCount()) {
-                    ToastUtils.showToast(mContext, ResourceUtils.getText(R.string.hint_token_number_insufficient));
-                    return;
-                }
+//                if (Double.parseDouble(token) > Variable.getInstance().getTokenCount()) {
+//                    ToastUtils.showToast(mContext, ResourceUtils.getText(R.string.hint_token_number_insufficient));
+//                    return;
+//                }
             }
 
             if(!Variable.getInstance().isPayPassword()){

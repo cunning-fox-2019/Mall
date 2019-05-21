@@ -300,7 +300,7 @@ public class CommodityDetailsActivity extends BaseTitleActivity implements BaseQ
                     cartEntity.setPrice(skuBean.getPrice());
                     cartEntity.setSales(skuBean.getSales());
                     cartEntity.setStock(skuBean.getStock());
-                    cartEntity.setThumb(skuBean.getShow_thumb());
+                    cartEntity.setThumb(skuBean.getThumb());
                     cartList.add(cartEntity);
 
                     ARouter.getInstance().build(RouterPath.ACTIVITY_COMMODITY_ORDER)

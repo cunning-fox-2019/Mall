@@ -70,6 +70,15 @@ public class Variable {
     private double tokenCount;
     private String aliAccount;
     private String wxAccount;
+    private boolean read;
+
+    public boolean isRead() {
+        return read;
+    }
+
+    public void setRead(boolean read) {
+        this.read = read;
+    }
 
     public int getUserId() {
         return userId;

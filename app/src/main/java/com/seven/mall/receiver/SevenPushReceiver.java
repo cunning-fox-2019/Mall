@@ -6,6 +6,12 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.orhanobut.logger.Logger;
+import com.seven.lib_opensource.event.MessageEvent;
+import com.seven.lib_router.Constants;
+import com.seven.lib_router.router.RouterPath;
+import com.seven.lib_router.router.RouterUtils;
+
+import org.greenrobot.eventbus.EventBus;
 
 import cn.jpush.android.api.JPushInterface;
 
@@ -22,6 +28,8 @@ public class SevenPushReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         Bundle bundle = intent.getExtras();
         Logger.d("[MyReceiver] onReceive - " + intent.getAction() + ", extras: " + printBundle(bundle));
+
+        EventBus.getDefault().post(new MessageEvent(Constants.EventConfig.MESSAGE_READ,""));
 
         if (JPushInterface.ACTION_REGISTRATION_ID.equals(intent.getAction())) {
             String regId = bundle.getString(JPushInterface.EXTRA_REGISTRATION_ID);
@@ -40,6 +48,9 @@ public class SevenPushReceiver extends BroadcastReceiver {
         } else if (JPushInterface.ACTION_NOTIFICATION_OPENED.equals(intent.getAction())) {
             Logger.d("[MyReceiver] 用户点击打开了通知");
             Logger.i(intent.getStringExtra(JPushInterface.EXTRA_EXTRA));
+
+            RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_MESSAGE);
+
 //            String extra = intent.getStringExtra(JPushInterface.EXTRA_EXTRA);
 //            String uri = "";
 //

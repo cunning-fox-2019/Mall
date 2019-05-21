@@ -59,6 +59,7 @@ android {
         huawei {}
         offical {}
         vivo {}
+        pugongying {}
     }
 
     /**和上面多渠道打包配合使用的，这是一种简写方法*/
