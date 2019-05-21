@@ -13,9 +13,11 @@ import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.design.widget.BottomSheetDialog;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -25,6 +27,15 @@ import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
 import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
 import com.bigkoo.pickerview.view.OptionsPickerView;
 import com.google.gson.Gson;
+import com.jph.takephoto.app.TakePhoto;
+import com.jph.takephoto.app.TakePhotoImpl;
+import com.jph.takephoto.model.CropOptions;
+import com.jph.takephoto.model.InvokeParam;
+import com.jph.takephoto.model.TContextWrap;
+import com.jph.takephoto.model.TResult;
+import com.jph.takephoto.permission.InvokeListener;
+import com.jph.takephoto.permission.PermissionManager;
+import com.jph.takephoto.permission.TakePhotoInvocationHandler;
 import com.seven.lib_common.base.activity.BaseTitleActivity;
 import com.seven.lib_common.utils.ToastUtils;
 import com.seven.lib_common.utils.glide.GlideUtils;
@@ -59,7 +70,8 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
 
-public class EditUserInfoActivity extends BaseTitleActivity {
+public class EditUserInfoActivity extends BaseTitleActivity implements
+        TakePhoto.TakeResultListener, InvokeListener {
 
     private BottomSheetDialog mBottomSheetDialog;
     private RxPermissions mRxPermissions;
@@ -72,6 +84,8 @@ public class EditUserInfoActivity extends BaseTitleActivity {
     TextView chooseSex;
     @BindView(R2.id.user_photo_img)
     ImageView user_photo_img;
+    @BindView(R2.id.mu_save)
+    Button mu_save;
 
     private Uri PicUri;
     private Uri PicCropUri;
@@ -98,15 +112,16 @@ public class EditUserInfoActivity extends BaseTitleActivity {
     protected int getLayoutId() {
         return R.layout.mu_activity_edit_user_info;
     }
-
+    UserEntity entity;
     @Override
     protected void initView(Bundle savedInstanceState) {
         setTitleText(R.string.user_edit_info);
-        UserEntity entity = new Gson().fromJson(SharedData.getInstance().getUserInfo(), UserEntity.class);
+        entity = new Gson().fromJson(SharedData.getInstance().getUserInfo(), UserEntity.class);
         userNickName.setText(entity.getUsername());
         chooseSex.setText(entity.getSex().equals("male") ? "男" : "女");
         GlideUtils.loadCircleImage(mContext, entity.getAvatar(), user_photo_img);
         presenter = new ActModelPresenter(this, this);
+        mu_save.setOnClickListener(this);
     }
 
     @Override
@@ -180,6 +195,8 @@ public class EditUserInfoActivity extends BaseTitleActivity {
             selectCapture();
             mBottomSheetDialog.dismiss();
         } else if (view.getId() == R.id.left_btn) {
+            finish();
+        }else if (view.getId() == R.id.mu_save){
             modifyUserInfo();
         }
     }
@@ -196,9 +213,15 @@ public class EditUserInfoActivity extends BaseTitleActivity {
                     @Override
                     public void onNext(Boolean aBoolean) {
                         if (aBoolean) {
-                            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                            intent.setType("image/*");
-                            startActivityForResult(intent, 10086);
+//                            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+//                            intent.setType("image/*");
+//                            startActivityForResult(intent, 10086);
+                            File file = new File(Environment.getExternalStorageDirectory(), "/temp/" + System.currentTimeMillis() + ".jpg");
+                            if (!file.getParentFile().exists()) {
+                                file.getParentFile().mkdirs();
+                            }
+                            Uri imageUri = Uri.fromFile(file);
+                            getTakePhoto().onPickFromGalleryWithCrop(imageUri, getCropBuilder().create());
                         }
                     }
 
@@ -225,12 +248,17 @@ public class EditUserInfoActivity extends BaseTitleActivity {
                     @Override
                     public void onNext(Boolean aBoolean) {
                         if (aBoolean) {
-                            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);//action is capture
-                            intent.putExtra("return-data", false);
-                            // intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
-                            intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
-                            intent.putExtra("noFaceDetection", true);
-                            startActivityForResult(intent, 10010);
+//                            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);//action is capture
+//                            intent.putExtra("return-data", false);
+//                            // intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+//                            intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
+//                            intent.putExtra("noFaceDetection", true);
+//                            startActivityForResult(intent, 10010);
+                            if (getOutPutUri()!=null){
+                                getTakePhoto().onPickFromCaptureWithCrop(getOutPutUri(), getCropBuilder().create());
+                            }else {
+                                showToast("SD卡不可用");
+                            }
                         }
                     }
 
@@ -246,49 +274,49 @@ public class EditUserInfoActivity extends BaseTitleActivity {
                 });
     }
 
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        getTakePhoto().onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
-            case 10086:
-                //选择照片
-                if (data == null) return;
-                Uri uri = data.getData();
-                String realUri = uri2filePath(uri, mContext);
-                File file = new File(realUri);
-                PicUri = Uri.fromFile(file);
-                PicCropUri = getTargetImageUri(false);
-                //cropImg(PicUri, PicCropUri);
-                GlideUtils.loadCircleImage(mContext, PicUri.getPath(), user_photo_img);
-                upLoad(file);
-//                Uri originalUri = data.getData();        //获得图片的uri
-//                String[] proj = {MediaStore.Images.Media.DATA};
+//        switch (requestCode) {
+//            case 10086:
+//                //选择照片
+//                if (data == null) return;
+//                Uri uri = data.getData();
+//                String realUri = uri2filePath(uri, mContext);
+//                File file = new File(realUri);
+//                PicUri = Uri.fromFile(file);
+//                PicCropUri = getTargetImageUri(false);
+//                //cropImg(PicUri, PicCropUri);
+//                GlideUtils.loadCircleImage(mContext, PicUri.getPath(), user_photo_img);
+//                upLoad(file);
+////                Uri originalUri = data.getData();        //获得图片的uri
+////                String[] proj = {MediaStore.Images.Media.DATA};
+////
+////                Cursor cursor = getContentResolver().query(originalUri, proj, null, null, null);
+////                String path = "";
+////                if (cursor.moveToFirst()) {
+////                    int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+////                    path = cursor.getString(column_index);
+////                }
+////                cursor.close();
+////                GlideUtils.loadCircleImage(mContext, path, user_photo_img);
+//                //   presenter.upload(Constants.RequestConfig.UPLOAD, file.getPath(), Constants.InterfaceConfig.UPLOAD_AVATAR);
+//                break;
+//            case 10010:
+//                //拍照
+//                PicCropUri = getTargetImageUri(false);
+//                cropImg(PicUri, PicCropUri);
+//                break;
+//            case 12345:
+//                currentUrl = PicCropUri.getPath();
+//                GlideUtils.loadCircleImage(mContext, currentUrl, user_photo_img);
+//                File file1 = new File(currentUrl);
+//                upLoad(file1);
+//                //  presenter.upload(Constants.RequestConfig.UPLOAD, file1.getPath(), Constants.InterfaceConfig.UPLOAD_AVATAR);
+//                break;
 //
-//                Cursor cursor = getContentResolver().query(originalUri, proj, null, null, null);
-//                String path = "";
-//                if (cursor.moveToFirst()) {
-//                    int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-//                    path = cursor.getString(column_index);
-//                }
-//                cursor.close();
-//                GlideUtils.loadCircleImage(mContext, path, user_photo_img);
-                //   presenter.upload(Constants.RequestConfig.UPLOAD, file.getPath(), Constants.InterfaceConfig.UPLOAD_AVATAR);
-                break;
-            case 10010:
-                //拍照
-                PicCropUri = getTargetImageUri(false);
-                cropImg(PicUri, PicCropUri);
-                break;
-            case 12345:
-                currentUrl = PicCropUri.getPath();
-                GlideUtils.loadCircleImage(mContext, currentUrl, user_photo_img);
-                File file1 = new File(currentUrl);
-                upLoad(file1);
-                //  presenter.upload(Constants.RequestConfig.UPLOAD, file1.getPath(), Constants.InterfaceConfig.UPLOAD_AVATAR);
-                break;
-
-        }
+//        }
 
     }
 
@@ -389,12 +417,12 @@ public class EditUserInfoActivity extends BaseTitleActivity {
 //        builder.setType(MultipartBody.FORM);
 //        builder.addFormDataPart("scene", "test");
 //        MultipartBody body = builder.build();
-        //
+        //111
 
         RequestBody requestFile = RequestBody.create(MediaType.parse("image/jpeg"), file);
-        MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName(), requestFile);
+        MultipartBody.Part part = MultipartBody.Part.createFormData("file", file.getName(), requestFile);
         RequestBody scene = RequestBody.create(MediaType.parse("imageData"), "");
-        ApiManager.upLoad(body, scene)
+        ApiManager.upLoad(part, scene)
                 .subscribe(new CommonObserver<BaseResult<DTEntity>>() {
                     @Override
                     public void onNext(BaseResult<DTEntity> baseResult) {
@@ -408,7 +436,7 @@ public class EditUserInfoActivity extends BaseTitleActivity {
 
     private void modifyUserInfo() {
         showLoading();
-        UserEntity userEntity = new UserEntity();
+        UserEntity userEntity = entity;
         userEntity.setUsername(userNickName.getText().toString());
         userEntity.setAvatar(currentUrl);
         userEntity.setSex(chooseSex.getText().toString().equals("男") ? "male" : "female");
@@ -424,5 +452,61 @@ public class EditUserInfoActivity extends BaseTitleActivity {
                 });
     }
 
+    TakePhoto takePhoto;
+    InvokeParam invokeParam;
 
+    public TakePhoto getTakePhoto() {
+        if (takePhoto == null) {
+            takePhoto = (TakePhoto) TakePhotoInvocationHandler.of(this).bind(new TakePhotoImpl(this, this));
+        }
+        return takePhoto;
+    }
+
+    @Override
+    public void takeSuccess(TResult result) {
+        String originalPath = result.getImage().getOriginalPath();
+        Log.e("originalPath",originalPath);
+        if (!TextUtils.isEmpty(originalPath)) {
+            GlideUtils.loadCircleImage(mContext, originalPath, user_photo_img);
+            File file = new File(originalPath);
+            upLoad(file);
+        }
+    }
+
+
+    @Override
+    public void takeFail(TResult result, String msg) {
+        showToast(TextUtils.isEmpty(msg)?"":msg);
+    }
+
+    @Override
+    public void takeCancel() {
+
+    }
+
+    @Override
+    public PermissionManager.TPermissionType invoke(InvokeParam invokeParam) {
+        PermissionManager.TPermissionType type = PermissionManager.checkPermission(TContextWrap.of(this), invokeParam.getMethod());
+        if (PermissionManager.TPermissionType.WAIT.equals(type)) {
+            this.invokeParam = invokeParam;
+        }
+        return type;
+    }
+
+    private Uri getOutPutUri() {
+        if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
+            File file = new File(Environment.getExternalStorageDirectory(), "/temp/" + System.currentTimeMillis() + ".jpg");
+            if (!file.getParentFile().exists()) file.getParentFile().mkdirs();
+            Uri imageUri = Uri.fromFile(file);
+            return imageUri;
+        }
+        return null;
+    }
+
+    private CropOptions.Builder getCropBuilder() {
+        CropOptions.Builder builder = new CropOptions.Builder();
+        builder.setWithOwnCrop(true);
+        builder.setOutputX(600).setOutputY(600);
+        return builder;
+    }
 }

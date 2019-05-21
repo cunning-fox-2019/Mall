@@ -105,7 +105,7 @@ public class UserSetPayPassWordActivity extends BaseTitleActivity {
     @OnClick(R2.id.sms_send_btn)
     void smsSend() {
         showLoadingDialog();
-        presenter.sms(Constants.RequestConfig.SMS, mobileEt.getText().toString(), Constants.SMSConfig.REGISTER);
+        presenter.sms(Constants.RequestConfig.SMS, mobileEt.getText().toString(), Constants.SMSConfig.PAY_PASSWORD);
     }
 
     private void smsSendCode() {
@@ -187,6 +187,8 @@ public class UserSetPayPassWordActivity extends BaseTitleActivity {
                             ToastUtils.showToast(mContext, "修改成功");
                             Variable.getInstance().setPayPassword(true);
                             finish();
+                        }else {
+                            ToastUtils.showToast(mContext, baseResult.getMessage());
                         }
                     }
                 });

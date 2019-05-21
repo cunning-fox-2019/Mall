@@ -124,11 +124,14 @@ public class ExtensionFragment extends BaseFragment {
     public void init(Bundle savedInstanceState) {
         EventBus.getDefault().register(this);
         presenter = new ExFragmentPresenter(this, this);
-        UserEntity userEntity = new Gson().fromJson(SharedData.getInstance().getUserInfo(),UserEntity.class);
+        UserEntity userEntity = new Gson().fromJson(SharedData.getInstance().getUserInfo(), UserEntity.class);
+        getData(0);
         if (userEntity == null) {
             RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_LOGIN);
-        }else {
-            getData(0);
+            me_reward_tv.setVisibility(View.GONE);
+        } else {
+            setUserData();
+            getRewardList();
         }
         meProfitDetails.setOnClickListener(this);
         me_buy_up_rl.setOnClickListener(this);
@@ -137,9 +140,6 @@ public class ExtensionFragment extends BaseFragment {
         meBuyBd.setOnClickListener(this);
         meBuyInterview.setOnClickListener(this);
         meTitleRight.setOnClickListener(this);
-        setUserData();
-        getRewardList();
-
     }
 
     private void setUserData() {
@@ -147,6 +147,7 @@ public class ExtensionFragment extends BaseFragment {
         if (userInfo != null && !userInfo.equals("null")) {
             user = new Gson().fromJson(userInfo, UserEntity.class);
             if (user == null) return;
+            meInterviewpeo.setText("已成功邀请" + user.getInvite_number() + "人");
             meProfitNum.setText(user.getPromotion_token_number() != 0 && String.valueOf(user.getPromotion_token_number()) != null ? user.getPromotion_token_number() + "" : "0");
             switch (user.getRole()) {
                 case 0:
@@ -275,21 +276,36 @@ public class ExtensionFragment extends BaseFragment {
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.me_profit_details) {
-            RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_IN_COME);
+            if (user == null)
+                RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_LOGIN);
+            else
+                RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_IN_COME);
         } else if (v.getId() == R.id.me_buy_up_rl) {
-            if (user.getRole() == 4) {
+            if (user != null && user.getRole() == 4) {
                 ToastUtils.showToast(getActivity(), "你已经是最高等级");
             } else {
-                RouterUtils.getInstance().routerWithString(RouterPath.ACTIVITY_BUY_ROLE, "level", user.getRole() + "");
+                if (user == null)
+                    RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_LOGIN);
+                else
+                    RouterUtils.getInstance().routerWithString(RouterPath.ACTIVITY_BUY_ROLE, "level", user.getRole() + "");
             }
         } else if (v.getId() == R.id.me_rv_slice) {
             showDialog();
         } else if (v.getId() == R.id.me_buy_bd) {
-            RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_BUY_BD);
+            if (user == null)
+                RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_LOGIN);
+            else
+                RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_BUY_BD);
         } else if (v.getId() == R.id.me_buy_interview) {
-            RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_MY_INTERVIEW);
+            if (user == null)
+                RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_LOGIN);
+            else
+                RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_MY_INTERVIEW);
         } else if (v.getId() == R.id.me_ext_up_rl) {
-            RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_MY_INTERVIEW);
+            if (user == null)
+                RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_LOGIN);
+            else
+                RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_MY_INTERVIEW);
         } else if (v.getId() == R.id.me_title_right) {
             RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_LEVEL);
         }

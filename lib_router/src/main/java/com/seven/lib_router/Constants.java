@@ -65,6 +65,10 @@ public class Constants {
         public static final int SMS = 1001;
         public static final int PAY_PASSWORD = 1002;
         public static final int UPLOAD = 1003;
+        public static final int PUSH_ID = 1004;
+        public static final int DELETE_PUSH_ID = 1005;
+        public static final int MESSAGE_READ = 1006;
+        public static final int MESSAGE_LIST = 1007;
 
         /*home*/
         public static final int BANNER = 3001;
@@ -109,8 +113,10 @@ public class Constants {
         public static final int REGISTER = 100;
         public static final int LOGIN = 101;
         public static final int LOGOUT=102;
-
         public static final int BUY_BD = 103;
+
+        public static final int MESSAGE_READ=110;
+        public static final int MESSAGE_READ_POINT=111;
 
         public static final int BUSINESS_PROOF=200;
 
@@ -121,6 +127,7 @@ public class Constants {
 
         /* 第三方sdk */
         public static final int PAY_RESULT = 1000;
+
 
     }
 

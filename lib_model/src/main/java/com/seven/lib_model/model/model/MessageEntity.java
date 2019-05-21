@@ -10,16 +10,42 @@ import java.io.Serializable;
 
 public class MessageEntity implements Serializable {
 
-    private boolean read;
-    private String content;
-    private long time;
+    /**
+     * id : 1.0
+     * type : 2.0
+     * trigger_id : 16.0
+     * content : 你的交易已被发起售卖
+     * is_read : 0.0
+     */
 
-    public boolean isRead() {
-        return read;
+    private int id;
+    private int type;
+    private int trigger_id;
+    private String content;
+    private int is_read;
+
+    public int getId() {
+        return id;
     }
 
-    public void setRead(boolean read) {
-        this.read = read;
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
+    public int getTrigger_id() {
+        return trigger_id;
+    }
+
+    public void setTrigger_id(int trigger_id) {
+        this.trigger_id = trigger_id;
     }
 
     public String getContent() {
@@ -30,11 +56,11 @@ public class MessageEntity implements Serializable {
         this.content = content;
     }
 
-    public long getTime() {
-        return time;
+    public int getIs_read() {
+        return is_read;
     }
 
-    public void setTime(long time) {
-        this.time = time;
+    public void setIs_read(int is_read) {
+        this.is_read = is_read;
     }
 }

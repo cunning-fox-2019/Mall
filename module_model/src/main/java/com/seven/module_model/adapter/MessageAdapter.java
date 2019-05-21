@@ -25,8 +25,8 @@ public class MessageAdapter extends BaseQuickAdapter<MessageEntity, BaseViewHold
     protected void convert(BaseViewHolder helper, MessageEntity item) {
 
         helper.setText(R.id.content_tv, item.getContent())
-                .setText(R.id.time_tv, TimeUtils.millisecondToFull(item.getTime()))
-                .setGone(R.id.read_iv, item.isRead());
+                .setText(R.id.time_tv, TimeUtils.millisecondToFull(System.currentTimeMillis()))
+                .setGone(R.id.read_iv, item.getIs_read() == 0);
 
     }
 }

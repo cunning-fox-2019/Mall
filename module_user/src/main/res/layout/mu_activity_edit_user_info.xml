@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,8 +14,8 @@
             android:id="@+id/user_photo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:background="@android:color/white"
+            android:orientation="horizontal"
             android:padding="@dimen/padding_16">
 
             <TextView
@@ -57,8 +56,9 @@
             <EditText
                 android:id="@+id/user_nick_name"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:background="@null"
+                android:maxLines="1"
                 android:gravity="center_vertical"
                 android:hint="一只老鼠"
                 android:paddingLeft="@dimen/padding_16"
@@ -85,7 +85,7 @@
             <TextView
                 android:id="@+id/choose_sex"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:background="@null"
                 android:gravity="center_vertical"
                 android:paddingLeft="@dimen/padding_16"
@@ -93,6 +93,16 @@
                 android:textColor="#404040"
                 android:textSize="14sp" />
         </LinearLayout>
+
     </LinearLayout>
 
-</LinearLayout>
+    <Button
+        android:id="@+id/mu_save"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/save_btn"
+        android:textColor="@color/white"
+        android:text="保存"
+        android:layout_margin="16dp"/>
+</RelativeLayout>

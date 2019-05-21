@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
@@ -19,6 +20,7 @@ import com.seven.lib_model.BaseResult;
 import com.seven.lib_model.model.user.RegisterEntity;
 import com.seven.lib_model.model.user.UserEntity;
 import com.seven.lib_opensource.event.Event;
+import com.seven.lib_opensource.event.MessageEvent;
 import com.seven.lib_opensource.event.ObjectsEvent;
 import com.seven.lib_router.Constants;
 import com.seven.lib_router.Variable;
@@ -64,6 +66,10 @@ public class UserFragment extends BaseFragment {
     TextView shop_cart;
     @BindView(R2.id.vip_lv)
     ImageView vipLv;
+    @BindView(R2.id.read_iv)
+    ImageView readIv;
+    @BindView(R2.id.message_layout)
+    LinearLayout messageLayout;
 
 
     @Override
@@ -95,7 +101,8 @@ public class UserFragment extends BaseFragment {
                         if (userString != null && !userString.equals("null")) {
                             SharedData.getInstance().setUserInfo(userString);
                             setData(userEntityBaseResult.getData());
-                            Variable.getInstance().setTokenCount(TextUtils.isEmpty(String.valueOf(userEntityBaseResult.getData().getToken_number_total())) ? 0 : userEntityBaseResult.getData().getToken_number_total());
+                            Variable.getInstance().setUserId(userEntityBaseResult.getData().getId());
+                            Variable.getInstance().setTokenCount(TextUtils.isEmpty(userEntityBaseResult.getData().getToken_number_total()) ? 0 : Double.parseDouble(userEntityBaseResult.getData().getToken_number_total()));
                             EventBus.getDefault().post(new ObjectsEvent(Constants.EventConfig.USER_DATA_CHANGE, "change"));
                         } else {
                             RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_LOGIN);
@@ -104,7 +111,7 @@ public class UserFragment extends BaseFragment {
 
                     @Override
                     public void onError(Throwable e) {
-
+                        Log.e("xxxxxxH",e.toString());
                     }
 
                     @Override
@@ -136,6 +143,7 @@ public class UserFragment extends BaseFragment {
             default:
         }
         vipLv.setImageDrawable(drawable);
+        vipLv.setVisibility(View.VISIBLE);
         GlideUtils.loadCircleImage(getActivity(), data.getAvatar(), userPhoto);
     }
 
@@ -160,35 +168,53 @@ public class UserFragment extends BaseFragment {
 
     @OnClick(R2.id.shop_cart)
     void goShopCar() {
-        RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_SHOPPING_CART);
+        if (!SharedData.getInstance().getToken().isEmpty())
+            RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_SHOPPING_CART);
+        else startActivity(new Intent(getActivity(), LoginActivity.class));
     }
 
     @OnClick(R2.id.user_info_layout)
     void setUserInfo() {
-        startActivity(new Intent(getActivity(), EditUserInfoActivity.class));
+        if (!SharedData.getInstance().getToken().isEmpty())
+            startActivity(new Intent(getActivity(), EditUserInfoActivity.class));
+        else startActivity(new Intent(getActivity(), LoginActivity.class));
         //RouterUtils.getInstance().routerWithFade(RouterPath.FRAGMENT_USER_EDIT_UESR_INFO, SSDK.getInstance().getContext());
     }
 
     @OnClick(R2.id.my_setting)
     void setting() {
-        startActivity(new Intent(getActivity(), UserSettingActivity.class));
+        if (!SharedData.getInstance().getToken().isEmpty())
+            startActivity(new Intent(getActivity(), UserSettingActivity.class));
+        else startActivity(new Intent(getActivity(), LoginActivity.class));
         //RouterUtils.getInstance().routerWithFade(RouterPath.FRAGMENT_USER_EDIT_UESR_INFO, SSDK.getInstance().getContext());
     }
 
     @OnClick(R2.id.my_shoucang)
     void storeUp() {
-        startActivity(new Intent(getActivity(), CollectionActivity.class));
+        if (!SharedData.getInstance().getToken().isEmpty())
+            startActivity(new Intent(getActivity(), CollectionActivity.class));
+        else startActivity(new Intent(getActivity(), LoginActivity.class));
     }
 
     @OnClick(R2.id.my_address)
     void address() {
-        startActivity(new Intent(getActivity(), UserAddressActivity.class));
+        if (!SharedData.getInstance().getToken().isEmpty())
+            startActivity(new Intent(getActivity(), UserAddressActivity.class));
+        else startActivity(new Intent(getActivity(), LoginActivity.class));
     }
 
     @OnClick(R2.id.logout)
     void logout() {
         EventBus.getDefault().post(new ObjectsEvent(Constants.EventConfig.LOGOUT));
+        SharedData.getInstance().setUserInfo("");
+        SharedData.getInstance().setToken("");
+        Variable.getInstance().setUserId(0);
+        Variable.getInstance().setTokenCount(0);
+        Variable.getInstance().setToken("");
         startActivity(new Intent(getActivity(), LoginActivity.class));
+        userName.setText("请登录");
+        vipLv.setVisibility(View.GONE);
+        GlideUtils.loadCircleImage(getActivity(), "", userPhoto);
         //ToastUtils.showToast(getActivity(), "退出");
     }
 
@@ -199,31 +225,57 @@ public class UserFragment extends BaseFragment {
 
     @OnClick(R2.id.all_order)
     void allOrder() {
-        startActivity(new Intent(getActivity(), UserOrderListActivity.class));
+        if (!SharedData.getInstance().getToken().isEmpty())
+            startActivity(new Intent(getActivity(), UserOrderListActivity.class));
+        else startActivity(new Intent(getActivity(), LoginActivity.class));
     }
 
     @OnClick(R2.id.my_token)
     void token() {
-        startActivity(new Intent(getActivity(), UserTokenActivity.class));
+        if (!SharedData.getInstance().getToken().isEmpty())
+            startActivity(new Intent(getActivity(), UserTokenActivity.class));
+        else startActivity(new Intent(getActivity(), LoginActivity.class));
     }
 
     @OnClick({R2.id.wait_pay, R2.id.wait_send, R2.id.shop_received})
     void shop(View view) {
-        Intent intent = new Intent(getActivity(), UserOrderListActivity.class);
-        if (view == waitPay) {
-            intent.putExtra("type", 1);
-        } else if (view == waitSend) {
-            intent.putExtra("type", 2);
-        } else if (view == shopReceived) {
-            intent.putExtra("type", 3);
-        }
-        startActivity(intent);
+        if (!SharedData.getInstance().getToken().isEmpty()) {
+            Intent intent = new Intent(getActivity(), UserOrderListActivity.class);
+            if (view == waitPay) {
+                intent.putExtra("type", 1);
+            } else if (view == waitSend) {
+                intent.putExtra("type", 2);
+            } else if (view == shopReceived) {
+                intent.putExtra("type", 3);
+            }
+            startActivity(intent);
+        } else startActivity(new Intent(getActivity(), LoginActivity.class));
+
+    }
+
+    @OnClick(R2.id.message_layout)
+    void messageLayout(){
+        RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_MESSAGE);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        getUserInfo();
+        if (!SharedData.getInstance().getToken().isEmpty()){
+            getUserInfo();
+            readIv.setVisibility(Variable.getInstance().isRead()?View.VISIBLE:View.GONE);
+            EventBus.getDefault().post(new MessageEvent(Constants.EventConfig.MESSAGE_READ,""));
+        }
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser && !SharedData.getInstance().getToken().isEmpty()) {
+            getUserInfo();
+            readIv.setVisibility(Variable.getInstance().isRead()?View.VISIBLE:View.GONE);
+            EventBus.getDefault().post(new MessageEvent(Constants.EventConfig.MESSAGE_READ,""));
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -237,6 +289,10 @@ public class UserFragment extends BaseFragment {
 
                 if (registerEntity == null) return;
 
+                break;
+
+            case Constants.EventConfig.MESSAGE_READ_POINT:
+                readIv.setVisibility(Variable.getInstance().isRead()?View.VISIBLE:View.GONE);
                 break;
 
         }

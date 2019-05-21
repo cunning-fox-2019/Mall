@@ -306,6 +306,10 @@ public class ModelFragment extends BaseFragment implements BaseQuickAdapter.OnIt
                 if (object == null || ((List<BusinessEntity>) object).size() == 0) {
                     adapter.loadMoreEnd();
                     isMoreEnd = true;
+
+                    if (page == 1)
+                        adapter.setNewData(null);
+
                 } else {
                     orderList = (List<BusinessEntity>) object;
 

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:id="@+id/home_tab"
@@ -23,15 +23,15 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/tab_home"/>
+                android:src="@drawable/tab_home" />
 
             <com.seven.lib_common.stextview.TypeFaceView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/tab_home"
-                android:textSize="@dimen/sp_10"
                 android:textColor="@color/tab_primary"
-                app:SFontStyle="regular_s"/>
+                android:textSize="@dimen/sp_10"
+                app:SFontStyle="regular_s" />
 
         </LinearLayout>
 
@@ -47,15 +47,15 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/tab_extension"/>
+                android:src="@drawable/tab_extension" />
 
             <com.seven.lib_common.stextview.TypeFaceView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/tab_extension"
-                android:textSize="@dimen/sp_10"
                 android:textColor="@color/tab_primary"
-                app:SFontStyle="regular_s"/>
+                android:textSize="@dimen/sp_10"
+                app:SFontStyle="regular_s" />
 
         </LinearLayout>
 
@@ -71,41 +71,69 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/tab_model"/>
+                android:src="@drawable/tab_model" />
 
             <com.seven.lib_common.stextview.TypeFaceView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/tab_model"
-                android:textSize="@dimen/sp_10"
                 android:textColor="@color/tab_primary"
-                app:SFontStyle="regular_s"/>
+                android:textSize="@dimen/sp_10"
+                app:SFontStyle="regular_s" />
 
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/tab_user_ll"
+        <RelativeLayout
+            android:id="@+id/tab_user_rl"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:onClick="btClick"
-            android:orientation="vertical">
+            android:onClick="btClick">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/tab_user"/>
+            <LinearLayout
+                android:id="@+id/tab_user_ll"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical">
 
-            <com.seven.lib_common.stextview.TypeFaceView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/tab_user"
-                android:textSize="@dimen/sp_10"
-                android:textColor="@color/tab_primary"
-                app:SFontStyle="regular_s"/>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/tab_user" />
 
-        </LinearLayout>
+                <com.seven.lib_common.stextview.TypeFaceView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tab_user"
+                    android:textColor="@color/tab_primary"
+                    android:textSize="@dimen/sp_10"
+                    app:SFontStyle="regular_s" />
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/message_count_rl"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/point_message"
+                android:layout_marginRight="@dimen/margin_24"
+                android:visibility="gone">
+
+                <com.seven.lib_common.stextview.TypeFaceView
+                    android:id="@+id/message_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="0"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/sp_10" />
+
+            </RelativeLayout>
+
+        </RelativeLayout>
 
     </LinearLayout>
 

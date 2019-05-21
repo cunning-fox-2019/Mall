@@ -78,7 +78,7 @@ public class OrderListFragment extends BaseFragment {
 
     @Override
     public void showToast(String msg) {
-
+//hei 孙子
     }
 
     @Override
@@ -88,7 +88,7 @@ public class OrderListFragment extends BaseFragment {
 
     @Override
     public void init(Bundle savedInstanceState) {
-        getData();
+        //getData();
     }
 
     @Override
@@ -104,6 +104,9 @@ public class OrderListFragment extends BaseFragment {
                 .subscribe(new CommonObserver<BaseResult>() {
                     @Override
                     public void onNext(BaseResult baseResult) {
+                        if (baseResult.getCode() == 0){
+                            ToastUtils.showToast(getActivity(),baseResult.getMessage());
+                        }
                         getData();
                     }
                 });
@@ -296,5 +299,13 @@ public class OrderListFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         // getData();
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser){
+            getData();
+        }
     }
 }
