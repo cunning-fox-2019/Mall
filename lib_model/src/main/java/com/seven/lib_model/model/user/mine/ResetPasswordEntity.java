@@ -6,7 +6,7 @@ package com.seven.lib_model.model.user.mine;
 
 public class ResetPasswordEntity {
     private String phone;
-    private String code;
+    private int code;
     private String password;
 
     public String getPhone() {
@@ -17,11 +17,11 @@ public class ResetPasswordEntity {
         this.phone = phone;
     }
 
-    public String getCode() {
+    public int getCode() {
         return code;
     }
 
-    public void setCode(String code) {
+    public void setCode(int code) {
         this.code = code;
     }
 

@@ -10,6 +10,7 @@ buildscript {
         maven { url "https://dl.bintray.com/thelasterstar/maven/" }
         maven { url "https://jitpack.io" }
         google()
+        maven { url 'https://dl.bintray.com/umsdk/release' }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.0.1'
@@ -29,6 +30,7 @@ allprojects {
         maven { url "https://dl.bintray.com/thelasterstar/maven/" }
         maven { url "https://jitpack.io" }
         google()
+        maven { url 'https://dl.bintray.com/umsdk/release' }
     }
 }
 

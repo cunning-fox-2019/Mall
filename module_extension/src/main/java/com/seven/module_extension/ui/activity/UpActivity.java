@@ -16,6 +16,7 @@ import com.seven.lib_router.db.shard.SharedData;
 import com.seven.lib_router.router.RouterPath;
 import com.seven.module_extension.R;
 import com.seven.module_extension.R2;
+import com.seven.module_extension.ui.dialog.ShareDialog;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,17 +33,20 @@ public class UpActivity extends BaseTitleActivity {
     TypeFaceView meUpgradeTv;
 
     ExActivityPresenter presenter;
+    private ShareDialog dialog;
 
     @Override
     protected int getLayoutId() {
+
+        isRightTextBtn = true;
+        setRightTextTv(R.string.me_share);
         return R.layout.me_acitivity_upgrade;
     }
 
     @Override
     protected void initView(Bundle savedInstanceState) {
         setTitleText("推广升级");
-        isRightTextBtn = true;
-        setRightTextTv(R.string.me_share);
+
         presenter = new ExActivityPresenter(this,this);
         presenter.level(1,3);
     }
@@ -64,7 +68,11 @@ public class UpActivity extends BaseTitleActivity {
 
     @Override
     protected void rightTextBtnClick(View v) {
-
+        if (dialog == null){
+            dialog = new ShareDialog(UpActivity.this, R.style.Dialog, null);
+        }
+        if (!dialog.isShowing())
+            dialog.showDialog(0, -screenHeight);
     }
 
     @Override

@@ -140,7 +140,7 @@ public class CommodityDetailsEntity implements Serializable {
         private double price;
         private int stock;
         private int sales;
-        private String show_thumb;
+        private String thumb;
 
         public int getId() {
             return id;
@@ -182,12 +182,12 @@ public class CommodityDetailsEntity implements Serializable {
             this.sales = sales;
         }
 
-        public String getShow_thumb() {
-            return show_thumb;
+        public String getThumb() {
+            return thumb;
         }
 
-        public void setShow_thumb(String show_thumb) {
-            this.show_thumb = show_thumb;
+        public void setThumb(String thumb) {
+            this.thumb = thumb;
         }
     }
 

@@ -172,18 +172,23 @@ public class UserModifyPassWordActivity extends BaseTitleActivity {
             passwordEt.requestFocus();
             return;
         }
+        showLoadingDialog();
         ResetPasswordEntity entity = new ResetPasswordEntity();
         entity.setPhone(userEntity.getPhone());
-        entity.setCode(smsCodeEt.getText().toString());
+        entity.setCode(Integer.valueOf(smsCodeEt.getText().toString()));
         entity.setPassword(passwordEt.getText().toString());
         ApiManager.modifyPassword(entity)
                 .subscribe(new CommonObserver<BaseResult>() {
                     @Override
                     public void onNext(BaseResult baseResult) {
+                        dismissLoadingDialog();
                         if (baseResult.getCode() == 1) {
-                            ToastUtils.showToast(mContext, "修改成功");
+
                             finish();
+                        }else {
+                            ToastUtils.showToast(mContext, baseResult.getMessage());
                         }
+                        ToastUtils.showToast(mContext, baseResult.getMessage());
                     }
                 });
     }

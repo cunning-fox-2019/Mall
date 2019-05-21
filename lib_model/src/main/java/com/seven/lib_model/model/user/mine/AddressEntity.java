@@ -22,6 +22,7 @@ public class AddressEntity implements Serializable {
      * district_name : 双流县
      */
 
+
     private int id;
     private String contact_name;
     private String contact_phone;
