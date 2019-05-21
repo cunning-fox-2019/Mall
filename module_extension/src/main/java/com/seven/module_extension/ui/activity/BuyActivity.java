@@ -126,25 +126,25 @@ public class BuyActivity extends BaseTitleActivity {
         entity = new Gson().fromJson(userInfo, UserEntity.class);
         meBuyBdLl.setOnClickListener(this);
         meBuyBdBtn.setOnClickListener(this);
-        ApiManager.getBdGoods().subscribe(new CommonObserver<BaseResult<BdGoodsEntity>>() {
-            @Override
-            public void onNext(BaseResult<BdGoodsEntity> bdGoodsEntityBaseResult) {
-                BdGoodsEntity entity = new BdGoodsEntity();
-                entity = bdGoodsEntityBaseResult.getData();
-                list.add(entity);
-//                list.addAll(bdGoodsEntityBaseResult.getData().getGoods_list());
-                ApiManager.get79().subscribe(new CommonObserver<BaseResult<BdGoodsEntity>>() {
-                    @Override
-                    public void onNext(BaseResult<BdGoodsEntity> bdGoodsEntityBaseResult) {
-                        BdGoodsEntity entity1 = new BdGoodsEntity();
-                        entity1 = bdGoodsEntityBaseResult.getData();
-                        list.add(entity1);
-//                        list.addAll(bdGoodsEntityBaseResult.getData().getGoods_list());
-                        initRv(list);
-                    }
-                });
-            }
-        });
+//        ApiManager.getBdGoods().subscribe(new CommonObserver<BaseResult<BdGoodsEntity>>() {
+//            @Override
+//            public void onNext(BaseResult<BdGoodsEntity> bdGoodsEntityBaseResult) {
+//                BdGoodsEntity entity = new BdGoodsEntity();
+//                entity = bdGoodsEntityBaseResult.getData();
+//                list.add(entity);
+////                list.addAll(bdGoodsEntityBaseResult.getData().getGoods_list());
+//                ApiManager.get79().subscribe(new CommonObserver<BaseResult<BdGoodsEntity>>() {
+//                    @Override
+//                    public void onNext(BaseResult<BdGoodsEntity> bdGoodsEntityBaseResult) {
+//                        BdGoodsEntity entity1 = new BdGoodsEntity();
+//                        entity1 = bdGoodsEntityBaseResult.getData();
+//                        list.add(entity1);
+////                        list.addAll(bdGoodsEntityBaseResult.getData().getGoods_list());
+//                        initRv(list);
+//                    }
+//                });
+//            }
+//        });
     }
 
     private void initRv(final List<BdGoodsEntity> list) {
