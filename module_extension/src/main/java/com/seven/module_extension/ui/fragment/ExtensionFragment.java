@@ -127,8 +127,9 @@ public class ExtensionFragment extends BaseFragment {
         UserEntity userEntity = new Gson().fromJson(SharedData.getInstance().getUserInfo(), UserEntity.class);
         getData(0);
         if (userEntity == null) {
-            RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_LOGIN);
+//            RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_LOGIN);
             me_reward_tv.setVisibility(View.GONE);
+//            ToastUtils.showToast(getActivity(),"1");
         } else {
             setUserData();
             getRewardList();

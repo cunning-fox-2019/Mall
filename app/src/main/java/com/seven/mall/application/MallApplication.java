@@ -30,8 +30,8 @@ public class MallApplication extends SevenApplication {
 
     //public static final String BASE_URL = "http://zhongfu.lerqin.com/";
 //    public static final String STORE_URL = "http://zhongfu.lerqin.com/";
-   public static final String BASE_URL = "http://api.zf.tianza.com.cn/";
-    public static final String STORE_URL = "http://api.zf.tianza.com.cn/";
+   public static final String BASE_URL = "http://api.zf.fqwlkj.com.cn/";
+    public static final String STORE_URL = "http://api.zf.fqwlkj.com.cn/";
     public static final String APP_KEY = "";
     public static final String STORE_KEY = "";
 
