@@ -86,6 +86,7 @@ public class ActUserPresenter extends BasePresenter<IBaseView, BaseActivity> {
         String jsonStr = new Gson().toJson(json);
         Logger.i(jsonStr);
 
+//        HttpRxObserver rxObserver = get(getView(), requestCode, RegisterEntity.class, null, false);
         HttpRxObserver rxObserver = get(getView(), requestCode, null, null, false);
         if (rxObserver == null)
             return;

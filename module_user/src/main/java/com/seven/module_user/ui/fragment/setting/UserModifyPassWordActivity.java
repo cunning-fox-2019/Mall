@@ -102,6 +102,7 @@ public class UserModifyPassWordActivity extends BaseTitleActivity {
     @OnClick(R2.id.sms_send_btn)
     void smsSend() {
         showLoadingDialog();
+//        presenter.sms(Constants.RequestConfig.SMS, mobileEt.getText().toString(), Constants.SMSConfig.PASSWORD);
         presenter.sms(Constants.RequestConfig.SMS, mobileEt.getText().toString(), Constants.SMSConfig.PASSWORD);
     }
 

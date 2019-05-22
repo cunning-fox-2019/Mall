@@ -77,6 +77,7 @@ public class PasswordActivity extends BaseTitleActivity {
             }
 
             showLoadingDialog();
+//            presenter.sms(Constants.RequestConfig.SMS, mobileEt.getText().toString(), Constants.SMSConfig.PASSWORD);
             presenter.sms(Constants.RequestConfig.SMS, mobileEt.getText().toString(), Constants.SMSConfig.PASSWORD);
 
         } else if (view.getId() == R.id.password_hide_btn) {
