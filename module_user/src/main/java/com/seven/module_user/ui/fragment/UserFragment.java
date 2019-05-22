@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
@@ -19,6 +20,7 @@ import com.seven.lib_model.BaseResult;
 import com.seven.lib_model.model.user.RegisterEntity;
 import com.seven.lib_model.model.user.UserEntity;
 import com.seven.lib_opensource.event.Event;
+import com.seven.lib_opensource.event.MessageEvent;
 import com.seven.lib_opensource.event.ObjectsEvent;
 import com.seven.lib_router.Constants;
 import com.seven.lib_router.Variable;
@@ -64,6 +66,10 @@ public class UserFragment extends BaseFragment {
     TextView shop_cart;
     @BindView(R2.id.vip_lv)
     ImageView vipLv;
+    @BindView(R2.id.read_iv)
+    ImageView readIv;
+    @BindView(R2.id.message_layout)
+    LinearLayout messageLayout;
 
 
     @Override
@@ -205,11 +211,9 @@ public class UserFragment extends BaseFragment {
         Variable.getInstance().setUserId(0);
         Variable.getInstance().setTokenCount(0);
         Variable.getInstance().setToken("");
-        startActivity(new Intent(getActivity(), LoginActivity.class));
         userName.setText("请登录");
         vipLv.setVisibility(View.GONE);
         GlideUtils.loadCircleImage(getActivity(), "", userPhoto);
-        //ToastUtils.showToast(getActivity(), "退出");
     }
 
     @OnClick(R2.id.my_clear_cache)
@@ -247,11 +251,19 @@ public class UserFragment extends BaseFragment {
 
     }
 
+    @OnClick(R2.id.message_layout)
+    void messageLayout(){
+        RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_MESSAGE);
+    }
+
     @Override
     public void onResume() {
         super.onResume();
-        if (!SharedData.getInstance().getToken().isEmpty())
+        if (!SharedData.getInstance().getToken().isEmpty()){
             getUserInfo();
+            readIv.setVisibility(Variable.getInstance().isRead()?View.VISIBLE:View.GONE);
+            EventBus.getDefault().post(new MessageEvent(Constants.EventConfig.MESSAGE_READ,""));
+        }
     }
 
     @Override
@@ -259,6 +271,8 @@ public class UserFragment extends BaseFragment {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser && !SharedData.getInstance().getToken().isEmpty()) {
             getUserInfo();
+            readIv.setVisibility(Variable.getInstance().isRead()?View.VISIBLE:View.GONE);
+            EventBus.getDefault().post(new MessageEvent(Constants.EventConfig.MESSAGE_READ,""));
         }
     }
 
@@ -273,6 +287,10 @@ public class UserFragment extends BaseFragment {
 
                 if (registerEntity == null) return;
 
+                break;
+
+            case Constants.EventConfig.MESSAGE_READ_POINT:
+                readIv.setVisibility(Variable.getInstance().isRead()?View.VISIBLE:View.GONE);
                 break;
 
         }

@@ -7,6 +7,15 @@ public class GoodsItemEntity {
     private String thumb;
     private String goods_name;
     private String number;
+    private boolean isSelected;
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
+    }
 
     public String getThumb() {
         return thumb;

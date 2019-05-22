@@ -91,8 +91,7 @@ public class PayActivity extends BaseTitleActivity {
 
         orderEntity = (OrderEntity) intent.getSerializableExtra(Constants.BundleConfig.ENTITY);
 
-        if (normal)
-            appPayRl.setVisibility(View.VISIBLE);
+        appPayRl.setVisibility(normal ? View.VISIBLE : View.GONE);
 
         presenter = new ActHomePresenter(this, this);
 

@@ -3,6 +3,7 @@ package com.seven.module_extension.ui.adapter;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;

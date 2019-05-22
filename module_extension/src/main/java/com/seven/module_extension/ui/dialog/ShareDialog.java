@@ -140,7 +140,7 @@ public class ShareDialog extends IBaseSheet {
     }
 
     private String getUrl(int userId) {
-        String url = "http://www.zf.tianza.com.cn/invite.html";
+        String url = "http://mobile.zf.fqwlkj.com.cn/invite.html";
         String uid = "?uid=" + userId;
         return url + uid;
     }

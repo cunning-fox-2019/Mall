@@ -131,7 +131,7 @@
     <string name="title_model">C2C交易</string>
 
     <string name="label_demand">发布需求</string>
-    <string name="label_message">交易消息</string>
+    <string name="label_message">我的消息</string>
     <string name="label_voucher">交易订单</string>
 
     <string name="tab_buy">我要买</string>

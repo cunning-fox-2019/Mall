@@ -54,7 +54,7 @@ import io.reactivex.internal.operators.completable.CompletableToObservable;
 @Route(path = RouterPath.ACTIVITY_BD_LIST)
 public class ReceiveBDActivity extends BaseTitleActivity {
     @Autowired(name = "id")
-    int id = 0;
+    int id=0;
     @BindView(R2.id.me_buy_bd_address1)
     TypeFaceView meBuyBdAddress1;
     @BindView(R2.id.me_buy_bd_address2)
@@ -87,8 +87,8 @@ public class ReceiveBDActivity extends BaseTitleActivity {
         meBuyBdBtn.setOnClickListener(this);
     }
 
-    private void request(String id) {
-        presenter.rewardList(1, id);
+    private void request(String id){
+        presenter.rewardList(1,id);
     }
 
     @Override
@@ -99,17 +99,16 @@ public class ReceiveBDActivity extends BaseTitleActivity {
                     .build(RouterPath.ACTIVITY_ADDRESS)
                     .withInt(Constants.BundleConfig.EVENT_CODE, 110110)
                     .navigation();
-        } else if (view.getId() == R.id.me_buy_bd_btn) {
-            if (contactId == 0) {
-                ToastUtils.showToast(mContext, "请选择地址");
-            } else {
+        }else if (view.getId() == R.id.me_buy_bd_btn){
+            if (contactId == 0){
+                ToastUtils.showToast(mContext,"请选择地址");
+            }else {
 
-                presenter.getReceive(2, String.valueOf(id), String.valueOf(contactId));
+                presenter.getReceive(2,String.valueOf(id),String.valueOf(contactId));
 
             }
         }
     }
-
     @SuppressLint("SetTextI18n")
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(Event event) {
@@ -120,7 +119,6 @@ public class ReceiveBDActivity extends BaseTitleActivity {
             meBuyBdAddress2.setText(entity.getProvince_name() + entity.getCity_name() + entity.getDistrict_name() + entity.getAddress());
         }
     }
-
     @Override
     protected void rightTextBtnClick(View v) {
 
@@ -133,9 +131,9 @@ public class ReceiveBDActivity extends BaseTitleActivity {
 
     @Override
     protected void initBundleData(Intent intent) {
-        if (intent == null) intent = getIntent();
-        id = intent.getIntExtra("id", -1);
-        presenter = new ExActivityPresenter(this, this);
+        if (intent ==null)intent =getIntent();
+        id = intent.getIntExtra("id",-1);
+        presenter = new ExActivityPresenter(this,this);
         setRv();
         request(String.valueOf(id));
     }
@@ -143,19 +141,19 @@ public class ReceiveBDActivity extends BaseTitleActivity {
     @Override
     public void result(int code, Boolean hasNextPage, String response, Object object) {
         super.result(code, hasNextPage, response, object);
-        if (code == 1) {
-            if (object == null) return;
+        if (code == 1){
+            if (object == null)return;
             rewardLsit = new ArrayList<>();
             rewardLsit = (List<GoodsItemEntity>) object;
             adapter.setNewData(rewardLsit);
         }
-        if (code == 2) {
+        if (code == 2){
             showDialog();
         }
     }
 
-    private void showDialog() {
-        if (dialog == null) {
+    private void showDialog(){
+        if (dialog == null){
             dialog = new ReceiveDialog(ReceiveBDActivity.this, R.style.Dialog, new OnClickListener() {
                 @Override
                 public void onCancel(View v, Object... objects) {
