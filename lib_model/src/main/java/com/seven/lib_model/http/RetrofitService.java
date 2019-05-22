@@ -22,7 +22,7 @@ import retrofit2.http.Part;
 
 public interface RetrofitService {
 
-    String sms = "sms/send";
+    String  sms = "sms/send";
     String payPassword = "user/pay_password/is_correct";
     String upload = "image/upload";
     String pushId="user/jpush/set_id";

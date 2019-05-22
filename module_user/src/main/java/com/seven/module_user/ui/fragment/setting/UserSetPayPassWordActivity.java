@@ -177,7 +177,7 @@ public class UserSetPayPassWordActivity extends BaseTitleActivity {
         }
         ResetPasswordEntity entity = new ResetPasswordEntity();
         entity.setPhone(userEntity.getPhone());
-        entity.setCode(Integer.valueOf(smsCodeEt.getText().toString()));
+        entity.setCode(smsCodeEt.getText().toString());
         entity.setPassword(passwordEt.getText().toString());
         ApiManager.modifyPayPassword(entity)
                 .subscribe(new CommonObserver<BaseResult>() {

@@ -102,7 +102,8 @@ public class UserModifyPassWordActivity extends BaseTitleActivity {
     @OnClick(R2.id.sms_send_btn)
     void smsSend() {
         showLoadingDialog();
-        presenter.sms(Constants.RequestConfig.SMS, mobileEt.getText().toString(), Constants.SMSConfig.REGISTER);
+//        presenter.sms(Constants.RequestConfig.SMS, mobileEt.getText().toString(), Constants.SMSConfig.PASSWORD);
+        presenter.sms(Constants.RequestConfig.SMS, mobileEt.getText().toString(), Constants.SMSConfig.PASSWORD);
     }
 
     private void smsSendCode() {
@@ -175,7 +176,7 @@ public class UserModifyPassWordActivity extends BaseTitleActivity {
         showLoadingDialog();
         ResetPasswordEntity entity = new ResetPasswordEntity();
         entity.setPhone(userEntity.getPhone());
-        entity.setCode(Integer.valueOf(smsCodeEt.getText().toString()));
+        entity.setCode(smsCodeEt.getText().toString());
         entity.setPassword(passwordEt.getText().toString());
         ApiManager.modifyPassword(entity)
                 .subscribe(new CommonObserver<BaseResult>() {
@@ -183,7 +184,6 @@ public class UserModifyPassWordActivity extends BaseTitleActivity {
                     public void onNext(BaseResult baseResult) {
                         dismissLoadingDialog();
                         if (baseResult.getCode() == 1) {
-
                             finish();
                         }else {
                             ToastUtils.showToast(mContext, baseResult.getMessage());

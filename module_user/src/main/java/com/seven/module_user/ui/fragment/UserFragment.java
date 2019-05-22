@@ -214,6 +214,7 @@ public class UserFragment extends BaseFragment {
         userName.setText("请登录");
         vipLv.setVisibility(View.GONE);
         GlideUtils.loadCircleImage(getActivity(), "", userPhoto);
+        startActivity(new Intent(getActivity(), LoginActivity.class));
     }
 
     @OnClick(R2.id.my_clear_cache)
