@@ -208,5 +208,8 @@ public interface RetrofitService {
 
     @POST("user/contact/update")
     Observable<HttpResponse> editAddress(@Body RequestBody requestBody);
+
+    @POST("user/info")
+    Observable<HttpResponse> getUserInfo();
 }
 
