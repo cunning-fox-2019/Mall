@@ -67,8 +67,9 @@ public class Constants {
         public static final int UPLOAD = 1003;
         public static final int PUSH_ID = 1004;
         public static final int DELETE_PUSH_ID = 1005;
-        public static final int MESSAGE_READ = 1006;
+        public static final int MESSAGE_NOT_READ = 1006;
         public static final int MESSAGE_LIST = 1007;
+        public static final int MESSAGE_READ = 1008;
 
         /*home*/
         public static final int BANNER = 3001;

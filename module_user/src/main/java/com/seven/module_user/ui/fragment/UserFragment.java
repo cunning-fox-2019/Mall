@@ -211,11 +211,10 @@ public class UserFragment extends BaseFragment {
         Variable.getInstance().setUserId(0);
         Variable.getInstance().setTokenCount(0);
         Variable.getInstance().setToken("");
-        startActivity(new Intent(getActivity(), LoginActivity.class));
         userName.setText("请登录");
         vipLv.setVisibility(View.GONE);
         GlideUtils.loadCircleImage(getActivity(), "", userPhoto);
-        //ToastUtils.showToast(getActivity(), "退出");
+        startActivity(new Intent(getActivity(), LoginActivity.class));
     }
 
     @OnClick(R2.id.my_clear_cache)

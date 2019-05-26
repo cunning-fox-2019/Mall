@@ -37,7 +37,6 @@ public class UpActivity extends BaseTitleActivity {
 
     @Override
     protected int getLayoutId() {
-
         isRightTextBtn = true;
         setRightTextTv(R.string.me_share);
         return R.layout.me_acitivity_upgrade;

@@ -119,7 +119,7 @@ public class UserCreateAddressActivity extends BaseTitleActivity {
 
                     @Override
                     public void onNext(BaseResult<DTEntity> data) {
-                        Log.e("xxxxxxH",data.getMessage());
+                        Log.e("xxxxxxH", data.getMessage());
                         provinceList.addAll(data.getData().getItems());
                         cityList.addAll(provinceList.get(0).getSub());
                         areaList.addAll(cityList.get(0).getSub());
@@ -128,7 +128,7 @@ public class UserCreateAddressActivity extends BaseTitleActivity {
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.e("xxxxxxH",e.toString());
+                        Log.e("xxxxxxH", e.toString());
                     }
 
                     @Override
@@ -159,8 +159,8 @@ public class UserCreateAddressActivity extends BaseTitleActivity {
                 phoneEdit.setText(addressEntity.getContact_phone());
                 addressTx.setText(addressEntity.getProvince_name() + " " + addressEntity.getCity_name() + " " + addressEntity.getDistrict_name());
                 addressDetail.setText(addressEntity.getAddress());
-                isDefaultAddressImg.setImageDrawable(!TextUtils.isEmpty(String.valueOf(addressEntity.getIs_default())) && addressEntity.getIs_default()==0 ? getDrawable(R.drawable.item_shopping_cart_default) : getDrawable(R.drawable.item_shopping_cart_selector));
-                isDefaultAddressTx.setTextColor(!TextUtils.isEmpty(String.valueOf(addressEntity.getIs_default())) &&  addressEntity.getIs_default()==0 ? getResources().getColor(R.color.add_address_default_n) : getResources().getColor(R.color.add_address_default_c));
+                isDefaultAddressImg.setImageDrawable(!TextUtils.isEmpty(String.valueOf(addressEntity.getIs_default())) && addressEntity.getIs_default() == 0 ? getDrawable(R.drawable.item_shopping_cart_default) : getDrawable(R.drawable.item_shopping_cart_selector));
+                isDefaultAddressTx.setTextColor(!TextUtils.isEmpty(String.valueOf(addressEntity.getIs_default())) && addressEntity.getIs_default() == 0 ? getResources().getColor(R.color.add_address_default_n) : getResources().getColor(R.color.add_address_default_c));
                 isDefault = addressEntity.getIs_default() == 1;
             }
         }
@@ -197,31 +197,32 @@ public class UserCreateAddressActivity extends BaseTitleActivity {
 
     @OnClick(R2.id.address_tx)
     void chooseCity() {
-        closeInput();
-        OptionsPickerView cityReasonPickerView = new OptionsPickerBuilder(this, new OnOptionsSelectListener() {
-            @Override
-            public void onOptionsSelect(int options1, int options2, int options3, View v) {
-                Log.e("--->", provinceStringList.get(options1) + "-" + cityStringList.get(options2) + " " + areaStringList.get(options3));
-                addressTx.setText(provinceStringList.get(options1) + " " +
-                        cityStringList.get(options1).get(options2) + " " +
-                        areaStringList.get(options1).get(options2).get(options3));
-                provincePosition = options1;
-                cityPosition = options2;
-                areaPosition = options3;
-            }
-        }).setContentTextSize(20)//设置滚轮文字大小
-                .setDividerColor(Color.LTGRAY)//设置分割线的颜色
-                .setSelectOptions(0)//默认选中项
-                .setBgColor(Color.WHITE)
-                .setTitleBgColor(getResources().getColor(R.color.color_eee))
-                .setCancelColor(getResources().getColor(R.color.color_6c))
-                .setSubmitColor(getResources().getColor(R.color.color_1e1d1d))
-                .setTextColorCenter(getResources().getColor(R.color.color_1e1d1d))
-                .isCenterLabel(false) //是否只显示中间选中项的label文字，false则每项item全部都带有label。
-                .setOutSideColor(0x00000000) //设置外部遮罩颜色
-                .build();
-        cityReasonPickerView.setPicker(provinceStringList, cityStringList, areaStringList);
-        cityReasonPickerView.show();
+        if (provinceStringList.size() > 0 && cityStringList.size() > 0 && areaStringList.size() > 0) {
+            closeInput();
+            OptionsPickerView cityReasonPickerView = new OptionsPickerBuilder(this, new OnOptionsSelectListener() {
+                @Override
+                public void onOptionsSelect(int options1, int options2, int options3, View v) {
+                    addressTx.setText(provinceStringList.get(options1) + " " +
+                            cityStringList.get(options1).get(options2) + " " +
+                            areaStringList.get(options1).get(options2).get(options3));
+                    provincePosition = options1;
+                    cityPosition = options2;
+                    areaPosition = options3;
+                }
+            }).setContentTextSize(20)//设置滚轮文字大小
+                    .setDividerColor(Color.LTGRAY)//设置分割线的颜色
+                    .setSelectOptions(0)//默认选中项
+                    .setBgColor(Color.WHITE)
+                    .setTitleBgColor(getResources().getColor(R.color.color_eee))
+                    .setCancelColor(getResources().getColor(R.color.color_6c))
+                    .setSubmitColor(getResources().getColor(R.color.color_1e1d1d))
+                    .setTextColorCenter(getResources().getColor(R.color.color_1e1d1d))
+                    .isCenterLabel(false) //是否只显示中间选中项的label文字，false则每项item全部都带有label。
+                    .setOutSideColor(0x00000000) //设置外部遮罩颜色
+                    .build();
+            cityReasonPickerView.setPicker(provinceStringList, cityStringList, areaStringList);
+            cityReasonPickerView.show();
+        }
     }
 
     @OnClick(R2.id.is_default_address)
@@ -250,7 +251,7 @@ public class UserCreateAddressActivity extends BaseTitleActivity {
             return;
         }
         if (addressEntity != null) {
-            SBEntity sb =new SBEntity();
+            SBEntity sb = new SBEntity();
             sb.setContact_id(addressEntity.getId());
             sb.setAddress(addressDetail.getText().toString());
             sb.setContact_name(nameEdit.getText().toString());
@@ -286,8 +287,8 @@ public class UserCreateAddressActivity extends BaseTitleActivity {
     @Override
     public void result(int code, Boolean hasNextPage, String response, Object object) {
         super.result(code, hasNextPage, response, object);
-        if (code == 1){
-            ToastUtils.showToast(mContext,"修改成功");
+        if (code == 1) {
+            ToastUtils.showToast(mContext, "修改成功");
         }
     }
 
@@ -347,7 +348,7 @@ public class UserCreateAddressActivity extends BaseTitleActivity {
                     @Override
                     public void onError(Throwable e) {
                         dismissLoadingDialog();
-                        Log.e("xxxxxxH",e.toString());
+                        Log.e("xxxxxxH", e.toString());
                     }
 
                     @Override

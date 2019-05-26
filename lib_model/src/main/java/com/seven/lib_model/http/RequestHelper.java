@@ -75,8 +75,12 @@ public class RequestHelper {
         return appService.deletePushId();
     }
 
-    public Observable<HttpResponse> messageRead() {
-        return appService.messageRead();
+    public Observable<HttpResponse> messageNotRead() {
+        return appService.messageNotRead();
+    }
+
+    public Observable<HttpResponse> messageRead(String json) {
+        return appService.messageRead(requestBody(json));
     }
 
     public Observable<HttpResponse> messageList() {

@@ -224,7 +224,7 @@ public class HomeActivity extends BaseAppCompatActivity {
 
             case Constants.EventConfig.MESSAGE_READ:
 
-                presenter.messageRead(Constants.RequestConfig.MESSAGE_READ);
+                presenter.messageNotRead(Constants.RequestConfig.MESSAGE_NOT_READ);
 
                 break;
 
@@ -249,7 +249,7 @@ public class HomeActivity extends BaseAppCompatActivity {
 
                 break;
 
-            case Constants.RequestConfig.MESSAGE_READ:
+            case Constants.RequestConfig.MESSAGE_NOT_READ:
 
                 if (object == null) return;
 

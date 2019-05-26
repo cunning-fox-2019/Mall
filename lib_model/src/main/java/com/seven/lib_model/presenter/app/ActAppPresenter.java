@@ -46,12 +46,12 @@ public class ActAppPresenter extends BasePresenter<IBaseView, BaseAppCompatActiv
         HttpRxObservable.getObservable(RequestHelper.getInstance().deletePushId(), getActivity(), ActivityEvent.PAUSE).subscribe(rxObserver);
     }
 
-    public void messageRead(int requestCode) {
+    public void messageNotRead(int requestCode) {
 
         HttpRxObserver rxObserver = get(getView(), requestCode, MessageReadEntity.class, null, false);
         if (rxObserver == null)
             return;
-        HttpRxObservable.getObservable(RequestHelper.getInstance().messageRead(), getActivity(), ActivityEvent.PAUSE).subscribe(rxObserver);
+        HttpRxObservable.getObservable(RequestHelper.getInstance().messageNotRead(), getActivity(), ActivityEvent.PAUSE).subscribe(rxObserver);
     }
 
 }

@@ -50,6 +50,7 @@ public class MessageActivity extends BaseTitleActivity implements BaseQuickAdapt
     private List<MessageEntity> messageList;
 
     private ActModelPresenter presenter;
+    private int position;
 
     @Override
     protected int getLayoutId() {
@@ -152,6 +153,13 @@ public class MessageActivity extends BaseTitleActivity implements BaseQuickAdapt
 
                 break;
 
+            case Constants.RequestConfig.MESSAGE_READ:
+
+                this.adapter.getItem(position).setIs_read(-1);
+                this.adapter.notifyItemChanged(position);
+
+                break;
+
         }
 
     }
@@ -186,15 +194,20 @@ public class MessageActivity extends BaseTitleActivity implements BaseQuickAdapt
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
 
-        if(this.adapter.getItem(position).getType()==1){
+        if (this.adapter.getItem(position).getIs_read() == 0) {
+            this.position = position;
+            presenter.messageRead(Constants.RequestConfig.MESSAGE_READ, this.adapter.getItem(position).getId());
+        }
+
+        if (this.adapter.getItem(position).getType() == 1) {
             RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_MINE_ORDER);
-        }else {
-//            ARouter.getInstance().build(RouterPath.ACTIVITY_TRANSACTION_DETAILS)
-//                    .withInt(Constants.BundleConfig.TYPE, this.adapter.getItem(position).getType())
-//                    .withInt(Constants.BundleConfig.ID, this.adapter.getItem(position).getTrigger_id())
-//                    .withBoolean(Constants.BundleConfig.DETAILS, true)
-//                    .withInt(Constants.BundleConfig.STATUS, 0)
-//                    .navigation();
+        } else {
+            ARouter.getInstance().build(RouterPath.ACTIVITY_TRANSACTION_DETAILS)
+                    .withInt(Constants.BundleConfig.TYPE, this.adapter.getItem(position).getType())
+                    .withInt(Constants.BundleConfig.ID, this.adapter.getItem(position).getTrigger_id())
+                    .withBoolean(Constants.BundleConfig.DETAILS, true)
+                    .withInt(Constants.BundleConfig.STATUS, 0)
+                    .navigation();
         }
 
     }

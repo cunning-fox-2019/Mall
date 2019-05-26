@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 
+import com.alibaba.android.arouter.facade.annotation.Route;
 import com.seven.lib_common.base.activity.BaseTitleActivity;
 import com.seven.lib_common.utils.ToastUtils;
 import com.seven.lib_model.ApiManager;
@@ -12,6 +13,7 @@ import com.seven.lib_model.BaseResult;
 import com.seven.lib_model.CommonObserver;
 import com.seven.lib_model.model.user.mine.PayAccountEntity;
 import com.seven.lib_router.Variable;
+import com.seven.lib_router.router.RouterPath;
 import com.seven.module_user.R;
 import com.seven.module_user.R2;
 
@@ -21,7 +23,7 @@ import butterknife.OnClick;
 /**
  * Created by xxxxxxH on 2019/4/26.
  */
-
+@Route(path = RouterPath.ACTIVITY_ACCOUNT)
 public class UserSetPayAccountActivity extends BaseTitleActivity {
     @BindView(R2.id.wechat_pay)
     EditText wechatPay;
