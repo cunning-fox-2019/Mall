@@ -7,6 +7,7 @@ import com.seven.lib_http.observer.HttpRxObservable;
 import com.seven.lib_http.observer.HttpRxObserver;
 import com.seven.lib_model.http.RequestHelper;
 import com.seven.lib_model.model.user.UserEntity;
+import com.trello.rxlifecycle2.android.ActivityEvent;
 import com.trello.rxlifecycle2.android.FragmentEvent;
 
 /**
@@ -18,10 +19,9 @@ public class UserPresenter extends BasePresenter<IBaseView,BaseFragment>{
         super(view, activity);
     }
 
-    public void getUserInfo(int requestCode,String name){
-        HttpRxObserver rxObserver = getList(getView(),requestCode, UserEntity.class,"data",true);
-        if (rxObserver == null)
-            return;
-       // HttpRxObservable.getObservable(RequestHelper.getInstance().getUserInfo(name),getActivity(), FragmentEvent.PAUSE).subscribe(rxObserver);
+    public void getUserInfo(int code){
+        HttpRxObserver rxObserver = get(getView(),code, UserEntity.class,null,false);
+        if (rxObserver == null)return;
+        HttpRxObservable.getObservable(RequestHelper.getInstance().getUserInfo(),getActivity(), FragmentEvent.PAUSE).subscribe(rxObserver);
     }
 }

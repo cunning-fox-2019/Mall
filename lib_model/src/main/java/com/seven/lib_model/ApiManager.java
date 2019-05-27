@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.seven.lib_common.base.activity.BaseActivity;
 import com.seven.lib_http.retrofit.HttpResponse;
+import com.seven.lib_model.model.app.VersionEntity;
 import com.seven.lib_model.model.extension.BdGoodsEntity;
 import com.seven.lib_model.model.extension.BuyRoleEntity;
 import com.seven.lib_model.model.extension.InComeDetailsEntity;
@@ -235,6 +236,13 @@ public class ApiManager {
         @POST("promotion/79form/goods/list")
         Observable<BaseResult<BdGoodsEntity>> get79();
 
+        @POST("version/newest")
+        Observable<BaseResult<VersionEntity>> getVersion();
+
+    }
+
+    public static Observable<BaseResult<VersionEntity>> getVersion(){
+        return subScribe(apiManagerService.getVersion());
     }
 
     public static Observable<BaseResult<TokenEntity>> login(LoginEntity entity) {

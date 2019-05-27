@@ -1,11 +1,17 @@
 package com.seven.module_home.ui.fragment;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,11 +22,17 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.seven.lib_common.base.fragment.BaseFragment;
+import com.seven.lib_common.listener.OnClickListener;
+import com.seven.lib_common.ui.dialog.CommonDialog;
 import com.seven.lib_common.utils.NetWorkUtils;
 import com.seven.lib_common.utils.OutlineUtils;
 import com.seven.lib_common.utils.ResourceUtils;
 import com.seven.lib_common.utils.ToastUtils;
 import com.seven.lib_common.utils.glide.loader.GlideImageLoader;
+import com.seven.lib_model.ApiManager;
+import com.seven.lib_model.BaseResult;
+import com.seven.lib_model.CommonObserver;
+import com.seven.lib_model.model.app.VersionEntity;
 import com.seven.lib_model.model.home.BannerEntity;
 import com.seven.lib_model.model.home.BannerEntranceEntity;
 import com.seven.lib_model.model.home.CommodityEntity;
@@ -86,7 +98,7 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
 
     @Override
     public void init(Bundle savedInstanceState) {
-
+        checkVersion();
         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) titleRl.getLayoutParams();
         params.topMargin = notificationHeight;
         titleRl.setLayoutParams(params);
@@ -333,5 +345,56 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
             ARouter.getInstance().build(RouterPath.ACTIVITY_COMMODITY)
                     .withInt(Constants.BundleConfig.FLOW, flow)
                     .navigation();
+    }
+
+    private void checkVersion() {
+        ApiManager.getVersion()
+                .subscribe(new CommonObserver<BaseResult<VersionEntity>>() {
+                    @Override
+                    public void onNext(final BaseResult<VersionEntity> baseResult) {
+                        if (baseResult.getCode() == 1) {
+                            if (Integer.valueOf(baseResult.getData().getAndroid_version_code().replace(".", "")) >
+                                    Integer.valueOf(getAppVersionName(getActivity()).replace(".", ""))) {
+                                CommonDialog commonDialog = new CommonDialog(getActivity(), R.style.Dialog, new OnClickListener() {
+                                    @Override
+                                    public void onCancel(View v, Object... objects) {
+
+                                    }
+
+                                    @Override
+                                    public void onClick(View v, Object... objects) {
+                                        Intent intent = new Intent();
+                                        intent.setAction("android.intent.action.VIEW");
+                                        Uri content_url = Uri.parse(baseResult.getData().getAndroid_url());
+                                        intent.setData(content_url);
+                                        startActivity(intent);
+                                    }
+
+                                    @Override
+                                    public void dismiss() {
+
+                                    }
+                                }, "检查到新版本：" + baseResult.getData().getAndroid_version_code() + "\n" + baseResult.getData().getAndroid_desc());
+                                if (!commonDialog.isShowing()) {
+                                    commonDialog.show();
+                                }
+                            }
+
+                        }
+                    }
+                });
+    }
+
+    public static String getAppVersionName(Context context) {
+        String appVersionName = "";
+        try {
+            PackageInfo packageInfo = context.getApplicationContext()
+                    .getPackageManager()
+                    .getPackageInfo(context.getPackageName(), 0);
+            appVersionName = packageInfo.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            Log.e("", e.getMessage());
+        }
+        return appVersionName;
     }
 }

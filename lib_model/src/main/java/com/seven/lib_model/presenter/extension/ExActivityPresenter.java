@@ -127,9 +127,9 @@ public class ExActivityPresenter extends BasePresenter<IBaseView, BaseActivity> 
     }
 
     //生成报单订单
-    public void getOrder(int code,int contact_id){
+    public void getOrder(int code,int contact_id,int type){
         BuyBuilder.Builder builder = new BuyBuilder.Builder();
-        BuyBuilder json = builder.contact_id(contact_id).build();
+        BuyBuilder json = builder.contact_id(contact_id).type(type).build();
         HttpRxObserver rxObserver = get(getView(),code, com.seven.lib_model.model.home.OrderEntity.class,null,false);
         if (rxObserver ==null)return;
         HttpRxObservable.getObservable(RequestHelper.getInstance().getOrder(new Gson().toJson(json)),getActivity(),ActivityEvent.PAUSE).subscribe(rxObserver);
