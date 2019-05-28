@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.RelativeLayout;
 
@@ -138,10 +139,13 @@ public class CommodityOrderActivity extends BaseTitleActivity {
 
                 contactEntity = (ContactDefaultEntity) object;
 
-                nameTv.setText(contactEntity.getContact_name());
-                mobileTv.setText(contactEntity.getContact_phone());
-                addressTv.setText(contactEntity.getProvince_name() + contactEntity.getCity_name() +
-                        contactEntity.getDistrict_name() + contactEntity.getAddress());
+                if (!TextUtils.isEmpty(contactEntity.getContact_name()))
+                    nameTv.setText(contactEntity.getContact_name());
+                if (!TextUtils.isEmpty(contactEntity.getContact_phone()))
+                    mobileTv.setText(contactEntity.getContact_phone());
+                if (!TextUtils.isEmpty(contactEntity.getAddress()))
+                    addressTv.setText(contactEntity.getProvince_name() + contactEntity.getCity_name() +
+                            contactEntity.getDistrict_name() + contactEntity.getAddress());
                 defaultRl.setVisibility(View.VISIBLE);
 
                 break;

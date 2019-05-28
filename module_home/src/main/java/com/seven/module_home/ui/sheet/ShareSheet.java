@@ -153,8 +153,6 @@ public class ShareSheet extends IBaseSheet {
         String url = "http://mobile.zf.fqwlkj.com.cn/goods_info.html";
         String uid = "?uid=" + userId;
         String product_id = "&product_id=" + producationId;
-
         return url + uid + product_id;
     }
-
 }

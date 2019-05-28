@@ -86,7 +86,6 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
 
     @Override
     public void init(Bundle savedInstanceState) {
-
         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) titleRl.getLayoutParams();
         params.topMargin = notificationHeight;
         titleRl.setLayoutParams(params);

@@ -77,6 +77,7 @@ public class BuyActivity extends BaseTitleActivity {
     private OrderEntity orderEntity;
     AddressEntity addressEntity;
     List<BdGoodsEntity> list = new ArrayList<>();
+    private int type = 0;
 
     @Override
     protected int getLayoutId() {
@@ -94,7 +95,12 @@ public class BuyActivity extends BaseTitleActivity {
         }
         if (view.getId() == R.id.me_buy_bd_btn) {
             if (addressEntity != null) {
-                presenter.getOrder(1, addressEntity.getId());
+                if (me_buy_price.getText().toString().contains("79")) {
+                    type = 1;
+                } else {
+                    type = 2;
+                }
+                presenter.getOrder(1, addressEntity.getId(), type);
             } else {
                 ToastUtils.showToast(mContext, "请选择地址");
             }
@@ -104,13 +110,13 @@ public class BuyActivity extends BaseTitleActivity {
     @Override
     public void result(int code, Boolean hasNextPage, String response, Object object) {
         super.result(code, hasNextPage, response, object);
-        if (code == 1){
-            if (object == null)return;
+        if (code == 1) {
+            if (object == null) return;
             orderEntity = (OrderEntity) object;
-            if (orderEntity != null){
+            if (orderEntity != null) {
                 ARouter.getInstance().build(RouterPath.ACTIVITY_PAY)
                         .withBoolean(Constants.BundleConfig.NORMAL, false)
-                        .withSerializable(Constants.BundleConfig.ENTITY,orderEntity)
+                        .withSerializable(Constants.BundleConfig.ENTITY, orderEntity)
                         .navigation();
             }
         }
@@ -121,9 +127,9 @@ public class BuyActivity extends BaseTitleActivity {
         statusBar = StatusBar.LIGHT;
         EventBus.getDefault().register(this);
         setTitleText(R.string.me_buy_bd_title);
-        presenter = new ExActivityPresenter(this,this);
+        presenter = new ExActivityPresenter(this, this);
         String userInfo = SharedData.getInstance().getUserInfo();
-        entity = new Gson().fromJson(userInfo,UserEntity.class);
+        entity = new Gson().fromJson(userInfo, UserEntity.class);
         meBuyBdLl.setOnClickListener(this);
         meBuyBdBtn.setOnClickListener(this);
         ApiManager.getBdGoods().subscribe(new CommonObserver<BaseResult<BdGoodsEntity>>() {
@@ -157,13 +163,14 @@ public class BuyActivity extends BaseTitleActivity {
                 List<BdGoodsEntity> list1 = adapter.getData();
                 BdGoodsEntity entity = list1.get(position);
                 for (BdGoodsEntity item : list1) {
-                    if (entity.getPrice()==item.getPrice()) {
+                    if (entity.getPrice() == item.getPrice()) {
                         item.setSelected(true);
-                        me_buy_price.setText("总价："+ new DecimalFormat("#.00").format(entity.getPrice()));
+                        me_buy_price.setText("总价：" + new DecimalFormat("#.00").format(entity.getPrice()));
                     } else {
                         item.setSelected(false);
                     }
                 }
+
                 adapter.notifyDataSetChanged();
             }
         });
