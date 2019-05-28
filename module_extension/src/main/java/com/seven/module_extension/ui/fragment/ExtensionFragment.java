@@ -32,7 +32,9 @@ import com.seven.lib_model.model.extension.RewardRuleEntity;
 import com.seven.lib_model.model.user.UserEntity;
 import com.seven.lib_model.presenter.extension.ExFragmentPresenter;
 import com.seven.lib_opensource.event.Event;
+import com.seven.lib_opensource.event.ObjectsEvent;
 import com.seven.lib_router.Constants;
+import com.seven.lib_router.Variable;
 import com.seven.lib_router.db.shard.SharedData;
 import com.seven.lib_router.router.RouterPath;
 import com.seven.lib_router.router.RouterUtils;
@@ -152,27 +154,33 @@ public class ExtensionFragment extends BaseFragment {
         String userInfo = SharedData.getInstance().getUserInfo();
         if (userInfo != null && !userInfo.equals("null")) {
             user = new Gson().fromJson(userInfo, UserEntity.class);
-            if (user == null) return;
-            meInterviewpeo.setText("已成功邀请" + user.getInvite_number() + "人");
-            meProfitNum.setText(!TextUtils.isEmpty(user.getPromotion_token_number()) ? user.getPromotion_token_number(): "0");
-            switch (user.getRole()) {
-                case 0:
-                    meUserlevel.setBackgroundResource(R.drawable.me_normaluser);
-                    showNotVipDialog();
-                    break;
-                case 1:
-                    meUserlevel.setBackgroundResource(R.drawable.me_vip);
-                    break;
-                case 2:
-                    meUserlevel.setBackgroundResource(R.drawable.me_kuangzhu);
-                    break;
-                case 3:
-                    meUserlevel.setBackgroundResource(R.drawable.me_changzhu);
-                    break;
-                case 4:
-                    meUserlevel.setBackgroundResource(R.drawable.ctylord);
-                    break;
-                default:
+            if (user == null) {
+                meUserlevel.setBackgroundResource(R.drawable.me_normaluser);
+                meInterviewpeo.setText("已成功邀请" + "0人");
+                meProfitNum.setText("0");
+                return;
+            } else {
+                meInterviewpeo.setText("已成功邀请" + user.getInvite_number() + "人");
+                meProfitNum.setText(!TextUtils.isEmpty(user.getPromotion_token_number()) ? user.getPromotion_token_number() : "0");
+                switch (user.getRole()) {
+                    case 0:
+                        meUserlevel.setBackgroundResource(R.drawable.me_normaluser);
+                        showNotVipDialog();
+                        break;
+                    case 1:
+                        meUserlevel.setBackgroundResource(R.drawable.me_vip);
+                        break;
+                    case 2:
+                        meUserlevel.setBackgroundResource(R.drawable.me_kuangzhu);
+                        break;
+                    case 3:
+                        meUserlevel.setBackgroundResource(R.drawable.me_changzhu);
+                        break;
+                    case 4:
+                        meUserlevel.setBackgroundResource(R.drawable.ctylord);
+                        break;
+                    default:
+                }
             }
         }
     }
@@ -376,7 +384,16 @@ public class ExtensionFragment extends BaseFragment {
                 setUserData();
                 break;
             case Constants.EventConfig.LOGOUT:
-
+                SharedData.getInstance().setUserInfo("");
+                SharedData.getInstance().setToken("");
+                Variable.getInstance().setUserId(0);
+                Variable.getInstance().setTokenCount(0);
+                Variable.getInstance().setToken("");
+                setUserData();
+                break;
+            case Constants.EventConfig.LOGIN:
+            case Constants.EventConfig.REGISTER:
+                getUserInfo();
                 break;
             default:
         }
@@ -386,5 +403,42 @@ public class ExtensionFragment extends BaseFragment {
     public void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+    }
+
+    private void getUserInfo() {
+        // presenter.getUserInfo(1);
+        ApiManager.getUserInfo()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<BaseResult<UserEntity>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(BaseResult<UserEntity> userEntityBaseResult) {
+                        Gson gson = new Gson();
+                        String userString = gson.toJson(userEntityBaseResult.getData());
+                        if (userString != null && !userString.equals("null")) {
+                            SharedData.getInstance().setUserInfo(userString);
+                            Variable.getInstance().setUserId(userEntityBaseResult.getData().getId());
+                            Variable.getInstance().setTokenCount(TextUtils.isEmpty(userEntityBaseResult.getData().getToken_number_total()) ? 0 : Double.parseDouble(userEntityBaseResult.getData().getToken_number_total()));
+                            EventBus.getDefault().post(new ObjectsEvent(Constants.EventConfig.USER_DATA_CHANGE, "change"));
+                        } else {
+                            RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_LOGIN);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.e("xxxxxxH", e.toString());
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 }
