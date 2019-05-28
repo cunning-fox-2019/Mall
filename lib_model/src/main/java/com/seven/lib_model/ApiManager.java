@@ -97,7 +97,7 @@ public class ApiManager {
             GsonConverterFactory gsonConverterFactory = GsonConverterFactory.create(gson);
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl("http://api.zf.fqwlkj.com.cn/")
-                    //.baseUrl("http://zhongfu.lerqin.com/")
+//                    .baseUrl("http://zhongfu.lerqin.com/")
                     .client(builder.build())
                     .addConverterFactory(gsonConverterFactory)
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
