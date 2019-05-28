@@ -155,7 +155,7 @@ public class MessageActivity extends BaseTitleActivity implements BaseQuickAdapt
 
             case Constants.RequestConfig.MESSAGE_READ:
 
-                this.adapter.getItem(position).setIs_read(-1);
+                messageList.get(position).setIs_read(1);
                 this.adapter.notifyItemChanged(position);
 
                 break;
@@ -183,6 +183,9 @@ public class MessageActivity extends BaseTitleActivity implements BaseQuickAdapt
     public void closeLoading() {
 
         dismissLoadingDialog();
+
+        if(swipeRefreshLayout.isRefreshing())
+            swipeRefreshLayout.setRefreshing(false);
 
     }
 
