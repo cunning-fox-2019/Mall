@@ -25,7 +25,7 @@ public class LogisticsActivity extends BaseTitleActivity {
     int orderId = 0;
     @BindView(R2.id.mu_web)
     WebView muWeb;
-    String url = "http://www.zf.tianza.com.cn/express.html?order_id=";
+    String url = "http://mobile.zf.fqwlkj.com.cn/express.html?order_id=";
 
     @Override
     protected int getLayoutId() {

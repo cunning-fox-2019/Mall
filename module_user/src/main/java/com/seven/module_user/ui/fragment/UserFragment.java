@@ -19,6 +19,8 @@ import com.seven.lib_model.ApiManager;
 import com.seven.lib_model.BaseResult;
 import com.seven.lib_model.model.user.RegisterEntity;
 import com.seven.lib_model.model.user.UserEntity;
+import com.seven.lib_model.user.UserActivityPresenterNew;
+import com.seven.lib_model.user.UserPresenter;
 import com.seven.lib_opensource.event.Event;
 import com.seven.lib_opensource.event.MessageEvent;
 import com.seven.lib_opensource.event.ObjectsEvent;
@@ -70,7 +72,8 @@ public class UserFragment extends BaseFragment {
     ImageView readIv;
     @BindView(R2.id.message_layout)
     LinearLayout messageLayout;
-
+    UserPresenter presenter;
+    UserEntity userEntity;
 
     @Override
     public int getContentViewId() {
@@ -81,10 +84,12 @@ public class UserFragment extends BaseFragment {
     public void init(Bundle savedInstanceState) {
         // getUserInfo();
         EventBus.getDefault().register(this);
+       // presenter = new UserPresenter(this,this);
     }
 
 
     private void getUserInfo() {
+       // presenter.getUserInfo(1);
         ApiManager.getUserInfo()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -120,6 +125,7 @@ public class UserFragment extends BaseFragment {
                     }
                 });
     }
+
 
     private void setData(UserEntity data) {
         userName.setText(data.getUsername() != null && !data.getUsername().equals("") ? data.getUsername() : "昵称暂未设置");

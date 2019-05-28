@@ -43,6 +43,15 @@
     <string name="hint_pay_failure">支付失败</string>
     <string name="hint_pay_cancel">支付已取消</string>
 
+    <string name="update_version_format" formatted="false">新版本%s</string>
+    <string name="update_later">暂时不用</string>
+    <string name="update_now">立即更新</string>
+    <string name="update_install">安装</string>
+    <string name="update_progress">下载中</string>
+    <string name="update_progress_succeed">下载成功</string>
+    <string name="setting">设置</string>
+    <string name="permission_install">安装应用需要未知应用来源权限</string>
+
     <!-- common -->
     <string name="rmb">¥</string>
     <string name="common_album">相册</string>
@@ -188,7 +197,7 @@
     <string name="button_cancel_business">取消交易</string>
 
     <string name="hint_voucher">请上传支付宝或微信交易凭证</string>
-    <string name="hint_buy_info">您发起的购买信息\n已成功通知卖方\n请先支付宝或微信购买\n支付成功后请上传凭证</string>
+    <string name="hint_buy_info">您发起的购买信息\n已成功通知卖方\n请在两小时内上传凭证\n否则该交易自动取消</string>
     <string name="hint_sell_info">您发起的售卖信息\n已成功通知买方\n请等待买方回复</string>
 
     <string name="hint_wait_business">该订单暂未交易</string>

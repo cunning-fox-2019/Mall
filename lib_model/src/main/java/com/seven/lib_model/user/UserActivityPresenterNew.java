@@ -8,6 +8,7 @@ import com.seven.lib_http.observer.HttpRxObservable;
 import com.seven.lib_http.observer.HttpRxObserver;
 import com.seven.lib_model.builder.user.EditAddressBuilder;
 import com.seven.lib_model.http.RequestHelper;
+import com.seven.lib_model.model.user.UserEntity;
 import com.trello.rxlifecycle2.android.ActivityEvent;
 
 /**
@@ -34,4 +35,6 @@ public class UserActivityPresenterNew extends BasePresenter<IBaseView,BaseActivi
         if (rxObserver == null)return;
         HttpRxObservable.getObservable(RequestHelper.getInstance().editAddress(new Gson().toJson(json)),getActivity(),ActivityEvent.PAUSE).subscribe(rxObserver);
     }
+
+
 }

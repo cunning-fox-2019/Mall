@@ -10,6 +10,7 @@ import com.seven.lib_http.observer.HttpRxObserver;
 import com.seven.lib_model.builder.app.PushBuilder;
 import com.seven.lib_model.http.RequestHelper;
 import com.seven.lib_model.model.app.MessageReadEntity;
+import com.seven.lib_model.model.app.UpdateEntity;
 import com.trello.rxlifecycle2.android.ActivityEvent;
 
 /**
@@ -54,4 +55,11 @@ public class ActAppPresenter extends BasePresenter<IBaseView, BaseAppCompatActiv
         HttpRxObservable.getObservable(RequestHelper.getInstance().messageNotRead(), getActivity(), ActivityEvent.PAUSE).subscribe(rxObserver);
     }
 
+    public void update(int requestCode) {
+
+        HttpRxObserver rxObserver = get(getView(), requestCode, UpdateEntity.class, null, false);
+        if (rxObserver == null)
+            return;
+        HttpRxObservable.getObservable(RequestHelper.getInstance().update(), getActivity(), ActivityEvent.PAUSE).subscribe(rxObserver);
+    }
 }

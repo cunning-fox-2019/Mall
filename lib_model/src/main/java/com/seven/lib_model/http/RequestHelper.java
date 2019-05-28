@@ -63,6 +63,10 @@ public class RequestHelper {
         return appService.sms(requestBody(json));
     }
 
+    public Observable<HttpResponse> update() {
+        return appService.update();
+    }
+
     public Observable<HttpResponse> payPassword(String json) {
         return appService.payPassword(requestBody(json));
     }
@@ -249,4 +253,6 @@ public class RequestHelper {
     public Observable<HttpResponse> buyRole(String json){return appService.buyRole(requestBody(json));}
 
     public Observable<HttpResponse> editAddress(String json){return appService.editAddress(requestBody(json));}
+
+    public Observable<HttpResponse> getUserInfo(){return appService.getUserInfo();}
 }

@@ -4,16 +4,7 @@ package com.seven.lib_model.model.user;
 
 public class UserEntity {
 
-    /**
-     * id : 1
-     * sex : male
-     * avatar : xxx
-     * username : xxx
-     * phone : xxxxxxxxxxx
-     * role : 1
-     * is_set_pay_password : 1
-     * invite_code : xxxxxx
-     */
+
 
     private int id;
     private String sex;
@@ -23,20 +14,9 @@ public class UserEntity {
     private int role;
     private int is_set_pay_password;
     private String invite_code;
-    /**
-     * wx_account : xxx123
-     * ali_account : xxx321
-     * promotion_token_number : 123
-     * token_number : 1
-     * freeze_token_number : 1
-     * token_number_total : 2
-     * form_goods_number : 1
-     * invite_number : 1
-     */
-
     private String wx_account;
     private String ali_account;
-    private int promotion_token_number;
+    private String promotion_token_number;
     private String token_number;
     private String freeze_token_number;
     private String token_number_total;
@@ -123,11 +103,11 @@ public class UserEntity {
         this.ali_account = ali_account;
     }
 
-    public int getPromotion_token_number() {
+    public String getPromotion_token_number() {
         return promotion_token_number;
     }
 
-    public void setPromotion_token_number(int promotion_token_number) {
+    public void setPromotion_token_number(String promotion_token_number) {
         this.promotion_token_number = promotion_token_number;
     }
 

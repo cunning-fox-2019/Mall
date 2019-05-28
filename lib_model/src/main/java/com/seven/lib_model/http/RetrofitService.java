@@ -22,7 +22,7 @@ import retrofit2.http.Part;
 
 public interface RetrofitService {
 
-    String sms = "sms/send";
+    String  sms = "sms/send";
     String payPassword = "user/pay_password/is_correct";
     String upload = "image/upload";
     String pushId="user/jpush/set_id";
@@ -30,6 +30,7 @@ public interface RetrofitService {
     String messageNotRead="notice/count/not_read";
     String messageList="notice/list";
     String messageRead="notice/set_readed";
+    String update="version/newest";
 
     String register = "register";
     String login = "login";
@@ -86,6 +87,9 @@ public interface RetrofitService {
 
     @POST(messageList)
     Observable<HttpResponse> messageList();
+
+    @POST(update)
+    Observable<HttpResponse> update();
 
     @Multipart
     @POST(upload)
@@ -212,5 +216,8 @@ public interface RetrofitService {
 
     @POST("user/contact/update")
     Observable<HttpResponse> editAddress(@Body RequestBody requestBody);
+
+    @POST("user/info")
+    Observable<HttpResponse> getUserInfo();
 }
 

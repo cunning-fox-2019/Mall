@@ -16,7 +16,9 @@ import com.orhanobut.logger.Logger;
 import com.seven.lib_common.base.activity.BaseAppCompatActivity;
 import com.seven.lib_common.stextview.TypeFaceView;
 import com.seven.lib_common.task.ActivityStack;
+import com.seven.lib_common.utils.UpdateApkUtils;
 import com.seven.lib_model.model.app.MessageReadEntity;
+import com.seven.lib_model.model.app.UpdateEntity;
 import com.seven.lib_model.model.user.RegisterEntity;
 import com.seven.lib_model.model.user.UserEntity;
 import com.seven.lib_model.presenter.app.ActAppPresenter;
@@ -99,6 +101,7 @@ public class HomeActivity extends BaseAppCompatActivity {
         changeTabSelected(tabHome, null, homeFg);
 
         presenter = new ActAppPresenter(this, this);
+        presenter.update(Constants.RequestConfig.UPDATE);
 
         initAppValue();
     }
@@ -262,6 +265,20 @@ public class HomeActivity extends BaseAppCompatActivity {
                 Variable.getInstance().setRead(readEntity.getCount() > 0 ? true : false);
 
                 EventBus.getDefault().post(new MessageEvent(Constants.EventConfig.MESSAGE_READ_POINT, ""));
+
+                break;
+
+            case Constants.RequestConfig.UPDATE:
+
+                if (object == null) return;
+
+                UpdateEntity entity = (UpdateEntity) object;
+
+                boolean isUpdate = UpdateApkUtils.getInstance().checkingVersion(entity.getAndroid_version_code().replace(".", ""));
+
+                if (isUpdate)
+                    UpdateApkUtils.getInstance().update(this, entity.getAndroid_version_code(), entity.getAndroid_url(), entity.getAndroid_desc());
+
 
                 break;
 

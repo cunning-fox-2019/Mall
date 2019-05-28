@@ -70,6 +70,7 @@ public class Constants {
         public static final int MESSAGE_NOT_READ = 1006;
         public static final int MESSAGE_LIST = 1007;
         public static final int MESSAGE_READ = 1008;
+        public static final int UPDATE = 1009;
 
         /*home*/
         public static final int BANNER = 3001;
