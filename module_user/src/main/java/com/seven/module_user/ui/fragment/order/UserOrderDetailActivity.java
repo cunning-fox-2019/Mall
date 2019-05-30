@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
@@ -80,6 +81,8 @@ public class UserOrderDetailActivity extends BaseTitleActivity {
     TextView cancelOrder;
     @BindView(R2.id.pay_order)
     TextView payOrder;
+    @BindView(R2.id.order_details_ll)
+    LinearLayout order_details_ll;
     OrderEntity orderEntity;
 
     @Override
@@ -176,18 +179,23 @@ public class UserOrderDetailActivity extends BaseTitleActivity {
         switch (data.getStatus()) {
             case 1:
                 status = "待付款";
+                order_details_ll.setVisibility(View.VISIBLE);
                 break;
             case 2:
                 status = "待发货";
+                order_details_ll.setVisibility(View.GONE);
                 break;
             case 3:
                 status = "待收货";
+                order_details_ll.setVisibility(View.GONE);
                 break;
             case 4:
                 status = "已完成";
+                order_details_ll.setVisibility(View.GONE);
                 break;
             case 5:
                 status = "已取消";
+                order_details_ll.setVisibility(View.GONE);
                 break;
             default:
         }

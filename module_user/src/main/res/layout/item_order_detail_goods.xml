@@ -33,7 +33,6 @@
         android:layout_marginLeft="@dimen/margin_16"
         android:layout_toRightOf="@+id/goods_img"
         android:paddingTop="@dimen/dp_4"
-        android:text="规格：500g"
         android:textColor="#999999"
         android:textSize="@dimen/sp_12" />
 

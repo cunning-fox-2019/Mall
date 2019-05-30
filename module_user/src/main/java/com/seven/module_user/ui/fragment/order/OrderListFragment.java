@@ -103,8 +103,8 @@ public class OrderListFragment extends BaseFragment {
                 .subscribe(new CommonObserver<BaseResult>() {
                     @Override
                     public void onNext(BaseResult baseResult) {
-                        if (baseResult.getCode() == 0){
-                            ToastUtils.showToast(getActivity(),baseResult.getMessage());
+                        if (baseResult.getCode() == 0) {
+                            ToastUtils.showToast(getActivity(), baseResult.getMessage());
                         }
                         getData();
                     }
@@ -273,7 +273,10 @@ public class OrderListFragment extends BaseFragment {
             recyclerView.setRefreshing(false);
         } else {
             recyclerView.addDataList(data.getItems());
-            recyclerView.getAdapter().loadMoreComplete();
+            if (data.getItems().size() == 0) {
+                recyclerView.getAdapter().loadMoreEnd();
+            } else
+                recyclerView.getAdapter().loadMoreComplete();
         }
 
         if (data.getPagination().getTotal_page() == 1) {
@@ -311,7 +314,7 @@ public class OrderListFragment extends BaseFragment {
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser){
+        if (isVisibleToUser) {
             getData();
         }
     }
