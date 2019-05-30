@@ -78,7 +78,6 @@ public class OrderListFragment extends BaseFragment {
 
     @Override
     public void showToast(String msg) {
-//hei 孙子
     }
 
     @Override
@@ -186,15 +185,23 @@ public class OrderListFragment extends BaseFragment {
                     switch (item.getStatus()) {
                         case 1:
                             status = "待付款";
+                            helper.setGone(R.id.pay_btn, true);
+                            helper.setGone(R.id.check_wl, false);
                             break;
                         case 2:
                             status = "待发货";
+                            helper.setGone(R.id.pay_btn, true);
+                            helper.setGone(R.id.check_wl, false);
                             break;
                         case 3:
                             status = "待收货";
+                            helper.setGone(R.id.pay_btn, false);
+                            helper.setGone(R.id.check_wl, true);
                             break;
                         case 4:
                             status = "已完成";
+                            helper.setGone(R.id.pay_btn, false);
+                            helper.setGone(R.id.check_wl, false);
                             break;
                         case 5:
                             status = "已取消";
@@ -204,12 +211,12 @@ public class OrderListFragment extends BaseFragment {
                     helper.setText(R.id.state, status);
                     ImageView imageView = helper.getView(R.id.goods_img);
                     GlideUtils.loadImage(mContext, goods.getGoods_thumb(), imageView);
-                    if (currentListType == 2 || currentListType == 3 || currentListType == 4) {
-                        helper.setGone(R.id.pay_btn, false);
-                    }
-                    if (currentListType == 3) {
-                        helper.setGone(R.id.check_wl, true);
-                    }
+//                    if (currentListType == 2 || currentListType == 3 || currentListType == 4) {
+//                        helper.setGone(R.id.pay_btn, false);
+//                    }
+//                    if (currentListType == 3) {
+//                        helper.setGone(R.id.check_wl, true);
+//                    }
                     helper.addOnClickListener(R.id.check_wl);
                 }
             }).setEmptyView(getEmptyView())
