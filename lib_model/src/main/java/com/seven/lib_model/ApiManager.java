@@ -9,6 +9,7 @@ import com.seven.lib_http.retrofit.HttpResponse;
 import com.seven.lib_model.model.app.VersionEntity;
 import com.seven.lib_model.model.extension.BdGoodsEntity;
 import com.seven.lib_model.model.extension.BuyRoleEntity;
+import com.seven.lib_model.model.extension.DefaultAddress;
 import com.seven.lib_model.model.extension.InComeDetailsEntity;
 import com.seven.lib_model.model.extension.LevelEntity;
 import com.seven.lib_model.model.extension.MyInterViewEntity;
@@ -97,7 +98,7 @@ public class ApiManager {
             GsonConverterFactory gsonConverterFactory = GsonConverterFactory.create(gson);
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl("http://api.zf.fqwlkj.com.cn/")
-                    //.baseUrl("http://zhongfu.lerqin.com/")
+//                    .baseUrl("http://zhongfu.lerqin.com/")
                     .client(builder.build())
                     .addConverterFactory(gsonConverterFactory)
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
@@ -239,6 +240,9 @@ public class ApiManager {
         @POST("version/newest")
         Observable<BaseResult<VersionEntity>> getVersion();
 
+        @POST("user/contact/default/info")
+        Observable<BaseResult<DefaultAddress>> getDefaultAddress();
+
     }
 
     public static Observable<BaseResult<VersionEntity>> getVersion(){
@@ -356,5 +360,9 @@ public class ApiManager {
     }
     public static Observable<BaseResult<BdGoodsEntity>> get79(){
         return subScribe(apiManagerService.get79());
+    }
+
+    public static Observable<BaseResult<DefaultAddress>> getDefaultAddress(){
+        return subScribe(apiManagerService.getDefaultAddress());
     }
 }

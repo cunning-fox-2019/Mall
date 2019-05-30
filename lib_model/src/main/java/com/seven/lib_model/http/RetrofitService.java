@@ -27,8 +27,10 @@ public interface RetrofitService {
     String upload = "image/upload";
     String pushId="user/jpush/set_id";
     String deletePushId="user/jpush/delete_id";
-    String messageRead="notice/count/not_read";
+    String messageNotRead="notice/count/not_read";
     String messageList="notice/list";
+    String messageRead="notice/set_readed";
+    String update="version/newest";
 
     String register = "register";
     String login = "login";
@@ -77,11 +79,17 @@ public interface RetrofitService {
     @POST(deletePushId)
     Observable<HttpResponse> deletePushId();
 
+    @POST(messageNotRead)
+    Observable<HttpResponse> messageNotRead();
+
     @POST(messageRead)
-    Observable<HttpResponse> messageRead();
+    Observable<HttpResponse> messageRead(@Body RequestBody requestBody);
 
     @POST(messageList)
     Observable<HttpResponse> messageList();
+
+    @POST(update)
+    Observable<HttpResponse> update();
 
     @Multipart
     @POST(upload)

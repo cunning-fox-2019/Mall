@@ -12,6 +12,7 @@ import com.seven.lib_model.builder.model.BusinessBuilder;
 import com.seven.lib_model.builder.model.BusinessDetailsBuilder;
 import com.seven.lib_model.builder.model.BusinessOrderListBuilder;
 import com.seven.lib_model.builder.model.BusinessProofBuilder;
+import com.seven.lib_model.builder.model.MessageBuilder;
 import com.seven.lib_model.http.RequestHelper;
 import com.seven.lib_model.model.model.BusinessEntity;
 import com.seven.lib_model.model.model.BusinessInfoEntity;
@@ -171,6 +172,21 @@ public class ActModelPresenter extends BasePresenter<IBaseView, BaseActivity> {
         if (rxObserver == null)
             return;
         HttpRxObservable.getObservable(RequestHelper.getInstance().businessProof(jsonStr), getActivity(), ActivityEvent.PAUSE).subscribe(rxObserver);
+    }
+
+    public void messageRead(int requestCode, int id) {
+
+        MessageBuilder.Builder builder = new MessageBuilder.Builder();
+        MessageBuilder json = builder
+                .id(id)
+                .build();
+        String jsonStr = new Gson().toJson(json);
+        Logger.i(jsonStr);
+
+        HttpRxObserver rxObserver = get(getView(), requestCode);
+        if (rxObserver == null)
+            return;
+        HttpRxObservable.getObservable(RequestHelper.getInstance().messageRead(jsonStr), getActivity(), ActivityEvent.PAUSE).subscribe(rxObserver);
     }
 
     public void upload(int requestCode, String path, String scene) {
