@@ -27,6 +27,7 @@ import com.seven.lib_model.ApiManager;
 import com.seven.lib_model.BaseResult;
 import com.seven.lib_model.CommonObserver;
 import com.seven.lib_model.model.user.CancelOrderEntity;
+import com.seven.lib_model.model.user.ConfirmOrderEntity;
 import com.seven.lib_model.model.user.OrderEntity;
 import com.seven.lib_model.model.user.OrderListRequestEntity;
 import com.seven.lib_model.model.user.mine.CommonListPageEntity;
@@ -187,21 +188,29 @@ public class OrderListFragment extends BaseFragment {
                             status = "待付款";
                             helper.setGone(R.id.pay_btn, true);
                             helper.setGone(R.id.check_wl, false);
+                            helper.setGone(R.id.confirm_take, false);
+                            helper.setGone(R.id.button_1, true);
                             break;
                         case 2:
                             status = "待发货";
-                            helper.setGone(R.id.pay_btn, true);
+                            helper.setGone(R.id.pay_btn, false);
                             helper.setGone(R.id.check_wl, false);
+                            helper.setGone(R.id.confirm_take, false);
+                            helper.setGone(R.id.button_1, true);
                             break;
                         case 3:
                             status = "待收货";
                             helper.setGone(R.id.pay_btn, false);
                             helper.setGone(R.id.check_wl, true);
+                            helper.setGone(R.id.confirm_take, true);
+                            helper.setGone(R.id.button_1, false);
                             break;
                         case 4:
                             status = "已完成";
                             helper.setGone(R.id.pay_btn, false);
                             helper.setGone(R.id.check_wl, false);
+                            helper.setGone(R.id.confirm_take, false);
+                            helper.setGone(R.id.button_1, false);
                             break;
                         case 5:
                             status = "已取消";
@@ -218,6 +227,8 @@ public class OrderListFragment extends BaseFragment {
 //                        helper.setGone(R.id.check_wl, true);
 //                    }
                     helper.addOnClickListener(R.id.check_wl);
+                    helper.addOnClickListener(R.id.confirm_take);
+
                 }
             }).setEmptyView(getEmptyView())
                     .setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -263,6 +274,21 @@ public class OrderListFragment extends BaseFragment {
                                 ARouter.getInstance().build(RouterPath.ACTIVITY_LOGISTICS)
                                         .withInt("orderId", entity.getId())
                                         .navigation();
+                            }
+                            if (view.getId() == R.id.confirm_take){
+                                ConfirmOrderEntity entity1 = new ConfirmOrderEntity();
+                                entity1.setBusiness_id(entity.getId());
+                                ApiManager.confirmOrder(entity1).subscribe(new CommonObserver<BaseResult>(){
+                                    @Override
+                                    public void onNext(BaseResult baseResult) {
+                                        if (baseResult.getCode() == 1){
+                                            ToastUtils.showToast(getActivity(),baseResult.getMessage());
+                                            getData();
+                                        }else {
+                                            ToastUtils.showToast(getActivity(),baseResult.getMessage());
+                                        }
+                                    }
+                                });
                             }
 
                         }

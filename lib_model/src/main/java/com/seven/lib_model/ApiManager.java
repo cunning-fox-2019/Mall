@@ -18,6 +18,7 @@ import com.seven.lib_model.model.extension.ReceiveGoodsEntity;
 import com.seven.lib_model.model.extension.RewardListEntity;
 import com.seven.lib_model.model.extension.RewardRuleEntity;
 import com.seven.lib_model.model.user.CancelOrderEntity;
+import com.seven.lib_model.model.user.ConfirmOrderEntity;
 import com.seven.lib_model.model.user.LoginEntity;
 import com.seven.lib_model.model.user.OrderEntity;
 import com.seven.lib_model.model.user.OrderListRequestEntity;
@@ -97,8 +98,8 @@ public class ApiManager {
             Gson gson = gsonBuilder.create();
             GsonConverterFactory gsonConverterFactory = GsonConverterFactory.create(gson);
             Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl("http://api.zf.fqwlkj.com.cn/")
-//                    .baseUrl("http://zhongfu.lerqin.com/")
+//                    .baseUrl("http://api.zf.fqwlkj.com.cn/")
+                    .baseUrl("http://zhongfu.lerqin.com/")
                     .client(builder.build())
                     .addConverterFactory(gsonConverterFactory)
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
@@ -243,6 +244,9 @@ public class ApiManager {
         @POST("user/contact/default/info")
         Observable<BaseResult<DefaultAddress>> getDefaultAddress();
 
+        @POST("business/order/confirm")
+        Observable<BaseResult> confirmOrder();
+
     }
 
     public static Observable<BaseResult<VersionEntity>> getVersion(){
@@ -364,5 +368,9 @@ public class ApiManager {
 
     public static Observable<BaseResult<DefaultAddress>> getDefaultAddress(){
         return subScribe(apiManagerService.getDefaultAddress());
+    }
+
+    public static Observable<BaseResult> confirmOrder(ConfirmOrderEntity entity){
+        return subScribe(apiManagerService.confirmOrder());
     }
 }
