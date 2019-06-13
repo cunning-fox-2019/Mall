@@ -22,6 +22,7 @@ import com.seven.lib_model.ApiManager;
 import com.seven.lib_model.BaseResult;
 import com.seven.lib_model.CommonObserver;
 import com.seven.lib_model.model.extension.BdGoodsEntity;
+import com.seven.lib_model.model.extension.DefaultAddress;
 import com.seven.lib_model.model.extension.GoodsItemEntity;
 import com.seven.lib_model.model.home.OrderEntity;
 import com.seven.lib_model.model.user.UserEntity;
@@ -78,6 +79,7 @@ public class BuyActivity extends BaseTitleActivity {
     AddressEntity addressEntity;
     List<BdGoodsEntity> list = new ArrayList<>();
     private int type = 0;
+    private int addressId = 0;
 
     @Override
     protected int getLayoutId() {
@@ -94,15 +96,15 @@ public class BuyActivity extends BaseTitleActivity {
                     .navigation();
         }
         if (view.getId() == R.id.me_buy_bd_btn) {
-            if (addressEntity != null) {
+            if (!me_buy_price.getText().toString().contains("0.00")) {
                 if (me_buy_price.getText().toString().contains("79")) {
                     type = 1;
                 } else {
                     type = 2;
                 }
-                presenter.getOrder(1, addressEntity.getId(), type);
+                presenter.getOrder(1, addressId, type);
             } else {
-                ToastUtils.showToast(mContext, "请选择地址");
+                ToastUtils.showToast(mContext, "请选择商品");
             }
         }
     }
@@ -149,6 +151,25 @@ public class BuyActivity extends BaseTitleActivity {
                         initRv(list);
                     }
                 });
+            }
+        });
+        ApiManager.getDefaultAddress().subscribe(new CommonObserver<BaseResult<DefaultAddress>>() {
+            @Override
+            public void onNext(BaseResult<DefaultAddress> defaultAddressBaseResult) {
+                addressId = defaultAddressBaseResult.getData().getId();
+                String name = defaultAddressBaseResult.getData().getContact_name();
+                String phone = defaultAddressBaseResult.getData().getContact_phone();
+                String province = defaultAddressBaseResult.getData().getProvince_name();
+                String city = defaultAddressBaseResult.getData().getCity_name();
+                String district = defaultAddressBaseResult.getData().getDistrict_name();
+                String address = defaultAddressBaseResult.getData().getAddress();
+                if (TextUtils.isEmpty(name) || TextUtils.isEmpty(phone) || TextUtils.isEmpty(province) || TextUtils.isEmpty(city) || TextUtils.isEmpty(district) || TextUtils.isEmpty(address)){
+                    meBuyBdAddress1.setText("新增地址");
+                    meBuyBdAddress2.setText("当前未设置收获地址");
+                }else {
+                    meBuyBdAddress1.setText(name + " " + phone);
+                    meBuyBdAddress2.setText(province + city + district + address);
+                }
             }
         });
     }
@@ -211,6 +232,7 @@ public class BuyActivity extends BaseTitleActivity {
     public void onEvent(Event event) {
         if (event.getWhat() == Constants.EventConfig.BUY_BD) {
             addressEntity = (AddressEntity) ((ObjectsEvent) event).getObjects()[0];
+            addressId = addressEntity.getId();
             meBuyBdAddress1.setText(addressEntity.getContact_name() + " " + addressEntity.getContact_phone());
             meBuyBdAddress2.setText(addressEntity.getProvince_name() + addressEntity.getCity_name() + addressEntity.getDistrict_name() + addressEntity.getAddress());
         }

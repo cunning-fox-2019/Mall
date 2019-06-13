@@ -362,7 +362,7 @@ public class TransactionDetailsActivity extends BaseTitleActivity implements Vie
 
         clipboard.setPrimaryClip(clipData);
 
-        ToastUtils.showToast(mContext,ResourceUtils.getText(R.string.status_end));
+        ToastUtils.showToast(mContext,ResourceUtils.getText(R.string.hint_copy));
 
         return false;
     }

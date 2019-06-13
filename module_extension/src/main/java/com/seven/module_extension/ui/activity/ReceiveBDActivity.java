@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -21,6 +22,7 @@ import com.seven.lib_model.BaseResult;
 import com.seven.lib_model.CommonObserver;
 import com.seven.lib_model.model.extension.BdGoodsEntity;
 import com.seven.lib_model.model.extension.BindEntity;
+import com.seven.lib_model.model.extension.DefaultAddress;
 import com.seven.lib_model.model.extension.GoodsItemEntity;
 import com.seven.lib_model.model.extension.RewardLsitItemEntity;
 import com.seven.lib_model.model.user.mine.AddressEntity;
@@ -136,6 +138,25 @@ public class ReceiveBDActivity extends BaseTitleActivity {
         presenter = new ExActivityPresenter(this,this);
         setRv();
         request(String.valueOf(id));
+        ApiManager.getDefaultAddress().subscribe(new CommonObserver<BaseResult<DefaultAddress>>() {
+            @Override
+            public void onNext(BaseResult<DefaultAddress> defaultAddressBaseResult) {
+                contactId = defaultAddressBaseResult.getData().getId();
+                String name = defaultAddressBaseResult.getData().getContact_name();
+                String phone = defaultAddressBaseResult.getData().getContact_phone();
+                String province = defaultAddressBaseResult.getData().getProvince_name();
+                String city = defaultAddressBaseResult.getData().getCity_name();
+                String district = defaultAddressBaseResult.getData().getDistrict_name();
+                String address = defaultAddressBaseResult.getData().getAddress();
+                if (TextUtils.isEmpty(name) || TextUtils.isEmpty(phone) || TextUtils.isEmpty(province) || TextUtils.isEmpty(city) || TextUtils.isEmpty(district) || TextUtils.isEmpty(address)){
+                    meBuyBdAddress1.setText("新增地址");
+                    meBuyBdAddress2.setText("当前未设置收获地址");
+                }else {
+                    meBuyBdAddress1.setText(name + " " + phone);
+                    meBuyBdAddress2.setText(province + city + district + address);
+                }
+            }
+        });
     }
 
     @Override

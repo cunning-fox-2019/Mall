@@ -1,11 +1,9 @@
 package com.seven.module_user.ui.fragment.order;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
@@ -27,6 +25,7 @@ import com.seven.lib_model.ApiManager;
 import com.seven.lib_model.BaseResult;
 import com.seven.lib_model.CommonObserver;
 import com.seven.lib_model.model.user.CancelOrderEntity;
+import com.seven.lib_model.model.user.ConfirmOrderEntity;
 import com.seven.lib_model.model.user.OrderEntity;
 import com.seven.lib_model.model.user.OrderListRequestEntity;
 import com.seven.lib_model.model.user.mine.CommonListPageEntity;
@@ -78,7 +77,6 @@ public class OrderListFragment extends BaseFragment {
 
     @Override
     public void showToast(String msg) {
-//hei 孙子
     }
 
     @Override
@@ -104,8 +102,8 @@ public class OrderListFragment extends BaseFragment {
                 .subscribe(new CommonObserver<BaseResult>() {
                     @Override
                     public void onNext(BaseResult baseResult) {
-                        if (baseResult.getCode() == 0){
-                            ToastUtils.showToast(getActivity(),baseResult.getMessage());
+                        if (baseResult.getCode() == 0) {
+                            ToastUtils.showToast(getActivity(), baseResult.getMessage());
                         }
                         getData();
                     }
@@ -186,15 +184,31 @@ public class OrderListFragment extends BaseFragment {
                     switch (item.getStatus()) {
                         case 1:
                             status = "待付款";
+                            helper.setGone(R.id.pay_btn, true);
+                            helper.setGone(R.id.check_wl, false);
+                            helper.setGone(R.id.confirm_take, false);
+                            helper.setGone(R.id.button_1, true);
                             break;
                         case 2:
                             status = "待发货";
+                            helper.setGone(R.id.pay_btn, false);
+                            helper.setGone(R.id.check_wl, false);
+                            helper.setGone(R.id.confirm_take, false);
+                            helper.setGone(R.id.button_1, true);
                             break;
                         case 3:
                             status = "待收货";
+                            helper.setGone(R.id.pay_btn, false);
+                            helper.setGone(R.id.check_wl, true);
+                            helper.setGone(R.id.confirm_take, true);
+                            helper.setGone(R.id.button_1, false);
                             break;
                         case 4:
                             status = "已完成";
+                            helper.setGone(R.id.pay_btn, false);
+                            helper.setGone(R.id.check_wl, false);
+                            helper.setGone(R.id.confirm_take, false);
+                            helper.setGone(R.id.button_1, false);
                             break;
                         case 5:
                             status = "已取消";
@@ -204,13 +218,15 @@ public class OrderListFragment extends BaseFragment {
                     helper.setText(R.id.state, status);
                     ImageView imageView = helper.getView(R.id.goods_img);
                     GlideUtils.loadImage(mContext, goods.getGoods_thumb(), imageView);
-                    if (currentListType == 2 || currentListType == 3 || currentListType == 4) {
-                        helper.setGone(R.id.pay_btn, false);
-                    }
-                    if (currentListType == 3) {
-                        helper.setGone(R.id.check_wl, true);
-                    }
+//                    if (currentListType == 2 || currentListType == 3 || currentListType == 4) {
+//                        helper.setGone(R.id.pay_btn, false);
+//                    }
+//                    if (currentListType == 3) {
+//                        helper.setGone(R.id.check_wl, true);
+//                    }
                     helper.addOnClickListener(R.id.check_wl);
+                    helper.addOnClickListener(R.id.confirm_take);
+
                 }
             }).setEmptyView(getEmptyView())
                     .setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -257,6 +273,21 @@ public class OrderListFragment extends BaseFragment {
                                         .withInt("orderId", entity.getId())
                                         .navigation();
                             }
+                            if (view.getId() == R.id.confirm_take){
+                                ConfirmOrderEntity entity1 = new ConfirmOrderEntity();
+                                entity1.setBusiness_id(entity.getId());
+                                ApiManager.confirmOrder(entity1).subscribe(new CommonObserver<BaseResult>(){
+                                    @Override
+                                    public void onNext(BaseResult baseResult) {
+                                        if (baseResult.getCode() == 1){
+                                            ToastUtils.showToast(getActivity(),baseResult.getMessage());
+                                            getData();
+                                        }else {
+                                            ToastUtils.showToast(getActivity(),baseResult.getMessage());
+                                        }
+                                    }
+                                });
+                            }
 
                         }
                     });
@@ -266,7 +297,10 @@ public class OrderListFragment extends BaseFragment {
             recyclerView.setRefreshing(false);
         } else {
             recyclerView.addDataList(data.getItems());
-            recyclerView.getAdapter().loadMoreComplete();
+            if (data.getItems().size() == 0) {
+                recyclerView.getAdapter().loadMoreEnd();
+            } else
+                recyclerView.getAdapter().loadMoreComplete();
         }
 
         if (data.getPagination().getTotal_page() == 1) {
@@ -304,7 +338,7 @@ public class OrderListFragment extends BaseFragment {
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser){
+        if (isVisibleToUser) {
             getData();
         }
     }

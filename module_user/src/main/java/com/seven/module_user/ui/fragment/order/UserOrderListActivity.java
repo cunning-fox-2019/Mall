@@ -80,6 +80,7 @@ public class UserOrderListActivity extends BaseAppCompatActivity {
         }
         viewPager.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
         tabLayout.setViewPager(viewPager);
+        viewPager.setOffscreenPageLimit(5);
         viewPager.setCurrentItem(getIntent().getIntExtra("type", 0));
     }
 
