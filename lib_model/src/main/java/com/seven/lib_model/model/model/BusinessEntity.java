@@ -20,6 +20,7 @@ public class BusinessEntity implements Serializable {
      * ali_account : xxx
      * wx_account : xxx
      * id : 1
+     * role:1
      */
 
     private String avatar;
@@ -34,6 +35,15 @@ public class BusinessEntity implements Serializable {
     private String status_name;
     private double ratio;
     private Integer business_success;
+    private int role;
+
+    public int getRole() {
+        return role;
+    }
+
+    public void setRole(int role) {
+        this.role = role;
+    }
 
     public String getAvatar() {
         return avatar;

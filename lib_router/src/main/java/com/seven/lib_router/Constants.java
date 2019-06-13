@@ -101,6 +101,7 @@ public class Constants {
         public static final int BUSINESS_PROOF = 5008;
         public static final int BUSINESS_CONFIRM = 5009;
         public static final int BUSINESS_CANCEL = 5010;
+        public static final int BUSINESS_TOTAL = 5011;
 
         /*user*/
         public static final int REGISTER = 6001;
@@ -232,5 +233,11 @@ public class Constants {
         public static final int BUSINESS_STATUS_END=4;//已完成
 
         public static final String UPLOAD_AVATAR="avatar";
+
+        public static final int USER_TYPE_NORMAL=0;//role;// 0.普通会员, 1.vip, 2.矿主, 3.场主, 4.城主
+        public static final int USER_TYPE_VIP=1;
+        public static final int USER_TYPE_MINERS=2;
+        public static final int USER_TYPE_FARM=3;
+        public static final int USER_TYPE_LORD=4;
     }
 }

@@ -32,20 +32,34 @@
                     android:textSize="@dimen/sp_14"
                     app:SFontStyle="regular_s" />
 
-                <ImageView
-                    android:id="@+id/avatar_iv"
-                    android:layout_width="@dimen/avatar"
-                    android:layout_height="@dimen/avatar"
+                <RelativeLayout
+                    android:id="@+id/avatar_rl"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:scaleType="centerCrop" />
+                    android:layout_centerVertical="true">
+
+                    <ImageView
+                        android:id="@+id/avatar_iv"
+                        android:layout_width="@dimen/avatar"
+                        android:layout_height="@dimen/avatar"
+                        android:scaleType="centerCrop" />
+
+                    <ImageView
+                        android:id="@+id/role_iv"
+                        android:layout_width="@dimen/avatar"
+                        android:layout_height="wrap_content"
+                        android:adjustViewBounds="true"
+                        android:src="@drawable/lv_0" />
+
+                </RelativeLayout>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="@dimen/padding_16"
-                    android:layout_toLeftOf="@+id/avatar_iv"
+                    android:layout_toLeftOf="@+id/avatar_rl"
                     android:gravity="right"
                     android:orientation="vertical">
 
@@ -357,8 +371,8 @@
                 <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/padding_16"
-                    android:layout_marginBottom="@dimen/margin_100">
+                    android:layout_marginBottom="@dimen/margin_100"
+                    android:padding="@dimen/padding_16">
 
                     <ImageView
                         android:id="@+id/voucher_iv"
@@ -377,12 +391,12 @@
         android:id="@+id/status_business_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
         android:text="@string/hint_wait_business"
         android:textColor="@color/grey_medium"
         android:textSize="@dimen/sp_12"
-        android:layout_centerInParent="true"
-        app:SFontStyle="regular_s"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        app:SFontStyle="regular_s" />
 
     <RelativeLayout
         android:id="@+id/transaction_btn"

@@ -63,6 +63,7 @@ public interface RetrofitService {
     String businessProof = "business/proof/add";
     String businessConfirm = "business/order/confirm";
     String businessCancel= "business/cancel";
+    String businessTotal= "business/total";
 
     String inviteList = "promotion/invite/list";
     String inComeDetails = "promotion/token/list";
@@ -173,6 +174,9 @@ public interface RetrofitService {
 
     @POST(businessCancel)
     Observable<HttpResponse> businessCancel(@Body RequestBody requestBody);
+
+    @POST(businessTotal)
+    Observable<HttpResponse> businessTotal();
 
     //extension
     @POST("reward/rule")

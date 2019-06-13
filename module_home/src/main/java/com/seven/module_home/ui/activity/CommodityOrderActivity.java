@@ -209,6 +209,8 @@ public class CommodityOrderActivity extends BaseTitleActivity {
                 defaultRl.setVisibility(entity.getId() == contactEntity.getId() ?
                         View.VISIBLE : View.GONE);
 
+                contactEntity=entity;
+
                 break;
         }
     }

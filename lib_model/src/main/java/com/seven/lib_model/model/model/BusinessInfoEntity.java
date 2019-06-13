@@ -41,6 +41,15 @@ public class BusinessInfoEntity implements Serializable {
     private int user_id;
     private String status_name;
     private String proof_picture;
+    private int role;
+
+    public int getRole() {
+        return role;
+    }
+
+    public void setRole(int role) {
+        this.role = role;
+    }
 
     public int getPay_way() {
         return pay_way;

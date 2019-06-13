@@ -23,6 +23,15 @@ public class CommodityEntity implements Serializable {
     private int sales;
     private double price;
     private String goods_name;
+    private double token_price;
+
+    public double getToken_price() {
+        return token_price;
+    }
+
+    public void setToken_price(double token_price) {
+        this.token_price = token_price;
+    }
 
     public String getThumb() {
         return thumb;

@@ -35,7 +35,7 @@ public class MallApplication extends SevenApplication {
     public static final String APP_KEY = "";
     public static final String STORE_KEY = "";
 
-    private boolean release = false;
+    private boolean release = true;
 
     public static MallApplication getInstance() {
         return (MallApplication) application;

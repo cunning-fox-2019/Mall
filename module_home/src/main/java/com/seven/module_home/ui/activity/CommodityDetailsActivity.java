@@ -1,6 +1,7 @@
 package com.seven.module_home.ui.activity;
 
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -74,6 +75,8 @@ public class CommodityDetailsActivity extends BaseTitleActivity implements BaseQ
     public RelativeLayout collectionRl;
 
     private Banner banner;
+    private TypeFaceView tokenTv;
+    private TypeFaceView oldPriceTv;
     private TypeFaceView titleTv;
     private TypeFaceView priceTv;
     private TypeFaceView buyCountTv;
@@ -154,6 +157,9 @@ public class CommodityDetailsActivity extends BaseTitleActivity implements BaseQ
         titleTv = getView(view, titleTv, R.id.title_tv);
         priceTv = getView(view, priceTv, R.id.price_tv);
         buyCountTv = getView(view, buyCountTv, R.id.buy_count_tv);
+        tokenTv = getView(view, tokenTv, R.id.token_tv);
+        oldPriceTv = getView(view, oldPriceTv, R.id.old_price_tv);
+        oldPriceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
 
         specificationsRl = getView(view, specificationsRl, R.id.specifications_rl);
         specificationsRl.setOnClickListener(new View.OnClickListener() {
@@ -172,6 +178,8 @@ public class CommodityDetailsActivity extends BaseTitleActivity implements BaseQ
                 .setImageLoader(new GlideImageLoader())
                 .start();
 
+        tokenTv.setText(ResourceUtils.getFormatText(R.string.hint_token, FormatUtils.formatCurrencyD(entity.getToken_price())));
+        oldPriceTv.setText(ResourceUtils.getText(R.string.rmb) + FormatUtils.formatCurrencyD(entity.getPrice()));
         titleTv.setText(entity.getGoods_name());
         priceTv.setText(FormatUtils.formatCurrencyD(entity.getPrice()));
         buyCountTv.setText(ResourceUtils.getFormatText(R.string.hint_sales_count, entity.getSales()));
@@ -207,7 +215,7 @@ public class CommodityDetailsActivity extends BaseTitleActivity implements BaseQ
 
     private void shareSheet() {
         if (shareSheet == null)
-            shareSheet = new ShareSheet(this, R.style.Dialog, null,detailsEntity);
+            shareSheet = new ShareSheet(this, R.style.Dialog, null, detailsEntity);
 
         if (!shareSheet.isShowing())
             shareSheet.showDialog(0, -screenHeight);

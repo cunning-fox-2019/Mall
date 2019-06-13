@@ -160,7 +160,8 @@
                         android:text="@string/label_app_pay_hint"
                         android:textColor="@color/grey_light"
                         android:textSize="@dimen/sp_10"
-                        app:SFontStyle="regular_s" />
+                        app:SFontStyle="regular_s"
+                        android:visibility="gone"/>
 
                 </LinearLayout>
 

@@ -28,6 +28,7 @@ public class CommodityDetailsEntity implements Serializable {
     private int id;
     private int is_collect;
     private double price;
+    private double token_price;
     private String thumb;
     private String goods_name;
     private int sales;
@@ -36,6 +37,14 @@ public class CommodityDetailsEntity implements Serializable {
     private List<String> detail_pictures;
     private List<SkuListBean> sku_list;
     private List<SkuAttrListBean> sku_attr_list;
+
+    public double getToken_price() {
+        return token_price;
+    }
+
+    public void setToken_price(double token_price) {
+        this.token_price = token_price;
+    }
 
     public String getThumb() {
         return thumb;

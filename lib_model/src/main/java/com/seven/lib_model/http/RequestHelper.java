@@ -188,6 +188,10 @@ public class RequestHelper {
         return appService.businessList(requestBody(json));
     }
 
+    public Observable<HttpResponse> businessTotal() {
+        return appService.businessTotal();
+    }
+
     public Observable<HttpResponse> business(String json) {
         return appService.business(requestBody(json));
     }

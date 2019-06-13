@@ -45,9 +45,9 @@ public class HomeAdapter extends BaseQuickAdapter<CommodityEntity, BaseViewHolde
         imageView.setLayoutParams(params);
 
         GlideUtils.loadImage(mContext, item.getThumb(), imageView);
-
         helper.setText(R.id.title_tv, item.getGoods_name())
                 .setText(R.id.price_tv, FormatUtils.formatCurrencyD(item.getPrice()))
+                .setText(R.id.token_tv,ResourceUtils.getFormatText(R.string.hint_token, FormatUtils.formatCurrencyD(item.getToken_price())))
                 .setText(R.id.buy_count_tv, ResourceUtils.getFormatText(R.string.buy_count, item.getSales()));
 
     }

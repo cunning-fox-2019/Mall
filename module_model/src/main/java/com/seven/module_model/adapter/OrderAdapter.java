@@ -7,6 +7,7 @@ import android.widget.ImageView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.seven.lib_common.utils.ResourceUtils;
+import com.seven.lib_common.utils.UserTypeUtils;
 import com.seven.lib_common.utils.glide.GlideUtils;
 import com.seven.lib_model.model.model.BusinessEntity;
 import com.seven.lib_opensource.application.SSDK;
@@ -39,6 +40,7 @@ public class OrderAdapter extends BaseQuickAdapter<BusinessEntity, BaseViewHolde
                 .setText(R.id.token_tv, String.valueOf(item.getToken_number()))
                 .setText(R.id.price_tv, String.valueOf(item.getPrice()))
                 .setText(R.id.status_tv, getStatus(item.getStatus()))
+                .setImageResource(R.id.role_iv, UserTypeUtils.userTypeImage(item.getRole()))
                 .setGone(R.id.status_rl, item.getStatus() != 0)
                 .setGone(R.id.wechat_pay_iv, !TextUtils.isEmpty(item.getWx_account()))
                 .setGone(R.id.alipay_iv, !TextUtils.isEmpty(item.getAli_account()))
