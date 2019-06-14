@@ -166,12 +166,25 @@
 
         </LinearLayout>
 
-        <ImageView
-            android:id="@+id/avatar_iv"
-            android:layout_width="@dimen/avatar"
-            android:layout_height="@dimen/avatar"
-            android:layout_marginLeft="@dimen/margin_16"
-            android:scaleType="centerCrop" />
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_16">
+
+            <ImageView
+                android:id="@+id/avatar_iv"
+                android:layout_width="@dimen/avatar"
+                android:layout_height="@dimen/avatar"
+                android:scaleType="centerCrop" />
+
+            <ImageView
+                android:id="@+id/role_iv"
+                android:layout_width="@dimen/avatar"
+                android:adjustViewBounds="true"
+                android:layout_height="wrap_content"
+                android:src="@drawable/lv_0"/>
+
+        </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/status_rl"

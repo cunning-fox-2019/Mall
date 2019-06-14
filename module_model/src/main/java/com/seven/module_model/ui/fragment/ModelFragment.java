@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -22,11 +23,13 @@ import com.seven.lib_common.widget.rollingview.RollTextItem;
 import com.seven.lib_common.widget.rollingview.RollingTextAdapter;
 import com.seven.lib_common.widget.rollingview.TextViewSwitcher;
 import com.seven.lib_model.model.model.BusinessEntity;
+import com.seven.lib_model.model.model.BusinessTotalEntity;
 import com.seven.lib_model.model.model.LooperMessageEntity;
 import com.seven.lib_model.model.model.OrderEntity;
 import com.seven.lib_model.presenter.model.FgModelPresenter;
 import com.seven.lib_opensource.application.SSDK;
 import com.seven.lib_router.Constants;
+import com.seven.lib_router.Variable;
 import com.seven.lib_router.router.RouterPath;
 import com.seven.lib_router.router.RouterUtils;
 import com.seven.module_model.R;
@@ -52,6 +55,11 @@ public class ModelFragment extends BaseFragment implements BaseQuickAdapter.OnIt
 
     @BindView(R2.id.switcher_layout)
     public TextViewSwitcher switcherLayout;
+
+    @BindView(R2.id.total_rl)
+    public RelativeLayout totalRl;
+    @BindView(R2.id.total_count)
+    public TypeFaceView totalCountTv;
 
     @BindView(R2.id.buy_btn)
     public RelativeLayout buyBtn;
@@ -123,7 +131,7 @@ public class ModelFragment extends BaseFragment implements BaseQuickAdapter.OnIt
         presenter.looperMessage(Constants.RequestConfig.LOOPER_MESSAGE);
         type = Constants.InterfaceConfig.BUSINESS_TYPE_BUY;
         sort = Constants.InterfaceConfig.BUSINESS_SORT_TIME;
-        request(page, type, sort);
+//        request(page, type, sort);
     }
 
     @Override
@@ -146,6 +154,8 @@ public class ModelFragment extends BaseFragment implements BaseQuickAdapter.OnIt
 
     private void request(int page, int type, int sort) {
         presenter.businessList(Constants.RequestConfig.BUSINESS_LIST, type, sort, page, pageSize);
+        if(TextUtils.isEmpty(Variable.getInstance().getToken()))return;
+        presenter.businessTotal(Constants.RequestConfig.BUSINESS_TOTAL);
     }
 
     private void selectTab(View view) {
@@ -328,6 +338,17 @@ public class ModelFragment extends BaseFragment implements BaseQuickAdapter.OnIt
                         isMoreEnd = true;
                     }
                 }
+
+                break;
+
+            case Constants.RequestConfig.BUSINESS_TOTAL:
+
+                if (object == null) return;
+
+                BusinessTotalEntity totalEntity = (BusinessTotalEntity) object;
+
+                totalRl.setVisibility(totalEntity.getTotal() > 0 ? View.VISIBLE : View.GONE);
+                totalCountTv.setText(String.valueOf(totalEntity.getTotal()));
 
                 break;
         }

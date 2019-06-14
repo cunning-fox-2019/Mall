@@ -42,33 +42,25 @@
                     android:layout_height="wrap_content"
                     android:layout_above="@+id/stock_tv"
                     android:orientation="horizontal"
+                    android:gravity="center_vertical"
                     android:layout_marginBottom="@dimen/margin_4">
 
                     <com.seven.lib_common.stextview.TypeFaceView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/currency"
-                        android:textSize="@dimen/sp_14"
-                        app:SFontStyle="regular_s"
-                        android:text="@string/hint_price"/>
-
-                    <com.seven.lib_common.stextview.TypeFaceView
+                        android:id="@+id/token_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/currency"
                         android:textSize="@dimen/sp_12"
-                        app:SFontStyle="regular_s"
-                        android:text="@string/rmb"
-                        android:layout_gravity="bottom"/>
+                        app:SFontStyle="regular_s"/>
 
                     <com.seven.lib_common.stextview.TypeFaceView
                         android:id="@+id/price_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/currency"
-                        android:textSize="@dimen/sp_14"
+                        android:textSize="@dimen/sp_10"
                         app:SFontStyle="regular_s"
-                        android:layout_marginLeft="@dimen/margin_4"/>
+                        android:layout_marginLeft="@dimen/margin_10"/>
 
                 </LinearLayout>
 

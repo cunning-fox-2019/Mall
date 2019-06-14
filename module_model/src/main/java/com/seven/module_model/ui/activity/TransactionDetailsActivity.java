@@ -1,5 +1,8 @@
 package com.seven.module_model.ui.activity;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.NestedScrollView;
@@ -19,6 +22,8 @@ import com.seven.lib_common.ui.dialog.MallDialog;
 import com.seven.lib_common.utils.FormatUtils;
 import com.seven.lib_common.utils.ResourceUtils;
 import com.seven.lib_common.utils.ScreenUtils;
+import com.seven.lib_common.utils.ToastUtils;
+import com.seven.lib_common.utils.UserTypeUtils;
 import com.seven.lib_common.utils.glide.GlideUtils;
 import com.seven.lib_model.model.model.BusinessInfoEntity;
 import com.seven.lib_model.presenter.model.ActModelPresenter;
@@ -40,7 +45,7 @@ import butterknife.BindView;
  * 2019/4/19
  */
 @Route(path = RouterPath.ACTIVITY_TRANSACTION_DETAILS)
-public class TransactionDetailsActivity extends BaseTitleActivity {
+public class TransactionDetailsActivity extends BaseTitleActivity implements View.OnLongClickListener{
 
     @Autowired(name = Constants.BundleConfig.TYPE)
     public int type;
@@ -66,6 +71,8 @@ public class TransactionDetailsActivity extends BaseTitleActivity {
     public TypeFaceView radioTv;
     @BindView(R2.id.volume_tv)
     public TypeFaceView volumeTv;
+    @BindView(R2.id.role_iv)
+    public ImageView roleIv;
 
     @BindView(R2.id.alipay_account_tv)
     public TypeFaceView alipayAccountTv;
@@ -110,6 +117,8 @@ public class TransactionDetailsActivity extends BaseTitleActivity {
         params.height = (screenWidth - ScreenUtils.dip2px(mContext, 16 * 2)) / 3;
         voucherIv.setLayoutParams(params);
 
+        alipayAccountTv.setOnLongClickListener(this);
+        wechatAccountTv.setOnLongClickListener(this);
     }
 
     @Override
@@ -146,6 +155,7 @@ public class TransactionDetailsActivity extends BaseTitleActivity {
                 R.string.button_launch_sell : R.string.button_launch_buy);
 
         GlideUtils.loadCircleImage(mContext, entity.getAvatar(), avatarIv);
+        roleIv.setImageResource(UserTypeUtils.userTypeImage(entity.getRole()));
 
         if (entity.getStatus() >= Constants.InterfaceConfig.BUSINESS_STATUS_SURE) {
             voucherLayout.setVisibility(View.VISIBLE);
@@ -334,5 +344,26 @@ public class TransactionDetailsActivity extends BaseTitleActivity {
             alipayAccountTv.setText("：" + (Variable.getInstance().getAliAccount() == null ? "" : Variable.getInstance().getAliAccount()));
             wechatAccountTv.setText("：" + (Variable.getInstance().getWxAccount() == null ? "" : Variable.getInstance().getWxAccount()));
         }
+    }
+
+    @Override
+    public boolean onLongClick(View view) {
+
+        ClipboardManager clipboard = (ClipboardManager) mContext.getSystemService(Context.CLIPBOARD_SERVICE);
+
+        ClipData clipData=null;
+        if(view.getId()==R.id.alipay_account_tv){
+            clipData = ClipData.newPlainText(null, alipayAccountTv.getText().toString());
+        }
+
+        if(view.getId()==R.id.wechat_account_tv){
+            clipData = ClipData.newPlainText(null, wechatAccountTv.getText().toString());
+        }
+
+        clipboard.setPrimaryClip(clipData);
+
+        ToastUtils.showToast(mContext,ResourceUtils.getText(R.string.hint_copy));
+
+        return false;
     }
 }

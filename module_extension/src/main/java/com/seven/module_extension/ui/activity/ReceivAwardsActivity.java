@@ -100,7 +100,7 @@ public class ReceivAwardsActivity extends BaseTitleActivity {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                 List<RewardInfoLlistEntity> list = adapter.getData();
-                int id = list.get(position).getId();
+                int id = (int) list.get(position).getId();
                 if (!isLogin())return;
                 presenter.getReward(2, String.valueOf(id));
             }

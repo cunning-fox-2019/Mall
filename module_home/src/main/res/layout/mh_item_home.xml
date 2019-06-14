@@ -18,15 +18,21 @@
             android:layout_height="wrap_content"
             android:scaleType="centerCrop" />
 
-        <com.seven.lib_common.stextview.TypeFaceView
-            android:id="@+id/title_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_10"
-            android:ellipsize="end"
-            android:maxLines="2"
-            android:textColor="@color/grey_dark"
-            android:textSize="@dimen/sp_14" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_margin="@dimen/margin_10">
+
+            <com.seven.lib_common.stextview.TypeFaceView
+                android:id="@+id/title_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:textColor="@color/grey_dark"
+                android:textSize="@dimen/sp_14" />
+
+        </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -36,23 +42,31 @@
             android:layout_marginRight="@dimen/margin_10">
 
             <com.seven.lib_common.stextview.TypeFaceView
-                android:id="@+id/price_unit"
+                android:id="@+id/token_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/price_tv"
-                android:text="@string/rmb"
+                android:layout_centerVertical="true"
                 android:textColor="@color/currency"
                 android:textSize="@dimen/sp_12" />
+
+            <com.seven.lib_common.stextview.TypeFaceView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/rmb"
+                android:textColor="@color/currency"
+                android:textSize="@dimen/sp_10"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/price_tv"/>
 
             <com.seven.lib_common.stextview.TypeFaceView
                 android:id="@+id/price_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
                 android:layout_marginLeft="@dimen/margin_4"
-                android:layout_toRightOf="@+id/price_unit"
                 android:textColor="@color/currency"
-                android:textSize="@dimen/sp_14" />
+                android:textSize="@dimen/sp_12" />
 
             <com.seven.lib_common.stextview.TypeFaceView
                 android:id="@+id/buy_count_tv"
@@ -61,7 +75,8 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:textColor="@color/grey_light"
-                android:textSize="@dimen/sp_10" />
+                android:textSize="@dimen/sp_10"
+                android:visibility="gone"/>
 
         </RelativeLayout>
 

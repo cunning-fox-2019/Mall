@@ -57,7 +57,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="18dp"
+            android:layout_marginTop="@dimen/margin_12"
             android:background="@color/impression"
             android:orientation="vertical">
 
@@ -79,12 +79,13 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/c2c_1" />
+                        android:src="@drawable/c2c_1"
+                        android:layout_marginTop="@dimen/margin_8"/>
 
                     <com.seven.lib_common.stextview.TypeFaceView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/margin_10"
+                        android:layout_marginTop="@dimen/margin_8"
                         android:text="@string/label_demand"
                         android:textColor="@color/grey_medium"
                         android:textSize="@dimen/sp_12"
@@ -104,12 +105,13 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/c2c_2" />
+                        android:src="@drawable/c2c_2"
+                        android:layout_marginTop="@dimen/margin_8"/>
 
                     <com.seven.lib_common.stextview.TypeFaceView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/margin_10"
+                        android:layout_marginTop="@dimen/margin_8"
                         android:text="@string/label_message"
                         android:textColor="@color/grey_medium"
                         android:textSize="@dimen/sp_12"
@@ -125,15 +127,43 @@
                     android:gravity="center"
                     android:orientation="vertical">
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/c2c_3" />
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/c2c_3"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="@dimen/margin_8"/>
+
+                        <RelativeLayout
+                            android:id="@+id/total_rl"
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginRight="@dimen/margin_70"
+                            android:background="@drawable/point_message"
+                            android:visibility="gone">
+
+                            <com.seven.lib_common.stextview.TypeFaceView
+                                android:id="@+id/total_count"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:text="0"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/sp_10" />
+
+                        </RelativeLayout>
+
+                    </RelativeLayout>
 
                     <com.seven.lib_common.stextview.TypeFaceView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/margin_10"
+                        android:layout_marginTop="@dimen/margin_8"
                         android:text="@string/label_voucher"
                         android:textColor="@color/grey_medium"
                         android:textSize="@dimen/sp_12"

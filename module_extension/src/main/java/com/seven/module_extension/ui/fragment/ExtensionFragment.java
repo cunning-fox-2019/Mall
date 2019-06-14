@@ -161,6 +161,7 @@ public class ExtensionFragment extends BaseFragment {
                 return;
             } else {
                 meInterviewpeo.setText("已成功邀请" + user.getInvite_number() + "人");
+                meBuyReceive.setText("能领取" + user.getForm_goods_number() + "次令牌奖励");
                 meProfitNum.setText(!TextUtils.isEmpty(user.getPromotion_token_number()) ? user.getPromotion_token_number() : "0");
                 switch (user.getRole()) {
                     case 0:

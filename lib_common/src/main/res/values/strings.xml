@@ -74,6 +74,7 @@
     <string name="hint_sales_count" formatted="false">销量%s笔</string>
     <string name="hint_price" formatted="false">价格：</string>
     <string name="hint_stock" formatted="false">库存：%s</string>
+    <string name="hint_token" formatted="false">令牌：%s</string>
 
     <string name="label_entrance_1">配套产品</string>
     <string name="label_entrance_2">时尚女装</string>
@@ -202,6 +203,7 @@
 
     <string name="hint_wait_business">该订单暂未交易</string>
     <string name="hint_cancel_succeed">取消成功</string>
+    <string name="hint_copy">已复制</string>
 
     <!-- user login -->
     <string name="login">登录</string>

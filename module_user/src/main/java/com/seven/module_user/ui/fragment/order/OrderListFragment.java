@@ -1,11 +1,9 @@
 package com.seven.module_user.ui.fragment.order;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
@@ -32,6 +30,7 @@ import com.seven.lib_model.model.user.OrderEntity;
 import com.seven.lib_model.model.user.OrderListRequestEntity;
 import com.seven.lib_model.model.user.mine.CommonListPageEntity;
 import com.seven.lib_model.model.user.mine.GoodsListBean;
+import com.seven.lib_model.user.UserPresenter;
 import com.seven.lib_router.Constants;
 import com.seven.lib_router.router.RouterPath;
 import com.seven.lib_router.router.RouterUtils;
@@ -61,6 +60,8 @@ public class OrderListFragment extends BaseFragment {
     private int currentListType;
     private int currentPage = 1;
 
+    private UserPresenter presenter;
+
     public static OrderListFragment getInstance(int type) {
         OrderListFragment fragment = new OrderListFragment();
         fragment.currentListType = type;
@@ -89,6 +90,7 @@ public class OrderListFragment extends BaseFragment {
     @Override
     public void init(Bundle savedInstanceState) {
         //getData();
+        presenter = new UserPresenter(this, this);
     }
 
     @Override
@@ -275,20 +277,21 @@ public class OrderListFragment extends BaseFragment {
                                         .withInt("orderId", entity.getId())
                                         .navigation();
                             }
-                            if (view.getId() == R.id.confirm_take){
-                                ConfirmOrderEntity entity1 = new ConfirmOrderEntity();
-                                entity1.setBusiness_id(entity.getId());
-                                ApiManager.confirmOrder(entity1).subscribe(new CommonObserver<BaseResult>(){
-                                    @Override
-                                    public void onNext(BaseResult baseResult) {
-                                        if (baseResult.getCode() == 1){
-                                            ToastUtils.showToast(getActivity(),baseResult.getMessage());
-                                            getData();
-                                        }else {
-                                            ToastUtils.showToast(getActivity(),baseResult.getMessage());
-                                        }
-                                    }
-                                });
+                            if (view.getId() == R.id.confirm_take) {
+                                presenter.confirmOrder(1, entity.getId());
+//                                ConfirmOrderEntity entity1 = new ConfirmOrderEntity();
+//                                entity1.setOrder_id(entity.getId());
+//                                ApiManager.confirmOrder(entity1).subscribe(new CommonObserver<BaseResult>(){
+//                                    @Override
+//                                    public void onNext(BaseResult baseResult) {
+//                                        if (baseResult.getCode() == 1){
+//                                            ToastUtils.showToast(getActivity(),baseResult.getMessage());
+//                                            getData();
+//                                        }else {
+//                                            ToastUtils.showToast(getActivity(),baseResult.getMessage());
+//                                        }
+//                                    }
+//                                });
                             }
 
                         }
@@ -309,6 +312,15 @@ public class OrderListFragment extends BaseFragment {
             recyclerView.setEnableLoadMore(false);
         } else {
             recyclerView.setEnableLoadMore(true);
+        }
+    }
+
+    @Override
+    public void result(int code, Boolean hasNextPage, String response, Object object) {
+        super.result(code, hasNextPage, response, object);
+        if (code == 1) {
+            ToastUtils.showToast(getActivity(), "操作成功");
+            getData();
         }
     }
 

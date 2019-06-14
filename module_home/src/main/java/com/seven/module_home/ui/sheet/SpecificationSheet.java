@@ -1,6 +1,7 @@
 package com.seven.module_home.ui.sheet;
 
 import android.app.Activity;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -46,6 +47,7 @@ public class SpecificationSheet extends IBaseSheet implements FlowCallback {
     private RelativeLayout buyRl;
 
     private ImageView coverIv;
+    private TypeFaceView tokenTv;
     private TypeFaceView priceTv;
     private TypeFaceView stockTv;
 
@@ -91,7 +93,9 @@ public class SpecificationSheet extends IBaseSheet implements FlowCallback {
 
         coverIv = getView(coverIv, R.id.cover_iv);
         priceTv = getView(priceTv, R.id.price_tv);
+        tokenTv = getView(tokenTv, R.id.token_tv);
         stockTv = getView(stockTv, R.id.stock_tv);
+        priceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
 
         numberTv = getView(numberTv, R.id.number_tv);
 
@@ -109,7 +113,8 @@ public class SpecificationSheet extends IBaseSheet implements FlowCallback {
 
         keyList = new ArrayList<>();
 
-        priceTv.setText(FormatUtils.formatCurrencyD(entity.getPrice()));
+        tokenTv.setText(ResourceUtils.getFormatText(R.string.hint_token,FormatUtils.formatCurrencyD(entity.getToken_price())));
+        priceTv.setText(ResourceUtils.getText(R.string.rmb) + FormatUtils.formatCurrencyD(entity.getPrice()));
         stockTv.setText(ResourceUtils.getText(R.string.hint_sheet_stock));
 
         GlideUtils.loadImage(activity, entity.getThumb(), coverIv);

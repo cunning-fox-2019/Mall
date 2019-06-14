@@ -98,8 +98,8 @@ public class ApiManager {
             Gson gson = gsonBuilder.create();
             GsonConverterFactory gsonConverterFactory = GsonConverterFactory.create(gson);
             Retrofit retrofit = new Retrofit.Builder()
-//                    .baseUrl("http://api.zf.fqwlkj.com.cn/")
-                    .baseUrl("http://zhongfu.lerqin.com/")
+                    .baseUrl("http://api.zf.fqwlkj.com.cn/")
+//                    .baseUrl("http://zhongfu.lerqin.com/")
                     .client(builder.build())
                     .addConverterFactory(gsonConverterFactory)
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
@@ -244,7 +244,7 @@ public class ApiManager {
         @POST("user/contact/default/info")
         Observable<BaseResult<DefaultAddress>> getDefaultAddress();
 
-        @POST("business/order/confirm")
+        @POST("order/confirm")
         Observable<BaseResult> confirmOrder();
 
     }
