@@ -6,7 +6,7 @@ package com.seven.lib_model.model.extension;
 public class RewardItem {
     private int id;
     private String reward_name;
-    private int reward_number;
+    private double reward_number;
     private int reward_type;//奖励类型(1-直推令牌奖励, 2-间推令牌奖励, 3-利润分成, 4-矿主名额, 5-场主名额, 6-报单产品, 7-购买产品令牌奖励, 8-新进会员令牌奖励)
     private int is_processed;
 
@@ -26,11 +26,11 @@ public class RewardItem {
         this.reward_name = reward_name;
     }
 
-    public int getReward_number() {
+    public double getReward_number() {
         return reward_number;
     }
 
-    public void setReward_number(int reward_number) {
+    public void setReward_number(double reward_number) {
         this.reward_number = reward_number;
     }
 
