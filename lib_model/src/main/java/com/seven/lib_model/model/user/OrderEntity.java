@@ -22,7 +22,16 @@ public class OrderEntity {
     private String order_sn;
     private int status;
     private String total;
+    private double token_total;
     private List<GoodsListBean> goods_list;
+
+    public double getToken_total() {
+        return token_total;
+    }
+
+    public void setToken_total(double token_total) {
+        this.token_total = token_total;
+    }
 
     public int getId() {
         return id;

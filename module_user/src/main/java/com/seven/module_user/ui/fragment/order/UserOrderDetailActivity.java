@@ -205,7 +205,7 @@ public class UserOrderDetailActivity extends BaseTitleActivity {
         orderEntity = new OrderEntity();
         orderEntity.setOrder_sn(data.getOrder_sn());
         orderEntity.setTotal(Double.parseDouble(data.getTotal()));
-        orderEntity.setToken_price(Double.parseDouble(data.getTotal()));
+        orderEntity.setToken_price(data.getToken_total());
         orderEntity.setSubject(data.getGoods_list().get(0).getGoods_name());
     }
 

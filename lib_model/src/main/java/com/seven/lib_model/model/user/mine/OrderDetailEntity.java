@@ -37,6 +37,15 @@ public class OrderDetailEntity {
     private String contact_phone;
     private String contact_name;
     private String created_at;
+    private double token_total;
+
+    public double getToken_total() {
+        return token_total;
+    }
+
+    public void setToken_total(double token_total) {
+        this.token_total = token_total;
+    }
 
     public String getCreated_at() {
         return created_at;

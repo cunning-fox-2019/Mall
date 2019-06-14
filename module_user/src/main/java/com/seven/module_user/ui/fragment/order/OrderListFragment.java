@@ -265,7 +265,7 @@ public class OrderListFragment extends BaseFragment {
                                 com.seven.lib_model.model.home.OrderEntity newOrder = new com.seven.lib_model.model.home.OrderEntity();
                                 newOrder.setOrder_sn(entity.getOrder_sn());
                                 newOrder.setSubject(goods.getGoods_name());
-                                newOrder.setToken_price(Double.parseDouble(entity.getTotal()));
+                                newOrder.setToken_price(entity.getToken_total());
                                 newOrder.setTotal(Double.parseDouble(entity.getTotal()));
                                 ARouter.getInstance().build(RouterPath.ACTIVITY_PAY)
                                         .withBoolean(Constants.BundleConfig.NORMAL, false)
