@@ -214,7 +214,7 @@ public class UserOrderDetailActivity extends BaseTitleActivity {
         super.onClick(view);
         if (view.getId() == R.id.pay_order){
             ARouter.getInstance().build(RouterPath.ACTIVITY_PAY)
-                    .withBoolean(Constants.BundleConfig.NORMAL, false)
+                    .withBoolean(Constants.BundleConfig.NORMAL, true)
                     .withSerializable(Constants.BundleConfig.ENTITY,orderEntity)
                     .navigation();
         }else if (view.getId() == R.id.cancel_order){

@@ -116,6 +116,7 @@ public class PayActivity extends BaseTitleActivity {
         if (view.getId() == R.id.alipay_rl) {
             selectTab(alipayRl);
             type = Constants.InterfaceConfig.PAY_ALI;
+            payTv.setText(ResourceUtils.getFormatText(R.string.button_sdk_pay, FormatUtils.formatCurrencyD(orderEntity.getTotal())));
         }
 
         if (view.getId() == R.id.wechat_pay_rl) {
@@ -127,6 +128,7 @@ public class PayActivity extends BaseTitleActivity {
 
             selectTab(wxPayRl);
             type = Constants.InterfaceConfig.PAY_WX;
+            payTv.setText(ResourceUtils.getFormatText(R.string.button_sdk_pay, FormatUtils.formatCurrencyD(orderEntity.getTotal())));
         }
 
         if (view.getId() == R.id.app_pay_rl) {
