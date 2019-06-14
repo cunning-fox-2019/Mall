@@ -223,5 +223,8 @@ public interface RetrofitService {
 
     @POST("user/info")
     Observable<HttpResponse> getUserInfo();
+
+    @POST("order/confirm")
+    Observable<HttpResponse> confirmOrder(@Body RequestBody requestBody);
 }
 

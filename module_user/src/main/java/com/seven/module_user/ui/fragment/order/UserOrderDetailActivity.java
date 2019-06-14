@@ -205,7 +205,7 @@ public class UserOrderDetailActivity extends BaseTitleActivity {
         orderEntity = new OrderEntity();
         orderEntity.setOrder_sn(data.getOrder_sn());
         orderEntity.setTotal(Double.parseDouble(data.getTotal()));
-        orderEntity.setToken_price(Double.parseDouble(data.getTotal()));
+        orderEntity.setToken_price(data.getToken_total());
         orderEntity.setSubject(data.getGoods_list().get(0).getGoods_name());
     }
 
@@ -214,7 +214,7 @@ public class UserOrderDetailActivity extends BaseTitleActivity {
         super.onClick(view);
         if (view.getId() == R.id.pay_order){
             ARouter.getInstance().build(RouterPath.ACTIVITY_PAY)
-                    .withBoolean(Constants.BundleConfig.NORMAL, false)
+                    .withBoolean(Constants.BundleConfig.NORMAL, true)
                     .withSerializable(Constants.BundleConfig.ENTITY,orderEntity)
                     .navigation();
         }else if (view.getId() == R.id.cancel_order){

@@ -5,33 +5,34 @@ package com.seven.lib_model.model.extension;
  */
 public class RewardInfoLlistEntity {
 
+
     /**
-     * id : 1.0
-     * reward_name : 直推奖励
-     * reward_number : 60.0
-     * is_processed : 1.0
-     * processed_at : 2019-05-11 23:31:31
-     * reward_desc : 立即发放
-     * reward_at : 2019-05-11 23:31:31
-     * datetime : 2019-05-11
-     * can_processed : 1.0
+     * id : 1459.0
+     * reward_name : 报单奖励
+     * reward_number : 2.00
+     * is_processed : 0.0
+     * processed_at :
+     * reward_desc : 第1天发放
+     * reward_at : 2019-05-21 17:06:48
+     * datetime : 2019-05-21
+     * can_processed : 2.0
      */
-//1.已领取, 2.待领取, 3.时间未到
-    private int id;
+
+    private double id;
     private String reward_name;
-    private int reward_number;
-    private int is_processed;
+    private String reward_number;
+    private double is_processed;
     private String processed_at;
     private String reward_desc;
     private String reward_at;
     private String datetime;
     private int can_processed;
 
-    public int getId() {
+    public double getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(double id) {
         this.id = id;
     }
 
@@ -43,19 +44,19 @@ public class RewardInfoLlistEntity {
         this.reward_name = reward_name;
     }
 
-    public int getReward_number() {
+    public String getReward_number() {
         return reward_number;
     }
 
-    public void setReward_number(int reward_number) {
+    public void setReward_number(String reward_number) {
         this.reward_number = reward_number;
     }
 
-    public int getIs_processed() {
+    public double getIs_processed() {
         return is_processed;
     }
 
-    public void setIs_processed(int is_processed) {
+    public void setIs_processed(double is_processed) {
         this.is_processed = is_processed;
     }
 

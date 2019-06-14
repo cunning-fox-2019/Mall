@@ -259,4 +259,6 @@ public class RequestHelper {
     public Observable<HttpResponse> editAddress(String json){return appService.editAddress(requestBody(json));}
 
     public Observable<HttpResponse> getUserInfo(){return appService.getUserInfo();}
+
+    public Observable<HttpResponse> confirmOrder(String json){return appService.confirmOrder(requestBody(json));}
 }

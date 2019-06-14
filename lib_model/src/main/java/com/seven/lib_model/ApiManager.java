@@ -244,7 +244,7 @@ public class ApiManager {
         @POST("user/contact/default/info")
         Observable<BaseResult<DefaultAddress>> getDefaultAddress();
 
-        @POST("business/order/confirm")
+        @POST("order/confirm")
         Observable<BaseResult> confirmOrder();
 
     }
