@@ -4,18 +4,23 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.gson.Gson;
 import com.seven.lib_common.base.activity.BaseTitleActivity;
 import com.seven.lib_common.listener.OnClickListener;
 import com.seven.lib_common.stextview.TypeFaceView;
 import com.seven.lib_common.utils.glide.GlideUtils;
+import com.seven.lib_model.model.extension.ItemsBean;
 import com.seven.lib_model.model.extension.MyInterViewEntity;
 import com.seven.lib_model.model.extension.ParentInfo;
 import com.seven.lib_model.model.user.UserEntity;
@@ -37,6 +42,10 @@ import retrofit2.http.Body;
 @Route(path = RouterPath.ACTIVITY_MY_INTERVIEW)
 public class MyInterviewActivity extends BaseTitleActivity {
 
+    @Autowired(name = "id")
+    String id = "";
+    @Autowired(name = "name")
+    String name = "";
 
     @BindView(R2.id.me_rv_myinterview)
     RecyclerView meRvMyinterview;
@@ -48,6 +57,7 @@ public class MyInterviewActivity extends BaseTitleActivity {
     private List<MyInterViewEntity> interViewList;
     private MyInviteAdapter adapter;
     ShareDialog dialog;
+    private String userId = "";
 
     @Override
     protected int getLayoutId() {
@@ -57,11 +67,11 @@ public class MyInterviewActivity extends BaseTitleActivity {
     @Override
     protected void initView(Bundle savedInstanceState) {
         statusBar = StatusBar.LIGHT;
-        setTitleText(R.string.me_my_interview_title);
+
         me_invite_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (dialog == null){
+                if (dialog == null) {
                     dialog = new ShareDialog(MyInterviewActivity.this, R.style.Dialog, null);
                 }
                 if (!dialog.isShowing())
@@ -96,11 +106,24 @@ public class MyInterviewActivity extends BaseTitleActivity {
         }
     }
 
+
     private void setRv(List<MyInterViewEntity> list) {
         adapter = new MyInviteAdapter(R.layout.me_item_myinterview, list.get(0).getItems());
         meRvMyinterview.setLayoutManager(new LinearLayoutManager(mContext));
         meRvMyinterview.setAdapter(adapter);
         adapter.addHeaderView(headerView(list.get(0).getParent_info()));
+        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                List<ItemsBean> list1 = adapter.getData();
+                int id = list1.get(position).getId();
+                name = list1.get(position).getUsername();
+                ARouter.getInstance().build(RouterPath.ACTIVITY_MY_INTERVIEW)
+                        .withString("id", id + "")
+                        .withString("name", name)
+                        .navigation();
+            }
+        });
     }
 
     @Override
@@ -116,9 +139,21 @@ public class MyInterviewActivity extends BaseTitleActivity {
     @Override
     protected void initBundleData(Intent intent) {
         UserEntity userEntity = new Gson().fromJson(SharedData.getInstance().getUserInfo(), UserEntity.class);
-        int userId = userEntity.getId();
+        userId = String.valueOf(userEntity.getId());
+        if (intent == null) intent = getIntent();
+        id = intent.getStringExtra("id");
+        name = intent.getStringExtra("name");
+        if (TextUtils.isEmpty(name))
+            setTitleText("我的团队");
+        else
+            setTitleText(name + "的团队");
         presenter = new ExActivityPresenter(this, this);
-        presenter.invite(1, userId, 1, 20);
+        if (TextUtils.isEmpty(id)) {
+            return;
+        } else {
+            presenter.invite(1, Integer.parseInt(id), 1, 20);
+        }
+
 
     }
 
@@ -126,9 +161,15 @@ public class MyInterviewActivity extends BaseTitleActivity {
         View view = LayoutInflater.from(mContext).inflate(R.layout.me_header_myinvite, null);
         ImageView me_headr_myinterview_iv = view.findViewById(R.id.me_headr_myinterview_iv);
         TypeFaceView me_headr_interview_name = view.findViewById(R.id.me_headr_interview_name);
+        TypeFaceView me_headr_interview_my_leader = view.findViewById(R.id.me_headr_interview_my_leader);
+        TypeFaceView me_headr_interview_mazai = view.findViewById(R.id.me_headr_interview_mazai);
         ImageView me_headr_interview_sex = view.findViewById(R.id.me_headr_interview_sex);
         ImageView me_headr_interview_level = view.findViewById(R.id.me_headr_interview_level);
         if (data != null) {
+            if (!TextUtils.isEmpty(name)) {
+                me_headr_interview_my_leader.setText(name + "的上级");
+                me_headr_interview_mazai.setText(name + "的下级");
+            }
             GlideUtils.loadCircleImage(mContext, data.getAvatar(), me_headr_myinterview_iv);
             me_headr_interview_name.setText(data.getUsername());
             if (data.getSex() != null) {
