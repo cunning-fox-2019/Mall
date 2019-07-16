@@ -2,13 +2,17 @@ package com.seven.module_extension.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
@@ -19,7 +23,10 @@ import com.google.gson.Gson;
 import com.seven.lib_common.base.activity.BaseTitleActivity;
 import com.seven.lib_common.listener.OnClickListener;
 import com.seven.lib_common.stextview.TypeFaceView;
+import com.seven.lib_common.utils.NetWorkUtils;
+import com.seven.lib_common.utils.ToastUtils;
 import com.seven.lib_common.utils.glide.GlideUtils;
+import com.seven.lib_common.widget.loadmore.LoadMoreView;
 import com.seven.lib_model.model.extension.ItemsBean;
 import com.seven.lib_model.model.extension.MyInterViewEntity;
 import com.seven.lib_model.model.extension.ParentInfo;
@@ -53,11 +60,17 @@ public class MyInterviewActivity extends BaseTitleActivity {
     TextView me_empty;
     @BindView(R2.id.me_invite_btn)
     Button me_invite_btn;
+//    @BindView(R2.id.me_refresh)
+//    SwipeRefreshLayout me_refresh;
     private ExActivityPresenter presenter;
     private List<MyInterViewEntity> interViewList;
     private MyInviteAdapter adapter;
     ShareDialog dialog;
     private String userId = "";
+    private int page = 1;
+    private int pageSize = 10;
+    private boolean isMore;
+    private boolean isRefresh;
 
     @Override
     protected int getLayoutId() {
@@ -84,34 +97,44 @@ public class MyInterviewActivity extends BaseTitleActivity {
     public void result(int code, Boolean hasNextPage, String response, Object object) {
         super.result(code, hasNextPage, response, object);
         if (code == 1) {
-            if (object == null) return;
-            interViewList = new ArrayList<>();
-            MyInterViewEntity entity = (MyInterViewEntity) object;
-            if (entity != null && entity.getParent_info() != null) {
+            if (object == null) {
+                isMore = true;
+                adapter.loadMoreEnd();
+            }else {
+                interViewList = new ArrayList<>();
+                MyInterViewEntity entity = (MyInterViewEntity) object;
                 interViewList.add(entity);
-                setRv(interViewList);
-            } else {
-                if (entity.getItems().size() > 0) {
-                    interViewList.add(entity);
-                    setRv(interViewList);
-                    me_empty.setVisibility(View.GONE);
-                    meRvMyinterview.setVisibility(View.VISIBLE);
+                if (page == 1) {
+                    adapter.setNewData(interViewList.get(0).getItems());
+                    adapter.setHeaderView(headerView());
                 } else {
-                    me_empty.setVisibility(View.VISIBLE);
-                    meRvMyinterview.setVisibility(View.GONE);
+                    adapter.addData(interViewList.get(0).getItems());
+                    adapter.setHeaderView(headerView());
                 }
-            }
+                if (isRefresh) {
+                    adapter.setNewData(interViewList.get(0).getItems());
+                    isRefresh = false;
+                    isMore = false;
+                }
 
+                adapter.loadMoreComplete();
+
+                if (interViewList.get(0).getItems().size() < pageSize) {
+                    isMore = false;
+                    adapter.loadMoreEnd();
+                }
+
+            }
 
         }
     }
 
 
-    private void setRv(List<MyInterViewEntity> list) {
-        adapter = new MyInviteAdapter(R.layout.me_item_myinterview, list.get(0).getItems());
+    private void setRv() {
+        adapter = new MyInviteAdapter(R.layout.me_item_myinterview, null);
         meRvMyinterview.setLayoutManager(new LinearLayoutManager(mContext));
         meRvMyinterview.setAdapter(adapter);
-        adapter.addHeaderView(headerView(list.get(0).getParent_info()));
+//        adapter.addHeaderView(headerView());
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
@@ -124,6 +147,13 @@ public class MyInterviewActivity extends BaseTitleActivity {
                         .navigation();
             }
         });
+        adapter.setLoadMoreView(new LoadMoreView());
+        adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
+            @Override
+            public void onLoadMoreRequested() {
+                loadMore();
+            }
+        },meRvMyinterview);
     }
 
     @Override
@@ -148,16 +178,38 @@ public class MyInterviewActivity extends BaseTitleActivity {
         else
             setTitleText(name + "的团队");
         presenter = new ExActivityPresenter(this, this);
-        if (TextUtils.isEmpty(id)) {
-            return;
-        } else {
-            presenter.invite(1, Integer.parseInt(id), 1, 20);
-        }
+        setRv();
+        request(page);
 
+//        me_refresh.setColorSchemeResources(
+//                R.color.primary,
+//                R.color.primary,
+//                R.color.primary,
+//                R.color.primary);
+//        me_refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+//            @Override
+//            public void onRefresh() {
+//                if (!NetWorkUtils.isNetWork()) {
+//                    me_refresh.setRefreshing(false);
+//                    return;
+//                }
+//                isRefresh = true;
+//                page = 1;
+//                request(page);
+//            }
+//        });
 
     }
 
-    private View headerView(ParentInfo data) {
+    private void request(int page){
+        if (TextUtils.isEmpty(id)) {
+            return;
+        } else {
+            presenter.invite(1, Integer.parseInt(id), page, pageSize);
+        }
+    }
+
+    private View headerView() {
         View view = LayoutInflater.from(mContext).inflate(R.layout.me_header_myinvite, null);
         ImageView me_headr_myinterview_iv = view.findViewById(R.id.me_headr_myinterview_iv);
         TypeFaceView me_headr_interview_name = view.findViewById(R.id.me_headr_interview_name);
@@ -165,22 +217,22 @@ public class MyInterviewActivity extends BaseTitleActivity {
         TypeFaceView me_headr_interview_mazai = view.findViewById(R.id.me_headr_interview_mazai);
         ImageView me_headr_interview_sex = view.findViewById(R.id.me_headr_interview_sex);
         ImageView me_headr_interview_level = view.findViewById(R.id.me_headr_interview_level);
-        if (data != null) {
+        if (interViewList.get(0).getParent_info() != null) {
             if (!TextUtils.isEmpty(name)) {
                 me_headr_interview_my_leader.setText(name + "的上级");
                 me_headr_interview_mazai.setText(name + "的下级");
             }
-            GlideUtils.loadCircleImage(mContext, data.getAvatar(), me_headr_myinterview_iv);
-            me_headr_interview_name.setText(data.getUsername());
-            if (data.getSex() != null) {
-                if (data.getSex().equals("male")) {
+            GlideUtils.loadCircleImage(mContext, interViewList.get(0).getParent_info().getAvatar(), me_headr_myinterview_iv);
+            me_headr_interview_name.setText(interViewList.get(0).getParent_info().getUsername());
+            if (interViewList.get(0).getParent_info().getSex() != null) {
+                if (interViewList.get(0).getParent_info().getSex().equals("male")) {
                     me_headr_interview_sex.setBackgroundResource(R.drawable.me_male);
                 } else {
                     me_headr_interview_sex.setBackgroundResource(R.drawable.me_famale);
                 }
             }
-            if (String.valueOf(data.getRole()) != null) {
-                switch (data.getRole()) {
+            if (String.valueOf(interViewList.get(0).getParent_info().getRole()) != null) {
+                switch (interViewList.get(0).getParent_info().getRole()) {
                     case 0:
                         me_headr_interview_level.setBackground(mContext.getResources().getDrawable(R.drawable.me_normaluser));
                         break;
@@ -225,5 +277,13 @@ public class MyInterviewActivity extends BaseTitleActivity {
         super.onCreate(savedInstanceState);
         // TODO: add setContentView(...) invocation
         ButterKnife.bind(this);
+    }
+
+    private void loadMore(){
+        if (isMore)
+            ToastUtils.showToast(mContext,"暂无更多数据");
+//            return;
+        page++;
+        request(page);
     }
 }
