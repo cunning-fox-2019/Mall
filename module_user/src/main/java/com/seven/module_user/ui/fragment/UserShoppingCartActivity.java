@@ -75,6 +75,7 @@ public class UserShoppingCartActivity extends BaseTitleActivity {
 
     private boolean isSelectAll = false;
     private boolean isManager = false;
+    int num = 0;
 
     @Override
     public void showLoading() {
@@ -163,7 +164,10 @@ public class UserShoppingCartActivity extends BaseTitleActivity {
                 helper.setText(R.id.goods_name, item.getGoods_name())
                         .setText(R.id.sales, item.getSales() + "人付款")
                         .setText(R.id.money, String.valueOf(item.getPrice()))
+                        .setText(R.id.number, item.getNumber()+"")
                         .addOnClickListener(R.id.is_select_btn)
+                        .addOnClickListener(R.id.add)
+                        .addOnClickListener(R.id.delete)
                         .setImageResource(R.id.is_select_btn,
                                 item.isSelect() ? R.drawable.item_shopping_cart_selector : R.drawable.item_shopping_cart_default);
                 ImageView imageView = helper.getView(R.id.goods_img);
@@ -174,10 +178,23 @@ public class UserShoppingCartActivity extends BaseTitleActivity {
                     @Override
                     public void onSimpleItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                         CartEntity entity = (CartEntity) adapter.getData().get(position);
+
                         if (view.getId() == R.id.is_select_btn) {
                             entity.setSelect(!entity.isSelect());
                             adapter.notifyItemChanged(position);
                             changeSelectNum();
+                        } else if (view.getId() == R.id.add) {
+                            num = entity.getNumber();
+                            num++;
+                            entity.setNumber(num);
+                            adapter.notifyItemChanged(position);
+                        } else if (view.getId() == R.id.delete) {
+                            num = entity.getNumber();
+                            num--;
+                            if (num > 0) {
+                                entity.setNumber(num);
+                            }
+                            adapter.notifyItemChanged(position);
                         }
                     }
                 })
@@ -211,9 +228,9 @@ public class UserShoppingCartActivity extends BaseTitleActivity {
             ToastUtils.showToast(mContext, "没有选择商品");
             return;
         }
-
-        EventBus.getDefault().post(new ObjectsEvent(code, shopIds.toString()));
-        onBackPressed();
+        RouterUtils.getInstance().routerWithSerializable(RouterPath.ACTIVITY_MINE_SHOP_PAY, "list", (Serializable) selectList);
+        // EventBus.getDefault().post(new ObjectsEvent(code, shopIds.toString()));
+//        onBackPressed();
 
     }
 
@@ -258,11 +275,11 @@ public class UserShoppingCartActivity extends BaseTitleActivity {
         for (CartEntity entity : entityList) {
             if (entity.isSelect()) {
                 num++;
-                money += entity.getPrice();
+                money += entity.getPrice() * entity.getNumber();
             }
         }
         select_num.setText("(" + num + ")");
-        moneyTv.setText("总价：￥" + money);
+        moneyTv.setText("总价：￥" + new java.text.DecimalFormat("#.00").format(new Double(money)));
     }
 
     private View getEmptyView() {
