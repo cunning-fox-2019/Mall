@@ -67,6 +67,7 @@ public interface RetrofitService {
 
     String inviteList = "promotion/invite/list";
     String inComeDetails = "promotion/token/list";
+    String deleteCar = "cart/delete";
 
     @POST(sms)
     Observable<HttpResponse> sms(@Body RequestBody requestBody);
@@ -226,5 +227,8 @@ public interface RetrofitService {
 
     @POST("order/confirm")
     Observable<HttpResponse> confirmOrder(@Body RequestBody requestBody);
+
+    @POST(deleteCar)
+    Observable<HttpResponse> deleteCar(@Body RequestBody requestBody);
 }
 

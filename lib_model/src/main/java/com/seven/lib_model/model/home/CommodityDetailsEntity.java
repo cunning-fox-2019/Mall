@@ -150,6 +150,15 @@ public class CommodityDetailsEntity implements Serializable {
         private int stock;
         private int sales;
         private String thumb;
+        private double token_price;
+
+        public double getToken_price() {
+            return token_price;
+        }
+
+        public void setToken_price(double token_price) {
+            this.token_price = token_price;
+        }
 
         public int getId() {
             return id;

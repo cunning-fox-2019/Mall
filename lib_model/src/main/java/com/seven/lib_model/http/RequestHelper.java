@@ -261,4 +261,6 @@ public class RequestHelper {
     public Observable<HttpResponse> getUserInfo(){return appService.getUserInfo();}
 
     public Observable<HttpResponse> confirmOrder(String json){return appService.confirmOrder(requestBody(json));}
+
+    public Observable<HttpResponse> deleteCar(String json){return appService.deleteCar(requestBody(json));}
 }

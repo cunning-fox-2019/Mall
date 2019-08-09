@@ -225,5 +225,6 @@
 
     <string name="surplus_time" formatted="false">剩余 %s s </string>
 
-
+<string name="manager">管理</string>
+<string name="done">完成</string>
 </resources>

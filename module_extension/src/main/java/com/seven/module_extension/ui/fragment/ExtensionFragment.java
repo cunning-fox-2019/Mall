@@ -315,7 +315,8 @@ public class ExtensionFragment extends BaseFragment {
             if (user == null)
                 RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_LOGIN);
             else
-                RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_MY_INTERVIEW);
+                RouterUtils.getInstance().routerWithString(RouterPath.ACTIVITY_MY_INTERVIEW,"id",String.valueOf(user.getId()));
+
         } else if (v.getId() == R.id.me_ext_up_rl) {
             if (user == null)
                 RouterUtils.getInstance().routerNormal(RouterPath.ACTIVITY_LOGIN);
