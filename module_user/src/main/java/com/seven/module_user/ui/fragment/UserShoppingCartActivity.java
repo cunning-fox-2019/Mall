@@ -25,6 +25,7 @@ import com.seven.lib_model.ApiManager;
 import com.seven.lib_model.BaseResult;
 import com.seven.lib_model.model.home.CartEntity;
 import com.seven.lib_model.model.user.mine.ShopEntity;
+import com.seven.lib_model.presenter.home.ActHomePresenter;
 import com.seven.lib_model.user.UserActivityPresenterNew;
 import com.seven.lib_opensource.event.MessageEvent;
 import com.seven.lib_opensource.event.ObjectsEvent;
@@ -80,6 +81,7 @@ public class UserShoppingCartActivity extends BaseTitleActivity {
     int num = 0;
 
     UserActivityPresenterNew presenterNew;
+    ActHomePresenter presenter;
 
     @Override
     public void showLoading() {
@@ -113,7 +115,11 @@ public class UserShoppingCartActivity extends BaseTitleActivity {
 
         getData();
 
-        presenterNew = new UserActivityPresenterNew(this,this);
+        presenterNew = new UserActivityPresenterNew(this, this);
+    }
+
+    private void addOrder(int number,int cart_id){
+       presenterNew.addCar(1,number,cart_id);
     }
 
     @Override
@@ -126,7 +132,7 @@ public class UserShoppingCartActivity extends BaseTitleActivity {
         isManager = !isManager;
         payLayout.setVisibility(isManager ? View.GONE : View.VISIBLE);
         delete.setVisibility(isManager ? View.VISIBLE : View.GONE);
-        setRightImg(isManager?R.drawable.shopping_car_done:R.drawable.shopping_cart_manager_icon);
+        setRightImg(isManager ? R.drawable.shopping_car_done : R.drawable.shopping_cart_manager_icon);
     }
 
     @Override
@@ -171,7 +177,7 @@ public class UserShoppingCartActivity extends BaseTitleActivity {
                 helper.setText(R.id.goods_name, item.getGoods_name())
                         .setText(R.id.sales, item.getSales() + "人付款")
                         .setText(R.id.money, String.valueOf(item.getPrice()))
-                        .setText(R.id.number, item.getNumber()+"")
+                        .setText(R.id.number, item.getNumber() + "")
                         .addOnClickListener(R.id.is_select_btn)
                         .addOnClickListener(R.id.add)
                         .addOnClickListener(R.id.delete)
@@ -195,6 +201,8 @@ public class UserShoppingCartActivity extends BaseTitleActivity {
                             num++;
                             entity.setNumber(num);
                             adapter.notifyItemChanged(position);
+                            changeSelectNum();
+                            addOrder(entity.getNumber(),entity.getId());
                         } else if (view.getId() == R.id.delete) {
                             num = entity.getNumber();
                             num--;
@@ -202,6 +210,8 @@ public class UserShoppingCartActivity extends BaseTitleActivity {
                                 entity.setNumber(num);
                             }
                             adapter.notifyItemChanged(position);
+                            changeSelectNum();
+                            addOrder(entity.getNumber(),entity.getId());
                         }
                     }
                 })
@@ -266,12 +276,12 @@ public class UserShoppingCartActivity extends BaseTitleActivity {
             CartEntity entity = it.next();
             if (entity.isSelect()) {
                 it.remove();
-                ids += entity.getId()+",";
+                ids += entity.getId() + ",";
             }
         }
-        if (!TextUtils.isEmpty(ids)){
-            ids = ids.substring(0,ids.length()-1);
-            presenterNew.deleteCar(1,ids);
+        if (!TextUtils.isEmpty(ids)) {
+            ids = ids.substring(0, ids.length() - 1);
+            presenterNew.deleteCar(1, ids);
         }
         recyclerView.notifyDataSetChanged();
     }
@@ -296,7 +306,10 @@ public class UserShoppingCartActivity extends BaseTitleActivity {
             }
         }
         select_num.setText("(" + num + ")");
-        moneyTv.setText("总价：￥" + new java.text.DecimalFormat("#.00").format(new Double(money)));
+        if (money == 0.0f)
+            moneyTv.setText("总价：￥0.00");
+        else
+            moneyTv.setText("总价：￥" + new java.text.DecimalFormat("#.00").format(new Double(money)));
     }
 
     private View getEmptyView() {
