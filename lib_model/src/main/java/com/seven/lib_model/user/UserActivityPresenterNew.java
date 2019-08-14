@@ -6,6 +6,7 @@ import com.seven.lib_common.mvp.presenter.BasePresenter;
 import com.seven.lib_common.mvp.view.IBaseView;
 import com.seven.lib_http.observer.HttpRxObservable;
 import com.seven.lib_http.observer.HttpRxObserver;
+import com.seven.lib_model.builder.user.CarAddBuilder;
 import com.seven.lib_model.builder.user.DeleteCar;
 import com.seven.lib_model.builder.user.EditAddressBuilder;
 import com.seven.lib_model.http.RequestHelper;
@@ -43,6 +44,14 @@ public class UserActivityPresenterNew extends BasePresenter<IBaseView,BaseActivi
         HttpRxObserver rxObserver = get(getView(),code);
         if (rxObserver == null)return;
         HttpRxObservable.getObservable(RequestHelper.getInstance().deleteCar(new Gson().toJson(json)),getActivity(),ActivityEvent.PAUSE).subscribe(rxObserver);
+    }
+
+    public void addCar(int code, int number,int cart_id){
+        CarAddBuilder.Builder builder = new CarAddBuilder.Builder();
+        CarAddBuilder json = builder.number(number).cart_id(cart_id).build();
+        HttpRxObserver rxObserver = get(getView(),code);
+        if (rxObserver == null)return;
+        HttpRxObservable.getObservable(RequestHelper.getInstance().addCar(new Gson().toJson(json)),getActivity(),ActivityEvent.PAUSE).subscribe(rxObserver);
     }
 
 }

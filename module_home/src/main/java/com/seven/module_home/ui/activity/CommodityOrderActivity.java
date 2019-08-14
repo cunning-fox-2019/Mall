@@ -127,7 +127,7 @@ public class CommodityOrderActivity extends BaseTitleActivity {
                 adapter.setNewData(listEntity.getItems());
 
                 for (OrderListEntity.ItemsBean itemsBean : listEntity.getItems())
-                    amount += itemsBean.getPrice();
+                    amount += itemsBean.getPrice() * itemsBean.getNumber();
 
                 amountTv.setText("¥ " + FormatUtils.formatCurrencyD(amount));
 

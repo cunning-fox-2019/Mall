@@ -230,5 +230,8 @@ public interface RetrofitService {
 
     @POST(deleteCar)
     Observable<HttpResponse> deleteCar(@Body RequestBody requestBody);
+
+    @POST("cart/update")
+    Observable<HttpResponse> addCar(@Body RequestBody requestBody);
 }
 
