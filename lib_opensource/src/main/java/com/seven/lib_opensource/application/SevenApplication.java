@@ -40,6 +40,7 @@ public class SevenApplication extends Application {
         application = this;
         init();
         initApp();
+
     }
 
     private void init() {
@@ -80,5 +81,9 @@ public class SevenApplication extends Application {
 
     public String getToken() {
         return token;
+    }
+
+    public void setToken(String token){
+        this.token=token;
     }
 }

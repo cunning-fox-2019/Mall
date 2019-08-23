@@ -1,7 +1,10 @@
 package com.seven.lib_router;
 
 
+import com.seven.lib_opensource.application.SSDK;
 import com.seven.lib_opensource.event.MessageEvent;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -13,10 +16,14 @@ import org.greenrobot.eventbus.EventBus;
 
 public class Variable {
 
+    public static final String WECHAT_APP_ID = "wx51ffbf68801004c4";
+    public static final String WECHAT_SECRET = "971233b26d0ac6bf52ed81a230131090";
+
     private static Variable instance;
 
     public Variable(){
         eventHttpCode=10001;
+        initWxAPi();
     }
 
     public static Variable getInstance() {
@@ -31,6 +38,15 @@ public class Variable {
         return instance;
     }
 
+    private IWXAPI wxApi;
+
+    private void initWxAPi(){
+        //AppConst.WEIXIN.APP_ID是指你应用在微信开放平台上的AppID，记得替换。
+        wxApi = WXAPIFactory.createWXAPI(SSDK.getInstance().getContext(), WECHAT_APP_ID, false);
+        //将该app注册到微信
+        wxApi.registerApp(WECHAT_APP_ID);
+    }
+
     private int eventHttpCode;
 
     /**
@@ -40,12 +56,6 @@ public class Variable {
         EventBus.getDefault().post(new MessageEvent(eventHttpCode, ""));
     }
 
-    private String token;
-    private String uuid;
-    private String language;
-    private String brandId;
-    private String memberId;
-
     public int getEventHttpCode() {
         return eventHttpCode;
     }
@@ -54,50 +64,87 @@ public class Variable {
         this.eventHttpCode = eventHttpCode;
     }
 
+    private String token;
+    private int userId;
+    private boolean payPassword;
+    private double tokenCount;
+    private String aliAccount;
+    private String wxAccount;
+    private boolean read;
+
+    public boolean isRead() {
+        return read;
+    }
+
+    public void setRead(boolean read) {
+        this.read = read;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public static String getWechatAppId() {
+        return WECHAT_APP_ID;
+    }
+
+    public static String getWechatSecret() {
+        return WECHAT_SECRET;
+    }
+
+    public String getAliAccount() {
+        return aliAccount;
+    }
+
+    public void setAliAccount(String aliAccount) {
+        this.aliAccount = aliAccount;
+    }
+
+    public String getWxAccount() {
+        return wxAccount;
+    }
+
+    public void setWxAccount(String wxAccount) {
+        this.wxAccount = wxAccount;
+    }
+
     public String getToken() {
         return token;
     }
 
     public void setToken(String token) {
         this.token = token;
-        eventHttp();
-    }
-
-    public String getUuid() {
-        return uuid;
-    }
-
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
-        eventHttp();
-    }
-
-    public String getLanguage() {
-        return language;
-    }
-
-    public void setLanguage(String language) {
-        this.language = language;
-        eventHttp();
     }
 
     public static void setInstance(Variable instance) {
         Variable.instance = instance;
     }
 
-    public String getBrandId() {
-        return brandId;
+    public boolean isPayPassword() {
+        return payPassword;
     }
 
-    public void setBrandId(String brandId) {
-        this.brandId = brandId;
+    public void setPayPassword(boolean payPassword) {
+        this.payPassword = payPassword;
     }
 
-    public String getMemberId() {
-        return memberId;
+    public double getTokenCount() {
+        return tokenCount;
     }
 
-    public void setMemberId(String memberId) {
-        this.memberId = memberId;
+    public void setTokenCount(double tokenCount) {
+        this.tokenCount = tokenCount;
+    }
+
+    public IWXAPI getWxApi() {
+        return wxApi;
+    }
+
+    public void setWxApi(IWXAPI wxApi) {
+        this.wxApi = wxApi;
     }
 }

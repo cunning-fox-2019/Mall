@@ -2,6 +2,7 @@ package com.seven.lib_common.base.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +14,12 @@ import com.seven.lib_common.mvp.view.IBaseView;
 import com.seven.lib_common.base.dialog.LoadingDialog;
 import com.seven.lib_common.utils.NetWorkUtils;
 import com.seven.lib_common.utils.ScreenUtils;
+import com.seven.lib_opensource.application.SSDK;
+import com.seven.lib_opensource.event.MessageEvent;
+import com.seven.lib_router.Variable;
 import com.trello.rxlifecycle2.components.support.RxFragment;
+
+import org.greenrobot.eventbus.EventBus;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -158,4 +164,39 @@ public abstract class BaseFragment extends RxFragment implements IBaseView {
     public void result(int code, Boolean hasNextPage, String response, Object object) {
 
     }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+
+        if (getUserVisibleHint())
+            onVisible();
+        else
+            onInvisible();
+
+    }
+
+    /**
+     * 可见
+     */
+    protected void onVisible() {
+    }
+
+    /**
+     * 不可见
+     */
+    protected void onInvisible() {
+    }
+
+    protected boolean isLogin() {
+
+        if (TextUtils.isEmpty(Variable.getInstance().getToken())) {
+
+            EventBus.getDefault().post(new MessageEvent(SSDK.getInstance().getsConfig().getEventCode(), ""));
+
+            return false;
+        }
+        return true;
+    }
+
 }

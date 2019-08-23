@@ -51,4 +51,19 @@ public class SharedData {
         mEditor.putBoolean(Constants.SharedConfig.FIRST, isFirst).commit();
     }
 
+    public String getToken() {
+        return mSharedPreferences.getString(Constants.SharedConfig.TOKEN, "");
+    }
+
+    public void setToken(String token) {
+        mEditor.putString(Constants.SharedConfig.TOKEN, token).commit();
+    }
+
+    public void setUserInfo(String json) {
+        mEditor.putString(Constants.SharedConfig.USER_INFO, json).apply();
+    }
+
+    public String getUserInfo() {
+        return mSharedPreferences.getString(Constants.SharedConfig.USER_INFO, "");
+    }
 }

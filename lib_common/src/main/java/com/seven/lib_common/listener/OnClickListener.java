@@ -10,8 +10,9 @@ import android.view.View;
 
 public interface OnClickListener {
 
-    void onCancel();
+    void onCancel(View v, Object... objects);
 
     void onClick(View v, Object... objects);
 
+    void dismiss();
 }

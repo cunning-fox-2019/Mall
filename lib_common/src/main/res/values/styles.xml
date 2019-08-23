@@ -26,6 +26,12 @@
         <attr name="blurOverlayColor" format="color" />
     </declare-styleable>
 
+    <style name="WelcomeStyle" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsTranslucent">false</item>
+        <item name="android:windowDisablePreview">true</item>
+    </style>
 
     <!-- dialog 动画-->
     <style name="dialogWindowAnim" parent="android:Animation">
